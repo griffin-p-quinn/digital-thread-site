@@ -14,6 +14,8 @@
 <meta name="twitter:title" content="Digital Fabric — Siemens DISW Emerging Technologies">
 <meta name="twitter:description" content="Interactive architecture references and system studies at the intersection of agentic AI, PLM, and CAD/CAM/CAE.">
 <link rel="stylesheet" href="styles/fabric.css">
+<script>/* no-flash theme bootstrap */(function(){try{var t=localStorage.getItem("fabric-theme");if(t!=="light"&&t!=="dark"){t=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();</script>
+<script defer src="styles/theme.js"></script>
 <style>
 /* ═══ LANDING — layout ═══ */
 body { min-height: 100vh; overflow-x: hidden; }
@@ -51,7 +53,7 @@ body { min-height: 100vh; overflow-x: hidden; }
   height: 52px;
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 40px;
-  background: rgba(13,16,22,0.84);
+  background: var(--surface-glass);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border);
@@ -88,7 +90,7 @@ body { min-height: 100vh; overflow-x: hidden; }
   padding: 36px 40px 30px;
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
-  background: linear-gradient(180deg, rgba(19,22,30,0.78), rgba(16,19,27,0.7));
+  background: linear-gradient(180deg, var(--surface-sunken), var(--surface-sunken));
 }
 .mini-sites-shell {
   max-width: 1220px;
@@ -122,7 +124,7 @@ body { min-height: 100vh; overflow-x: hidden; }
   padding: 9px 13px;
   border-radius: 999px;
   border: 1px solid var(--border2);
-  background: rgba(19,22,30,0.9);
+  background: var(--surface);
   font-family: 'IBM Plex Mono', monospace;
   font-size: 10px;
   letter-spacing: 0.1em;
@@ -150,7 +152,7 @@ body { min-height: 100vh; overflow-x: hidden; }
 .mini-site-card:hover {
   border-color: rgba(72,206,152,0.36);
   transform: translateY(-2px);
-  box-shadow: 0 14px 28px rgba(0,0,0,0.22);
+  box-shadow: 0 14px 28px var(--shadow);
 }
 .mini-site-top {
   display: flex;
@@ -219,9 +221,9 @@ body { min-height: 100vh; overflow-x: hidden; }
   background:
     radial-gradient(circle at 30% 35%, rgba(72,206,152,0.14), transparent 38%),
     radial-gradient(circle at 70% 30%, rgba(133,121,229,0.16), transparent 42%),
-    linear-gradient(135deg, rgba(19,23,32,0.55), rgba(27,31,42,0.18));
-  border: 1px solid rgba(82,93,112,0.18);
-  box-shadow: 0 24px 90px rgba(0,0,0,0.28);
+    linear-gradient(135deg, var(--surface), var(--hairline));
+  border: 1px solid var(--hairline);
+  box-shadow: 0 24px 90px var(--shadow-strong);
   filter: blur(calc(var(--hero-progress) * 1.4px));
   transform: translate3d(0, calc(var(--hero-progress) * 22px), 0) scale(calc(1 + var(--hero-progress) * 0.055));
   transform-origin: center center;
@@ -289,7 +291,7 @@ body { min-height: 100vh; overflow-x: hidden; }
   padding: 10px 16px;
   border-radius: 999px;
   border: 1px solid var(--border2);
-  background: rgba(19,22,30,0.84);
+  background: var(--surface-sunken);
   color: var(--text2);
   font-size: 12px;
   font-weight: 500;
@@ -320,8 +322,8 @@ body { min-height: 100vh; overflow-x: hidden; }
   text-align: left;
   padding: 12px 14px;
   border-radius: 14px;
-  background: rgba(19,22,30,0.72);
-  border: 1px solid rgba(82,93,112,0.18);
+  background: var(--surface);
+  border: 1px solid var(--hairline);
 }
 .hero-signal .signal-label {
   font-family: 'IBM Plex Mono', monospace;
@@ -402,7 +404,7 @@ body { min-height: 100vh; overflow-x: hidden; }
   margin-top: 18px;
   padding: 16px 18px;
   border-radius: 14px;
-  background: linear-gradient(180deg, rgba(26,30,40,0.95), rgba(19,22,30,0.96));
+  background: linear-gradient(180deg, var(--surface-2), var(--surface));
   border: 1px solid var(--border);
 }
 .catalog-guidance .guide-label {
@@ -425,7 +427,7 @@ body { min-height: 100vh; overflow-x: hidden; }
 .catalog-block {
   padding: 22px;
   border-radius: 18px;
-  background: linear-gradient(180deg, rgba(19,22,30,0.96), rgba(16,18,25,0.96));
+  background: linear-gradient(180deg, var(--surface), var(--surface-sunken));
   border: 1px solid var(--border);
 }
 .catalog-block.featured {
@@ -437,7 +439,7 @@ body { min-height: 100vh; overflow-x: hidden; }
   box-shadow: inset 0 1px 0 rgba(82,148,214,0.08);
 }
 .catalog-block.roadmap {
-  border-color: rgba(82,93,112,0.24);
+  border-color: var(--hairline-2);
 }
 .catalog-section-head {
   display: flex;
@@ -493,7 +495,7 @@ body { min-height: 100vh; overflow-x: hidden; }
   border: 1px solid var(--border2);
   background:
     radial-gradient(circle at top right, rgba(124,111,222,0.08), transparent 36%),
-    linear-gradient(180deg, rgba(26,30,40,0.98), rgba(19,22,30,0.98));
+    linear-gradient(180deg, var(--surface-2), var(--surface));
   box-shadow: 0 22px 54px rgba(0,0,0,0.12);
 }
 .featured-card .card-topline {
@@ -527,8 +529,8 @@ body { min-height: 100vh; overflow-x: hidden; }
 .featured-card .emphasis-cell {
   padding: 10px 12px;
   border-radius: 12px;
-  background: rgba(13,15,20,0.52);
-  border: 1px solid rgba(82,93,112,0.18);
+  background: var(--surface-sunken);
+  border: 1px solid var(--hairline);
 }
 .featured-card .emphasis-label {
   font-family: 'IBM Plex Mono', monospace;
@@ -567,7 +569,7 @@ body { min-height: 100vh; overflow-x: hidden; }
   padding: 18px 18px 16px;
   border-radius: 14px;
   border: 1px solid var(--border);
-  background: rgba(26,30,40,0.64);
+  background: var(--surface-2);
 }
 .roadmap-item .card-num {
   margin-bottom: 0;
@@ -613,7 +615,7 @@ body { min-height: 100vh; overflow-x: hidden; }
   border: 1px solid var(--border2);
   background:
     radial-gradient(circle at top right, rgba(61,191,138,0.08), transparent 38%),
-    linear-gradient(180deg, rgba(26,30,40,0.98), rgba(19,22,30,0.98));
+    linear-gradient(180deg, var(--surface-2), var(--surface));
   box-shadow: 0 24px 60px rgba(0,0,0,0.14);
 }
 
@@ -657,8 +659,8 @@ body { min-height: 100vh; overflow-x: hidden; }
   gap: 8px;
   padding: 18px;
   border-radius: 14px;
-  background: rgba(13,15,20,0.5);
-  border: 1px solid rgba(82,93,112,0.18);
+  background: var(--surface-sunken);
+  border: 1px solid var(--hairline);
 }
 
 .nx-story-stat .stat-label {
@@ -686,7 +688,7 @@ body { min-height: 100vh; overflow-x: hidden; }
   padding: 14px 16px;
   border-radius: 14px;
   border: 1px solid var(--border);
-  background: rgba(26,30,40,0.72);
+  background: var(--surface-2);
 }
 
 .nx-story-item .item-title {
@@ -723,18 +725,18 @@ body { min-height: 100vh; overflow-x: hidden; }
   gap: 10px;
   padding: 14px;
   border-radius: 16px;
-  border: 1px solid rgba(82,93,112,0.2);
+  border: 1px solid var(--hairline);
   background:
     radial-gradient(circle at 20% 20%, rgba(61,191,138,0.1), transparent 30%),
-    linear-gradient(180deg, rgba(12,14,19,0.96), rgba(19,22,30,0.98));
+    linear-gradient(180deg, var(--surface-sunken), var(--surface));
 }
 
 .nx-render-frame img {
   width: 100%;
   display: block;
   border-radius: 12px;
-  border: 1px solid rgba(82,93,112,0.18);
-  background: radial-gradient(circle at 20% 20%, rgba(34,39,51,0.92), rgba(11,13,18,0.98));
+  border: 1px solid var(--hairline);
+  background: radial-gradient(circle at 20% 20%, rgba(34,39,51,0.92), var(--surface-sunken));
 }
 
 .nx-render-meta {
@@ -1019,32 +1021,32 @@ img, svg { max-width: 100%; height: auto; }
   <svg class="hero-grid" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <linearGradient id="gfade" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#3dbf8a" stop-opacity="0.06"/>
-        <stop offset="100%" stop-color="#7c6fde" stop-opacity="0.03"/>
+        <stop offset="0%" stop-color="var(--teal)" stop-opacity="0.06"/>
+        <stop offset="100%" stop-color="var(--purple)" stop-opacity="0.03"/>
       </linearGradient>
       <pattern id="gridp" width="60" height="60" patternUnits="userSpaceOnUse">
-        <path d="M60 0 L0 0 0 60" fill="none" stroke="#2e3547" stroke-width="0.4"/>
+        <path d="M60 0 L0 0 0 60" fill="none" stroke="var(--line)" stroke-width="0.4"/>
       </pattern>
     </defs>
     <rect width="1200" height="800" fill="url(#gfade)"/>
     <rect width="1200" height="800" fill="url(#gridp)"/>
     <!-- accent lines -->
-    <line x1="0" y1="300" x2="1200" y2="300" stroke="#3dbf8a" stroke-width="0.3" opacity="0.15" stroke-dasharray="8 12" style="animation: grid-flow 4s linear infinite"/>
-    <line x1="0" y1="500" x2="1200" y2="500" stroke="#7c6fde" stroke-width="0.3" opacity="0.12" stroke-dasharray="8 12" style="animation: grid-flow 5s linear infinite reverse"/>
-    <line x1="600" y1="0" x2="600" y2="800" stroke="#3dbf8a" stroke-width="0.3" opacity="0.1" stroke-dasharray="8 12" style="animation: grid-flow 6s linear infinite"/>
+    <line x1="0" y1="300" x2="1200" y2="300" stroke="var(--teal)" stroke-width="0.3" opacity="0.15" stroke-dasharray="8 12" style="animation: grid-flow 4s linear infinite"/>
+    <line x1="0" y1="500" x2="1200" y2="500" stroke="var(--purple)" stroke-width="0.3" opacity="0.12" stroke-dasharray="8 12" style="animation: grid-flow 5s linear infinite reverse"/>
+    <line x1="600" y1="0" x2="600" y2="800" stroke="var(--teal)" stroke-width="0.3" opacity="0.1" stroke-dasharray="8 12" style="animation: grid-flow 6s linear infinite"/>
     <!-- intersection node dots -->
-    <circle cx="600" cy="300" r="3" fill="#3dbf8a" opacity="0.25" style="animation: glow-pulse 3s ease-in-out infinite"/>
-    <circle cx="600" cy="500" r="2.5" fill="#7c6fde" opacity="0.2" style="animation: glow-pulse 3s ease-in-out infinite 1s"/>
-    <circle cx="360" cy="300" r="2" fill="#3dbf8a" opacity="0.15" style="animation: glow-pulse 4s ease-in-out infinite 0.5s"/>
-    <circle cx="840" cy="300" r="2" fill="#3dbf8a" opacity="0.15" style="animation: glow-pulse 4s ease-in-out infinite 1.5s"/>
-    <circle cx="360" cy="500" r="2" fill="#7c6fde" opacity="0.12" style="animation: glow-pulse 4s ease-in-out infinite 2s"/>
-    <circle cx="840" cy="500" r="2" fill="#7c6fde" opacity="0.12" style="animation: glow-pulse 4s ease-in-out infinite 2.5s"/>
+    <circle cx="600" cy="300" r="3" fill="var(--teal)" opacity="0.25" style="animation: glow-pulse 3s ease-in-out infinite"/>
+    <circle cx="600" cy="500" r="2.5" fill="var(--purple)" opacity="0.2" style="animation: glow-pulse 3s ease-in-out infinite 1s"/>
+    <circle cx="360" cy="300" r="2" fill="var(--teal)" opacity="0.15" style="animation: glow-pulse 4s ease-in-out infinite 0.5s"/>
+    <circle cx="840" cy="300" r="2" fill="var(--teal)" opacity="0.15" style="animation: glow-pulse 4s ease-in-out infinite 1.5s"/>
+    <circle cx="360" cy="500" r="2" fill="var(--purple)" opacity="0.12" style="animation: glow-pulse 4s ease-in-out infinite 2s"/>
+    <circle cx="840" cy="500" r="2" fill="var(--purple)" opacity="0.12" style="animation: glow-pulse 4s ease-in-out infinite 2.5s"/>
     <!-- radial fade at edges -->
     <rect width="1200" height="800" fill="url(#edgefade)"/>
     <defs>
       <radialGradient id="edgefade" cx="50%" cy="50%" r="60%">
-        <stop offset="0%" stop-color="#0d0f14" stop-opacity="0"/>
-        <stop offset="100%" stop-color="#0d0f14" stop-opacity="0.85"/>
+        <stop offset="0%" stop-color="var(--surface-sunken)" stop-opacity="0"/>
+        <stop offset="100%" stop-color="var(--surface-sunken)" stop-opacity="0.85"/>
       </radialGradient>
     </defs>
   </svg>
@@ -1651,8 +1653,8 @@ function clamp01(value) {
 
 function updateLandingMotion() {
   tb.style.background = window.scrollY > 80
-    ? 'rgba(13,16,22,0.95)'
-    : 'rgba(13,16,22,0.84)';
+    ? 'var(--surface-sunken)'
+    : 'var(--surface-glass)';
 
   const heroRect = hero.getBoundingClientRect();
   const heroProgress = clamp01((-heroRect.top) / Math.max(1, heroRect.height * 0.9));

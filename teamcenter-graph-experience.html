@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Teamcenter Graph Experience - Digital Fabric</title>
 <link rel="stylesheet" href="styles/fabric.css">
+<script>/* no-flash theme bootstrap */(function(){try{var t=localStorage.getItem("fabric-theme");if(t!=="light"&&t!=="dark"){t=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();</script>
+<script defer src="styles/theme.js"></script>
 <style>
 :root {
   --nav-w: 288px;
@@ -16,7 +18,7 @@ body {
   background:
     radial-gradient(circle at 18% 12%, rgba(72,206,152,0.10), transparent 22%),
     radial-gradient(circle at 82% 14%, rgba(133,121,229,0.12), transparent 26%),
-    linear-gradient(180deg, #070a10 0%, #090d16 38%, #04060a 100%);
+    linear-gradient(180deg, var(--surface-sunken) 0%, var(--surface-sunken) 38%, var(--surface-sunken) 100%);
   color: var(--text);
   overflow-x: hidden;
 }
@@ -33,9 +35,9 @@ code, pre { font-family: 'IBM Plex Mono', monospace; }
   min-height: var(--hub-h);
   display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
   padding: 8px 20px;
-  background: rgba(13,15,20,0.88);
+  background: var(--surface-glass);
   backdrop-filter: blur(18px);
-  border-bottom: 1px solid rgba(82,93,112,0.22);
+  border-bottom: 1px solid var(--hairline-2);
 }
 .hub-bar a {
   display: inline-flex;
@@ -87,8 +89,8 @@ nav {
   bottom: 0;
   width: var(--nav-w);
   padding: 22px 18px 26px;
-  background: rgba(10,12,18,0.94);
-  border-right: 1px solid rgba(82,93,112,0.18);
+  background: var(--surface-sunken);
+  border-right: 1px solid var(--hairline);
   overflow-y: auto;
 }
 .nav-brand { margin-bottom: 18px; }
@@ -140,7 +142,7 @@ nav a.page-link.active {
   width: 22px;
   height: 22px;
   border-radius: 999px;
-  border: 1px solid rgba(82,93,112,0.28);
+  border: 1px solid var(--hairline-2);
   font-family: 'IBM Plex Mono', monospace;
   font-size: 10px;
   color: var(--text3);
@@ -149,7 +151,7 @@ nav a.page-link.active {
 .nav-footer {
   margin-top: 20px;
   padding-top: 18px;
-  border-top: 1px solid rgba(82,93,112,0.18);
+  border-top: 1px solid var(--hairline);
 }
 .nav-footer p {
   font-size: 12px;
@@ -219,7 +221,7 @@ main {
 .route-card {
   border-radius: 22px;
   border: 1px solid rgba(82,93,112,0.20);
-  background: linear-gradient(180deg, rgba(17,21,29,0.96), rgba(10,12,18,0.96));
+  background: linear-gradient(180deg, var(--surface), var(--surface-sunken));
   box-shadow: 0 22px 60px rgba(0,0,0,0.20);
 }
 .section,
@@ -230,7 +232,7 @@ main {
 .diagram-card-header {
   padding: 10px 16px;
   border-bottom: 1px solid rgba(82,93,112,0.16);
-  background: rgba(13,16,22,0.72);
+  background: var(--surface-sunken);
   font-family: 'IBM Plex Mono', monospace;
   font-size: 10px;
   letter-spacing: 0.14em;
@@ -288,8 +290,8 @@ hr.section-rule {
 .runtime-item {
   padding: 14px 14px 13px;
   border-radius: 16px;
-  border: 1px solid rgba(82,93,112,0.18);
-  background: rgba(19,23,32,0.78);
+  border: 1px solid var(--hairline);
+  background: var(--surface);
 }
 .overview-tile { cursor: pointer; transition: transform 0.16s ease, border-color 0.16s ease; }
 .overview-tile:hover { transform: translateY(-2px); border-color: rgba(72,206,152,0.26); }
@@ -337,19 +339,19 @@ hr.section-rule {
   margin-top: 12px;
   padding: 14px;
   border-radius: 16px;
-  background: rgba(8,10,15,0.92);
-  border: 1px solid rgba(82,93,112,0.18);
+  background: var(--surface-sunken);
+  border: 1px solid var(--hairline);
   font-size: 11px;
   line-height: 1.68;
-  color: #cfd9ef;
+  color: var(--text);
   overflow-x: auto;
   white-space: pre;
 }
 .inline-proof {
   padding: 14px;
   border-radius: 16px;
-  background: rgba(8,10,15,0.92);
-  border: 1px solid rgba(82,93,112,0.18);
+  background: var(--surface-sunken);
+  border: 1px solid var(--hairline);
 }
 .inline-proof .proof-title {
   font-family: 'IBM Plex Mono', monospace;
@@ -388,7 +390,7 @@ hr.section-rule {
   flex: 1;
   height: 8px;
   border-radius: 999px;
-  background: rgba(48,55,72,0.48);
+  background: var(--hairline-2);
   overflow: hidden;
 }
 .conf-fill { height: 100%; border-radius: 999px; }
@@ -402,8 +404,8 @@ hr.section-rule {
 .graph-wrap {
   padding: 12px;
   border-radius: 18px;
-  border: 1px solid rgba(82,93,112,0.18);
-  background: rgba(8,11,18,0.92);
+  border: 1px solid var(--hairline);
+  background: var(--surface-sunken);
 }
 .graph-svg { min-height: 520px; }
 .graph-node { cursor: pointer; transition: opacity 0.16s ease, transform 0.16s ease; }
@@ -426,8 +428,8 @@ hr.section-rule {
 .inspector button {
   padding: 6px 10px;
   border-radius: 999px;
-  border: 1px solid rgba(82,93,112,0.22);
-  background: rgba(13,16,22,0.84);
+  border: 1px solid var(--hairline-2);
+  background: var(--surface-glass);
   color: var(--text3);
   font-family: 'IBM Plex Mono', monospace;
   font-size: 10px;
@@ -464,7 +466,7 @@ hr.section-rule {
 .check-table th,
 .check-table td {
   padding: 11px 12px;
-  border-bottom: 1px solid rgba(82,93,112,0.14);
+  border-bottom: 1px solid var(--hairline);
   text-align: left;
   font-size: 12px;
 }
@@ -488,7 +490,7 @@ hr.section-rule {
 .edge-track {
   height: 8px;
   border-radius: 999px;
-  background: rgba(48,55,72,0.48);
+  background: var(--hairline-2);
   overflow: hidden;
 }
 .edge-fill { height: 100%; border-radius: 999px; }
@@ -500,8 +502,8 @@ hr.section-rule {
 .chain-card {
   padding: 12px 14px;
   border-radius: 16px;
-  border: 1px solid rgba(82,93,112,0.18);
-  background: rgba(19,23,32,0.76);
+  border: 1px solid var(--hairline);
+  background: var(--surface-sunken);
 }
 .chain-title { font-size: 13px; font-weight: 600; color: var(--text); }
 .chain-id { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--text3); margin-top: 6px; }
@@ -516,7 +518,7 @@ hr.section-rule {
     position: static;
     width: auto;
     border-right: 0;
-    border-bottom: 1px solid rgba(82,93,112,0.18);
+    border-bottom: 1px solid var(--hairline);
   }
   main { margin-left: 0; }
   .page { padding: 24px 18px 36px; }
@@ -595,8 +597,8 @@ img, svg.stack-svg, svg.graph-svg { max-width: 100%; height: auto; }
   text-align: center;
   padding: 20px 14px;
   border-radius: 16px;
-  border: 1px solid rgba(82,93,112,0.18);
-  background: rgba(19,23,32,0.78);
+  border: 1px solid var(--hairline);
+  background: var(--surface);
 }
 .pipeline-stat-big .ps-number {
   font-size: 28px;
@@ -616,7 +618,7 @@ img, svg.stack-svg, svg.graph-svg { max-width: 100%; height: auto; }
 .sparql-result-table th,
 .sparql-result-table td {
   padding: 8px 10px;
-  border-bottom: 1px solid rgba(82,93,112,0.14);
+  border-bottom: 1px solid var(--hairline);
   text-align: left;
   font-size: 11px;
   white-space: nowrap;
@@ -636,8 +638,8 @@ img, svg.stack-svg, svg.graph-svg { max-width: 100%; height: auto; }
   font-size: 10px;
   padding: 3px 8px;
   border-radius: 4px;
-  background: rgba(19,23,32,0.78);
-  border: 1px solid rgba(82,93,112,0.22);
+  background: var(--surface);
+  border: 1px solid var(--hairline-2);
   color: var(--text2);
 }
 </style>
@@ -784,51 +786,51 @@ Result rows:
           <svg class="stack-svg" viewBox="0 0 1120 360" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <linearGradient id="stackFlow" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%" stop-color="#48ce98"/>
-                <stop offset="100%" stop-color="#8579e5"/>
+                <stop offset="0%" stop-color="var(--teal)"/>
+                <stop offset="100%" stop-color="var(--purple)"/>
               </linearGradient>
             </defs>
-            <rect x="20" y="48" width="180" height="96" rx="22" fill="#171d28" stroke="#edb050" stroke-opacity="0.4"/>
-            <text x="44" y="84" fill="#edb050" font-size="12" font-family="IBM Plex Mono">SOURCE</text>
-            <text x="44" y="116" fill="#e6eaf3" font-size="24" font-weight="600">Teamcenter SQL</text>
-            <text x="44" y="140" fill="#939db2" font-size="13">PITEM, PITEMREVISION, PDATASET, PIMANRELATION</text>
+            <rect x="20" y="48" width="180" height="96" rx="22" fill="var(--bg2)" stroke="var(--amber)" stroke-opacity="0.4"/>
+            <text x="44" y="84" fill="var(--amber)" font-size="12" font-family="IBM Plex Mono">SOURCE</text>
+            <text x="44" y="116" fill="var(--text)" font-size="24" font-weight="600">Teamcenter SQL</text>
+            <text x="44" y="140" fill="var(--text2)" font-size="13">PITEM, PITEMREVISION, PDATASET, PIMANRELATION</text>
 
-            <rect x="250" y="48" width="190" height="96" rx="22" fill="#171d28" stroke="#48ce98" stroke-opacity="0.4"/>
-            <text x="274" y="84" fill="#48ce98" font-size="12" font-family="IBM Plex Mono">PROJECTION</text>
-            <text x="274" y="116" fill="#e6eaf3" font-size="24" font-weight="600">SQL Views</text>
-            <text x="274" y="140" fill="#939db2" font-size="13">Normalized predicates, tc: URIs, flattened payloads</text>
+            <rect x="250" y="48" width="190" height="96" rx="22" fill="var(--bg2)" stroke="var(--teal)" stroke-opacity="0.4"/>
+            <text x="274" y="84" fill="var(--teal)" font-size="12" font-family="IBM Plex Mono">PROJECTION</text>
+            <text x="274" y="116" fill="var(--text)" font-size="24" font-weight="600">SQL Views</text>
+            <text x="274" y="140" fill="var(--text2)" font-size="13">Normalized predicates, tc: URIs, flattened payloads</text>
 
-            <rect x="490" y="48" width="190" height="96" rx="22" fill="#171d28" stroke="#5d9edf" stroke-opacity="0.4"/>
-            <text x="514" y="84" fill="#5d9edf" font-size="12" font-family="IBM Plex Mono">API</text>
-            <text x="514" y="116" fill="#e6eaf3" font-size="24" font-weight="600">REST :3737</text>
-            <text x="514" y="140" fill="#939db2" font-size="13">Auth-gated JSON with filters and deterministic paging</text>
+            <rect x="490" y="48" width="190" height="96" rx="22" fill="var(--bg2)" stroke="var(--blue)" stroke-opacity="0.4"/>
+            <text x="514" y="84" fill="var(--blue)" font-size="12" font-family="IBM Plex Mono">API</text>
+            <text x="514" y="116" fill="var(--text)" font-size="24" font-weight="600">REST :3737</text>
+            <text x="514" y="140" fill="var(--text2)" font-size="13">Auth-gated JSON with filters and deterministic paging</text>
 
-            <rect x="730" y="48" width="170" height="96" rx="22" fill="#171d28" stroke="#8579e5" stroke-opacity="0.4"/>
-            <text x="754" y="84" fill="#8579e5" font-size="12" font-family="IBM Plex Mono">INGESTION</text>
-            <text x="754" y="116" fill="#e6eaf3" font-size="24" font-weight="600">AGS</text>
-            <text x="754" y="140" fill="#939db2" font-size="13">HttpSource -> graphmart triples</text>
+            <rect x="730" y="48" width="170" height="96" rx="22" fill="var(--bg2)" stroke="var(--purple)" stroke-opacity="0.4"/>
+            <text x="754" y="84" fill="var(--purple)" font-size="12" font-family="IBM Plex Mono">INGESTION</text>
+            <text x="754" y="116" fill="var(--text)" font-size="24" font-weight="600">AGS</text>
+            <text x="754" y="140" fill="var(--text2)" font-size="13">HttpSource -> graphmart triples</text>
 
-            <rect x="940" y="48" width="160" height="96" rx="22" fill="#171d28" stroke="#48ce98" stroke-opacity="0.4"/>
-            <text x="964" y="84" fill="#48ce98" font-size="12" font-family="IBM Plex Mono">RUNTIME</text>
-            <text x="964" y="116" fill="#e6eaf3" font-size="24" font-weight="600">Agent</text>
-            <text x="964" y="140" fill="#939db2" font-size="13">SPARQL first, MCP when needed</text>
+            <rect x="940" y="48" width="160" height="96" rx="22" fill="var(--bg2)" stroke="var(--teal)" stroke-opacity="0.4"/>
+            <text x="964" y="84" fill="var(--teal)" font-size="12" font-family="IBM Plex Mono">RUNTIME</text>
+            <text x="964" y="116" fill="var(--text)" font-size="24" font-weight="600">Agent</text>
+            <text x="964" y="140" fill="var(--text2)" font-size="13">SPARQL first, MCP when needed</text>
 
             <path d="M200 96 H250 M440 96 H490 M680 96 H730 M900 96 H940" stroke="url(#stackFlow)" stroke-width="4" stroke-linecap="round"/>
 
-            <rect x="90" y="210" width="230" height="96" rx="22" fill="#121722" stroke="#48ce98" stroke-opacity="0.26"/>
-            <text x="114" y="246" fill="#48ce98" font-size="12" font-family="IBM Plex Mono">ALWAYS ON</text>
-            <text x="114" y="278" fill="#e6eaf3" font-size="21" font-weight="600">Gateway + REST API</text>
-            <text x="114" y="300" fill="#939db2" font-size="13">Health, readyz, nodes, and edges endpoints serve stable demo traffic.</text>
+            <rect x="90" y="210" width="230" height="96" rx="22" fill="var(--bg2)" stroke="var(--teal)" stroke-opacity="0.26"/>
+            <text x="114" y="246" fill="var(--teal)" font-size="12" font-family="IBM Plex Mono">ALWAYS ON</text>
+            <text x="114" y="278" fill="var(--text)" font-size="21" font-weight="600">Gateway + REST API</text>
+            <text x="114" y="300" fill="var(--text2)" font-size="13">Health, readyz, nodes, and edges endpoints serve stable demo traffic.</text>
 
-            <rect x="364" y="210" width="230" height="96" rx="22" fill="#121722" stroke="#5d9edf" stroke-opacity="0.26"/>
-            <text x="388" y="246" fill="#5d9edf" font-size="12" font-family="IBM Plex Mono">ON SCHEDULE</text>
-            <text x="388" y="278" fill="#e6eaf3" font-size="21" font-weight="600">AGS Refresh / Reload</text>
-            <text x="388" y="300" fill="#939db2" font-size="13">Graph ingestion runs when data is refreshed - not every user request.</text>
+            <rect x="364" y="210" width="230" height="96" rx="22" fill="var(--bg2)" stroke="var(--blue)" stroke-opacity="0.26"/>
+            <text x="388" y="246" fill="var(--blue)" font-size="12" font-family="IBM Plex Mono">ON SCHEDULE</text>
+            <text x="388" y="278" fill="var(--text)" font-size="21" font-weight="600">AGS Refresh / Reload</text>
+            <text x="388" y="300" fill="var(--text2)" font-size="13">Graph ingestion runs when data is refreshed - not every user request.</text>
 
-            <rect x="638" y="210" width="230" height="96" rx="22" fill="#121722" stroke="#edb050" stroke-opacity="0.26"/>
-            <text x="662" y="246" fill="#edb050" font-size="12" font-family="IBM Plex Mono">ON DEMAND</text>
-            <text x="662" y="278" fill="#e6eaf3" font-size="21" font-weight="600">Teamcenter MCP / SOA</text>
-            <text x="662" y="300" fill="#939db2" font-size="13">Invoked only when the agent needs runtime BOM, file bytes, write operations, or live task state.</text>
+            <rect x="638" y="210" width="230" height="96" rx="22" fill="var(--bg2)" stroke="var(--amber)" stroke-opacity="0.26"/>
+            <text x="662" y="246" fill="var(--amber)" font-size="12" font-family="IBM Plex Mono">ON DEMAND</text>
+            <text x="662" y="278" fill="var(--text)" font-size="21" font-weight="600">Teamcenter MCP / SOA</text>
+            <text x="662" y="300" fill="var(--text2)" font-size="13">Invoked only when the agent needs runtime BOM, file bytes, write operations, or live task state.</text>
           </svg>
         </div>
       </div>
@@ -948,82 +950,82 @@ Then MCP:
               <marker id="arr" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#96b6ff"></path></marker>
             </defs>
             <g opacity="0.10">
-              <path d="M0 80 H980 M0 160 H980 M0 240 H980 M0 320 H980 M0 400 H980 M0 480 H980" stroke="#2e3547" stroke-width="1"/>
-              <path d="M80 0 V560 M160 0 V560 M240 0 V560 M320 0 V560 M400 0 V560 M480 0 V560 M560 0 V560 M640 0 V560 M720 0 V560 M800 0 V560 M880 0 V560" stroke="#2e3547" stroke-width="1"/>
+              <path d="M0 80 H980 M0 160 H980 M0 240 H980 M0 320 H980 M0 400 H980 M0 480 H980" stroke="var(--line)" stroke-width="1"/>
+              <path d="M80 0 V560 M160 0 V560 M240 0 V560 M320 0 V560 M400 0 V560 M480 0 V560 M560 0 V560 M640 0 V560 M720 0 V560 M800 0 V560 M880 0 V560" stroke="var(--line)" stroke-width="1"/>
             </g>
 
             <g class="graph-edge" data-kind="edge" data-id="item_rev">
               <line class="graph-edge-hit" x1="188" y1="150" x2="380" y2="150" stroke="transparent" stroke-width="20"/>
-              <line class="graph-edge-line" x1="188" y1="150" x2="380" y2="150" stroke="#48ce98" stroke-width="1.9" marker-end="url(#arr)"/>
+              <line class="graph-edge-line" x1="188" y1="150" x2="380" y2="150" stroke="var(--teal)" stroke-width="1.9" marker-end="url(#arr)"/>
               <text class="graph-edge-label" x="230" y="132">ITEM_HAS_REVISION</text>
             </g>
 
             <g class="graph-edge" data-kind="edge" data-id="rev_ds_general">
               <path class="graph-edge-hit" d="M532 150 C650 150,675 220,760 220" fill="none" stroke="transparent" stroke-width="20"/>
-              <path class="graph-edge-line" d="M532 150 C650 150,675 220,760 220" fill="none" stroke="#5d9edf" stroke-width="1.9" marker-end="url(#arr)"/>
+              <path class="graph-edge-line" d="M532 150 C650 150,675 220,760 220" fill="none" stroke="var(--blue)" stroke-width="1.9" marker-end="url(#arr)"/>
               <text class="graph-edge-label" x="582" y="188">REVISION_HAS_DATASET</text>
             </g>
 
             <g class="graph-edge" data-kind="edge" data-id="rev_ds_spec">
               <path class="graph-edge-hit" d="M532 155 C650 155,675 320,760 320" fill="none" stroke="transparent" stroke-width="20"/>
-              <path class="graph-edge-line" d="M532 155 C650 155,675 320,760 320" fill="none" stroke="#8579e5" stroke-width="1.9" marker-end="url(#arr)"/>
+              <path class="graph-edge-line" d="M532 155 C650 155,675 320,760 320" fill="none" stroke="var(--purple)" stroke-width="1.9" marker-end="url(#arr)"/>
               <text class="graph-edge-label" x="532" y="268">REVISION_HAS_SPECIFICATION_DATASET</text>
             </g>
 
             <g class="graph-edge" data-kind="edge" data-id="change_rev">
               <path class="graph-edge-hit" d="M170 420 C280 320,320 220,380 176" fill="none" stroke="transparent" stroke-width="20"/>
-              <path class="graph-edge-line" d="M170 420 C280 320,320 220,380 176" fill="none" stroke="#edb050" stroke-width="1.9" marker-end="url(#arr)"/>
+              <path class="graph-edge-line" d="M170 420 C280 320,320 220,380 176" fill="none" stroke="var(--amber)" stroke-width="1.9" marker-end="url(#arr)"/>
               <text class="graph-edge-label" x="110" y="356">CHANGE_AFFECTS_REVISION</text>
             </g>
 
             <g class="graph-edge" data-kind="edge" data-id="wf_rev">
               <path class="graph-edge-hit" d="M610 440 C620 360,560 250,514 180" fill="none" stroke="transparent" stroke-width="20"/>
-              <path class="graph-edge-line" d="M610 440 C620 360,560 250,514 180" fill="none" stroke="#db7264" stroke-width="1.9" marker-end="url(#arr)"/>
+              <path class="graph-edge-line" d="M610 440 C620 360,560 250,514 180" fill="none" stroke="var(--coral)" stroke-width="1.9" marker-end="url(#arr)"/>
               <text class="graph-edge-label" x="620" y="332">WORKFLOW_TARGETS_OBJECT</text>
             </g>
 
             <g class="graph-node" data-kind="node" data-id="item">
-              <rect x="70" y="118" width="118" height="64" rx="16" fill="#163925" stroke="#48ce98" stroke-width="1.1"/>
-              <text x="92" y="146" fill="#e6eaf3" font-size="15" font-weight="600">Item</text>
-              <text x="92" y="166" fill="#b9c6df" font-size="11">001024 / yoMAAQdo5BWnuC</text>
+              <rect x="70" y="118" width="118" height="64" rx="16" fill="#163925" stroke="var(--teal)" stroke-width="1.1"/>
+              <text x="92" y="146" fill="var(--text)" font-size="15" font-weight="600">Item</text>
+              <text x="92" y="166" fill="var(--text2)" font-size="11">001024 / yoMAAQdo5BWnuC</text>
             </g>
 
             <g class="graph-node" data-kind="node" data-id="revision">
-              <rect x="380" y="116" width="152" height="68" rx="16" fill="#162435" stroke="#5d9edf" stroke-width="1.1"/>
-              <text x="402" y="145" fill="#e6eaf3" font-size="15" font-weight="600">ItemRevision</text>
-              <text x="402" y="165" fill="#b9c6df" font-size="11">yfMAAQdo5BWnuC / rev A</text>
+              <rect x="380" y="116" width="152" height="68" rx="16" fill="#162435" stroke="var(--blue)" stroke-width="1.1"/>
+              <text x="402" y="145" fill="var(--text)" font-size="15" font-weight="600">ItemRevision</text>
+              <text x="402" y="165" fill="var(--text2)" font-size="11">yfMAAQdo5BWnuC / rev A</text>
             </g>
 
             <g class="graph-node" data-kind="node" data-id="dataset-general">
-              <rect x="760" y="190" width="166" height="64" rx="16" fill="#162435" stroke="#5d9edf" stroke-width="1.1"/>
-              <text x="782" y="218" fill="#e6eaf3" font-size="15" font-weight="600">Dataset</text>
-              <text x="782" y="238" fill="#b9c6df" font-size="11">zzEAAQt85BWnuC / IMAN_Rendering</text>
+              <rect x="760" y="190" width="166" height="64" rx="16" fill="#162435" stroke="var(--blue)" stroke-width="1.1"/>
+              <text x="782" y="218" fill="var(--text)" font-size="15" font-weight="600">Dataset</text>
+              <text x="782" y="238" fill="var(--text2)" font-size="11">zzEAAQt85BWnuC / IMAN_Rendering</text>
             </g>
 
             <g class="graph-node" data-kind="node" data-id="dataset-spec">
-              <rect x="760" y="290" width="170" height="64" rx="16" fill="#2b1e40" stroke="#8579e5" stroke-width="1.1"/>
-              <text x="782" y="318" fill="#e6eaf3" font-size="15" font-weight="600">Spec Dataset</text>
-              <text x="782" y="338" fill="#b9c6df" font-size="11">11FAAQdo5BWnuC / IMAN_specification</text>
+              <rect x="760" y="290" width="170" height="64" rx="16" fill="#2b1e40" stroke="var(--purple)" stroke-width="1.1"/>
+              <text x="782" y="318" fill="var(--text)" font-size="15" font-weight="600">Spec Dataset</text>
+              <text x="782" y="338" fill="var(--text2)" font-size="11">11FAAQdo5BWnuC / IMAN_specification</text>
             </g>
 
             <g class="graph-node" data-kind="node" data-id="change">
-              <rect x="30" y="392" width="140" height="64" rx="16" fill="#3c2811" stroke="#edb050" stroke-width="1.1"/>
-              <text x="52" y="420" fill="#e6eaf3" font-size="15" font-weight="600">Change</text>
-              <text x="52" y="440" fill="#b9c6df" font-size="11">293 impact edges in graph</text>
+              <rect x="30" y="392" width="140" height="64" rx="16" fill="#3c2811" stroke="var(--amber)" stroke-width="1.1"/>
+              <text x="52" y="420" fill="var(--text)" font-size="15" font-weight="600">Change</text>
+              <text x="52" y="440" fill="var(--text2)" font-size="11">293 impact edges in graph</text>
             </g>
 
             <g class="graph-node" data-kind="node" data-id="workflow">
-              <rect x="574" y="418" width="160" height="64" rx="16" fill="#311f25" stroke="#db7264" stroke-width="1.1"/>
-              <text x="596" y="446" fill="#e6eaf3" font-size="15" font-weight="600">Workflow Job</text>
-              <text x="596" y="466" fill="#b9c6df" font-size="11">231 targeting edges observed</text>
+              <rect x="574" y="418" width="160" height="64" rx="16" fill="#311f25" stroke="var(--coral)" stroke-width="1.1"/>
+              <text x="596" y="446" fill="var(--text)" font-size="15" font-weight="600">Workflow Job</text>
+              <text x="596" y="466" fill="var(--text2)" font-size="11">231 targeting edges observed</text>
             </g>
           </svg>
           <div class="legend-row">
-            <div class="legend-item"><span class="legend-swatch" style="background:#48ce98"></span>Item</div>
-            <div class="legend-item"><span class="legend-swatch" style="background:#5d9edf"></span>Revision / general dataset</div>
-            <div class="legend-item"><span class="legend-swatch" style="background:#8579e5"></span>Specification dataset</div>
-            <div class="legend-item"><span class="legend-swatch" style="background:#edb050"></span>Change</div>
-            <div class="legend-item"><span class="legend-swatch" style="background:#db7264"></span>Workflow</div>
+            <div class="legend-item"><span class="legend-swatch" style="background:var(--teal)"></span>Item</div>
+            <div class="legend-item"><span class="legend-swatch" style="background:var(--blue)"></span>Revision / general dataset</div>
+            <div class="legend-item"><span class="legend-swatch" style="background:var(--purple)"></span>Specification dataset</div>
+            <div class="legend-item"><span class="legend-swatch" style="background:var(--amber)"></span>Change</div>
+            <div class="legend-item"><span class="legend-swatch" style="background:var(--coral)"></span>Workflow</div>
           </div>
         </div>
 
@@ -1269,30 +1271,30 @@ SELECT ?itemName ?revName ?dsName ?dsType WHERE {
           <svg class="stack-svg" viewBox="0 0 1080 200" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <linearGradient id="pipeFlow" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%" stop-color="#edb050"/>
-                <stop offset="50%" stop-color="#48ce98"/>
-                <stop offset="100%" stop-color="#8579e5"/>
+                <stop offset="0%" stop-color="var(--amber)"/>
+                <stop offset="50%" stop-color="var(--teal)"/>
+                <stop offset="100%" stop-color="var(--purple)"/>
               </linearGradient>
             </defs>
-            <rect x="20" y="50" width="200" height="90" rx="18" fill="#171d28" stroke="#edb050" stroke-opacity="0.4"/>
-            <text x="42" y="80" fill="#edb050" font-size="11" font-family="IBM Plex Mono">TEAMCENTER SQL</text>
-            <text x="42" y="108" fill="#e6eaf3" font-size="18" font-weight="600">3,338 Items</text>
-            <text x="42" y="128" fill="#939db2" font-size="12">+ Revisions, Datasets, Edges</text>
+            <rect x="20" y="50" width="200" height="90" rx="18" fill="var(--bg2)" stroke="var(--amber)" stroke-opacity="0.4"/>
+            <text x="42" y="80" fill="var(--amber)" font-size="11" font-family="IBM Plex Mono">TEAMCENTER SQL</text>
+            <text x="42" y="108" fill="var(--text)" font-size="18" font-weight="600">3,338 Items</text>
+            <text x="42" y="128" fill="var(--text2)" font-size="12">+ Revisions, Datasets, Edges</text>
 
-            <rect x="270" y="50" width="200" height="90" rx="18" fill="#171d28" stroke="#48ce98" stroke-opacity="0.4"/>
-            <text x="292" y="80" fill="#48ce98" font-size="11" font-family="IBM Plex Mono">REST API :3737</text>
-            <text x="292" y="108" fill="#e6eaf3" font-size="18" font-weight="600">JSON endpoints</text>
-            <text x="292" y="128" fill="#939db2" font-size="12">Paginated, auth-gated</text>
+            <rect x="270" y="50" width="200" height="90" rx="18" fill="var(--bg2)" stroke="var(--teal)" stroke-opacity="0.4"/>
+            <text x="292" y="80" fill="var(--teal)" font-size="11" font-family="IBM Plex Mono">REST API :3737</text>
+            <text x="292" y="108" fill="var(--text)" font-size="18" font-weight="600">JSON endpoints</text>
+            <text x="292" y="128" fill="var(--text2)" font-size="12">Paginated, auth-gated</text>
 
-            <rect x="520" y="50" width="220" height="90" rx="18" fill="#171d28" stroke="#5d9edf" stroke-opacity="0.4"/>
-            <text x="542" y="80" fill="#5d9edf" font-size="11" font-family="IBM Plex Mono">AGS DATATOOLKIT</text>
-            <text x="542" y="108" fill="#e6eaf3" font-size="18" font-weight="600">3 HttpSource steps</text>
-            <text x="542" y="128" fill="#939db2" font-size="12">Nodes, Edges, Ontology</text>
+            <rect x="520" y="50" width="220" height="90" rx="18" fill="var(--bg2)" stroke="var(--blue)" stroke-opacity="0.4"/>
+            <text x="542" y="80" fill="var(--blue)" font-size="11" font-family="IBM Plex Mono">AGS DATATOOLKIT</text>
+            <text x="542" y="108" fill="var(--text)" font-size="18" font-weight="600">3 HttpSource steps</text>
+            <text x="542" y="128" fill="var(--text2)" font-size="12">Nodes, Edges, Ontology</text>
 
-            <rect x="790" y="50" width="260" height="90" rx="18" fill="#171d28" stroke="#8579e5" stroke-opacity="0.4"/>
-            <text x="812" y="80" fill="#8579e5" font-size="11" font-family="IBM Plex Mono">NAMED GRAPHS</text>
-            <text x="812" y="108" fill="#e6eaf3" font-size="18" font-weight="600">264K+ triples</text>
-            <text x="812" y="128" fill="#939db2" font-size="12">proxi.demo/tc/{nodes,edges,ontology}</text>
+            <rect x="790" y="50" width="260" height="90" rx="18" fill="var(--bg2)" stroke="var(--purple)" stroke-opacity="0.4"/>
+            <text x="812" y="80" fill="var(--purple)" font-size="11" font-family="IBM Plex Mono">NAMED GRAPHS</text>
+            <text x="812" y="108" fill="var(--text)" font-size="18" font-weight="600">264K+ triples</text>
+            <text x="812" y="128" fill="var(--text2)" font-size="12">proxi.demo/tc/{nodes,edges,ontology}</text>
 
             <path d="M220 95 H270 M470 95 H520 M740 95 H790" stroke="url(#pipeFlow)" stroke-width="3.5" stroke-linecap="round"/>
           </svg>

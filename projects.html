@@ -14,6 +14,8 @@
 <meta name="twitter:title" content="Griffin Quinn — Projects">
 <meta name="twitter:description" content="Mendix + Teamcenter enablement, agentic CAD with NX MCP, and anonymized customer wins.">
 <link rel="stylesheet" href="styles/fabric.css">
+<script>/* no-flash theme bootstrap */(function(){try{var t=localStorage.getItem("fabric-theme");if(t!=="light"&&t!=="dark"){t=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();</script>
+<script defer src="styles/theme.js"></script>
 <style>
 /* ═══ PROJECTS — layout ═══ */
 body { min-height: 100vh; overflow-x: hidden; }
@@ -36,7 +38,7 @@ body { min-height: 100vh; overflow-x: hidden; }
   height: 52px;
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 40px;
-  background: rgba(13,16,22,0.84);
+  background: var(--surface-glass);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border);
@@ -83,9 +85,9 @@ body { min-height: 100vh; overflow-x: hidden; }
   background:
     radial-gradient(circle at 30% 35%, rgba(72,206,152,0.12), transparent 38%),
     radial-gradient(circle at 70% 30%, rgba(133,121,229,0.14), transparent 42%),
-    linear-gradient(135deg, rgba(19,23,32,0.55), rgba(27,31,42,0.18));
-  border: 1px solid rgba(82,93,112,0.18);
-  box-shadow: 0 24px 90px rgba(0,0,0,0.28);
+    linear-gradient(135deg, var(--surface), var(--hairline));
+  border: 1px solid var(--hairline);
+  box-shadow: 0 24px 90px var(--shadow-strong);
   opacity: 0.85; pointer-events: none;
 }
 .hero-content { position: relative; z-index: 1; max-width: 760px; }
@@ -121,8 +123,8 @@ body { min-height: 100vh; overflow-x: hidden; }
 }
 .hero-signal {
   text-align: left; padding: 14px 16px; border-radius: 14px;
-  background: rgba(19,22,30,0.72);
-  border: 1px solid rgba(82,93,112,0.18);
+  background: var(--surface);
+  border: 1px solid var(--hairline);
 }
 .hero-signal .signal-label {
   font-family: 'IBM Plex Mono', monospace;
@@ -153,7 +155,7 @@ body { min-height: 100vh; overflow-x: hidden; }
 .catalog-block {
   padding: 24px;
   border-radius: 18px;
-  background: linear-gradient(180deg, rgba(19,22,30,0.96), rgba(16,18,25,0.96));
+  background: linear-gradient(180deg, var(--surface), var(--surface-sunken));
   border: 1px solid var(--border);
 }
 .catalog-block.featured { border-color: rgba(72,206,152,0.22); box-shadow: inset 0 1px 0 rgba(72,206,152,0.10); }
@@ -188,7 +190,7 @@ body { min-height: 100vh; overflow-x: hidden; }
   border-radius: 16px; border: 1px solid var(--border2);
   background:
     radial-gradient(circle at top right, rgba(124,111,222,0.07), transparent 36%),
-    linear-gradient(180deg, rgba(26,30,40,0.98), rgba(19,22,30,0.98));
+    linear-gradient(180deg, var(--surface-2), var(--surface));
   box-shadow: 0 22px 54px rgba(0,0,0,0.12);
   overflow: hidden;
 }
@@ -205,14 +207,14 @@ body { min-height: 100vh; overflow-x: hidden; }
 /* ── media frame + placeholder ── */
 .media-frame {
   display: grid; gap: 10px; padding: 12px; border-radius: 16px;
-  border: 1px solid rgba(82,93,112,0.2);
+  border: 1px solid var(--hairline);
   background:
     radial-gradient(circle at 20% 20%, rgba(61,191,138,0.1), transparent 30%),
-    linear-gradient(180deg, rgba(12,14,19,0.96), rgba(19,22,30,0.98));
+    linear-gradient(180deg, var(--surface-sunken), var(--surface));
 }
 .media-frame video, .media-frame img {
   width: 100%; display: block; border-radius: 12px;
-  border: 1px solid rgba(82,93,112,0.18); background: #0b0d12;
+  border: 1px solid var(--hairline); background: var(--surface-sunken);
 }
 .media-meta {
   display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
@@ -225,7 +227,7 @@ body { min-height: 100vh; overflow-x: hidden; }
   border: 1px dashed rgba(82,93,112,0.4);
   background:
     radial-gradient(circle at 30% 30%, rgba(72,206,152,0.06), transparent 40%),
-    linear-gradient(180deg, rgba(19,22,30,0.9), rgba(12,14,19,0.95));
+    linear-gradient(180deg, var(--surface), var(--surface-sunken));
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
   color: var(--text3);
 }
@@ -237,7 +239,7 @@ body { min-height: 100vh; overflow-x: hidden; }
 
 /* ── stat cells inside a card ── */
 .proj-emphasis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
-.emphasis-cell { padding: 10px 12px; border-radius: 12px; background: rgba(13,15,20,0.52); border: 1px solid rgba(82,93,112,0.18); }
+.emphasis-cell { padding: 10px 12px; border-radius: 12px; background: var(--surface-sunken); border: 1px solid var(--hairline); }
 .emphasis-label {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3); margin-bottom: 6px;
@@ -615,7 +617,7 @@ requestAnimationFrame(animate);
 /* ── topbar opacity on scroll ── */
 const tb = document.getElementById('topbar');
 window.addEventListener('scroll', () => {
-  tb.style.background = window.scrollY > 80 ? 'rgba(13,16,22,0.95)' : 'rgba(13,16,22,0.84)';
+  tb.style.background = window.scrollY > 80 ? 'var(--surface-sunken)' : 'var(--surface-glass)';
 });
 
 /* ── smooth scroll for anchor links ── */

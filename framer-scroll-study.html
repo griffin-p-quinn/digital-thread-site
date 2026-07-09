@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Platform Architecture — Motion Study — Digital Fabric</title>
 <link rel="stylesheet" href="styles/fabric.css">
+<script>/* no-flash theme bootstrap */(function(){try{var t=localStorage.getItem("fabric-theme");if(t!=="light"&&t!=="dark"){t=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();</script>
+<script defer src="styles/theme.js"></script>
 <style>
 :root {
   --nav-h: 52px;
@@ -33,7 +35,7 @@ body {
     radial-gradient(circle at 50% 0%, rgba(82,148,214,0.16), transparent 22%),
     radial-gradient(circle at 14% 18%, rgba(124,111,222,0.12), transparent 26%),
     radial-gradient(circle at 86% 16%, rgba(61,191,138,0.08), transparent 22%),
-    linear-gradient(180deg, #05070c 0%, #090d16 36%, #04060a 100%);
+    linear-gradient(180deg, var(--surface-sunken) 0%, var(--surface-sunken) 36%, var(--surface-sunken) 100%);
   color: var(--text);
   overflow-x: hidden;
 }
@@ -66,9 +68,9 @@ button {
   justify-content: space-between;
   gap: 16px;
   padding: 0 28px;
-  background: rgba(13,15,20,0.84);
+  background: var(--surface-glass);
   backdrop-filter: blur(18px);
-  border-bottom: 1px solid rgba(82,93,112,0.22);
+  border-bottom: 1px solid var(--hairline-2);
 }
 
 .topbar-brand {
@@ -170,9 +172,9 @@ button {
   gap: 12px;
   padding: 22px 22px 20px;
   border-radius: 22px;
-  background: linear-gradient(180deg, rgba(17,21,29,0.96), rgba(10,12,18,0.96));
-  border: 1px solid rgba(82,93,112,0.24);
-  box-shadow: 0 22px 60px rgba(0,0,0,0.22);
+  background: linear-gradient(180deg, var(--surface), var(--surface-sunken));
+  border: 1px solid var(--hairline-2);
+  box-shadow: 0 22px 60px var(--shadow);
 }
 
 .intro-note p,
@@ -200,9 +202,9 @@ button {
   min-height: 720px;
   border-radius: 34px;
   overflow: hidden;
-  border: 1px solid rgba(82,93,112,0.22);
-  background: linear-gradient(180deg, rgba(6,8,13,0.98), rgba(4,6,10,1));
-  box-shadow: 0 36px 110px rgba(0,0,0,0.32), inset 0 1px 0 rgba(255,255,255,0.04);
+  border: 1px solid var(--hairline-2);
+  background: linear-gradient(180deg, var(--surface-sunken), var(--surface-sunken));
+  box-shadow: 0 36px 110px var(--shadow-strong), inset 0 1px 0 var(--hover);
   isolation: isolate;
 }
 
@@ -224,8 +226,8 @@ button {
 
 .stage-shell::after {
   background:
-    linear-gradient(90deg, rgba(4,6,9,0.48), transparent 18%, transparent 82%, rgba(4,6,9,0.54)),
-    linear-gradient(180deg, rgba(4,6,9,0.16), transparent 18%, transparent 80%, rgba(4,6,9,0.48));
+    linear-gradient(90deg, var(--surface-sunken), transparent 18%, transparent 82%, var(--surface-sunken)),
+    linear-gradient(180deg, rgba(4,6,9,0.16), transparent 18%, transparent 80%, var(--surface-sunken));
   opacity: 0.22;
   z-index: 6;
 }
@@ -242,7 +244,7 @@ button {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 50% 0%, rgba(255,255,255,0.08), transparent 14%),
+    radial-gradient(circle at 50% 0%, var(--hover-2), transparent 14%),
     radial-gradient(circle at 50% 34%, rgba(var(--accent-rgb), calc(0.05 + var(--glow-strength) * 0.1)), transparent 24%),
     radial-gradient(circle at 50% 82%, rgba(61,191,138,0.06), transparent 20%);
   z-index: 0;
@@ -367,7 +369,7 @@ button {
 }
 
 .orbit-cursor .cursor-core {
-  fill: rgba(255,255,255,0.96);
+  fill: var(--text);
 }
 
 #orbitGlow {
@@ -407,7 +409,7 @@ button {
   bottom: 86px;
   height: 72px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(2,4,7,0.68), rgba(2,4,7,0));
+  background: radial-gradient(circle, var(--surface-sunken), rgba(2,4,7,0));
   filter: blur(22px);
   transform: translateZ(-160px) scale(calc(0.88 + var(--halo-scale) * 0.12));
 }
@@ -433,10 +435,10 @@ button {
   width: 352px;
   height: 352px;
   border-radius: 50%;
-  background: conic-gradient(from 160deg, rgba(255,255,255,0.0), rgba(214,233,255,0.64), rgba(124,111,222,0.42), rgba(255,255,255,0.06), rgba(255,255,255,0.0));
+  background: conic-gradient(from 160deg, rgba(255,255,255,0.0), var(--text), rgba(124,111,222,0.42), var(--hover-2), rgba(255,255,255,0.0));
   -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 22px), #000 calc(100% - 18px));
   mask: radial-gradient(farthest-side, transparent calc(100% - 22px), #000 calc(100% - 18px));
-  box-shadow: 0 0 0 1px rgba(255,255,255,0.04);
+  box-shadow: 0 0 0 1px var(--hover);
 }
 
 .ring.back {
@@ -470,8 +472,8 @@ button {
 .monolith-back {
   transform: translate(-50%, -50%) translate3d(20px, 18px, -128px) rotateZ(-7deg);
   background: linear-gradient(180deg, rgba(114,133,162,0.18), rgba(34,45,61,0.36));
-  border: 1px solid rgba(255,255,255,0.08);
-  box-shadow: 0 30px 80px rgba(0,0,0,0.22);
+  border: 1px solid var(--hover-2);
+  box-shadow: 0 30px 80px var(--shadow);
   opacity: 0.52;
   filter: blur(1px);
 }
@@ -480,12 +482,12 @@ button {
   transform: translate(-50%, -50%) translateZ(36px) rotateZ(-5deg);
   background:
     radial-gradient(circle at 22% 14%, rgba(255,255,255,0.34), rgba(255,255,255,0) 30%),
-    linear-gradient(160deg, rgba(241,247,255,0.18), rgba(159,183,214,0.08) 28%, rgba(48,61,80,0.5) 72%, rgba(18,22,31,0.84));
+    linear-gradient(160deg, rgba(241,247,255,0.18), rgba(159,183,214,0.08) 28%, rgba(48,61,80,0.5) 72%, var(--surface-sunken));
   border: 1px solid rgba(255,255,255,0.18);
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.16),
-    inset 0 -40px 70px rgba(4,7,12,0.42),
-    0 34px 90px rgba(0,0,0,0.24);
+    inset 0 -40px 70px var(--surface-sunken),
+    0 34px 90px var(--shadow);
   overflow: hidden;
 }
 
@@ -509,12 +511,12 @@ button {
   border-radius: 62px;
   background:
     radial-gradient(circle at 50% 24%, rgba(214,233,255,0.3), rgba(214,233,255,0) 34%),
-    linear-gradient(180deg, rgba(14,20,29,0.28), rgba(8,11,16,0.76));
+    linear-gradient(180deg, rgba(14,20,29,0.28), var(--surface-sunken));
   border: 1px solid rgba(255,255,255,0.12);
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.14),
     inset 0 -18px 28px rgba(0,0,0,0.34),
-    0 0 0 1px rgba(255,255,255,0.04);
+    0 0 0 1px var(--hover);
 }
 
 .window-core {
@@ -523,7 +525,7 @@ button {
   border-radius: 46px;
   background:
     radial-gradient(circle at 50% 32%, rgba(255,255,255,0.16), rgba(255,255,255,0) 28%),
-    linear-gradient(180deg, rgba(22,29,40,0.66), rgba(7,10,15,0.92));
+    linear-gradient(180deg, var(--surface), var(--surface-sunken));
   border: 1px solid rgba(171,207,255,0.12);
   overflow: hidden;
 }
@@ -546,14 +548,14 @@ button {
 
 .window-graph .wg-dim { fill: rgba(133,121,229,0.5); }
 .window-graph .wg-mid { fill: rgba(93,158,223,0.6); }
-.window-graph .wg-bright { fill: rgba(255,255,255,0.72); }
+.window-graph .wg-bright { fill: var(--text); }
 
 .window-ring {
   position: absolute;
   inset: 38px 42px;
   border-radius: 999px;
   border: 1px solid rgba(191,221,255,0.2);
-  box-shadow: 0 0 26px rgba(140,184,255,0.08), inset 0 0 0 1px rgba(255,255,255,0.04);
+  box-shadow: 0 0 26px rgba(140,184,255,0.08), inset 0 0 0 1px var(--hover);
 }
 
 .monolith-line {
@@ -598,7 +600,7 @@ button {
   bottom: 12%;
   height: 28%;
   background:
-    radial-gradient(circle at 50% 40%, rgba(255,255,255,0.06), rgba(255,255,255,0) 54%),
+    radial-gradient(circle at 50% 40%, var(--hover-2), rgba(255,255,255,0) 54%),
     radial-gradient(circle at 24% 60%, rgba(124,111,222,0.05), rgba(124,111,222,0) 58%),
     radial-gradient(circle at 78% 58%, rgba(82,148,214,0.07), rgba(82,148,214,0) 56%);
   filter: blur(34px);
@@ -622,9 +624,9 @@ button {
   justify-self: start;
   padding: 10px 14px;
   border-radius: 999px;
-  border: 1px solid rgba(82,93,112,0.18);
-  background: rgba(12,15,22,0.52);
-  color: rgba(214,223,234,0.72);
+  border: 1px solid var(--hairline);
+  background: var(--surface-sunken);
+  color: var(--text);
   backdrop-filter: blur(12px);
 }
 
@@ -636,9 +638,9 @@ button {
   gap: 8px;
   padding: 16px 18px 18px;
   border-radius: 24px;
-  border: 1px solid rgba(82,93,112,0.18);
-  background: linear-gradient(180deg, rgba(12,15,22,0.72), rgba(7,9,14,0.84));
-  box-shadow: 0 24px 70px rgba(0,0,0,0.24), inset 0 1px 0 rgba(255,255,255,0.06);
+  border: 1px solid var(--hairline);
+  background: linear-gradient(180deg, var(--surface-sunken), var(--surface-sunken));
+  box-shadow: 0 24px 70px var(--shadow), inset 0 1px 0 var(--hover-2);
   backdrop-filter: blur(18px) saturate(120%);
 }
 
@@ -651,13 +653,13 @@ button {
 .phase-card p {
   font-size: 13px;
   line-height: 1.62;
-  color: rgba(226,230,240,0.86);
+  color: var(--text);
 }
 
 .phase-note {
   font-size: 11px;
   line-height: 1.55;
-  color: rgba(214,223,234,0.62);
+  color: var(--text);
 }
 
 .beat-nav {
@@ -675,22 +677,22 @@ button {
   display: inline-grid;
   place-items: center;
   border-radius: 999px;
-  border: 1px solid rgba(82,93,112,0.18);
-  background: rgba(12,15,22,0.56);
-  color: rgba(214,223,234,0.64);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+  border: 1px solid var(--hairline);
+  background: var(--surface-sunken);
+  color: var(--text);
+  box-shadow: inset 0 1px 0 var(--hover);
   transition: border-color 0.22s ease, color 0.22s ease, transform 0.22s ease, box-shadow 0.22s ease;
 }
 
 .beat-dot:hover {
-  color: rgba(239,243,248,0.9);
+  color: var(--text);
   transform: translateY(-1px);
 }
 
 .beat-dot.active {
   border-color: rgba(var(--accent-rgb), 0.42);
   color: rgb(var(--accent-rgb));
-  box-shadow: 0 0 0 1px rgba(var(--accent-rgb), 0.12), 0 22px 56px rgba(0,0,0,0.22);
+  box-shadow: 0 0 0 1px rgba(var(--accent-rgb), 0.12), 0 22px 56px var(--shadow);
 }
 
 .beat-dot span {
@@ -725,9 +727,9 @@ button {
   border-radius: 22px;
   border: 1px solid rgba(82,93,112,0.12);
   background:
-    linear-gradient(180deg, rgba(18,22,30,0.66), rgba(10,12,18,0.8)),
+    linear-gradient(180deg, var(--surface-sunken), var(--surface-sunken)),
     radial-gradient(circle at top right, rgba(var(--card-accent), 0.08), transparent 38%);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+  box-shadow: inset 0 1px 0 var(--hover);
   backdrop-filter: blur(16px) saturate(118%);
   opacity: 0.48;
   transform: translateY(16px) scale(0.98);
@@ -758,7 +760,7 @@ button {
 .beat-card .soft-note {
   font-size: 11px;
   line-height: 1.5;
-  color: rgba(239,243,248,0.7);
+  color: var(--text2);
 }
 
 .footer-note {
@@ -792,8 +794,8 @@ button {
   gap: 8px;
   padding: 10px 14px;
   border-radius: 999px;
-  border: 1px solid rgba(82,93,112,0.22);
-  background: rgba(13,15,20,0.7);
+  border: 1px solid var(--hairline-2);
+  background: var(--surface-sunken);
   color: var(--text2);
   font-size: 12px;
   transition: color 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
@@ -1040,9 +1042,9 @@ button {
                 <path d="M270 600C248 410 370 250 592 236C804 222 960 330 978 504C992 648 892 742 664 760C412 780 284 714 270 600Z" stroke="white" stroke-width="46" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
               </mask>
               <linearGradient id="guideGradient" x1="230" y1="624" x2="952" y2="320" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stop-color="#8cb8ff" stop-opacity="0.34"></stop>
-                <stop offset="56%" stop-color="#f2f7ff" stop-opacity="0.88"></stop>
-                <stop offset="100%" stop-color="#7c6fde" stop-opacity="0.58"></stop>
+                <stop offset="0%" stop-color="var(--blue)" stop-opacity="0.34"></stop>
+                <stop offset="56%" stop-color="var(--text)" stop-opacity="0.88"></stop>
+                <stop offset="100%" stop-color="var(--purple)" stop-opacity="0.58"></stop>
               </linearGradient>
             </defs>
 

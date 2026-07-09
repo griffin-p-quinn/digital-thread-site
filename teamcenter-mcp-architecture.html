@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Teamcenter MCP — Agentic PLM Integration — Digital Fabric</title>
 <link rel="stylesheet" href="styles/fabric.css">
+<script>/* no-flash theme bootstrap */(function(){try{var t=localStorage.getItem("fabric-theme");if(t!=="light"&&t!=="dark"){t=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();</script>
+<script defer src="styles/theme.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
 
@@ -16,7 +18,7 @@ body { display: flex; min-height: 100vh; overflow-x: hidden; }
   position: fixed; top: 0; left: 0; right: 0; z-index: 200;
   min-height: 44px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
   padding: 8px 20px;
-  background: rgba(13,15,20,0.88); backdrop-filter: blur(14px);
+  background: var(--surface-glass); backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--border); font-size: 12px;
 }
 .hub-bar a { color: var(--text3); text-decoration: none; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; transition: color 0.15s; }
@@ -90,8 +92,8 @@ hr.section-rule { border: none; border-top: 1px solid var(--border); margin: 24p
 .diagram-card-header .title { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--text3); }
 .diagram-card-body { padding: 16px; }
 .stage-card {
-  border-color: rgba(82,93,112,0.28);
-  box-shadow: 0 24px 72px rgba(0,0,0,0.16), inset 0 1px 0 rgba(255,255,255,0.03);
+  border-color: var(--hairline-2);
+  box-shadow: 0 24px 72px rgba(0,0,0,0.16), inset 0 1px 0 var(--hover);
 }
 .diag-wrap {
   overflow: hidden;
@@ -175,9 +177,9 @@ hr.section-rule { border: none; border-top: 1px solid var(--border); margin: 24p
   gap: 10px;
   padding: 14px 16px 16px;
   border-radius: 12px;
-  background: linear-gradient(180deg, rgba(26,30,40,0.95), rgba(19,22,30,0.96));
+  background: linear-gradient(180deg, var(--surface-2), var(--surface));
   border: 1px solid var(--border);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+  box-shadow: inset 0 1px 0 var(--hover);
 }
 
 .story-panel .story-note {
@@ -234,11 +236,11 @@ hr.section-rule { border: none; border-top: 1px solid var(--border); margin: 24p
   width: min(360px, calc(100% - 28px));
   max-height: min(320px, calc(100% - 28px));
   overflow: auto;
-  background: linear-gradient(180deg, rgba(26,30,40,0.95), rgba(19,22,30,0.96));
+  background: linear-gradient(180deg, var(--surface-2), var(--surface));
   border: 1px solid rgba(133,183,235,0.24);
   border-radius: 14px;
   padding: 13px 15px;
-  box-shadow: 0 20px 56px rgba(0,0,0,0.34), 0 0 0 1px rgba(255,255,255,0.03) inset;
+  box-shadow: 0 20px 56px rgba(0,0,0,0.34), 0 0 0 1px var(--hover) inset;
   backdrop-filter: blur(14px);
   scrollbar-width: thin;
   scrollbar-color: var(--border2) transparent;
@@ -296,39 +298,39 @@ hr.section-rule { border: none; border-top: 1px solid var(--border); margin: 24p
 }
 
 /* ── SVG classes ── */
-.c-blue rect { fill: #0d1e30; stroke: #185FA5; }
-.c-blue text { fill: #85B7EB; }
+.c-blue rect { fill: var(--bg3); stroke: var(--blue); }
+.c-blue text { fill: var(--blue); }
 .c-blue .th { fill: #B5D4F4; }
-.c-blue .ts { fill: #378ADD; }
-.c-purple rect { fill: #1e1a3d; stroke: #534AB7; }
+.c-blue .ts { fill: var(--blue); }
+.c-purple rect { fill: var(--bg3); stroke: var(--purple); }
 .c-purple text { fill: #AFA9EC; }
 .c-purple .th { fill: #CECBF6; }
-.c-purple .ts { fill: #7F77DD; }
-.c-teal rect { fill: #0d2a20; stroke: #0F6E56; }
-.c-teal text { fill: #5DCAA5; }
-.c-teal .th { fill: #9FE1CB; }
-.c-teal .ts { fill: #1D9E75; }
-.c-amber rect { fill: #2a1e08; stroke: #854F0B; }
-.c-amber text { fill: #EF9F27; }
-.c-amber .th { fill: #FAC775; }
+.c-purple .ts { fill: var(--purple); }
+.c-teal rect { fill: var(--bg3); stroke: var(--teal-dim); }
+.c-teal text { fill: var(--teal); }
+.c-teal .th { fill: var(--teal); }
+.c-teal .ts { fill: var(--teal); }
+.c-amber rect { fill: var(--amber-bg); stroke: #854F0B; }
+.c-amber text { fill: var(--amber); }
+.c-amber .th { fill: var(--amber); }
 .c-amber .ts { fill: #BA7517; }
-.c-gray rect { fill: #1a1c20; stroke: #5F5E5A; }
-.c-gray text { fill: #B4B2A9; }
+.c-gray rect { fill: var(--surface-sunken); stroke: #5F5E5A; }
+.c-gray text { fill: var(--text2); }
 .c-gray .th { fill: #D3D1C7; }
 .c-gray .ts { fill: #888780; }
-.c-coral rect { fill: #2a1510; stroke: #8B3A2D; }
-.c-coral text { fill: #E88A7D; }
+.c-coral rect { fill: var(--coral-bg); stroke: #8B3A2D; }
+.c-coral text { fill: var(--coral); }
 .c-coral .th { fill: #F2B5AD; }
-.c-coral .ts { fill: #D66452; }
+.c-coral .ts { fill: var(--coral); }
 .node { cursor: pointer; }
 .node:hover { opacity: 0.8; }
-.th { font-family: 'IBM Plex Sans', sans-serif; font-size: 12px; font-weight: 500; fill: #e2e6f0; }
+.th { font-family: 'IBM Plex Sans', sans-serif; font-size: 12px; font-weight: 500; fill: var(--text); }
 .ts { font-family: 'IBM Plex Sans', sans-serif; font-size: 10px; fill: #8892a4; }
 
 /* Improve text readability when connectors pass nearby at reduced scale. */
 .th, .ts {
   paint-order: stroke fill;
-  stroke: rgba(13,15,20,0.72);
+  stroke: var(--surface-sunken);
   stroke-width: 1.6px;
   stroke-linejoin: round;
 }
@@ -337,9 +339,9 @@ hr.section-rule { border: none; border-top: 1px solid var(--border); margin: 24p
 .diag-wrap svg line {
   vector-effect: non-scaling-stroke;
 }
-.diag-wrap svg path[stroke="#2e3547"],
-.diag-wrap svg line[stroke="#2e3547"],
-.diag-wrap svg line[stroke="#525d70"] {
+.diag-wrap svg path[stroke="var(--line)"],
+.diag-wrap svg line[stroke="var(--line)"],
+.diag-wrap svg line[stroke="var(--muted)"] {
   opacity: 0.45;
 }
 
@@ -495,9 +497,9 @@ hr.section-rule { border: none; border-top: 1px solid var(--border); margin: 24p
     <div class="story-shell">
       <div class="diagram-card stage-card">
           <div class="diagram-card-header">
-            <div class="dot" style="background:#5294d6"></div>
-            <div class="dot" style="background:#7c6fde"></div>
-            <div class="dot" style="background:#3dbf8a"></div>
+            <div class="dot" style="background:var(--blue)"></div>
+            <div class="dot" style="background:var(--purple)"></div>
+            <div class="dot" style="background:var(--teal)"></div>
             <span class="title">agent-to-soa-architecture.svg</span>
           </div>
           <div class="diagram-card-body">
@@ -507,8 +509,8 @@ hr.section-rule { border: none; border-top: 1px solid var(--border); margin: 24p
 
 <!-- Agent -->
 <g class="c-purple"><rect x="10" y="8" width="460" height="48" rx="10" stroke-width="0.5" fill-opacity="0.12"/><text class="th" x="24" y="28">AI Agent / Orchestrator</text><text class="ts" x="24" y="42">Claude, GPT, n8n, Mendix — any MCP client</text></g>
-<line x1="240" y1="58" x2="240" y2="72" stroke="#525d70" stroke-width="0.8" marker-end="url(#a1)"/>
-<text font-family="'IBM Plex Mono',monospace" font-size="8" fill="#525d70" x="250" y="68">HTTP/stdio</text>
+<line x1="240" y1="58" x2="240" y2="72" stroke="var(--muted)" stroke-width="0.8" marker-end="url(#a1)"/>
+<text font-family="'IBM Plex Mono',monospace" font-size="8" fill="var(--muted)" x="250" y="68">HTTP/stdio</text>
 
 <!-- MCP Server -->
 <g class="c-blue"><rect x="10" y="74" width="460" height="220" rx="10" stroke-width="0.5" fill-opacity="0.08"/><text class="th" x="24" y="92">MCP Server (Python)</text></g>
@@ -518,41 +520,41 @@ hr.section-rule { border: none; border-top: 1px solid var(--border); margin: 24p
 <g class="node c-blue"><rect x="320" y="100" width="140" height="36" rx="6" stroke-width="0.5"/><text class="th" x="390" y="115" text-anchor="middle" dominant-baseline="central" style="font-size:11px">Trace logging</text><text class="ts" x="390" y="127" text-anchor="middle" dominant-baseline="central" style="font-size:9px">_trace_tool per call</text></g>
 
 <!-- Policy gate -->
-<rect x="20" y="148" width="440" height="28" rx="5" fill="#2a1e08" stroke="#854F0B" stroke-width="0.5"/>
-<text x="240" y="160" text-anchor="middle" dominant-baseline="central" style="fill:#FAC775;font-family:'IBM Plex Sans',sans-serif;font-size:11px;font-weight:500">Runtime policy gate — TC_MUTATION_MODE · read-only bypass</text>
+<rect x="20" y="148" width="440" height="28" rx="5" fill="var(--amber-bg)" stroke="#854F0B" stroke-width="0.5"/>
+<text x="240" y="160" text-anchor="middle" dominant-baseline="central" style="fill:var(--amber);font-family:'IBM Plex Sans',sans-serif;font-size:11px;font-weight:500">Runtime policy gate — TC_MUTATION_MODE · read-only bypass</text>
 
 <!-- Module row -->
-<g class="node c-blue"><rect x="20" y="188" width="80" height="32" rx="5" stroke-width="0.5"/><text class="ts" x="60" y="207" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#85B7EB">Search</text></g>
-<g class="node c-blue"><rect x="108" y="188" width="70" height="32" rx="5" stroke-width="0.5"/><text class="ts" x="143" y="207" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#85B7EB">BOM</text></g>
-<g class="node c-blue"><rect x="186" y="188" width="80" height="32" rx="5" stroke-width="0.5"/><text class="ts" x="226" y="207" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#85B7EB">Change</text></g>
-<g class="node c-blue"><rect x="274" y="188" width="70" height="32" rx="5" stroke-width="0.5"/><text class="ts" x="309" y="207" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#85B7EB">3D/JT</text></g>
-<g class="node c-blue"><rect x="352" y="188" width="70" height="32" rx="5" stroke-width="0.5"/><text class="ts" x="387" y="207" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#85B7EB">Vendor</text></g>
-<g class="node c-blue"><rect x="430" y="188" width="30" height="32" rx="5" stroke-width="0.5"/><text class="ts" x="445" y="207" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#85B7EB">…</text></g>
+<g class="node c-blue"><rect x="20" y="188" width="80" height="32" rx="5" stroke-width="0.5"/><text class="ts" x="60" y="207" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:var(--blue)">Search</text></g>
+<g class="node c-blue"><rect x="108" y="188" width="70" height="32" rx="5" stroke-width="0.5"/><text class="ts" x="143" y="207" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:var(--blue)">BOM</text></g>
+<g class="node c-blue"><rect x="186" y="188" width="80" height="32" rx="5" stroke-width="0.5"/><text class="ts" x="226" y="207" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:var(--blue)">Change</text></g>
+<g class="node c-blue"><rect x="274" y="188" width="70" height="32" rx="5" stroke-width="0.5"/><text class="ts" x="309" y="207" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:var(--blue)">3D/JT</text></g>
+<g class="node c-blue"><rect x="352" y="188" width="70" height="32" rx="5" stroke-width="0.5"/><text class="ts" x="387" y="207" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:var(--blue)">Vendor</text></g>
+<g class="node c-blue"><rect x="430" y="188" width="30" height="32" rx="5" stroke-width="0.5"/><text class="ts" x="445" y="207" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:var(--blue)">…</text></g>
 
 <!-- Skills -->
-<g class="node c-blue"><rect x="20" y="230" width="440" height="22" rx="4" stroke-width="0.5"/><text class="ts" x="240" y="244" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#378ADD">Skills: change reasoning · BOM describe · vendor-spec match · nonconformance</text></g>
-<text font-family="'IBM Plex Mono',monospace" font-size="8" fill="#525d70" x="250" y="272">HTTPS + CSRF + SOA JSON</text>
-<line x1="240" y1="260" x2="240" y2="282" stroke="#525d70" stroke-width="0.8" marker-end="url(#a1)"/>
+<g class="node c-blue"><rect x="20" y="230" width="440" height="22" rx="4" stroke-width="0.5"/><text class="ts" x="240" y="244" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:var(--blue)">Skills: change reasoning · BOM describe · vendor-spec match · nonconformance</text></g>
+<text font-family="'IBM Plex Mono',monospace" font-size="8" fill="var(--muted)" x="250" y="272">HTTPS + CSRF + SOA JSON</text>
+<line x1="240" y1="260" x2="240" y2="282" stroke="var(--muted)" stroke-width="0.8" marker-end="url(#a1)"/>
 
 <!-- TC SOA -->
 <g class="c-teal"><rect x="10" y="284" width="460" height="150" rx="10" stroke-width="0.5" fill-opacity="0.08"/><text class="th" x="24" y="302">Teamcenter SOA Services</text></g>
 
-<g class="node c-teal"><rect x="20" y="312" width="104" height="32" rx="5" stroke-width="0.5"/><text class="ts" x="72" y="325" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#5DCAA5">Core-*</text><text class="ts" x="72" y="337" text-anchor="middle" dominant-baseline="central" style="font-size:8px">Session, DataMgmt</text></g>
-<g class="node c-teal"><rect x="132" y="312" width="104" height="32" rx="5" stroke-width="0.5"/><text class="ts" x="184" y="325" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#5DCAA5">Query-*</text><text class="ts" x="184" y="337" text-anchor="middle" dominant-baseline="central" style="font-size:8px">SavedQuery, FullText</text></g>
-<g class="node c-teal"><rect x="244" y="312" width="104" height="32" rx="5" stroke-width="0.5"/><text class="ts" x="296" y="325" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#5DCAA5">StructureMgmt</text><text class="ts" x="296" y="337" text-anchor="middle" dominant-baseline="central" style="font-size:8px">BOM, PS expand</text></g>
-<g class="node c-teal"><rect x="356" y="312" width="104" height="32" rx="5" stroke-width="0.5"/><text class="ts" x="408" y="325" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#5DCAA5">Workflow-*</text><text class="ts" x="408" y="337" text-anchor="middle" dominant-baseline="central" style="font-size:8px">Tasks, actions</text></g>
+<g class="node c-teal"><rect x="20" y="312" width="104" height="32" rx="5" stroke-width="0.5"/><text class="ts" x="72" y="325" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:var(--teal)">Core-*</text><text class="ts" x="72" y="337" text-anchor="middle" dominant-baseline="central" style="font-size:8px">Session, DataMgmt</text></g>
+<g class="node c-teal"><rect x="132" y="312" width="104" height="32" rx="5" stroke-width="0.5"/><text class="ts" x="184" y="325" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:var(--teal)">Query-*</text><text class="ts" x="184" y="337" text-anchor="middle" dominant-baseline="central" style="font-size:8px">SavedQuery, FullText</text></g>
+<g class="node c-teal"><rect x="244" y="312" width="104" height="32" rx="5" stroke-width="0.5"/><text class="ts" x="296" y="325" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:var(--teal)">StructureMgmt</text><text class="ts" x="296" y="337" text-anchor="middle" dominant-baseline="central" style="font-size:8px">BOM, PS expand</text></g>
+<g class="node c-teal"><rect x="356" y="312" width="104" height="32" rx="5" stroke-width="0.5"/><text class="ts" x="408" y="325" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:var(--teal)">Workflow-*</text><text class="ts" x="408" y="337" text-anchor="middle" dominant-baseline="central" style="font-size:8px">Tasks, actions</text></g>
 
-<g class="node c-teal"><rect x="20" y="354" width="104" height="32" rx="5" stroke-width="0.5"/><text class="ts" x="72" y="367" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#5DCAA5">ChangeMgmt</text><text class="ts" x="72" y="379" text-anchor="middle" dominant-baseline="central" style="font-size:8px">ECR, ECN</text></g>
-<g class="node c-teal"><rect x="132" y="354" width="104" height="32" rx="5" stroke-width="0.5"/><text class="ts" x="184" y="367" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#5DCAA5">Classification</text><text class="ts" x="184" y="379" text-anchor="middle" dominant-baseline="central" style="font-size:8px">ICO, groups</text></g>
-<g class="node c-teal"><rect x="244" y="354" width="104" height="32" rx="5" stroke-width="0.5"/><text class="ts" x="296" y="367" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#5DCAA5">VendorMgmt</text><text class="ts" x="296" y="379" text-anchor="middle" dominant-baseline="central" style="font-size:8px">Contracts</text></g>
-<g class="node c-teal"><rect x="356" y="354" width="104" height="32" rx="5" stroke-width="0.5"/><text class="ts" x="408" y="367" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#5DCAA5">Visualization</text><text class="ts" x="408" y="379" text-anchor="middle" dominant-baseline="central" style="font-size:8px">JT, preview</text></g>
+<g class="node c-teal"><rect x="20" y="354" width="104" height="32" rx="5" stroke-width="0.5"/><text class="ts" x="72" y="367" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:var(--teal)">ChangeMgmt</text><text class="ts" x="72" y="379" text-anchor="middle" dominant-baseline="central" style="font-size:8px">ECR, ECN</text></g>
+<g class="node c-teal"><rect x="132" y="354" width="104" height="32" rx="5" stroke-width="0.5"/><text class="ts" x="184" y="367" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:var(--teal)">Classification</text><text class="ts" x="184" y="379" text-anchor="middle" dominant-baseline="central" style="font-size:8px">ICO, groups</text></g>
+<g class="node c-teal"><rect x="244" y="354" width="104" height="32" rx="5" stroke-width="0.5"/><text class="ts" x="296" y="367" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:var(--teal)">VendorMgmt</text><text class="ts" x="296" y="379" text-anchor="middle" dominant-baseline="central" style="font-size:8px">Contracts</text></g>
+<g class="node c-teal"><rect x="356" y="354" width="104" height="32" rx="5" stroke-width="0.5"/><text class="ts" x="408" y="367" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:var(--teal)">Visualization</text><text class="ts" x="408" y="379" text-anchor="middle" dominant-baseline="central" style="font-size:8px">JT, preview</text></g>
 
-<g class="node c-teal"><rect x="20" y="398" width="440" height="22" rx="4" stroke-width="0.5"/><text class="ts" x="240" y="412" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#1D9E75">+ Siemens visibility services · FMS file tickets · TCXML import/export</text></g>
+<g class="node c-teal"><rect x="20" y="398" width="440" height="22" rx="4" stroke-width="0.5"/><text class="ts" x="240" y="412" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:var(--teal)">+ Siemens visibility services · FMS file tickets · TCXML import/export</text></g>
 
 <!-- External -->
-<g class="c-coral"><rect x="10" y="444" width="460" height="34" rx="8" stroke-width="0.5" fill-opacity="0.12"/><text class="ts" x="240" y="464" text-anchor="middle" dominant-baseline="central" style="font-size:10px;fill:#E88A7D">External APIs — GLEIF (vendor identity) · OFAC/SDN (sanctions) · OASIS (portal)</text></g>
+<g class="c-coral"><rect x="10" y="444" width="460" height="34" rx="8" stroke-width="0.5" fill-opacity="0.12"/><text class="ts" x="240" y="464" text-anchor="middle" dominant-baseline="central" style="font-size:10px;fill:var(--coral)">External APIs — GLEIF (vendor identity) · OFAC/SDN (sanctions) · OASIS (portal)</text></g>
 
-<line x1="240" y1="8" x2="240" y2="520" stroke="#525d70" stroke-width="0.3" opacity="0.15" class="flow"/>
+<line x1="240" y1="8" x2="240" y2="520" stroke="var(--muted)" stroke-width="0.3" opacity="0.15" class="flow"/>
 </svg>
             </div>
           </div>
@@ -590,9 +592,9 @@ hr.section-rule { border: none; border-top: 1px solid var(--border); margin: 24p
     <div class="story-shell">
       <div class="diagram-card stage-card">
           <div class="diagram-card-header">
-            <div class="dot" style="background:#d66452"></div>
-            <div class="dot" style="background:#5294d6"></div>
-            <div class="dot" style="background:#3dbf8a"></div>
+            <div class="dot" style="background:var(--coral)"></div>
+            <div class="dot" style="background:var(--blue)"></div>
+            <div class="dot" style="background:var(--teal)"></div>
             <span class="title">001418-supply-chain-flow.svg</span>
           </div>
           <div class="diagram-card-body">
@@ -601,45 +603,45 @@ hr.section-rule { border: none; border-top: 1px solid var(--border); margin: 24p
 <defs><marker id="a2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round"/></marker></defs>
 
 <g class="node c-blue"><rect x="10" y="6" width="190" height="36" rx="6" stroke-width="0.5"/><text class="th" x="105" y="20" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_search &rarr; 001418</text><text class="ts" x="105" y="32" text-anchor="middle" dominant-baseline="central" style="font-size:8px">Smart routing full-text</text></g>
-<line x1="105" y1="44" x2="105" y2="54" stroke="#525d70" stroke-width="0.7" marker-end="url(#a2)"/>
+<line x1="105" y1="44" x2="105" y2="54" stroke="var(--muted)" stroke-width="0.7" marker-end="url(#a2)"/>
 
 <g class="node c-blue"><rect x="10" y="56" width="190" height="36" rx="6" stroke-width="0.5"/><text class="th" x="105" y="70" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_get_item_and_related</text><text class="ts" x="105" y="82" text-anchor="middle" dominant-baseline="central" style="font-size:8px">Revision, relations, attachments</text></g>
-<line x1="105" y1="94" x2="105" y2="104" stroke="#525d70" stroke-width="0.7" marker-end="url(#a2)"/>
+<line x1="105" y1="94" x2="105" y2="104" stroke="var(--muted)" stroke-width="0.7" marker-end="url(#a2)"/>
 
 <g class="node c-blue"><rect x="10" y="106" width="190" height="36" rx="6" stroke-width="0.5"/><text class="th" x="105" y="120" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_relation_explain</text><text class="ts" x="105" y="132" text-anchor="middle" dominant-baseline="central" style="font-size:8px">&rarr; SPEC PDF discovered</text></g>
-<path d="M200 124 L220 124" fill="none" stroke="#525d70" stroke-width="0.4" stroke-dasharray="3 2" marker-end="url(#a2)"/>
-<g class="node c-gray"><rect x="222" y="110" width="188" height="28" rx="5" stroke-width="0.5"/><text class="ts" x="316" y="127" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#B4B2A9">tc_download_file &rarr; PDF</text></g>
-<line x1="105" y1="144" x2="105" y2="154" stroke="#525d70" stroke-width="0.7" marker-end="url(#a2)"/>
+<path d="M200 124 L220 124" fill="none" stroke="var(--muted)" stroke-width="0.4" stroke-dasharray="3 2" marker-end="url(#a2)"/>
+<g class="node c-gray"><rect x="222" y="110" width="188" height="28" rx="5" stroke-width="0.5"/><text class="ts" x="316" y="127" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:var(--text2)">tc_download_file &rarr; PDF</text></g>
+<line x1="105" y1="144" x2="105" y2="154" stroke="var(--muted)" stroke-width="0.7" marker-end="url(#a2)"/>
 
 <g class="node c-amber"><rect x="10" y="156" width="190" height="36" rx="6" stroke-width="0.5"/><text class="th" x="105" y="170" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_get_partner_contracts</text><text class="ts" x="105" y="182" text-anchor="middle" dominant-baseline="central" style="font-size:8px">VendorMgmt &rarr; supplier name</text></g>
-<path d="M200 174 L220 174" fill="none" stroke="#525d70" stroke-width="0.4" stroke-dasharray="3 2" marker-end="url(#a2)"/>
-<g class="node c-gray"><rect x="222" y="160" width="188" height="28" rx="5" stroke-width="0.5"/><text class="ts" x="316" y="177" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#B4B2A9">Supplier: Brembo</text></g>
-<line x1="105" y1="194" x2="105" y2="204" stroke="#525d70" stroke-width="0.7" marker-end="url(#a2)"/>
+<path d="M200 174 L220 174" fill="none" stroke="var(--muted)" stroke-width="0.4" stroke-dasharray="3 2" marker-end="url(#a2)"/>
+<g class="node c-gray"><rect x="222" y="160" width="188" height="28" rx="5" stroke-width="0.5"/><text class="ts" x="316" y="177" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:var(--text2)">Supplier: Brembo</text></g>
+<line x1="105" y1="194" x2="105" y2="204" stroke="var(--muted)" stroke-width="0.7" marker-end="url(#a2)"/>
 
 <g class="node c-coral"><rect x="10" y="206" width="190" height="36" rx="6" stroke-width="0.5"/><text class="th" x="105" y="220" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_vendor_resolve_identity</text><text class="ts" x="105" y="232" text-anchor="middle" dominant-baseline="central" style="font-size:8px">GLEIF API &rarr; LEI + legal entity</text></g>
-<path d="M200 224 L220 224" fill="none" stroke="#525d70" stroke-width="0.4" stroke-dasharray="3 2" marker-end="url(#a2)"/>
-<g class="node c-coral"><rect x="222" y="210" width="188" height="28" rx="5" stroke-width="0.5"/><text class="ts" x="316" y="227" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#E88A7D">002400-BREMBO N.V.</text></g>
-<line x1="105" y1="244" x2="105" y2="254" stroke="#525d70" stroke-width="0.7" marker-end="url(#a2)"/>
+<path d="M200 224 L220 224" fill="none" stroke="var(--muted)" stroke-width="0.4" stroke-dasharray="3 2" marker-end="url(#a2)"/>
+<g class="node c-coral"><rect x="222" y="210" width="188" height="28" rx="5" stroke-width="0.5"/><text class="ts" x="316" y="227" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:var(--coral)">002400-BREMBO N.V.</text></g>
+<line x1="105" y1="244" x2="105" y2="254" stroke="var(--muted)" stroke-width="0.7" marker-end="url(#a2)"/>
 
 <g class="node c-coral"><rect x="10" y="256" width="190" height="36" rx="6" stroke-width="0.5"/><text class="th" x="105" y="270" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_vendor_get_hierarchy</text><text class="ts" x="105" y="282" text-anchor="middle" dominant-baseline="central" style="font-size:8px">Parent/child entities</text></g>
-<line x1="105" y1="294" x2="105" y2="304" stroke="#525d70" stroke-width="0.7" marker-end="url(#a2)"/>
+<line x1="105" y1="294" x2="105" y2="304" stroke="var(--muted)" stroke-width="0.7" marker-end="url(#a2)"/>
 
 <g class="node c-coral"><rect x="10" y="306" width="190" height="36" rx="6" stroke-width="0.5"/><text class="th" x="105" y="320" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_ofac_screen</text><text class="ts" x="105" y="332" text-anchor="middle" dominant-baseline="central" style="font-size:8px">OFAC/SDN &rarr; CLEAR</text></g>
-<path d="M200 324 L220 324" fill="none" stroke="#525d70" stroke-width="0.4" stroke-dasharray="3 2" marker-end="url(#a2)"/>
-<g class="node c-gray"><rect x="222" y="310" width="188" height="28" rx="5" stroke-width="0.5"/><text class="ts" x="316" y="327" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#B4B2A9">tc_oasis_search_and_link</text></g>
-<line x1="105" y1="344" x2="105" y2="354" stroke="#525d70" stroke-width="0.7" marker-end="url(#a2)"/>
+<path d="M200 324 L220 324" fill="none" stroke="var(--muted)" stroke-width="0.4" stroke-dasharray="3 2" marker-end="url(#a2)"/>
+<g class="node c-gray"><rect x="222" y="310" width="188" height="28" rx="5" stroke-width="0.5"/><text class="ts" x="316" y="327" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:var(--text2)">tc_oasis_search_and_link</text></g>
+<line x1="105" y1="344" x2="105" y2="354" stroke="var(--muted)" stroke-width="0.7" marker-end="url(#a2)"/>
 
 <g class="node c-blue"><rect x="10" y="356" width="190" height="36" rx="6" stroke-width="0.5"/><text class="th" x="105" y="370" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_vendor_investigation_report</text><text class="ts" x="105" y="382" text-anchor="middle" dominant-baseline="central" style="font-size:8px">Consolidated dossier</text></g>
-<line x1="105" y1="394" x2="105" y2="404" stroke="#525d70" stroke-width="0.7" marker-end="url(#a2)"/>
+<line x1="105" y1="394" x2="105" y2="404" stroke="var(--muted)" stroke-width="0.7" marker-end="url(#a2)"/>
 
 <g class="node c-teal"><rect x="10" y="406" width="190" height="36" rx="6" stroke-width="0.5"/><text class="th" x="105" y="420" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_create_change + workflow</text><text class="ts" x="105" y="432" text-anchor="middle" dominant-baseline="central" style="font-size:8px">submitToWorkflow=true</text></g>
-<path d="M200 424 L220 424" fill="none" stroke="#525d70" stroke-width="0.4" stroke-dasharray="3 2" marker-end="url(#a2)"/>
-<g class="node c-teal"><rect x="222" y="410" width="188" height="28" rx="5" stroke-width="0.5"/><text class="ts" x="316" y="427" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#5DCAA5">tc_verify_change_outcome &#x2713;</text></g>
+<path d="M200 424 L220 424" fill="none" stroke="var(--muted)" stroke-width="0.4" stroke-dasharray="3 2" marker-end="url(#a2)"/>
+<g class="node c-teal"><rect x="222" y="410" width="188" height="28" rx="5" stroke-width="0.5"/><text class="ts" x="316" y="427" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:var(--teal)">tc_verify_change_outcome &#x2713;</text></g>
 
-<text font-family="'IBM Plex Mono',monospace" font-size="8" fill="#85B7EB" x="14" y="462">Blue = TC read</text>
-<text font-family="'IBM Plex Mono',monospace" font-size="8" fill="#E88A7D" x="105" y="462">Coral = external</text>
-<text font-family="'IBM Plex Mono',monospace" font-size="8" fill="#5DCAA5" x="200" y="462">Teal = mutation</text>
-<text font-family="'IBM Plex Mono',monospace" font-size="8" fill="#EF9F27" x="300" y="462">Amber = internal</text>
+<text font-family="'IBM Plex Mono',monospace" font-size="8" fill="var(--blue)" x="14" y="462">Blue = TC read</text>
+<text font-family="'IBM Plex Mono',monospace" font-size="8" fill="var(--coral)" x="105" y="462">Coral = external</text>
+<text font-family="'IBM Plex Mono',monospace" font-size="8" fill="var(--teal)" x="200" y="462">Teal = mutation</text>
+<text font-family="'IBM Plex Mono',monospace" font-size="8" fill="var(--amber)" x="300" y="462">Amber = internal</text>
 </svg>
             </div>
           </div>
@@ -675,8 +677,8 @@ hr.section-rule { border: none; border-top: 1px solid var(--border); margin: 24p
     <div class="story-shell">
       <div class="diagram-card stage-card">
           <div class="diagram-card-header">
-            <div class="dot" style="background:#e8a444"></div>
-            <div class="dot" style="background:#3dbf8a"></div>
+            <div class="dot" style="background:var(--amber)"></div>
+            <div class="dot" style="background:var(--teal)"></div>
             <span class="title">change-management-flow.svg</span>
           </div>
           <div class="diagram-card-body">
@@ -685,33 +687,33 @@ hr.section-rule { border: none; border-top: 1px solid var(--border); margin: 24p
 <defs><marker id="a3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round"/></marker></defs>
 
 <!-- Mutation gate -->
-<rect x="8" y="6" width="364" height="24" rx="5" fill="#2a1e08" stroke="#854F0B" stroke-width="0.5"/>
-<text x="190" y="15" text-anchor="middle" dominant-baseline="central" style="fill:#FAC775;font-size:10px;font-family:'IBM Plex Sans',sans-serif;font-weight:500">TC_MUTATION_MODE = full_write required</text>
-<line x1="190" y1="32" x2="190" y2="42" stroke="#525d70" stroke-width="0.7" marker-end="url(#a3)"/>
+<rect x="8" y="6" width="364" height="24" rx="5" fill="var(--amber-bg)" stroke="#854F0B" stroke-width="0.5"/>
+<text x="190" y="15" text-anchor="middle" dominant-baseline="central" style="fill:var(--amber);font-size:10px;font-family:'IBM Plex Sans',sans-serif;font-weight:500">TC_MUTATION_MODE = full_write required</text>
+<line x1="190" y1="32" x2="190" y2="42" stroke="var(--muted)" stroke-width="0.7" marker-end="url(#a3)"/>
 
 <!-- Step 1 -->
 <g class="node c-blue"><rect x="8" y="44" width="175" height="36" rx="6" stroke-width="0.5"/><text class="th" x="96" y="58" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_get_creatable_change_types</text><text class="ts" x="96" y="70" text-anchor="middle" dominant-baseline="central" style="font-size:8px">Discover ECR/ECN types</text></g>
-<path d="M183 62 L198 62" fill="none" stroke="#525d70" stroke-width="0.4" stroke-dasharray="3 2" marker-end="url(#a3)"/>
-<g class="node c-gray"><rect x="200" y="48" width="170" height="28" rx="5" stroke-width="0.5"/><text class="ts" x="285" y="65" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#B4B2A9">tc_workflow_impact (pre-assess)</text></g>
-<line x1="96" y1="82" x2="96" y2="96" stroke="#525d70" stroke-width="0.7" marker-end="url(#a3)"/>
+<path d="M183 62 L198 62" fill="none" stroke="var(--muted)" stroke-width="0.4" stroke-dasharray="3 2" marker-end="url(#a3)"/>
+<g class="node c-gray"><rect x="200" y="48" width="170" height="28" rx="5" stroke-width="0.5"/><text class="ts" x="285" y="65" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:var(--text2)">tc_workflow_impact (pre-assess)</text></g>
+<line x1="96" y1="82" x2="96" y2="96" stroke="var(--muted)" stroke-width="0.7" marker-end="url(#a3)"/>
 
 <!-- Step 2 -->
 <g class="node c-teal"><rect x="8" y="98" width="175" height="36" rx="6" stroke-width="0.5"/><text class="th" x="96" y="112" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_create_change</text><text class="ts" x="96" y="124" text-anchor="middle" dominant-baseline="central" style="font-size:8px">submitToWorkflow=true</text></g>
-<path d="M183 116 L198 116" fill="none" stroke="#525d70" stroke-width="0.4" stroke-dasharray="3 2" marker-end="url(#a3)"/>
-<g class="node c-teal"><rect x="200" y="102" width="170" height="28" rx="5" stroke-width="0.5"/><text class="ts" x="285" y="119" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#5DCAA5">tc_add_participants</text></g>
-<line x1="96" y1="136" x2="96" y2="150" stroke="#525d70" stroke-width="0.7" marker-end="url(#a3)"/>
+<path d="M183 116 L198 116" fill="none" stroke="var(--muted)" stroke-width="0.4" stroke-dasharray="3 2" marker-end="url(#a3)"/>
+<g class="node c-teal"><rect x="200" y="102" width="170" height="28" rx="5" stroke-width="0.5"/><text class="ts" x="285" y="119" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:var(--teal)">tc_add_participants</text></g>
+<line x1="96" y1="136" x2="96" y2="150" stroke="var(--muted)" stroke-width="0.7" marker-end="url(#a3)"/>
 
 <!-- Step 3 -->
 <g class="node c-teal"><rect x="8" y="152" width="175" height="36" rx="6" stroke-width="0.5"/><text class="th" x="96" y="166" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_verify_change_outcome</text><text class="ts" x="96" y="178" text-anchor="middle" dominant-baseline="central" style="font-size:8px">Deterministic check</text></g>
-<path d="M183 170 L198 170" fill="none" stroke="#525d70" stroke-width="0.4" stroke-dasharray="3 2" marker-end="url(#a3)"/>
-<g class="node c-gray"><rect x="200" y="156" width="170" height="28" rx="5" stroke-width="0.5"/><text class="ts" x="285" y="173" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#B4B2A9">tc_perform_workflow_action</text></g>
+<path d="M183 170 L198 170" fill="none" stroke="var(--muted)" stroke-width="0.4" stroke-dasharray="3 2" marker-end="url(#a3)"/>
+<g class="node c-gray"><rect x="200" y="156" width="170" height="28" rx="5" stroke-width="0.5"/><text class="ts" x="285" y="173" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:var(--text2)">tc_perform_workflow_action</text></g>
 
 <!-- Skills + anti-pattern -->
-<rect x="8" y="206" width="362" height="22" rx="5" fill="none" stroke="#534AB7" stroke-width="0.5"/>
-<text x="189" y="220" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#7F77DD;font-family:'IBM Plex Mono',monospace">Skills: change_flow_orchestration · change_participant_strategy</text>
+<rect x="8" y="206" width="362" height="22" rx="5" fill="none" stroke="var(--purple)" stroke-width="0.5"/>
+<text x="189" y="220" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:var(--purple);font-family:'IBM Plex Mono',monospace">Skills: change_flow_orchestration · change_participant_strategy</text>
 
 <rect x="8" y="240" width="362" height="22" rx="5" fill="none" stroke="#8B3A2D" stroke-width="0.5"/>
-<text x="189" y="254" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#D66452;font-weight:500;font-family:'IBM Plex Sans',sans-serif">Anti-pattern: don't preflight tc_get_workflow_templates</text>
+<text x="189" y="254" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:var(--coral);font-weight:500;font-family:'IBM Plex Sans',sans-serif">Anti-pattern: don't preflight tc_get_workflow_templates</text>
 </svg>
             </div>
           </div>
@@ -745,8 +747,8 @@ hr.section-rule { border: none; border-top: 1px solid var(--border); margin: 24p
     <div class="story-shell">
       <div class="diagram-card stage-card">
           <div class="diagram-card-header">
-            <div class="dot" style="background:#3dbf8a"></div>
-            <div class="dot" style="background:#5294d6"></div>
+            <div class="dot" style="background:var(--teal)"></div>
+            <div class="dot" style="background:var(--blue)"></div>
             <span class="title">bom-3d-understanding.svg</span>
           </div>
           <div class="diagram-card-body">
@@ -756,41 +758,41 @@ hr.section-rule { border: none; border-top: 1px solid var(--border); margin: 24p
 
 <!-- Left: BOM flow -->
 <g class="node c-blue"><rect x="8" y="6" width="180" height="36" rx="6" stroke-width="0.5"/><text class="th" x="98" y="20" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_search</text><text class="ts" x="98" y="32" text-anchor="middle" dominant-baseline="central" style="font-size:8px">Find ItemRevision UID</text></g>
-<line x1="98" y1="44" x2="98" y2="54" stroke="#525d70" stroke-width="0.7" marker-end="url(#a4)"/>
+<line x1="98" y1="44" x2="98" y2="54" stroke="var(--muted)" stroke-width="0.7" marker-end="url(#a4)"/>
 
 <g class="node c-teal"><rect x="8" y="56" width="180" height="36" rx="6" stroke-width="0.5"/><text class="th" x="98" y="70" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_create_bom_window</text><text class="ts" x="98" y="82" text-anchor="middle" dominant-baseline="central" style="font-size:8px">Opens BOM &rarr; BOMLine UID</text></g>
-<line x1="98" y1="94" x2="98" y2="104" stroke="#525d70" stroke-width="0.7" marker-end="url(#a4)"/>
+<line x1="98" y1="94" x2="98" y2="104" stroke="var(--muted)" stroke-width="0.7" marker-end="url(#a4)"/>
 
 <g class="node c-blue"><rect x="8" y="106" width="180" height="36" rx="6" stroke-width="0.5"/><text class="th" x="98" y="120" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_expand_ps_all_levels</text><text class="ts" x="98" y="132" text-anchor="middle" dominant-baseline="central" style="font-size:8px">Full BOM tree</text></g>
-<line x1="98" y1="144" x2="98" y2="154" stroke="#525d70" stroke-width="0.7" marker-end="url(#a4)"/>
+<line x1="98" y1="144" x2="98" y2="154" stroke="var(--muted)" stroke-width="0.7" marker-end="url(#a4)"/>
 
 <g class="node c-blue"><rect x="8" y="156" width="180" height="36" rx="6" stroke-width="0.5"/><text class="th" x="98" y="170" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_profile_bom_shapes</text><text class="ts" x="98" y="182" text-anchor="middle" dominant-baseline="central" style="font-size:8px">Shape distribution stats</text></g>
-<line x1="98" y1="194" x2="98" y2="204" stroke="#525d70" stroke-width="0.7" marker-end="url(#a4)"/>
+<line x1="98" y1="194" x2="98" y2="204" stroke="var(--muted)" stroke-width="0.7" marker-end="url(#a4)"/>
 
 <g class="node c-teal"><rect x="8" y="206" width="180" height="36" rx="6" stroke-width="0.5"/><text class="th" x="98" y="220" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_export_bom_excel</text><text class="ts" x="98" y="232" text-anchor="middle" dominant-baseline="central" style="font-size:8px">BOM &rarr; .xlsx export</text></g>
-<line x1="98" y1="244" x2="98" y2="254" stroke="#525d70" stroke-width="0.7" marker-end="url(#a4)"/>
+<line x1="98" y1="244" x2="98" y2="254" stroke="var(--muted)" stroke-width="0.7" marker-end="url(#a4)"/>
 
 <g class="node c-teal"><rect x="8" y="256" width="180" height="36" rx="6" stroke-width="0.5"/><text class="th" x="98" y="270" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_close_bom_window</text><text class="ts" x="98" y="282" text-anchor="middle" dominant-baseline="central" style="font-size:8px">Clean up session</text></g>
 
 <!-- Right: 3D tools -->
-<path d="M188 74 L230 74" fill="none" stroke="#525d70" stroke-width="0.4" stroke-dasharray="3 2" marker-end="url(#a4)"/>
+<path d="M188 74 L230 74" fill="none" stroke="var(--muted)" stroke-width="0.4" stroke-dasharray="3 2" marker-end="url(#a4)"/>
 
 <g class="node c-blue"><rect x="232" y="56" width="198" height="36" rx="6" stroke-width="0.5"/><text class="th" x="331" y="70" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_jt_readiness_score</text><text class="ts" x="331" y="82" text-anchor="middle" dominant-baseline="central" style="font-size:8px">3D data quality scoring</text></g>
-<line x1="331" y1="94" x2="331" y2="104" stroke="#525d70" stroke-width="0.7" marker-end="url(#a4)"/>
+<line x1="331" y1="94" x2="331" y2="104" stroke="var(--muted)" stroke-width="0.7" marker-end="url(#a4)"/>
 
 <g class="node c-blue"><rect x="232" y="106" width="198" height="36" rx="6" stroke-width="0.5"/><text class="th" x="331" y="120" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_understand_bom_3d</text><text class="ts" x="331" y="132" text-anchor="middle" dominant-baseline="central" style="font-size:8px">Assembly 3D overview</text></g>
-<line x1="331" y1="144" x2="331" y2="154" stroke="#525d70" stroke-width="0.7" marker-end="url(#a4)"/>
+<line x1="331" y1="144" x2="331" y2="154" stroke="var(--muted)" stroke-width="0.7" marker-end="url(#a4)"/>
 
 <g class="node c-blue"><rect x="232" y="156" width="198" height="36" rx="6" stroke-width="0.5"/><text class="th" x="331" y="170" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_understand_bom_3d_deep</text><text class="ts" x="331" y="182" text-anchor="middle" dominant-baseline="central" style="font-size:8px">Per-component geometry</text></g>
-<line x1="331" y1="194" x2="331" y2="204" stroke="#525d70" stroke-width="0.7" marker-end="url(#a4)"/>
+<line x1="331" y1="194" x2="331" y2="204" stroke="var(--muted)" stroke-width="0.7" marker-end="url(#a4)"/>
 
 <g class="node c-blue"><rect x="232" y="206" width="198" height="36" rx="6" stroke-width="0.5"/><text class="th" x="331" y="220" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_understand_jt</text><text class="ts" x="331" y="232" text-anchor="middle" dominant-baseline="central" style="font-size:8px">JT file metadata</text></g>
-<line x1="331" y1="244" x2="331" y2="254" stroke="#525d70" stroke-width="0.7" marker-end="url(#a4)"/>
+<line x1="331" y1="244" x2="331" y2="254" stroke="var(--muted)" stroke-width="0.7" marker-end="url(#a4)"/>
 
 <g class="node c-blue"><rect x="232" y="256" width="198" height="36" rx="6" stroke-width="0.5"/><text class="th" x="331" y="270" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_get_assembly_jt</text><text class="ts" x="331" y="282" text-anchor="middle" dominant-baseline="central" style="font-size:8px">Assembly JT retrieval</text></g>
 
-<text font-family="'IBM Plex Mono',monospace" font-size="8" fill="#525d70" x="12" y="310">BOM traversal &amp; export</text>
-<text font-family="'IBM Plex Mono',monospace" font-size="8" fill="#525d70" x="236" y="310">3D readiness &amp; understanding</text>
+<text font-family="'IBM Plex Mono',monospace" font-size="8" fill="var(--muted)" x="12" y="310">BOM traversal &amp; export</text>
+<text font-family="'IBM Plex Mono',monospace" font-size="8" fill="var(--muted)" x="236" y="310">3D readiness &amp; understanding</text>
 </svg>
             </div>
           </div>

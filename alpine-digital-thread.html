@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Alpine Digital Thread - Spatial Story Lab - Digital Fabric</title>
 <link rel="stylesheet" href="styles/fabric.css">
+<script>/* no-flash theme bootstrap */(function(){try{var t=localStorage.getItem("fabric-theme");if(t!=="light"&&t!=="dark"){t=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();</script>
+<script defer src="styles/theme.js"></script>
 <style>
 :root {
   --nav-h: 52px;
@@ -36,7 +38,7 @@ body {
   background:
     radial-gradient(circle at 50% 0%, rgba(82,148,214,0.16), transparent 24%),
     radial-gradient(circle at 12% 18%, rgba(124,111,222,0.1), transparent 28%),
-    linear-gradient(180deg, #05070c 0%, #090d16 34%, #04060a 100%);
+    linear-gradient(180deg, var(--surface-sunken) 0%, var(--surface-sunken) 34%, var(--surface-sunken) 100%);
   color: var(--text);
   overflow-x: hidden;
 }
@@ -69,9 +71,9 @@ button {
   justify-content: space-between;
   gap: 16px;
   padding: 0 28px;
-  background: rgba(13,15,20,0.84);
+  background: var(--surface-glass);
   backdrop-filter: blur(18px);
-  border-bottom: 1px solid rgba(82,93,112,0.22);
+  border-bottom: 1px solid var(--hairline-2);
 }
 
 .topbar-brand {
@@ -164,9 +166,9 @@ button {
   gap: 12px;
   padding: 22px 22px 20px;
   border-radius: 22px;
-  background: linear-gradient(180deg, rgba(17,21,29,0.96), rgba(10,12,18,0.96));
-  border: 1px solid rgba(82,93,112,0.24);
-  box-shadow: 0 22px 60px rgba(0,0,0,0.22);
+  background: linear-gradient(180deg, var(--surface), var(--surface-sunken));
+  border: 1px solid var(--hairline-2);
+  box-shadow: 0 22px 60px var(--shadow);
 }
 
 .intro-note .note-label,
@@ -207,9 +209,9 @@ button {
   height: calc(100vh - var(--nav-h) - 32px);
   border-radius: 32px;
   overflow: hidden;
-  border: 1px solid rgba(82,93,112,0.22);
-  background: linear-gradient(180deg, rgba(6,8,13,0.98), rgba(4,6,10,1));
-  box-shadow: 0 36px 110px rgba(0,0,0,0.32), inset 0 1px 0 rgba(255,255,255,0.04);
+  border: 1px solid var(--hairline-2);
+  background: linear-gradient(180deg, var(--surface-sunken), var(--surface-sunken));
+  box-shadow: 0 36px 110px var(--shadow-strong), inset 0 1px 0 var(--hover);
   isolation: isolate;
 }
 
@@ -231,8 +233,8 @@ button {
 
 .stage-shell::after {
   background:
-    linear-gradient(90deg, rgba(4,6,9,0.54), transparent 18%, transparent 82%, rgba(4,6,9,0.58)),
-    linear-gradient(180deg, rgba(4,6,9,0.18), transparent 20%, transparent 78%, rgba(4,6,9,0.46));
+    linear-gradient(90deg, var(--surface-sunken), transparent 18%, transparent 82%, var(--surface-sunken)),
+    linear-gradient(180deg, rgba(4,6,9,0.18), transparent 20%, transparent 78%, var(--surface-sunken));
   opacity: 0.24;
   z-index: 6;
 }
@@ -241,7 +243,7 @@ button {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 50% 10%, rgba(255,255,255,0.06), transparent 12%),
+    radial-gradient(circle at 50% 10%, var(--hover-2), transparent 12%),
     radial-gradient(circle at 50% 52%, rgba(var(--accent-rgb), 0.08), transparent 28%),
     radial-gradient(circle at 50% 88%, rgba(61,191,138,0.07), transparent 22%);
   z-index: 0;
@@ -371,7 +373,7 @@ button {
 }
 
 .scene-node .node-core {
-  fill: rgba(7,10,14,0.92);
+  fill: var(--surface-sunken);
   stroke: rgba(210,225,245,0.34);
   stroke-width: 3;
 }
@@ -382,7 +384,7 @@ button {
 
 .scene-node.is-visited .node-core {
   fill: rgba(140,184,255,0.58);
-  stroke: rgba(220,236,255,0.7);
+  stroke: var(--text);
 }
 
 .scene-node.is-active .node-halo {
@@ -393,7 +395,7 @@ button {
 
 .scene-node.is-active .node-core {
   fill: rgba(var(--accent-rgb), 0.94);
-  stroke: rgba(255,255,255,0.92);
+  stroke: var(--text);
 }
 
 .flight-cursor .cursor-halo {
@@ -403,7 +405,7 @@ button {
 }
 
 .flight-cursor .cursor-core {
-  fill: rgba(255,255,255,0.96);
+  fill: var(--text);
 }
 
 .product-bob {
@@ -422,7 +424,7 @@ button {
 }
 
 .product-shadow {
-  fill: rgba(2,4,7,0.66);
+  fill: var(--surface-sunken);
   filter: url(#shadowBlur);
 }
 
@@ -445,13 +447,13 @@ button {
 .shell-battery { fill: url(#batteryGradient); }
 
 .rotor-ring {
-  fill: rgba(8,14,22,0.46);
+  fill: var(--surface-sunken);
   stroke: rgba(177,218,255,0.34);
   stroke-width: 4;
 }
 
 .rotor-core {
-  fill: rgba(220,235,255,0.9);
+  fill: var(--text);
 }
 
 .product-blueprint {
@@ -517,7 +519,7 @@ button {
 }
 
 .release-card {
-  fill: rgba(17,22,31,0.82);
+  fill: var(--surface-sunken);
   stroke: rgba(214,100,82,0.42);
   stroke-width: 2;
 }
@@ -531,7 +533,7 @@ button {
 .release-check,
 .release-lines {
   fill: none;
-  stroke: rgba(255,236,232,0.88);
+  stroke: var(--text);
   stroke-width: 3;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -629,9 +631,9 @@ button {
   gap: 12px;
   padding: 18px 20px 20px;
   border-radius: 24px;
-  background: linear-gradient(180deg, rgba(12,15,22,0.84), rgba(7,9,14,0.9));
-  border: 1px solid rgba(82,93,112,0.18);
-  box-shadow: 0 24px 70px rgba(0,0,0,0.24), inset 0 1px 0 rgba(255,255,255,0.06);
+  background: linear-gradient(180deg, var(--surface-sunken), var(--surface-sunken));
+  border: 1px solid var(--hairline);
+  box-shadow: 0 24px 70px var(--shadow), inset 0 1px 0 var(--hover-2);
   backdrop-filter: blur(20px) saturate(120%);
 }
 
@@ -644,7 +646,7 @@ button {
 
 .stage-kicker { color: rgb(var(--accent-rgb)); }
 
-.stage-progress { color: rgba(255,255,255,0.56); }
+.stage-progress { color: var(--text); }
 
 .stage-title {
   font-size: clamp(28px, 3.6vw, 48px);
@@ -655,15 +657,15 @@ button {
 .stage-summary {
   font-size: 13px;
   line-height: 1.62;
-  color: rgba(226,230,240,0.88);
+  color: var(--text);
 }
 
 .stage-focus {
   padding-top: 10px;
-  border-top: 1px solid rgba(255,255,255,0.08);
+  border-top: 1px solid var(--hover-2);
   font-size: 12px;
   line-height: 1.62;
-  color: rgba(214,223,234,0.78);
+  color: var(--text);
 }
 
 .tool-row {
@@ -709,9 +711,9 @@ button {
   gap: 4px;
   padding: 10px 12px;
   border-radius: 18px;
-  border: 1px solid rgba(82,93,112,0.14);
-  background: linear-gradient(180deg, rgba(15,18,25,0.68), rgba(9,11,17,0.82));
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+  border: 1px solid var(--hairline);
+  background: linear-gradient(180deg, var(--surface-sunken), var(--surface-sunken));
+  box-shadow: inset 0 1px 0 var(--hover);
   opacity: 0.56;
   transition: opacity 0.22s ease, transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
 }
@@ -727,14 +729,14 @@ button {
   font-size: 13px;
   line-height: 1.3;
   font-weight: 500;
-  color: rgba(239,243,248,0.88);
+  color: var(--text);
 }
 
 .rail-item.active {
   opacity: 1;
   transform: translateX(0);
   border-color: rgba(var(--item-accent), 0.42);
-  box-shadow: 0 0 0 1px rgba(var(--item-accent), 0.14), 0 24px 70px rgba(0,0,0,0.22);
+  box-shadow: 0 0 0 1px rgba(var(--item-accent), 0.14), 0 24px 70px var(--shadow);
 }
 
 .scene-footer {
@@ -750,9 +752,9 @@ button {
   gap: 6px;
   padding: 14px 16px;
   border-radius: 20px;
-  border: 1px solid rgba(82,93,112,0.18);
-  background: linear-gradient(180deg, rgba(10,13,19,0.78), rgba(6,8,13,0.86));
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+  border: 1px solid var(--hairline);
+  background: linear-gradient(180deg, var(--surface-sunken), var(--surface-sunken));
+  box-shadow: inset 0 1px 0 var(--hover);
 }
 
 .scene-foot-card span,
@@ -765,7 +767,7 @@ button {
   font-size: 12px;
   line-height: 1.58;
   font-weight: 500;
-  color: rgba(239,243,248,0.88);
+  color: var(--text);
 }
 
 .story-stack {
@@ -783,16 +785,16 @@ button {
   padding: 18px 18px 16px;
   border-radius: 24px;
   background:
-    linear-gradient(180deg, rgba(19,22,30,0.96), rgba(11,13,19,0.98)),
+    linear-gradient(180deg, var(--surface), var(--surface-sunken)),
     radial-gradient(circle at top right, rgba(var(--card-accent), 0.14), transparent 34%);
-  border: 1px solid rgba(82,93,112,0.18);
+  border: 1px solid var(--hairline);
   box-shadow: 0 24px 70px rgba(0,0,0,0.18);
   transition: border-color 0.28s ease, box-shadow 0.28s ease, transform 0.28s ease;
 }
 
 .story-step.active {
   border-color: rgba(var(--card-accent), 0.42);
-  box-shadow: 0 0 0 1px rgba(var(--card-accent), 0.14), 0 34px 90px rgba(0,0,0,0.24);
+  box-shadow: 0 0 0 1px rgba(var(--card-accent), 0.14), 0 34px 90px var(--shadow);
   transform: translateY(-2px);
 }
 
@@ -872,7 +874,7 @@ button {
   display: grid;
   gap: 4px;
   padding-top: 10px;
-  border-top: 1px solid rgba(255,255,255,0.08);
+  border-top: 1px solid var(--hover-2);
 }
 
 .summary-strip {
@@ -894,8 +896,8 @@ button {
   gap: 10px;
   padding: 22px;
   border-radius: 22px;
-  background: linear-gradient(180deg, rgba(19,22,30,0.96), rgba(11,13,19,0.98));
-  border: 1px solid rgba(82,93,112,0.18);
+  background: linear-gradient(180deg, var(--surface), var(--surface-sunken));
+  border: 1px solid var(--hairline);
 }
 
 .summary-card h3 {
@@ -916,8 +918,8 @@ button {
   gap: 16px;
   padding: 18px 22px;
   border-radius: 22px;
-  border: 1px solid rgba(82,93,112,0.18);
-  background: linear-gradient(180deg, rgba(19,22,30,0.96), rgba(11,13,19,0.98));
+  border: 1px solid var(--hairline);
+  background: linear-gradient(180deg, var(--surface), var(--surface-sunken));
 }
 
 .outro-links .link-row {
@@ -932,8 +934,8 @@ button {
   gap: 8px;
   padding: 10px 14px;
   border-radius: 999px;
-  border: 1px solid rgba(82,93,112,0.22);
-  background: rgba(13,15,20,0.7);
+  border: 1px solid var(--hairline-2);
+  background: var(--surface-sunken);
   color: var(--text2);
   font-size: 12px;
   transition: color 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
@@ -1140,9 +1142,9 @@ button {
         <svg class="terrain-silhouette" viewBox="0 0 1000 360" fill="none" aria-hidden="true">
           <defs>
             <linearGradient id="terrainFill" x1="500" y1="30" x2="500" y2="360" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stop-color="#d4e8ff" stop-opacity="0.28" />
+              <stop offset="0%" stop-color="var(--text)" stop-opacity="0.28" />
               <stop offset="40%" stop-color="#7996bc" stop-opacity="0.14" />
-              <stop offset="100%" stop-color="#141820" stop-opacity="0.82" />
+              <stop offset="100%" stop-color="var(--surface-sunken)" stop-opacity="0.82" />
             </linearGradient>
           </defs>
           <path d="M0 286L92 242L172 258L286 124L374 198L490 58L630 206L720 150L820 216L902 178L1000 262V360H0V286Z" fill="url(#terrainFill)" opacity="0.96"></path>
@@ -1154,15 +1156,15 @@ button {
         <svg class="thread-svg" id="threadScene" viewBox="0 0 1000 720" aria-hidden="true">
           <defs>
             <linearGradient id="threadGradient" x1="160" y1="160" x2="820" y2="560" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stop-color="#8cb8ff" stop-opacity="0.12" />
-              <stop offset="28%" stop-color="#8cb8ff" stop-opacity="0.92" />
-              <stop offset="72%" stop-color="#7c6fde" stop-opacity="0.94" />
-              <stop offset="100%" stop-color="#3dbf8a" stop-opacity="0.92" />
+              <stop offset="0%" stop-color="var(--blue)" stop-opacity="0.12" />
+              <stop offset="28%" stop-color="var(--blue)" stop-opacity="0.92" />
+              <stop offset="72%" stop-color="var(--purple)" stop-opacity="0.94" />
+              <stop offset="100%" stop-color="var(--teal)" stop-opacity="0.92" />
             </linearGradient>
             <linearGradient id="iterationGradient" x1="300" y1="240" x2="720" y2="500" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stop-color="#3dbf8a" stop-opacity="0.9" />
-              <stop offset="58%" stop-color="#8cb8ff" stop-opacity="0.92" />
-              <stop offset="100%" stop-color="#e8a444" stop-opacity="0.9" />
+              <stop offset="0%" stop-color="var(--teal)" stop-opacity="0.9" />
+              <stop offset="58%" stop-color="var(--blue)" stop-opacity="0.92" />
+              <stop offset="100%" stop-color="var(--amber)" stop-opacity="0.9" />
             </linearGradient>
             <linearGradient id="shellGradient" x1="360" y1="260" x2="660" y2="470" gradientUnits="userSpaceOnUse">
               <stop offset="0%" stop-color="#b8c7db" />
@@ -1170,7 +1172,7 @@ button {
               <stop offset="100%" stop-color="#38485d" />
             </linearGradient>
             <linearGradient id="canopyGradient" x1="460" y1="290" x2="560" y2="330" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stop-color="#d6e8ff" />
+              <stop offset="0%" stop-color="var(--text)" />
               <stop offset="100%" stop-color="#6b8db7" />
             </linearGradient>
             <linearGradient id="batteryGradient" x1="452" y1="398" x2="548" y2="432" gradientUnits="userSpaceOnUse">
