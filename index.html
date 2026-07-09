@@ -1,0 +1,1683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital Fabric — Siemens DISW Emerging Technologies</title>
+<link rel="stylesheet" href="styles/fabric.css">
+<style>
+/* ═══ LANDING — layout ═══ */
+body { min-height: 100vh; overflow-x: hidden; }
+
+.cursor-light,
+.cursor-light-echo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 20;
+  border-radius: 50%;
+  mix-blend-mode: screen;
+  transform: translate3d(-50%, -50%, 0);
+  will-change: transform, opacity;
+}
+.cursor-light {
+  width: 420px;
+  height: 420px;
+  background: radial-gradient(circle, rgba(72,206,152,0.20) 0%, rgba(93,158,223,0.13) 26%, rgba(133,121,229,0.08) 46%, rgba(13,16,22,0) 72%);
+  filter: blur(18px);
+  opacity: 0.9;
+}
+.cursor-light-echo {
+  width: 180px;
+  height: 180px;
+  background: radial-gradient(circle, rgba(237,185,102,0.15) 0%, rgba(219,114,100,0.07) 45%, rgba(13,16,22,0) 74%);
+  filter: blur(10px);
+  opacity: 0.7;
+}
+
+/* ── top bar ── */
+.topbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  height: 52px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px;
+  background: rgba(13,16,22,0.84);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  transition: background 0.3s;
+}
+.topbar-brand {
+  display: flex; align-items: center; gap: 12px;
+}
+.topbar-brand .sigil {
+  width: 22px; height: 22px;
+  border: 1.5px solid var(--teal);
+  border-radius: 5px;
+  display: grid; place-items: center;
+  color: var(--teal);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 0.05em;
+}
+.topbar-brand span {
+  font-size: 13px; font-weight: 500; color: var(--text);
+  letter-spacing: 0.02em;
+}
+.topbar-brand .dim { color: var(--text3); font-weight: 400; }
+.topbar-nav { display: flex; gap: 32px; }
+.topbar-nav a {
+  font-size: 12px; color: var(--text2); font-weight: 400;
+  letter-spacing: 0.03em;
+  transition: color 0.15s;
+}
+.topbar-nav a:hover { color: var(--text); }
+
+/* -- mini site directory -- */
+.mini-sites {
+  padding: 36px 40px 30px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(19,22,30,0.78), rgba(16,19,27,0.7));
+}
+.mini-sites-shell {
+  max-width: 1220px;
+  margin: 0 auto;
+  display: grid;
+  gap: 14px;
+}
+.mini-sites-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.mini-sites-head h2 {
+  margin: 6px 0 8px;
+  font-size: clamp(26px, 3.6vw, 36px);
+  letter-spacing: -0.02em;
+}
+.mini-sites-head p {
+  margin: 0;
+  max-width: 760px;
+  font-size: 14px;
+  color: var(--text2);
+  line-height: 1.6;
+}
+.mini-sites-jump {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 13px;
+  border-radius: 999px;
+  border: 1px solid var(--border2);
+  background: rgba(19,22,30,0.9);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text2);
+}
+.mini-sites-jump:hover {
+  color: var(--text);
+  border-color: rgba(72,206,152,0.36);
+}
+.mini-sites-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.mini-site-card {
+  display: grid;
+  gap: 8px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg2);
+  padding: 14px 16px;
+  transition: border-color 0.18s, transform 0.18s, box-shadow 0.18s;
+}
+.mini-site-card:hover {
+  border-color: rgba(72,206,152,0.36);
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px rgba(0,0,0,0.22);
+}
+.mini-site-top {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.mini-site-tag {
+  border-radius: 999px;
+  padding: 2px 8px;
+  border: 1px solid var(--border2);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.mini-site-tag.live {
+  color: var(--teal);
+  border-color: rgba(72,206,152,0.34);
+  background: rgba(72,206,152,0.12);
+}
+.mini-site-tag.lab {
+  color: var(--blue);
+  border-color: rgba(93,158,223,0.34);
+  background: rgba(93,158,223,0.12);
+}
+.mini-site-tag.section {
+  color: var(--amber);
+  border-color: rgba(237,185,102,0.34);
+  background: rgba(237,185,102,0.12);
+}
+.mini-site-type {
+  font-size: 11px;
+  color: var(--text3);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.mini-site-title {
+  font-size: 16px;
+  color: var(--text);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.mini-site-rep {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.55;
+}
+
+/* ── hero ── */
+.hero {
+  --hero-progress: 0;
+  position: relative;
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 120px 40px 80px;
+  overflow: hidden;
+}
+.hero-depth {
+  position: absolute;
+  inset: 14% 8% auto;
+  height: min(58vh, 520px);
+  border-radius: 36px;
+  background:
+    radial-gradient(circle at 30% 35%, rgba(72,206,152,0.14), transparent 38%),
+    radial-gradient(circle at 70% 30%, rgba(133,121,229,0.16), transparent 42%),
+    linear-gradient(135deg, rgba(19,23,32,0.55), rgba(27,31,42,0.18));
+  border: 1px solid rgba(82,93,112,0.18);
+  box-shadow: 0 24px 90px rgba(0,0,0,0.28);
+  filter: blur(calc(var(--hero-progress) * 1.4px));
+  transform: translate3d(0, calc(var(--hero-progress) * 22px), 0) scale(calc(1 + var(--hero-progress) * 0.055));
+  transform-origin: center center;
+  opacity: calc(0.88 - var(--hero-progress) * 0.18);
+  will-change: transform, opacity, filter;
+  pointer-events: none;
+}
+.hero-grid {
+  position: absolute; inset: 0; z-index: 0;
+  pointer-events: none;
+  opacity: 0.35;
+  transform: translate3d(0, calc(var(--hero-progress) * 10px), 0) scale(calc(1 + var(--hero-progress) * 0.028));
+  transform-origin: center center;
+  will-change: transform, opacity;
+}
+.hero-content {
+  position: relative; z-index: 1;
+  max-width: 720px;
+  transform: translate3d(0, calc(var(--hero-progress) * 14px), 0) scale(calc(1 - var(--hero-progress) * 0.022));
+  transform-origin: center top;
+  opacity: calc(1 - var(--hero-progress) * 0.08);
+  will-change: transform, opacity;
+}
+.hero-eyebrow {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px; font-weight: 500;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 28px;
+  opacity: 0; animation: fade-in 0.6s var(--ease-out) 0.2s forwards;
+}
+.hero h1 {
+  font-size: clamp(36px, 5.8vw, 60px);
+  font-weight: 700; line-height: 1.08;
+  letter-spacing: -0.025em;
+  color: var(--text);
+  margin-bottom: 24px;
+  opacity: 0; animation: fade-in 0.7s var(--ease-out) 0.35s forwards;
+}
+.hero h1 em {
+  font-style: normal;
+  background: linear-gradient(135deg, var(--purple) 0%, var(--teal) 100%);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.hero-sub {
+  font-size: 16px; line-height: 1.7;
+  color: var(--text2); font-weight: 300;
+  max-width: 560px; margin: 0 auto 40px;
+  opacity: 0; animation: fade-in 0.7s var(--ease-out) 0.5s forwards;
+}
+.hero-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 0 auto 26px;
+  opacity: 0;
+  animation: fade-in 0.7s var(--ease-out) 0.62s forwards;
+}
+.hero-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--border2);
+  background: rgba(19,22,30,0.84);
+  color: var(--text2);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: transform 0.2s var(--ease-out), border-color 0.2s, color 0.2s, background 0.2s;
+}
+.hero-btn:hover {
+  transform: translateY(-1px);
+  border-color: var(--border2);
+  color: var(--text);
+}
+.hero-btn.primary {
+  background: linear-gradient(135deg, rgba(133,121,229,0.18), rgba(72,206,152,0.16));
+  border-color: rgba(133,121,229,0.38);
+  color: var(--text);
+}
+.hero-signals {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  max-width: 780px;
+  margin: 0 auto 24px;
+  opacity: 0;
+  animation: fade-in 0.7s var(--ease-out) 0.72s forwards;
+}
+.hero-signal {
+  text-align: left;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(19,22,30,0.72);
+  border: 1px solid rgba(82,93,112,0.18);
+}
+.hero-signal .signal-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 8px;
+}
+.hero-signal .signal-value {
+  font-size: 18px;
+  line-height: 1;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.hero-signal .signal-copy {
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--text2);
+}
+.hero-scroll {
+  display: flex; align-items: center; gap: 6px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px; color: var(--text3);
+  letter-spacing: 0.08em; text-transform: uppercase;
+  opacity: 0; animation: fade-in 0.6s var(--ease-out) 0.8s forwards;
+  cursor: pointer; transition: color 0.15s;
+}
+.hero-scroll:hover { color: var(--text2); }
+.hero-scroll svg { animation: bob 2s ease-in-out infinite; }
+@keyframes bob { 0%,100%{ transform: translateY(0); } 50%{ transform: translateY(4px); } }
+
+/* ── separator ── */
+.sep {
+  width: 100%; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border2) 20%, var(--border2) 80%, transparent);
+}
+
+/* ── catalog section ── */
+.catalog {
+  --catalog-progress: 0;
+  padding: 100px 40px 120px;
+  max-width: 1120px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: 36px;
+  align-items: start;
+  transform: translate3d(0, calc((1 - var(--catalog-progress)) * 22px), 0);
+  transform-origin: center top;
+  opacity: calc(0.84 + var(--catalog-progress) * 0.16);
+  will-change: transform, opacity;
+}
+.catalog-header {
+  margin-bottom: 56px;
+  position: sticky;
+  top: 92px;
+  align-self: start;
+}
+.catalog-header .label-line {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; font-weight: 500;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 16px;
+}
+.catalog-header h2 {
+  font-size: 28px; font-weight: 600;
+  color: var(--text); line-height: 1.2;
+  margin-bottom: 12px;
+}
+.catalog-header p {
+  font-size: 15px; color: var(--text2);
+  line-height: 1.65; max-width: 600px;
+}
+.catalog-guidance {
+  margin-top: 18px;
+  padding: 16px 18px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(26,30,40,0.95), rgba(19,22,30,0.96));
+  border: 1px solid var(--border);
+}
+.catalog-guidance .guide-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 8px;
+}
+.catalog-guidance p {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text2);
+}
+.catalog-stack {
+  display: grid;
+  gap: 28px;
+}
+.catalog-block {
+  padding: 22px;
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(19,22,30,0.96), rgba(16,18,25,0.96));
+  border: 1px solid var(--border);
+}
+.catalog-block.featured {
+  border-color: rgba(72,206,152,0.22);
+  box-shadow: inset 0 1px 0 rgba(72,206,152,0.10);
+}
+.catalog-block.experiment {
+  border-color: rgba(82,148,214,0.2);
+  box-shadow: inset 0 1px 0 rgba(82,148,214,0.08);
+}
+.catalog-block.roadmap {
+  border-color: rgba(82,93,112,0.24);
+}
+.catalog-section-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+.catalog-section-head .section-kicker {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 8px;
+}
+.catalog-section-head h3 {
+  font-size: 22px;
+  line-height: 1.15;
+  color: var(--text);
+}
+.catalog-section-head p {
+  max-width: 560px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text2);
+}
+.section-stamp {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--amber);
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(232,164,68,0.2);
+  background: rgba(232,164,68,0.08);
+}
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+.feature-grid.feature-grid-single {
+  grid-template-columns: 1fr;
+}
+.featured-card {
+  display: grid;
+  gap: 16px;
+  padding: 24px;
+  border-radius: 16px;
+  border: 1px solid var(--border2);
+  background:
+    radial-gradient(circle at top right, rgba(124,111,222,0.08), transparent 36%),
+    linear-gradient(180deg, rgba(26,30,40,0.98), rgba(19,22,30,0.98));
+  box-shadow: 0 22px 54px rgba(0,0,0,0.12);
+}
+.featured-card .card-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.featured-card .card-num {
+  margin-bottom: 0;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.featured-card h3 {
+  font-size: 24px;
+  line-height: 1.12;
+  margin-bottom: 0;
+}
+.featured-card .card-desc {
+  margin-bottom: 0;
+  font-size: 14px;
+  line-height: 1.65;
+}
+.featured-card .card-emphasis {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+.featured-card .emphasis-cell {
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(13,15,20,0.52);
+  border: 1px solid rgba(82,93,112,0.18);
+}
+.featured-card .emphasis-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 6px;
+}
+.featured-card .emphasis-value {
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--text);
+}
+.featured-card .card-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--teal);
+}
+.featured-card .card-cta svg {
+  flex-shrink: 0;
+}
+.roadmap-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.roadmap-item {
+  display: grid;
+  gap: 10px;
+  padding: 18px 18px 16px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: rgba(26,30,40,0.64);
+}
+.roadmap-item .card-num {
+  margin-bottom: 0;
+}
+.roadmap-item h3 {
+  margin-bottom: 0;
+  font-size: 17px;
+}
+.roadmap-item .card-desc {
+  margin-bottom: 0;
+}
+.roadmap-item .roadmap-state {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.nx-story {
+  padding: 84px 40px;
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.nx-story-shell {
+  display: grid;
+  gap: 18px;
+}
+
+.nx-story-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.75fr);
+  gap: 18px;
+  align-items: stretch;
+}
+
+.nx-story-card {
+  display: grid;
+  gap: 14px;
+  padding: 24px;
+  border-radius: 18px;
+  border: 1px solid var(--border2);
+  background:
+    radial-gradient(circle at top right, rgba(61,191,138,0.08), transparent 38%),
+    linear-gradient(180deg, rgba(26,30,40,0.98), rgba(19,22,30,0.98));
+  box-shadow: 0 24px 60px rgba(0,0,0,0.14);
+}
+
+.nx-story-card h3 {
+  font-size: 24px;
+  line-height: 1.12;
+  margin-bottom: 0;
+}
+
+.nx-story-card p {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--text2);
+  margin-bottom: 0;
+}
+
+.nx-story-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.nx-story-kicker {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text3);
+}
+
+.nx-story-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.nx-story-stat {
+  display: grid;
+  gap: 8px;
+  padding: 18px;
+  border-radius: 14px;
+  background: rgba(13,15,20,0.5);
+  border: 1px solid rgba(82,93,112,0.18);
+}
+
+.nx-story-stat .stat-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text3);
+}
+
+.nx-story-stat .stat-value {
+  font-size: 18px;
+  line-height: 1.2;
+  color: var(--text);
+}
+
+.nx-story-list {
+  display: grid;
+  gap: 10px;
+}
+
+.nx-story-item {
+  display: grid;
+  gap: 4px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: rgba(26,30,40,0.72);
+}
+
+.nx-story-item .item-title {
+  font-size: 15px;
+  color: var(--text);
+}
+
+.nx-story-item .item-copy {
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--text2);
+}
+
+.nx-story-item .item-meta {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text3);
+}
+
+.nx-story-note {
+  padding: 16px 18px;
+  border-radius: 14px;
+  border: 1px solid rgba(232,164,68,0.22);
+  background: rgba(232,164,68,0.07);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text2);
+}
+
+.nx-render-frame {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(82,93,112,0.2);
+  background:
+    radial-gradient(circle at 20% 20%, rgba(61,191,138,0.1), transparent 30%),
+    linear-gradient(180deg, rgba(12,14,19,0.96), rgba(19,22,30,0.98));
+}
+
+.nx-render-frame img {
+  width: 100%;
+  display: block;
+  border-radius: 12px;
+  border: 1px solid rgba(82,93,112,0.18);
+  background: radial-gradient(circle at 20% 20%, rgba(34,39,51,0.92), rgba(11,13,18,0.98));
+}
+
+.nx-render-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text3);
+}
+
+.nx-render-meta strong {
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* ── presentation grid ── */
+.pres-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+.pres-card {
+  --hover-lift: 0px;
+  --card-shift: 0px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px 28px 24px;
+  display: flex; flex-direction: column;
+  transition: border-color 0.2s, transform 0.35s var(--ease-out), box-shadow 0.35s var(--ease-out);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transform: translate3d(0, calc(var(--card-shift) + var(--hover-lift)), 0);
+  box-shadow: 0 18px 54px rgba(0,0,0,0.1);
+  will-change: transform, box-shadow;
+}
+.pres-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--purple), var(--teal));
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+.pres-card:hover {
+  border-color: var(--border2);
+  --hover-lift: -4px;
+  box-shadow: 0 28px 74px rgba(0,0,0,0.16);
+}
+.pres-card:hover::before { opacity: 1; }
+
+.pres-card .card-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; color: var(--text3);
+  margin-bottom: 16px;
+}
+.pres-card h3 {
+  font-size: 16px; font-weight: 600;
+  color: var(--text); line-height: 1.3;
+  margin-bottom: 8px;
+}
+.pres-card .card-desc {
+  font-size: 13px; color: var(--text2);
+  line-height: 1.55; flex: 1;
+  margin-bottom: 20px;
+}
+.pres-card .card-meta {
+  display: flex; align-items: center; gap: 8px;
+  flex-wrap: wrap;
+}
+.pres-card .card-stat {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; color: var(--text3);
+  letter-spacing: 0.05em;
+}
+
+/* ── status pill ── */
+.status-pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; font-weight: 500;
+  padding: 3px 8px; border-radius: 10px;
+  letter-spacing: 0.04em;
+}
+.status-pill .dot { width: 6px; height: 6px; border-radius: 50%; }
+.status-pill.live .dot { background: var(--teal); }
+.status-pill.live { color: var(--teal); background: var(--teal-bg); border: 1px solid var(--teal-dim); }
+.status-pill.draft .dot { background: var(--amber); }
+.status-pill.draft { color: var(--amber); background: var(--amber-bg); border: 1px solid var(--amber-dim); }
+.status-pill.planned .dot { background: var(--text3); }
+.status-pill.planned { color: var(--text3); background: rgba(82,93,112,0.1); border: 1px solid var(--border); }
+.status-pill.experimental .dot { background: var(--blue); }
+.status-pill.experimental { color: var(--blue); background: var(--blue-bg); border: 1px solid #2a3d55; }
+
+/* ── about strip ── */
+.about {
+  --about-progress: 0;
+  padding: 80px 40px;
+  max-width: 1120px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: 36px;
+  align-items: start;
+  transform: translate3d(0, calc((1 - var(--about-progress)) * 16px), 0);
+  transform-origin: center top;
+  opacity: calc(0.88 + var(--about-progress) * 0.12);
+  will-change: transform, opacity;
+}
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.parallax-card {
+  transform: translateY(var(--card-shift, 0px));
+}
+.about-card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 24px;
+}
+.about-card .ac-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.about-card .ac-value {
+  font-size: 14px; color: var(--text);
+  line-height: 1.55; font-weight: 400;
+}
+.about-card.purple .ac-label { color: var(--purple); }
+.about-card.teal .ac-label   { color: var(--teal); }
+.about-card.amber .ac-label  { color: var(--amber); }
+.about-card.blue .ac-label   { color: var(--blue); }
+
+/* ── footer ── */
+.site-footer {
+  padding: 32px 40px;
+  border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 12px;
+}
+.site-footer p {
+  font-size: 11px; color: var(--text3); line-height: 1.5;
+}
+.site-footer .footer-links { display: flex; gap: 20px; }
+.site-footer .footer-links a {
+  font-size: 11px; color: var(--text3);
+  transition: color 0.15s;
+}
+.site-footer .footer-links a:hover { color: var(--text2); }
+
+/* ── reveal on scroll ── */
+.reveal {
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
+}
+.reveal.visible {
+  opacity: 1; transform: translateY(0);
+}
+
+/* ── responsive ── */
+@media (max-width: 720px) {
+  .topbar {
+    height: auto;
+    min-height: 52px;
+    padding: 10px 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .topbar-nav {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    row-gap: 8px;
+    gap: 14px;
+  }
+  .hero { padding: 100px 24px 60px; }
+  .catalog,
+  .mini-sites,
+  .about {
+    padding: 60px 24px 80px;
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .mini-sites-grid { grid-template-columns: 1fr; }
+  .nx-story { padding: 60px 24px 80px; }
+  .catalog-header { position: static; margin-bottom: 0; }
+  .pres-grid { grid-template-columns: 1fr; }
+  .hero-actions { flex-direction: column; align-items: stretch; }
+  .hero-btn { justify-content: center; }
+  .hero-signals,
+  .feature-grid,
+  .roadmap-grid,
+  .featured-card .card-emphasis,
+  .nx-story-hero,
+  .nx-story-grid {
+    grid-template-columns: 1fr;
+  }
+  .site-footer { padding: 24px 20px; }
+  .cursor-light,
+  .cursor-light-echo { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-depth,
+  .hero-grid,
+  .hero-content,
+  .catalog,
+  .about,
+  .pres-card {
+    transform: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+    box-shadow: none !important;
+  }
+}
+
+/* ═══ OVERFLOW CONTAINMENT ═══ */
+.catalog-block,
+.featured-card,
+.roadmap-item,
+.hero-signal,
+.catalog-guidance,
+.nx-story-card,
+.nx-story-stat,
+.nx-story-item,
+.nx-story-note,
+.pres-card { overflow: hidden; }
+
+.featured-card > *,
+.catalog-block > *,
+.roadmap-item > *,
+.nx-story-card > *,
+.nx-story-stat > *,
+.nx-story-item > *,
+.feature-grid > *,
+.roadmap-grid > *,
+.nx-story-grid > *,
+.nx-story-hero > * { min-width: 0; }
+
+pre, code { overflow-x: auto; max-width: 100%; word-break: break-word; overflow-wrap: break-word; }
+
+img, svg { max-width: 100%; height: auto; }
+</style>
+</head>
+<body>
+
+<div class="cursor-light" id="cursorLight" aria-hidden="true"></div>
+<div class="cursor-light-echo" id="cursorLightEcho" aria-hidden="true"></div>
+
+<!-- ══════ TOP BAR ══════ -->
+<div class="topbar" id="topbar">
+  <div class="topbar-brand">
+    <div class="sigil">df</div>
+    <span>Digital Fabric <span class="dim">/ Siemens DISW</span></span>
+  </div>
+  <nav class="topbar-nav">
+    <a href="#hero">Home</a>
+    <a href="#mini-sites">Mini Sites</a>
+    <a href="#catalog">References</a>
+    <a href="#nx-mcp-story">NX MCP</a>
+    <a href="#about">About</a>
+  </nav>
+</div>
+
+<!-- ══════ HERO ══════ -->
+<section class="hero" id="hero">
+  <div class="hero-depth" aria-hidden="true"></div>
+  <!-- animated background grid -->
+  <svg class="hero-grid" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="gfade" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#3dbf8a" stop-opacity="0.06"/>
+        <stop offset="100%" stop-color="#7c6fde" stop-opacity="0.03"/>
+      </linearGradient>
+      <pattern id="gridp" width="60" height="60" patternUnits="userSpaceOnUse">
+        <path d="M60 0 L0 0 0 60" fill="none" stroke="#2e3547" stroke-width="0.4"/>
+      </pattern>
+    </defs>
+    <rect width="1200" height="800" fill="url(#gfade)"/>
+    <rect width="1200" height="800" fill="url(#gridp)"/>
+    <!-- accent lines -->
+    <line x1="0" y1="300" x2="1200" y2="300" stroke="#3dbf8a" stroke-width="0.3" opacity="0.15" stroke-dasharray="8 12" style="animation: grid-flow 4s linear infinite"/>
+    <line x1="0" y1="500" x2="1200" y2="500" stroke="#7c6fde" stroke-width="0.3" opacity="0.12" stroke-dasharray="8 12" style="animation: grid-flow 5s linear infinite reverse"/>
+    <line x1="600" y1="0" x2="600" y2="800" stroke="#3dbf8a" stroke-width="0.3" opacity="0.1" stroke-dasharray="8 12" style="animation: grid-flow 6s linear infinite"/>
+    <!-- intersection node dots -->
+    <circle cx="600" cy="300" r="3" fill="#3dbf8a" opacity="0.25" style="animation: glow-pulse 3s ease-in-out infinite"/>
+    <circle cx="600" cy="500" r="2.5" fill="#7c6fde" opacity="0.2" style="animation: glow-pulse 3s ease-in-out infinite 1s"/>
+    <circle cx="360" cy="300" r="2" fill="#3dbf8a" opacity="0.15" style="animation: glow-pulse 4s ease-in-out infinite 0.5s"/>
+    <circle cx="840" cy="300" r="2" fill="#3dbf8a" opacity="0.15" style="animation: glow-pulse 4s ease-in-out infinite 1.5s"/>
+    <circle cx="360" cy="500" r="2" fill="#7c6fde" opacity="0.12" style="animation: glow-pulse 4s ease-in-out infinite 2s"/>
+    <circle cx="840" cy="500" r="2" fill="#7c6fde" opacity="0.12" style="animation: glow-pulse 4s ease-in-out infinite 2.5s"/>
+    <!-- radial fade at edges -->
+    <rect width="1200" height="800" fill="url(#edgefade)"/>
+    <defs>
+      <radialGradient id="edgefade" cx="50%" cy="50%" r="60%">
+        <stop offset="0%" stop-color="#0d0f14" stop-opacity="0"/>
+        <stop offset="100%" stop-color="#0d0f14" stop-opacity="0.85"/>
+      </radialGradient>
+    </defs>
+  </svg>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">Emerging Technologies &middot; Siemens DISW</div>
+    <h1>Where AI meets<br><em>industrial reality</em></h1>
+    <p class="hero-sub">Interactive architecture references, system deep-dives, and design patterns from the intersection of agentic AI, PLM, and CAD/CAM/CAE at Siemens Digital Industries Software.</p>
+    <div class="hero-actions">
+      <a class="hero-btn primary" href="agentic-digital-thread-3d.html">Open 3D Thread Experience</a>
+      <a class="hero-btn" href="#mini-sites">Open Mini Site Directory</a>
+    </div>
+    <div class="hero-signals" aria-label="Site highlights">
+      <div class="hero-signal">
+        <div class="signal-label">Live Today</div>
+        <div class="signal-value">5 References</div>
+        <div class="signal-copy">Mendix + NX, Teamcenter MCP, NX MCP, a new spatial digital-thread command center, and a deep graph architecture reference with validated edge logic.</div>
+      </div>
+      <div class="hero-signal">
+        <div class="signal-label">Domain</div>
+        <div class="signal-value">AI + PLM + Graph</div>
+        <div class="signal-copy">Governed CAD automation, agentic tooling over Teamcenter, and graph-first reasoning over validated industrial relationships.</div>
+      </div>
+      <div class="hero-signal">
+        <div class="signal-label">Format</div>
+        <div class="signal-value">Interactive</div>
+        <div class="signal-copy">Guided architecture walkthroughs, cinematic motion studies, and clickable graph storytelling instead of static slides.</div>
+      </div>
+    </div>
+    <a class="hero-scroll" href="#mini-sites">
+      open mini site directory
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2v10M3 8l4 4 4-4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+</section>
+
+<section class="mini-sites reveal" id="mini-sites">
+  <div class="mini-sites-shell">
+    <div class="mini-sites-head">
+      <div>
+        <div class="label-line">Global Navigation</div>
+        <h2>Mini Site Directory</h2>
+        <p>Every item below opens a dedicated page or section. Representation labels show exactly what each project is: live architecture reference, experience-lab experiment, or homepage section.</p>
+      </div>
+      <a class="mini-sites-jump" href="#catalog">Open full catalog</a>
+    </div>
+
+    <div class="mini-sites-grid">
+      <a class="mini-site-card" href="agentic-digital-thread-3d.html">
+        <div class="mini-site-top"><span class="mini-site-tag live">Live Reference</span><span class="mini-site-type">Spatial Command Center</span></div>
+        <div class="mini-site-title">Agentic Digital Thread 3D</div>
+        <div class="mini-site-rep">Representation: cinematic 3D orientation with synchronized 2D precision panels for contracts, prompts, and approvals.</div>
+      </a>
+      <a class="mini-site-card" href="teamcenter-graph-experience.html">
+        <div class="mini-site-top"><span class="mini-site-tag live">Live Reference</span><span class="mini-site-type">Graph Deep Dive</span></div>
+        <div class="mini-site-title">Teamcenter Graph Architecture</div>
+        <div class="mini-site-rep">Representation: technical route-policy and evidence deck with real predicates, IDs, and graph-first versus MCP fallback logic.</div>
+      </a>
+      <a class="mini-site-card" href="mendix-nx-architecture.html">
+        <div class="mini-site-top"><span class="mini-site-tag live">Live Reference</span><span class="mini-site-type">Architecture Deck</span></div>
+        <div class="mini-site-title">Mendix + NX Architecture</div>
+        <div class="mini-site-rep">Representation: production workflow architecture from Mendix orchestration into governed NX execution.</div>
+      </a>
+      <a class="mini-site-card" href="teamcenter-mcp-architecture.html">
+        <div class="mini-site-top"><span class="mini-site-tag live">Live Reference</span><span class="mini-site-type">Architecture Deck</span></div>
+        <div class="mini-site-title">Teamcenter MCP Architecture</div>
+        <div class="mini-site-rep">Representation: agentic PLM integration surface over Teamcenter SOA with mutation safety and operational boundaries.</div>
+      </a>
+      <a class="mini-site-card" href="framer-scroll-study.html">
+        <div class="mini-site-top"><span class="mini-site-tag lab">Experience Lab</span><span class="mini-site-type">Ambient Motion</span></div>
+        <div class="mini-site-title">Platform Architecture Motion Study</div>
+        <div class="mini-site-rep">Representation: five-beat platform narrative focused on motion language and reading rhythm rather than proof claims.</div>
+      </a>
+      <a class="mini-site-card" href="alpine-digital-thread.html">
+        <div class="mini-site-top"><span class="mini-site-tag lab">Experience Lab</span><span class="mini-site-type">Scenario Story</span></div>
+        <div class="mini-site-title">Alpine Closed-Loop Thread</div>
+        <div class="mini-site-rep">Representation: grounded rescue-UAV storyline showing where human approvals and agent acceleration intersect.</div>
+      </a>
+      <a class="mini-site-card" href="teamcenter-graph-motion-study.html">
+        <div class="mini-site-top"><span class="mini-site-tag lab">Experience Lab</span><span class="mini-site-type">Narrative Motion</span></div>
+        <div class="mini-site-title">Graph Materialization Motion Study</div>
+        <div class="mini-site-rep">Representation: cinematic narrative page explaining why the Teamcenter graph approach is useful before technical deep dive.</div>
+      </a>
+      <a class="mini-site-card" href="#nx-mcp-story">
+        <div class="mini-site-top"><span class="mini-site-tag section">Home Section</span><span class="mini-site-type">Capability Proof</span></div>
+        <div class="mini-site-title">NX MCP In Practice</div>
+        <div class="mini-site-rep">Representation: homepage evidence section covering benchmark scripts, generated design families, and live NX capture outputs.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ══════ CATALOG ══════ -->
+<section class="catalog" id="catalog">
+  <div class="catalog-header reveal">
+    <div class="label-line">Presentation catalog</div>
+    <h2>Architecture references &amp; system studies</h2>
+    <p>Each entry is either a validated architecture reference or a clearly labeled interaction experiment. Click a card to open it. New studies are added continuously as the team explores new integration patterns.</p>
+    <div class="catalog-guidance">
+      <div class="guide-label">How To Read This</div>
+      <p>Start with the live references below. They are the most concrete, most complete, and the best entry point if you want the strongest story and the clearest visual hierarchy. The experience lab is intentionally more speculative in presentation style, even when the product roles are grounded.</p>
+    </div>
+  </div>
+
+  <div class="catalog-stack">
+    <div class="catalog-block featured reveal">
+      <div class="catalog-section-head">
+        <div>
+          <div class="section-kicker">Live References</div>
+          <h3>Read These First</h3>
+          <p>The most complete studies on the site. These are the clearest entry points if you want the strongest narrative, the most concrete evidence, and the most polished interaction model.</p>
+        </div>
+        <div class="section-stamp">Priority Reading</div>
+      </div>
+
+      <div class="feature-grid">
+        <a class="featured-card reveal parallax-card" href="mendix-nx-architecture.html" style="animation-delay:0.05s">
+          <div class="card-topline">
+            <div class="card-num">01 / Live Reference</div>
+            <span class="status-pill live"><span class="dot"></span>live</span>
+          </div>
+          <h3>Mendix + NX at 200-user scale</h3>
+          <div class="card-desc">Production-grade architecture for parameterized CAD changes delivered through Mendix apps, backed by governed NX execution and Teamcenter as the record system.</div>
+          <div class="card-emphasis">
+            <div class="emphasis-cell">
+              <div class="emphasis-label">Best For</div>
+              <div class="emphasis-value">Workflow to CAD automation</div>
+            </div>
+            <div class="emphasis-cell">
+              <div class="emphasis-label">Format</div>
+              <div class="emphasis-value">5-page interactive walkthrough</div>
+            </div>
+            <div class="emphasis-cell">
+              <div class="emphasis-label">Look For</div>
+              <div class="emphasis-value">Three-plane model and release-train story</div>
+            </div>
+          </div>
+          <div class="card-cta">Open Mendix Reference <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M8 2l4 5-4 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </a>
+
+        <a class="featured-card reveal parallax-card" href="teamcenter-mcp-architecture.html" style="animation-delay:0.1s">
+          <div class="card-topline">
+            <div class="card-num">02 / Live Reference</div>
+            <span class="status-pill live"><span class="dot"></span>live</span>
+          </div>
+          <h3>Teamcenter MCP — agentic PLM integration</h3>
+          <div class="card-desc">A governed MCP surface over Teamcenter SOA for search, BOM traversal, change management, 3D/JT understanding, vendor intelligence, and compliance-driven flows.</div>
+          <div class="card-emphasis">
+            <div class="emphasis-cell">
+              <div class="emphasis-label">Best For</div>
+              <div class="emphasis-value">Agent tooling over enterprise PLM</div>
+            </div>
+            <div class="emphasis-cell">
+              <div class="emphasis-label">Surface</div>
+              <div class="emphasis-value">60+ tools across 5 architectural pages</div>
+            </div>
+            <div class="emphasis-cell">
+              <div class="emphasis-label">Look For</div>
+              <div class="emphasis-value">SOA bridge and mutation safety model</div>
+            </div>
+          </div>
+          <div class="card-cta">Open Teamcenter Reference <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M8 2l4 5-4 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </a>
+
+        <a class="featured-card reveal parallax-card" href="#nx-mcp-story" style="animation-delay:0.15s">
+          <div class="card-topline">
+            <div class="card-num">03 / Live Reference</div>
+            <span class="status-pill live"><span class="dot"></span>live</span>
+          </div>
+          <h3>NX MCP — agentic CAD in practice</h3>
+          <div class="card-desc">A concrete look at the NX MCP stack through real benchmark runs, live NX exports, tested handler reload behavior, and the 68 operations behind the facade.</div>
+          <div class="card-emphasis">
+            <div class="emphasis-cell">
+              <div class="emphasis-label">Best For</div>
+              <div class="emphasis-value">Agentic NX architecture grounded in working evidence</div>
+            </div>
+            <div class="emphasis-cell">
+              <div class="emphasis-label">Evidence</div>
+              <div class="emphasis-value">Cargo ship benchmark, JT export, and live handler tests</div>
+            </div>
+            <div class="emphasis-cell">
+              <div class="emphasis-label">Look For</div>
+              <div class="emphasis-value">Reload limits, part workflow truth, and generated design families</div>
+            </div>
+          </div>
+          <div class="card-cta">Open NX MCP Reference <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M8 2l4 5-4 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </a>
+      </div>
+    </div>
+
+    <div class="catalog-block featured reveal" id="graph-experience">
+      <div class="catalog-section-head">
+        <div>
+          <div class="section-kicker">Graph Experience</div>
+          <h3>Spatial digital-thread experience and graph logic</h3>
+          <p>This section now leads with a true spatial, explorable command-center layer: 3D for orientation and progression, 2D panels for exact contracts, prompts, approvals, and system boundaries.</p>
+        </div>
+        <div class="section-stamp">New Module</div>
+      </div>
+
+      <div class="feature-grid">
+        <a class="featured-card reveal parallax-card" href="agentic-digital-thread-3d.html" style="animation-delay:0.12s">
+          <div class="card-topline">
+            <div class="card-num">04 / Live Reference</div>
+            <span class="status-pill live"><span class="dot"></span>live</span>
+          </div>
+          <h3>Agentic digital thread 3D experience</h3>
+          <div class="card-desc">A premium spatial command-center page with seven thread zones, Story/Explore/X-ray/Prompt modes, route-level contract inspection, and synchronized precision panels.</div>
+          <div class="card-emphasis">
+            <div class="emphasis-cell">
+              <div class="emphasis-label">Best For</div>
+              <div class="emphasis-value">Executive and architect walkthroughs of closed-loop, human-in-the-loop decision flow</div>
+            </div>
+            <div class="emphasis-cell">
+              <div class="emphasis-label">Evidence</div>
+              <div class="emphasis-value">Mode-specific scenario, contract, prompt, and approval views anchored to one canonical thread model</div>
+            </div>
+            <div class="emphasis-cell">
+              <div class="emphasis-label">Look For</div>
+              <div class="emphasis-value">Platform click-to-focus camera moves, edge packet inspection, and spot checks per stage</div>
+            </div>
+          </div>
+          <div class="card-cta">Open 3D Thread Experience <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M8 2l4 5-4 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </a>
+
+        <a class="featured-card reveal parallax-card" href="teamcenter-graph-experience.html" style="animation-delay:0.16s">
+          <div class="card-topline">
+            <div class="card-num">05 / Live Reference</div>
+            <span class="status-pill live"><span class="dot"></span>live</span>
+          </div>
+          <h3>Teamcenter graph architecture reference</h3>
+          <div class="card-desc">A technical architecture deck for execution stack, graph-vs-MCP routing logic, interactive graph reasoning, and validation evidence with real IDs and predicate families.</div>
+          <div class="card-emphasis">
+            <div class="emphasis-cell">
+              <div class="emphasis-label">Best For</div>
+              <div class="emphasis-value">Detailed technical review of graph materialization and decision policy</div>
+            </div>
+            <div class="emphasis-cell">
+              <div class="emphasis-label">Evidence</div>
+              <div class="emphasis-value">9,602 edges, validated predicates, and concrete graph-first/MCP fallback routing</div>
+            </div>
+            <div class="emphasis-cell">
+              <div class="emphasis-label">Look For</div>
+              <div class="emphasis-value">Execution stack, route policy, graph inspector, readiness checks, and AGS pipeline traceability</div>
+            </div>
+          </div>
+          <div class="card-cta">Open Graph Reference <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M8 2l4 5-4 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </a>
+      </div>
+      <div style="margin-top:14px; padding-left:2px;">
+        <a href="teamcenter-graph-motion-study.html" style="font-size:12px; color:var(--text2); text-decoration:underline;">Open graph materialization motion study</a>
+      </div>
+    </div>
+
+    <div class="catalog-block experiment reveal" id="experience-lab">
+      <div class="catalog-section-head">
+        <div>
+          <div class="section-kicker">Experience Lab</div>
+          <h3>Two experimental scenes</h3>
+          <p>These pages test presentation language more than product proof. One is a grounded Siemens digital-thread narrative; the other is a quieter Framer-style motion study focused on scroll feel, focal hierarchy, and ambient depth.</p>
+        </div>
+        <div class="section-stamp" style="color:var(--blue);border-color:#2a3d55;background:var(--blue-bg)">Experimental</div>
+      </div>
+
+      <div class="feature-grid">
+        <a class="featured-card reveal parallax-card" href="framer-scroll-study.html" style="animation-delay:0.17s">
+          <div class="card-topline">
+            <div class="card-num">06 / Experience Lab</div>
+            <span class="status-pill experimental"><span class="dot"></span>experimental</span>
+          </div>
+          <h3>Platform architecture — ambient motion study</h3>
+          <div class="card-desc">A scroll-driven walkthrough of the five Digital Fabric platform layers — governed infrastructure, tool connectivity, embedded intelligence, closed-loop orchestration, and continuous evolution — delivered through ambient motion and a floating node-graph focal object.</div>
+          <div class="card-emphasis">
+            <div class="emphasis-cell">
+              <div class="emphasis-label">Best For</div>
+              <div class="emphasis-value">Seeing the full platform vision in a relaxed scroll format</div>
+            </div>
+            <div class="emphasis-cell">
+              <div class="emphasis-label">Format</div>
+              <div class="emphasis-value">Sticky cinematic stage with five meaningful architecture beats</div>
+            </div>
+            <div class="emphasis-cell">
+              <div class="emphasis-label">Look For</div>
+              <div class="emphasis-value">How each layer builds on the last, from remoting to continuous improvement</div>
+            </div>
+          </div>
+          <div class="card-cta">Open Platform Study <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M8 2l4 5-4 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </a>
+
+        <a class="featured-card reveal parallax-card" href="alpine-digital-thread.html" style="animation-delay:0.2s">
+          <div class="card-topline">
+            <div class="card-num">07 / Experience Lab</div>
+            <span class="status-pill experimental"><span class="dot"></span>experimental</span>
+          </div>
+          <h3>Alpine traverse — closed-loop digital thread</h3>
+          <div class="card-desc">A thread-travel experience centered on an alpine rescue UAV program, using one coherent story panel, actual product imagery, clickable stops, and factual stage copy to show how a human-in-the-loop agent connects Mendix, Polarion, Teamcenter, Capital, NX, Simcenter, Tecnomatix, Opcenter, and operational feedback.</div>
+          <div class="card-emphasis">
+            <div class="emphasis-cell">
+              <div class="emphasis-label">Best For</div>
+              <div class="emphasis-value">Digital thread storytelling with product-grounded roles</div>
+            </div>
+            <div class="emphasis-cell">
+              <div class="emphasis-label">Format</div>
+              <div class="emphasis-value">Scroll-driven orbit scene with evolving info cards</div>
+            </div>
+            <div class="emphasis-cell">
+              <div class="emphasis-label">Look For</div>
+              <div class="emphasis-value">Where the human stays accountable and where the agent accelerates the thread</div>
+            </div>
+          </div>
+          <div class="card-cta">Open Alpine Experiment <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M8 2l4 5-4 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </a>
+      </div>
+    </div>
+
+    <div class="catalog-block roadmap reveal">
+      <div class="catalog-section-head">
+        <div>
+          <div class="section-kicker">Research Pipeline</div>
+          <h3>Upcoming Studies</h3>
+          <p>These are queued topics and partially formed narratives. They stay visually quieter so they do not compete with the live references above.</p>
+        </div>
+        <div class="section-stamp">In Development</div>
+      </div>
+
+      <div class="roadmap-grid">
+        <div class="roadmap-item reveal parallax-card" style="animation-delay:0.18s; cursor: default; opacity: 0.72;">
+          <div class="card-num">08</div>
+          <h3>Algorithmic modeling via Logic Editor</h3>
+          <div class="card-desc">Rule-backed node graphs from AI intent classification, including selection binding and node port resolution.</div>
+          <div class="roadmap-state">
+            <span class="status-pill planned"><span class="dot"></span>planned</span>
+            <span class="card-stat">coming soon</span>
+          </div>
+        </div>
+
+        <div class="roadmap-item reveal parallax-card" style="animation-delay:0.22s; cursor: default; opacity: 0.72;">
+          <div class="card-num">09</div>
+          <h3>AI-driven FEM simulation pipeline</h3>
+          <div class="card-desc">Agent-controlled structural analysis from geometry selection through meshing, solve, and result interpretation.</div>
+          <div class="roadmap-state">
+            <span class="status-pill planned"><span class="dot"></span>planned</span>
+            <span class="card-stat">coming soon</span>
+          </div>
+        </div>
+
+        <div class="roadmap-item reveal parallax-card" style="animation-delay:0.26s; cursor: default; opacity: 0.72;">
+          <div class="card-num">10</div>
+          <h3>Parametric airfoil design with CST curves</h3>
+          <div class="card-desc">NACA and Kulfan CST geometry generation in NX, including OML fuselages, lofts, and airworthy surfacing patterns.</div>
+          <div class="roadmap-state">
+            <span class="status-pill planned"><span class="dot"></span>planned</span>
+            <span class="card-stat">coming soon</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ══════ NX MCP STORY ══════ -->
+<section class="nx-story" id="nx-mcp-story">
+  <div class="catalog-header reveal">
+    <div class="label-line">NX MCP in Practice</div>
+    <h2>What We Have Actually Built With NX MCP</h2>
+    <p>This work is not just about tool plumbing. The repo now carries a real design-generation story: governed NX remoting, benchmark-grade geometry builds, and a growing family of generated concepts spanning vehicles, aircraft, ships, and underwater systems.</p>
+  </div>
+
+  <div class="nx-story-shell">
+    <div class="nx-story-hero">
+      <div class="nx-story-card reveal parallax-card" style="animation-delay:0.04s">
+        <div class="nx-story-topline">
+          <div class="nx-story-kicker">Benchmarks and Capability Proof</div>
+          <span class="status-pill live"><span class="dot"></span>verified</span>
+        </div>
+        <h3>From MCP calls to real generated geometry</h3>
+        <p>The workspace state shows a progression from primitive body creation to associative rule graphs, live FEM, reloadable NX handler overrides, ship-design features, and full benchmark builds. The important point is not that NX MCP can call NX once. It is that it can drive repeatable, multi-step geometry stories end to end.</p>
+        <div class="nx-story-grid">
+          <div class="nx-story-stat">
+            <div class="stat-label">Tool Surface</div>
+            <div class="stat-value">68 NX-facing tools across geometry, rules, simulation, ship features, and remoting workflows.</div>
+          </div>
+          <div class="nx-story-stat">
+            <div class="stat-label">Cargo Ship Benchmark</div>
+            <div class="stat-value">Panamax bulk carrier benchmark with 96 steps, including general conics and ship-design metadata.</div>
+          </div>
+          <div class="nx-story-stat">
+            <div class="stat-label">GX-3 Proof Points</div>
+            <div class="stat-value">NACA version: 70/70 steps, 9 bodies, 7.5s. CST version: 78/78 steps, 7 bodies, 12.1s.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="nx-story-card reveal parallax-card" style="animation-delay:0.08s">
+        <div class="nx-story-topline">
+          <div class="nx-story-kicker">Current Visual Status</div>
+          <span class="status-pill live"><span class="dot"></span>live capture</span>
+        </div>
+        <h3>Live NX capture from the cargo ship benchmark</h3>
+        <p>This image was exported directly from Siemens NX after running the Panamax bulk-carrier benchmark in this workspace. It is intentionally presented as a live engineering capture rather than polished concept art, which makes the benchmark provenance visible instead of implied.</p>
+        <figure class="nx-render-frame">
+          <img src="assets/nx-renders/ss-charlie-benchmark.png" alt="Live Siemens NX viewport capture of the SS Charlie cargo ship benchmark">
+          <div class="nx-render-meta">
+            <span><strong>Viewport:</strong> SS Charlie benchmark</span>
+            <span><strong>Exported:</strong> PNG + JT</span>
+          </div>
+        </figure>
+        <div class="nx-story-note">The committed asset now includes a matching JT export for downstream 3D use. The next polish step, if we want it, is a curated render pass with datum planes and engineering overlays hidden.</div>
+      </div>
+    </div>
+
+    <div class="nx-story-grid">
+      <div class="nx-story-card reveal parallax-card" style="animation-delay:0.12s">
+        <div class="nx-story-kicker">Benchmark Stories</div>
+        <div class="nx-story-list">
+          <div class="nx-story-item">
+            <div class="item-title">Panamax Bulk Carrier</div>
+            <div class="item-copy">A cargo ship benchmark built from grouped lofts and general conic stations, then extended with NX ship-design features such as main dimensions and weight/CG.</div>
+            <div class="item-meta">build_cargo_ship.py · Session 21</div>
+          </div>
+          <div class="nx-story-item">
+            <div class="item-title">Autonomous Underwater Drone</div>
+            <div class="item-copy">A master-prompt benchmark focused on section-driven lofting, law-driven guide curves, named expressions, repeated fin logic, and optional edit-test validation.</div>
+            <div class="item-meta">build_underwater_drone_benchmark.py</div>
+          </div>
+          <div class="nx-story-item">
+            <div class="item-title">Live FEM Rod Solve</div>
+            <div class="item-copy">The pipeline has already been proven through full create-part to solve output for a rod benchmark using Simcenter Nastran.</div>
+            <div class="item-meta">run_fem_simulation · Live test passed</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="nx-story-card reveal parallax-card" style="animation-delay:0.16s">
+        <div class="nx-story-kicker">Operational Reality</div>
+        <div class="nx-story-list">
+          <div class="nx-story-item">
+            <div class="item-title">Benchmarks Create Fresh Parts On Purpose</div>
+            <div class="item-copy">Most of the named builders in this repo are full benchmark scripts, so they intentionally create a new part and then drive an entire geometry story from start to finish rather than editing an existing model in place.</div>
+            <div class="item-meta">CreateNewPart benchmark flow</div>
+          </div>
+          <div class="nx-story-item">
+            <div class="item-title">Existing Parts Are Already Supported</div>
+            <div class="item-copy">The platform is not limited to greenfield generation. The facade already exposes part-open and part-save operations, so NX MCP can work from an existing part when the workflow calls for that instead of a benchmark reset.</div>
+            <div class="item-meta">OpenPart · SavePart</div>
+          </div>
+          <div class="nx-story-item">
+            <div class="item-title">Current Save Default Is Still Rough</div>
+            <div class="item-copy">Today the default part-creation path lands under the user profile, which is useful for quick isolated runs but not a clean long-term project convention. That is a current implementation choice, not a product claim.</div>
+            <div class="item-meta">%USERPROFILE% default path</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="nx-story-card reveal parallax-card" style="animation-delay:0.18s">
+        <div class="nx-story-kicker">Generated Design Families</div>
+        <div class="nx-story-list">
+          <div class="nx-story-item">
+            <div class="item-title">Aircraft and Airfoils</div>
+            <div class="item-copy">Starter plane, stealth fighter variants, airworthy stealth concepts, GX-3 NACA airfoils, and GX-3 CST fuselage and wing work.</div>
+            <div class="item-meta">build_starter_plane.py · build_gx3_stealth.py · build_gx3_cst.py</div>
+          </div>
+          <div class="nx-story-item">
+            <div class="item-title">Vehicles and Patterns</div>
+            <div class="item-copy">Car concepts, hex-pattern studies, and direct geometry experiments used to harden the facade and tool surface.</div>
+            <div class="item-meta">build_car.py · build_hex_pattern.py</div>
+          </div>
+          <div class="nx-story-item">
+            <div class="item-title">Marine and Underwater Systems</div>
+            <div class="item-copy">The repo now reaches beyond aircraft into ship-scale and underwater benchmark concepts, which broadens the proof that the MCP layer is a modeling platform, not a single demo.</div>
+            <div class="item-meta">build_cargo_ship.py · build_underwater_drone_benchmark.py</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="nx-story-card reveal parallax-card" style="animation-delay:0.22s">
+        <div class="nx-story-kicker">What We Tested</div>
+        <div class="nx-story-list">
+          <div class="nx-story-item">
+            <div class="item-title">Reloadable Handler Lane</div>
+            <div class="item-copy">Dynamic handlers can override existing facade-backed operations live with `ReloadHandlers`. That is real and tested. What is not true is full DLL hot swap or arbitrary new SOAP-callable methods with no facade contract.</div>
+            <div class="item-meta">reload_handlers · tested 2026-03-19</div>
+          </div>
+          <div class="nx-story-item">
+            <div class="item-title">Rule-Backed Modeling</div>
+            <div class="item-copy">The project moved beyond primitive commands into rule-graph construction, selection binding, and algorithmic intent classification.</div>
+            <div class="item-meta">Logic Editor integration · Session 16</div>
+          </div>
+          <div class="nx-story-item">
+            <div class="item-title">Governed Execution Story</div>
+            <div class="item-copy">The same repo that generates these designs also carries the architecture work for remoting, queueing, DLL safety, undo marks, and production-style orchestration.</div>
+            <div class="item-meta">NXHostFacade.dll · MCP server · execution queue</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ══════ ABOUT ══════ -->
+<section class="about" id="about">
+  <div class="catalog-header reveal">
+    <div class="label-line">About this site</div>
+    <h2>Digital Fabric</h2>
+    <p>A living knowledge base from the Emerging Technologies team at Siemens DISW. These presentations document real architecture decisions, system integration patterns, and lessons learned at the intersection of AI and industrial software.</p>
+  </div>
+
+  <div class="about-grid" style="margin-top: 36px;">
+    <div class="about-card purple reveal">
+      <div class="ac-label">Purpose</div>
+      <div class="ac-value">Document and share architecture patterns for AI + CAD/CAM/CAE/PLM integration at production scale. Each study is a standalone, interactive reference.</div>
+    </div>
+    <div class="about-card teal reveal">
+      <div class="ac-label">Approach</div>
+      <div class="ac-value">Informed by real implementation. Reference pages are grounded in live NX, Teamcenter, or Mendix work; experimental pages are explicitly labeled so the presentation style does not get mistaken for the validation level.</div>
+    </div>
+    <div class="about-card amber reveal">
+      <div class="ac-label">Audience</div>
+      <div class="ac-value">Solution architects, technology leads, and engineering teams evaluating AI-driven automation of industrial design and manufacturing workflows.</div>
+    </div>
+    <div class="about-card blue reveal">
+      <div class="ac-label">Cadence</div>
+      <div class="ac-value">New presentations are added as the team completes architecture studies. Reference decks pass internal review before going live; experience-lab pages stay clearly labeled when they are testing a new storytelling format.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ FOOTER ══════ -->
+<footer class="site-footer">
+  <p>Digital Fabric &middot; Siemens DISW Emerging Technologies &middot; 2026</p>
+  <div class="footer-links">
+    <a href="#hero">Home</a>
+    <a href="#mini-sites">Mini Sites</a>
+    <a href="#catalog">References</a>
+    <a href="#nx-mcp-story">NX MCP</a>
+    <a href="#about">About</a>
+  </div>
+</footer>
+
+<!-- ══════ JS ══════ -->
+<script>
+/* ── scroll reveal ── */
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* ── mouse-follow lighting ── */
+const cursorLight = document.getElementById('cursorLight');
+const cursorLightEcho = document.getElementById('cursorLightEcho');
+let mouseTargetX = window.innerWidth * 0.5;
+let mouseTargetY = window.innerHeight * 0.35;
+let lightX = mouseTargetX;
+let lightY = mouseTargetY;
+let echoX = mouseTargetX;
+let echoY = mouseTargetY;
+
+window.addEventListener('pointermove', (event) => {
+  mouseTargetX = event.clientX;
+  mouseTargetY = event.clientY;
+});
+
+function animateCursorLight() {
+  lightX += (mouseTargetX - lightX) * 0.11;
+  lightY += (mouseTargetY - lightY) * 0.11;
+  echoX += (mouseTargetX - echoX) * 0.06;
+  echoY += (mouseTargetY - echoY) * 0.06;
+
+  cursorLight.style.transform = `translate3d(${lightX}px, ${lightY}px, 0) translate(-50%, -50%)`;
+  cursorLightEcho.style.transform = `translate3d(${echoX}px, ${echoY}px, 0) translate(-50%, -50%)`;
+  requestAnimationFrame(animateCursorLight);
+}
+requestAnimationFrame(animateCursorLight);
+
+/* ── topbar opacity on scroll ── */
+const tb = document.getElementById('topbar');
+const hero = document.getElementById('hero');
+const catalog = document.getElementById('catalog');
+const about = document.getElementById('about');
+let ticking = false;
+
+function clamp01(value) {
+  return Math.max(0, Math.min(1, value));
+}
+
+function updateLandingMotion() {
+  tb.style.background = window.scrollY > 80
+    ? 'rgba(13,16,22,0.95)'
+    : 'rgba(13,16,22,0.84)';
+
+  const heroRect = hero.getBoundingClientRect();
+  const heroProgress = clamp01((-heroRect.top) / Math.max(1, heroRect.height * 0.9));
+  hero.style.setProperty('--hero-progress', heroProgress.toFixed(3));
+
+  const catalogRect = catalog.getBoundingClientRect();
+  const catalogProgress = clamp01((window.innerHeight - catalogRect.top) / Math.max(1, window.innerHeight * 0.9));
+  catalog.style.setProperty('--catalog-progress', catalogProgress.toFixed(3));
+
+  const aboutRect = about.getBoundingClientRect();
+  const aboutProgress = clamp01((window.innerHeight - aboutRect.top) / Math.max(1, window.innerHeight * 0.95));
+  about.style.setProperty('--about-progress', aboutProgress.toFixed(3));
+
+  document.querySelectorAll('.parallax-card').forEach((card, index) => {
+    const rect = card.getBoundingClientRect();
+    const shift = Math.max(-18, Math.min(18, (window.innerHeight * 0.55 - rect.top) * 0.035 * ((index % 2 === 0) ? 1 : -1)));
+    card.style.setProperty('--card-shift', (shift * 0.55).toFixed(1) + 'px');
+  });
+}
+
+window.addEventListener('scroll', () => {
+  if (!ticking) {
+    requestAnimationFrame(() => {
+      updateLandingMotion();
+      ticking = false;
+    });
+    ticking = true;
+  }
+});
+window.addEventListener('resize', updateLandingMotion);
+updateLandingMotion();
+
+/* ── smooth scroll for anchor links ── */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+</script>
+</body>
+</html>

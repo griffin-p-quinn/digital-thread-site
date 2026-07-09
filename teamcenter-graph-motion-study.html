@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Graph Materialization Motion Study - Digital Fabric</title>
+<link rel="stylesheet" href="styles/fabric.css">
+<style>
+:root { --nav-h: 52px; --beat: 0; }
+html { scroll-behavior: smooth; }
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(82,148,214,0.16), transparent 22%),
+    radial-gradient(circle at 14% 18%, rgba(124,111,222,0.12), transparent 26%),
+    radial-gradient(circle at 86% 16%, rgba(61,191,138,0.08), transparent 22%),
+    linear-gradient(180deg, #05070c 0%, #090d16 36%, #04060a 100%);
+  color: var(--text);
+  overflow-x: hidden;
+}
+.cursor-light,
+.cursor-light-echo {
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 20;
+  border-radius: 50%;
+  mix-blend-mode: screen;
+  transform: translate3d(-50%, -50%, 0);
+}
+.cursor-light {
+  width: 420px;
+  height: 420px;
+  background: radial-gradient(circle, rgba(72,206,152,0.20) 0%, rgba(93,158,223,0.13) 26%, rgba(133,121,229,0.08) 46%, rgba(13,16,22,0) 72%);
+  filter: blur(18px);
+  opacity: 0.9;
+}
+.cursor-light-echo {
+  width: 180px;
+  height: 180px;
+  background: radial-gradient(circle, rgba(237,185,102,0.15) 0%, rgba(219,114,100,0.07) 45%, rgba(13,16,22,0) 74%);
+  filter: blur(10px);
+  opacity: 0.7;
+}
+.topbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 0 26px;
+  background: rgba(13,15,20,0.84);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(82,93,112,0.22);
+}
+.topbar-brand { display: inline-flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 500; }
+.topbar-brand .sigil {
+  width: 22px; height: 22px; border-radius: 6px; border: 1px solid rgba(72,206,152,0.42);
+  display: grid; place-items: center; color: var(--teal); font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+}
+.topbar-nav { display: flex; gap: 20px; }
+.topbar-nav a { font-size: 12px; color: var(--text2); }
+.topbar-nav a:hover { color: var(--text); }
+.page-shell { padding-top: var(--nav-h); }
+.intro {
+  max-width: 1340px;
+  margin: 0 auto;
+  padding: 74px 40px 28px;
+  display: grid;
+  gap: 20px;
+}
+.intro-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) 320px; gap: 20px; align-items: start; }
+.intro-copy { display: grid; gap: 14px; }
+.intro-eyebrow,
+.beat-index,
+.metric-label,
+.panel-label,
+.stage-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.intro-eyebrow,
+.beat-index,
+.stage-label { color: var(--teal); }
+.intro h1 {
+  font-size: clamp(40px, 6vw, 78px);
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+}
+.intro h1 em {
+  font-style: normal;
+  background: linear-gradient(135deg, var(--purple), var(--teal));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.intro-copy p,
+.panel p,
+.beat-copy p,
+.metric-card p { font-size: 15px; line-height: 1.72; color: var(--text2); }
+.panel,
+.metric-card,
+.stage-shell,
+.beat-card {
+  border-radius: 24px;
+  border: 1px solid rgba(82,93,112,0.22);
+  background: linear-gradient(180deg, rgba(17,21,29,0.96), rgba(10,12,18,0.96));
+  box-shadow: 0 24px 70px rgba(0,0,0,0.22);
+}
+.panel,
+.metric-card,
+.beat-card { padding: 20px; }
+.metric-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.metric-value { font-size: 28px; line-height: 1; font-weight: 700; margin: 8px 0; }
+.story-shell {
+  max-width: 1480px;
+  margin: 0 auto;
+  padding: 0 40px 120px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 22px;
+  align-items: start;
+}
+.stage-shell {
+  position: sticky;
+  top: calc(var(--nav-h) + 18px);
+  height: calc(100vh - var(--nav-h) - 36px);
+  min-height: 700px;
+  overflow: hidden;
+  padding: 26px;
+  isolation: isolate;
+}
+.stage-shell::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(circle at 20% 24%, rgba(72,206,152,0.08), transparent 32%),
+    radial-gradient(circle at 82% 16%, rgba(133,121,229,0.10), transparent 32%),
+    linear-gradient(180deg, rgba(4,6,10,0.04), rgba(4,6,10,0.3));
+  pointer-events: none;
+}
+.stage-stack {
+  position: relative;
+  height: 62%;
+  display: grid;
+  place-items: center;
+}
+.stage-plate {
+  position: absolute;
+  width: 74%;
+  max-width: 520px;
+  height: 110px;
+  border-radius: 28px;
+  border: 1px solid rgba(82,93,112,0.22);
+  background: linear-gradient(135deg, rgba(24,30,41,0.98), rgba(11,14,20,0.94));
+  box-shadow: 0 18px 40px rgba(0,0,0,0.18);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 26px;
+  transform-origin: center center;
+  transition: transform 0.45s var(--ease-out), opacity 0.45s ease, border-color 0.45s ease;
+}
+.stage-plate .plate-title { font-size: 20px; font-weight: 600; }
+.stage-plate .plate-copy { font-size: 12px; color: var(--text2); max-width: 220px; line-height: 1.55; }
+.stage-plate[data-slot="0"] { transform: translateY(calc(var(--beat) * 4px - 120px)) scale(0.88); opacity: 0.42; }
+.stage-plate[data-slot="1"] { transform: translateY(calc(var(--beat) * 2px - 36px)) scale(0.94); opacity: 0.58; }
+.stage-plate[data-slot="2"] { transform: translateY(calc(var(--beat) * -2px + 44px)) scale(1); opacity: 1; border-color: rgba(72,206,152,0.26); }
+.stage-orbit {
+  position: absolute;
+  width: 560px;
+  height: 560px;
+  border-radius: 50%;
+  border: 1px dashed rgba(82,93,112,0.14);
+  opacity: 0.4;
+}
+.stage-pulse {
+  position: absolute;
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(72,206,152,0.12), rgba(72,206,152,0) 72%);
+  filter: blur(10px);
+  transform: translateY(calc(var(--beat) * 18px));
+  transition: transform 0.45s var(--ease-out);
+}
+.stage-panel {
+  position: relative;
+  display: grid;
+  gap: 12px;
+  padding-top: 8px;
+}
+.stage-title { font-size: 32px; line-height: 1.06; letter-spacing: -0.03em; }
+.stage-copy { font-size: 14px; line-height: 1.72; color: var(--text2); max-width: 520px; }
+.stage-chip-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.stage-chip {
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: rgba(19,23,32,0.72);
+  border: 1px solid rgba(82,93,112,0.18);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text2);
+}
+.story-rail { display: grid; gap: 24px; }
+.story-beat {
+  min-height: 78vh;
+  display: flex;
+  align-items: center;
+}
+.beat-card { max-width: 560px; }
+.beat-card h2 { font-size: 28px; line-height: 1.08; letter-spacing: -0.03em; margin: 6px 0 10px; }
+.beat-copy { display: grid; gap: 10px; }
+.beat-proof {
+  margin-top: 14px;
+  padding: 14px;
+  border-radius: 16px;
+  background: rgba(8,10,15,0.92);
+  border: 1px solid rgba(82,93,112,0.18);
+}
+.beat-proof pre {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  line-height: 1.66;
+  color: #d2dcef;
+  white-space: pre-wrap;
+}
+@media (max-width: 1100px) {
+  .intro-grid,
+  .story-shell { grid-template-columns: 1fr; }
+  .stage-shell { position: relative; top: 0; height: auto; min-height: 0; }
+  .story-beat { min-height: auto; }
+}
+@media (max-width: 920px) {
+  .topbar {
+    height: auto;
+    min-height: var(--nav-h);
+    padding: 10px 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .topbar-nav {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    row-gap: 8px;
+    gap: 12px;
+  }
+  .page-shell { padding-top: calc(var(--nav-h) + 36px); }
+}
+</style>
+</head>
+<body>
+<div class="cursor-light" id="cursorLight" aria-hidden="true"></div>
+<div class="cursor-light-echo" id="cursorLightEcho" aria-hidden="true"></div>
+<div class="topbar">
+  <a class="topbar-brand" href="index.html"><span class="sigil">df</span><span>Digital Fabric <span style="color:var(--text3)">/ Siemens DISW</span></span></a>
+  <nav class="topbar-nav">
+        <a href="index.html#hero">Home</a>
+    <a href="index.html#mini-sites">Mini Sites</a>
+    <a href="index.html#catalog">References</a>
+    <a href="index.html#nx-mcp-story">NX MCP</a>
+    <a href="index.html#about">About</a>
+  </nav>
+</div>
+
+<main class="page-shell">
+  <section class="intro">
+    <div class="intro-grid">
+      <div class="intro-copy">
+        <div class="intro-eyebrow">Experience Lab · Teamcenter Graph Story</div>
+        <h1>How a PLM graph became<br><em>worth asking first</em></h1>
+        <p>The day started with a hard constraint: stop hand-waving, stop repeating transport checks, and prove that some real Teamcenter semantics could survive into a useful graph. The result is not an abstract platform slide. It is a demo story with live IDs, known edges, and an explicit routing policy for when agents use graph queries instead of Teamcenter MCP.</p>
+      </div>
+      <div class="panel">
+        <div class="panel-label">Story stakes</div>
+        <p>Investors and internal stakeholders do not care that a graph endpoint answers 200 OK. They care that an agent can answer a real engineering question faster, more clearly, and with less system load than a procedural Teamcenter crawl.</p>
+      </div>
+    </div>
+
+    <div class="metric-grid">
+      <div class="metric-card"><div class="metric-label">Result</div><div class="metric-value" style="color:var(--teal)">PASS</div><p>Demo gate remains passing after dataset enrichment, revision cross-links, change impacts, and workflow targeting edges.</p></div>
+      <div class="metric-card"><div class="metric-label">Evidence</div><div class="metric-value">9,602</div><p>Verified edges with concrete counts by predicate family.</p></div>
+      <div class="metric-card"><div class="metric-label">Anchor path</div><div class="metric-value">001024</div><p>Item 001024 -> revision yfMAAQdo5BWnuC -> rendering and specification datasets.</p></div>
+      <div class="metric-card"><div class="metric-label">Routing model</div><div class="metric-value">Graph first</div><p>Relationships and lineage from SPARQL, runtime BOM/files from Teamcenter MCP.</p></div>
+    </div>
+  </section>
+
+  <section class="story-shell">
+    <div class="stage-shell">
+      <div class="stage-stack">
+        <div class="stage-orbit"></div>
+        <div class="stage-pulse"></div>
+        <div class="stage-plate" data-slot="0"><div><div class="stage-label">Source truth</div><div class="plate-title">Ground Teamcenter</div></div><div class="plate-copy">Start with what SOA really says, not what we hope AGS already knows.</div></div>
+        <div class="stage-plate" data-slot="1"><div><div class="stage-label">Projection</div><div class="plate-title">Flatten carefully</div></div><div class="plate-copy">Normalize predicates and IDs without erasing the business semantics.</div></div>
+        <div class="stage-plate" data-slot="2"><div><div class="stage-label">Runtime</div><div class="plate-title" id="stagePlateTitle">Graph answers first</div></div><div class="plate-copy" id="stagePlateCopy">A fast semantic layer handles relationship-heavy questions before MCP is needed.</div></div>
+      </div>
+      <div class="stage-panel">
+        <div class="stage-label" id="stageStepLabel">Beat 1 / 5</div>
+        <div class="stage-title" id="stageTitle">Start with Teamcenter truth, not architecture optimism</div>
+        <div class="stage-copy" id="stageCopy">The project reset when the ask changed from "is the API up?" to "show me a real graphmart that pulls meaningful Teamcenter data and explain exactly what still does not work." That forced the workflow to anchor on live payloads, tested IDs, and specific missing semantics instead of vague availability checks.</div>
+        <div class="stage-chip-row" id="stageChips">
+          <span class="stage-chip">CMHasProblemItem validated</span>
+          <span class="stage-chip">live credentials exercised</span>
+          <span class="stage-chip">artifact truth frozen</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="story-rail">
+      <article class="story-beat" data-beat="0">
+        <div class="beat-card">
+          <div class="beat-index">Beat 1 / 5</div>
+          <h2>Start with source truth</h2>
+          <div class="beat-copy">
+            <p>The team already had payload bundles and MCP access. The real move was to stop treating those as background context and instead make them the explicit benchmark. That is how the conversation became concrete: which relation families are real, which UIDs resolve, and which business questions are actually answerable?</p>
+            <p>That baseline made later graph claims falsifiable. If the graph could not show the same revision and dataset trail the Teamcenter payloads showed, the graph did not get credit.</p>
+          </div>
+          <div class="beat-proof"><pre>Live proof target:
+Item 001024
+  -> Revision yfMAAQdo5BWnuC
+    -> Dataset zzEAAQt85BWnuC
+    -> Dataset 11FAAQdo5BWnuC</pre></div>
+        </div>
+      </article>
+
+      <article class="story-beat" data-beat="1">
+        <div class="beat-card">
+          <div class="beat-index">Beat 2 / 5</div>
+          <h2>Flatten without throwing meaning away</h2>
+          <div class="beat-copy">
+            <p>An early troubleshooting move changed POST to GET and flattened response shape, which unlocked data flow but risked losing the semantics that make the graph useful. The fix was not "more flattening." The fix was to flatten deliberately: carry through predicate_raw, relation_family, dataset_type, file_count, source_tc_uid, target_tc_uid, and SOA-derived naming fields.</p>
+            <p>That is the difference between a technically connected graph and a semantically useful graph.</p>
+          </div>
+          <div class="beat-proof"><pre>Enrichment fields verified:
+- predicate_raw
+- relation_family
+- dataset_type
+- file_count
+- source_tc_uid
+- target_tc_uid</pre></div>
+        </div>
+      </article>
+
+      <article class="story-beat" data-beat="2">
+        <div class="beat-card">
+          <div class="beat-index">Beat 3 / 5</div>
+          <h2>Prove that the graph tells a better story</h2>
+          <div class="beat-copy">
+            <p>The graph became compelling once it could do more than mirror object existence. Adding revision-to-revision links, change impacts, and workflow targets gave the graph business context. Now it can answer not just "what files are attached" but also "is this revision under change?" and "is there workflow around it?"</p>
+            <p>That is the point where the graph stopped being an experiment and became a reasoning surface.</p>
+          </div>
+          <div class="beat-proof"><pre>Observed counts after uplift:
+REVISION_RELATED_TO_REVISION = 904
+WORKFLOW_TARGETS_OBJECT      = 231
+CHANGE_AFFECTS_REVISION      = 293</pre></div>
+        </div>
+      </article>
+
+      <article class="story-beat" data-beat="3">
+        <div class="beat-card">
+          <div class="beat-index">Beat 4 / 5</div>
+          <h2>Teach the agent when not to use the graph</h2>
+          <div class="beat-copy">
+            <p>A strong demo is not "graph for everything." It is disciplined routing. Relationship-heavy asks go to SPARQL first. Runtime BOM expansion, file bytes, and mutation flows stay in Teamcenter MCP. That clarity is what makes the architecture believable instead of fashionable.</p>
+            <p>In other words: the win is not replacing Teamcenter. The win is narrowing the expensive Teamcenter calls to the moments that truly require them.</p>
+          </div>
+          <div class="beat-proof"><pre>Graph-first asks:
+- What revisions exist?
+- What datasets are attached?
+- Is this revision affected by change?
+- Is there workflow around this object?
+
+MCP asks:
+- Expand BOM
+- Download JT file
+- Create / revise / promote</pre></div>
+        </div>
+      </article>
+
+      <article class="story-beat" data-beat="4">
+        <div class="beat-card">
+          <div class="beat-index">Beat 5 / 5</div>
+          <h2>End with a demo story people can remember</h2>
+          <div class="beat-copy">
+            <p>The strongest story is simple: a user asks about an item, the graph finds its revisions and datasets immediately, the agent can surface change and workflow context, and only then - when the ask becomes operational - does Teamcenter MCP enter the loop.</p>
+            <p>That is why this is demo-ready. It has a narrow, explainable success path grounded in real data and clear architectural boundaries.</p>
+          </div>
+          <div class="beat-proof"><pre>Real query outcome:
+Revision yfMAAQdo5BWnuC
+  -> zzEAAQt85BWnuC (IMAN_Rendering)
+  -> 11FAAQdo5BWnuC (IMAN_specification)
+
+Demo gate: PASS</pre></div>
+        </div>
+      </article>
+    </div>
+  </section>
+</main>
+
+<script>
+const cursorLight = document.getElementById('cursorLight');
+const cursorLightEcho = document.getElementById('cursorLightEcho');
+window.addEventListener('mousemove', (e) => {
+  cursorLight.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+  cursorLightEcho.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+});
+
+const beats = [
+  {
+    title: 'Start with Teamcenter truth, not architecture optimism',
+    copy: 'The reset mattered because it forced the work to anchor on live payloads, tested IDs, and specific semantic gaps instead of generic availability checks.',
+    chips: ['CMHasProblemItem validated', 'live credentials exercised', 'artifact truth frozen'],
+    label: 'Beat 1 / 5',
+    plateTitle: 'Ground Teamcenter',
+    plateCopy: 'Start with what SOA really says, not what we hope AGS already knows.'
+  },
+  {
+    title: 'Flatten carefully so the graph stays semantic',
+    copy: 'The graph only became readable when flattened responses kept naming and relation semantics instead of turning into anonymous IDs and generic triples.',
+    chips: ['dataset_type preserved', 'predicate_raw retained', 'SOA keys mapped'],
+    label: 'Beat 2 / 5',
+    plateTitle: 'Preserve meaning',
+    plateCopy: 'Normalize payloads, but keep the fields that make results interpretable.'
+  },
+  {
+    title: 'Add the edges that make the demo feel intelligent',
+    copy: 'Revision-related links, change impacts, and workflow targets make the graph capable of telling a business story rather than just listing stored objects.',
+    chips: ['904 rev links', '293 change edges', '231 workflow edges'],
+    label: 'Beat 3 / 5',
+    plateTitle: 'Add business context',
+    plateCopy: 'A graph matters when it can answer impact and process questions, not just containment.'
+  },
+  {
+    title: 'Teach agents disciplined routing',
+    copy: 'The strongest explanation is not that graph replaces Teamcenter, but that graph narrows when expensive Teamcenter calls are actually necessary.',
+    chips: ['graph first', 'hybrid when volatile', 'MCP for runtime + binary'],
+    label: 'Beat 4 / 5',
+    plateTitle: 'Route with intent',
+    plateCopy: 'Use SPARQL for structure and lineage. Use MCP when the user needs live operational truth.'
+  },
+  {
+    title: 'Land on a demo story people can repeat',
+    copy: 'Item -> revision -> dataset -> change/workflow context is simple enough to explain, concrete enough to show, and narrow enough to defend.',
+    chips: ['001024 demo chain', 'real IDs', 'demo gate PASS'],
+    label: 'Beat 5 / 5',
+    plateTitle: 'Graph answers first',
+    plateCopy: 'A fast semantic layer handles relationship-heavy questions before MCP is needed.'
+  }
+];
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (!entry.isIntersecting) return;
+    const idx = Number(entry.target.dataset.beat || 0);
+    document.documentElement.style.setProperty('--beat', String(idx));
+    const beat = beats[idx];
+    document.getElementById('stageStepLabel').textContent = beat.label;
+    document.getElementById('stageTitle').textContent = beat.title;
+    document.getElementById('stageCopy').textContent = beat.copy;
+    document.getElementById('stagePlateTitle').textContent = beat.plateTitle;
+    document.getElementById('stagePlateCopy').textContent = beat.plateCopy;
+    document.getElementById('stageChips').innerHTML = beat.chips.map((chip) => `<span class="stage-chip">${chip}</span>`).join('');
+  });
+}, { threshold: 0.55 });
+
+document.querySelectorAll('.story-beat').forEach((beat) => observer.observe(beat));
+</script>
+</body>
+</html>
+

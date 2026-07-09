@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teamcenter Graph Experience - Digital Fabric</title>
+<link rel="stylesheet" href="styles/fabric.css">
+<style>
+:root {
+  --nav-w: 288px;
+  --hub-h: 42px;
+}
+html { scroll-behavior: smooth; }
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 18% 12%, rgba(72,206,152,0.10), transparent 22%),
+    radial-gradient(circle at 82% 14%, rgba(133,121,229,0.12), transparent 26%),
+    linear-gradient(180deg, #070a10 0%, #090d16 38%, #04060a 100%);
+  color: var(--text);
+  overflow-x: hidden;
+}
+a { color: inherit; text-decoration: none; }
+button { font: inherit; }
+code, pre { font-family: 'IBM Plex Mono', monospace; }
+
+.hub-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 220;
+  min-height: var(--hub-h);
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  padding: 8px 20px;
+  background: rgba(13,15,20,0.88);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(82,93,112,0.22);
+}
+.hub-bar a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text2);
+}
+.hub-bar a:hover { color: var(--text); }
+.hub-bar .current {
+  font-size: 12px;
+  color: var(--text);
+}
+.hub-bar .sep-dot { color: var(--text3); font-size: 11px; }
+.hub-bar .global-links {
+  margin-left: auto;
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+}
+.hub-bar .global-links a {
+  font-size: 11px;
+  color: var(--text3);
+}
+.hub-bar .global-links a:hover { color: var(--text); }
+.hub-bar .kbd-hint {
+  margin-left: 10px;
+  color: var(--text3);
+  font-size: 11px;
+}
+.kbd-hint kbd {
+  border: 1px solid var(--border2);
+  border-bottom-width: 2px;
+  border-radius: 6px;
+  padding: 1px 5px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+}
+@media (max-width: 980px) {
+  .hub-bar .global-links { width: 100%; margin-left: 0; justify-content: center; }
+  .hub-bar .current { display: none; }
+}
+@media (max-width: 760px) {
+  .hub-bar .kbd-hint { display: none; }
+}
+
+nav {
+  position: fixed;
+  top: var(--hub-h);
+  left: 0;
+  bottom: 0;
+  width: var(--nav-w);
+  padding: 22px 18px 26px;
+  background: rgba(10,12,18,0.94);
+  border-right: 1px solid rgba(82,93,112,0.18);
+  overflow-y: auto;
+}
+.nav-brand { margin-bottom: 18px; }
+.wordmark {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 10px;
+}
+.nav-brand h1 {
+  font-size: 28px;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+}
+.nav-summary {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.62;
+  margin-top: 12px;
+}
+.nav-section-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin: 16px 0 8px;
+}
+nav a.page-link {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  border-radius: 12px;
+  font-size: 13px;
+  color: var(--text2);
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+nav a.page-link:hover,
+nav a.page-link.active {
+  background: rgba(72,206,152,0.08);
+  color: var(--text);
+}
+.nav-num {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  border: 1px solid rgba(82,93,112,0.28);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+}
+.nav-link.active .nav-num { border-color: rgba(72,206,152,0.32); color: var(--teal); }
+.nav-footer {
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(82,93,112,0.18);
+}
+.nav-footer p {
+  font-size: 12px;
+  line-height: 1.62;
+  color: var(--text3);
+}
+
+main {
+  margin-left: var(--nav-w);
+  padding-top: calc(var(--hub-h) + 18px);
+  min-height: 100vh;
+}
+.page {
+  display: none;
+  padding: 28px 30px 40px;
+}
+.page.active { display: block; }
+.page-header {
+  margin-bottom: 18px;
+}
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(72,206,152,0.22);
+  background: rgba(72,206,152,0.08);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 14px;
+}
+.page-header h2 {
+  font-size: clamp(28px, 4vw, 46px);
+  line-height: 1.04;
+  letter-spacing: -0.04em;
+  margin-bottom: 10px;
+}
+.page-header p {
+  max-width: 920px;
+  font-size: 15px;
+  line-height: 1.72;
+  color: var(--text2);
+}
+.page-body { display: grid; gap: 18px; }
+.panel-split,
+.dual-grid,
+.story-grid,
+.runtime-grid,
+.graph-layout {
+  display: grid;
+  gap: 16px;
+}
+.panel-split { grid-template-columns: minmax(280px, 0.9fr) minmax(0, 1.1fr); }
+.dual-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.runtime-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.graph-layout { grid-template-columns: minmax(0, 1.15fr) 340px; }
+.story-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.section,
+.diagram-card,
+.callout-card,
+.stat-row,
+.inspector,
+.route-card {
+  border-radius: 22px;
+  border: 1px solid rgba(82,93,112,0.20);
+  background: linear-gradient(180deg, rgba(17,21,29,0.96), rgba(10,12,18,0.96));
+  box-shadow: 0 22px 60px rgba(0,0,0,0.20);
+}
+.section,
+.callout-card,
+.route-card,
+.inspector { padding: 20px; }
+.diagram-card { overflow: hidden; }
+.diagram-card-header {
+  padding: 10px 16px;
+  border-bottom: 1px solid rgba(82,93,112,0.16);
+  background: rgba(13,16,22,0.72);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text3);
+}
+.diagram-card-body { padding: 18px; }
+.section-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 10px;
+}
+.section h3,
+.callout-card h3,
+.route-card h3 {
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+.section p,
+.callout-card p,
+.route-card p,
+.overview-tile p,
+.note-list li,
+.runtime-item p,
+.inspector p {
+  font-size: 13px;
+  line-height: 1.64;
+  color: var(--text2);
+}
+hr.section-rule {
+  border: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(82,93,112,0.26), transparent);
+  margin: 2px 0;
+}
+.kv-grid,
+.overview-grid,
+.note-grid,
+.stats-grid,
+.edge-bars {
+  display: grid;
+  gap: 12px;
+}
+.kv-grid,
+.overview-grid,
+.note-grid,
+.stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.kv-card,
+.overview-tile,
+.note-card,
+.stat-chip,
+.runtime-item {
+  padding: 14px 14px 13px;
+  border-radius: 16px;
+  border: 1px solid rgba(82,93,112,0.18);
+  background: rgba(19,23,32,0.78);
+}
+.overview-tile { cursor: pointer; transition: transform 0.16s ease, border-color 0.16s ease; }
+.overview-tile:hover { transform: translateY(-2px); border-color: rgba(72,206,152,0.26); }
+.kv-label,
+.ot-num,
+.note-kicker,
+.stat-label,
+.edge-label,
+.inspect-k {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 8px;
+}
+.kv-value,
+.stat-value {
+  font-size: 13px;
+  line-height: 1.58;
+  color: var(--text);
+}
+.overview-tile h4 { font-size: 16px; margin-bottom: 8px; }
+.note-card strong,
+.runtime-item strong,
+.inspect-v strong { color: var(--text); }
+.tag-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px;
+  border-radius: 999px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.tag-pill.teal { color: var(--teal); background: rgba(72,206,152,0.08); border: 1px solid rgba(72,206,152,0.18); }
+.tag-pill.amber { color: var(--amber); background: rgba(237,176,80,0.08); border: 1px solid rgba(237,176,80,0.18); }
+.tag-pill.blue { color: var(--blue); background: rgba(93,158,223,0.08); border: 1px solid rgba(93,158,223,0.18); }
+.tag-pill.purple { color: var(--purple); background: rgba(133,121,229,0.08); border: 1px solid rgba(133,121,229,0.18); }
+.tag-pill.coral { color: var(--coral); background: rgba(219,114,100,0.08); border: 1px solid rgba(219,114,100,0.18); }
+
+.code-block {
+  margin-top: 12px;
+  padding: 14px;
+  border-radius: 16px;
+  background: rgba(8,10,15,0.92);
+  border: 1px solid rgba(82,93,112,0.18);
+  font-size: 11px;
+  line-height: 1.68;
+  color: #cfd9ef;
+  overflow-x: auto;
+  white-space: pre;
+}
+.inline-proof {
+  padding: 14px;
+  border-radius: 16px;
+  background: rgba(8,10,15,0.92);
+  border: 1px solid rgba(82,93,112,0.18);
+}
+.inline-proof .proof-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 8px;
+}
+.inline-proof ul { padding-left: 18px; color: var(--text2); display: grid; gap: 6px; }
+
+.stack-svg,
+.graph-svg { width: 100%; height: auto; display: block; }
+.stack-svg text,
+.graph-svg text { font-family: 'IBM Plex Sans', sans-serif; }
+
+.route-lane {
+  display: grid;
+  gap: 12px;
+}
+.route-card.graph { border-color: rgba(72,206,152,0.20); }
+.route-card.hybrid { border-color: rgba(237,176,80,0.20); }
+.route-card.mcp { border-color: rgba(133,121,229,0.20); }
+.route-ask {
+  margin: 12px 0;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(237,176,80,0.07);
+  border: 1px solid rgba(237,176,80,0.14);
+  color: #f4cd8d;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.conf-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+.conf-track {
+  flex: 1;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(48,55,72,0.48);
+  overflow: hidden;
+}
+.conf-fill { height: 100%; border-radius: 999px; }
+.conf-text {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--text3);
+}
+
+.graph-wrap {
+  padding: 12px;
+  border-radius: 18px;
+  border: 1px solid rgba(82,93,112,0.18);
+  background: rgba(8,11,18,0.92);
+}
+.graph-svg { min-height: 520px; }
+.graph-node { cursor: pointer; transition: opacity 0.16s ease, transform 0.16s ease; }
+.graph-node rect, .graph-node circle {
+  transition: stroke-width 0.16s ease, filter 0.16s ease, opacity 0.16s ease;
+}
+.graph-node text { pointer-events: none; }
+.graph-edge { cursor: pointer; }
+.graph-edge-line,
+.graph-edge-hit,
+.graph-edge-label { transition: opacity 0.16s ease, stroke-width 0.16s ease, fill 0.16s ease; }
+.graph-node.dim,
+.graph-edge.dim .graph-edge-line,
+.graph-edge.dim .graph-edge-label { opacity: 0.14; }
+.graph-node.selected rect,
+.graph-node.selected circle { stroke-width: 1.5; filter: drop-shadow(0 0 8px rgba(226,230,240,0.20)); }
+.graph-edge.selected .graph-edge-line { stroke-width: 2.8; filter: drop-shadow(0 0 7px rgba(226,230,240,0.16)); }
+.graph-edge-label { font-size: 10px; fill: var(--text2); font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.05em; }
+.inspector-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.inspector button {
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(82,93,112,0.22);
+  background: rgba(13,16,22,0.84);
+  color: var(--text3);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.inspector button:hover { color: var(--text); }
+.inspect-grid { display: grid; gap: 8px; }
+.inspect-row {
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  gap: 10px;
+  align-items: baseline;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(82,93,112,0.12);
+}
+.inspect-v { font-size: 12px; line-height: 1.6; color: var(--text); }
+.empty-state {
+  padding: 28px 14px;
+  text-align: center;
+  color: var(--text3);
+  font-size: 13px;
+  line-height: 1.7;
+}
+.legend-row { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 10px; }
+.legend-item { display: inline-flex; align-items: center; gap: 6px; color: var(--text2); font-size: 11px; }
+.legend-swatch { width: 10px; height: 10px; border-radius: 999px; display: inline-block; }
+
+.status-table,
+.check-table { width: 100%; border-collapse: collapse; }
+.status-table th,
+.status-table td,
+.check-table th,
+.check-table td {
+  padding: 11px 12px;
+  border-bottom: 1px solid rgba(82,93,112,0.14);
+  text-align: left;
+  font-size: 12px;
+}
+.status-table th,
+.check-table th {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--text3);
+}
+.ok { color: var(--teal); }
+.warn { color: var(--amber); }
+.edge-bars { margin-top: 8px; }
+.edge-row {
+  display: grid;
+  grid-template-columns: 260px 1fr 72px;
+  gap: 12px;
+  align-items: center;
+}
+.edge-track {
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(48,55,72,0.48);
+  overflow: hidden;
+}
+.edge-fill { height: 100%; border-radius: 999px; }
+.small-muted { font-size: 11px; color: var(--text3); }
+.demo-chain {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+.chain-card {
+  padding: 12px 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(82,93,112,0.18);
+  background: rgba(19,23,32,0.76);
+}
+.chain-title { font-size: 13px; font-weight: 600; color: var(--text); }
+.chain-id { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--text3); margin-top: 6px; }
+.chain-arrow { color: var(--text3); font-size: 18px; }
+
+@media (max-width: 1200px) {
+  :root { --nav-w: 250px; }
+  .graph-layout { grid-template-columns: 1fr; }
+}
+@media (max-width: 980px) {
+  nav {
+    position: static;
+    width: auto;
+    border-right: 0;
+    border-bottom: 1px solid rgba(82,93,112,0.18);
+  }
+  main { margin-left: 0; }
+  .page { padding: 24px 18px 36px; }
+  .panel-split,
+  .dual-grid,
+  .runtime-grid,
+  .story-grid,
+  .kv-grid,
+  .overview-grid,
+  .note-grid,
+  .stats-grid,
+  .pipeline-grid { grid-template-columns: 1fr; }
+  .edge-row { grid-template-columns: 160px 1fr 60px; }
+}
+
+/* ═══ OVERFLOW CONTAINMENT ═══ */
+.section,
+.callout-card,
+.route-card,
+.inspector,
+.diagram-card,
+.kv-card,
+.overview-tile,
+.note-card,
+.stat-chip,
+.runtime-item,
+.chain-card,
+.graph-wrap,
+.inline-proof { overflow: hidden; }
+
+.code-block,
+pre { overflow-x: auto; max-width: 100%; }
+
+.kv-value,
+.stat-value,
+.inspect-v,
+.chain-id,
+.edge-label,
+p { word-break: break-word; overflow-wrap: break-word; }
+
+.page-body,
+.panel-split,
+.dual-grid,
+.runtime-grid,
+.story-grid,
+.kv-grid,
+.overview-grid,
+.note-grid,
+.stats-grid,
+.graph-layout,
+.route-lane,
+.edge-bars,
+.inspect-grid { min-width: 0; }
+
+.panel-split > *,
+.dual-grid > *,
+.runtime-grid > *,
+.story-grid > *,
+.kv-grid > *,
+.overview-grid > *,
+.note-grid > *,
+.stats-grid > *,
+.graph-layout > *,
+.route-lane > *,
+.pipeline-grid > * { min-width: 0; }
+
+img, svg.stack-svg, svg.graph-svg { max-width: 100%; height: auto; }
+
+.status-table-wrap,
+.check-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+/* ═══ AGS PIPELINE SECTION ═══ */
+.pipeline-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.pipeline-triple-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.pipeline-stat-big {
+  text-align: center;
+  padding: 20px 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(82,93,112,0.18);
+  background: rgba(19,23,32,0.78);
+}
+.pipeline-stat-big .ps-number {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.pipeline-stat-big .ps-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--text3);
+}
+.sparql-result-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+.sparql-result-table th,
+.sparql-result-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(82,93,112,0.14);
+  text-align: left;
+  font-size: 11px;
+  white-space: nowrap;
+}
+.sparql-result-table th {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--text3);
+}
+.sparql-result-table td { color: var(--text2); }
+.type-pill-grid { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.type-pill {
+  display: inline-block;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: rgba(19,23,32,0.78);
+  border: 1px solid rgba(82,93,112,0.22);
+  color: var(--text2);
+}
+</style>
+</head>
+<body>
+<div class="hub-bar">
+  <a href="index.html"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M11 7H3M3 7l3-3M3 7l3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Digital Fabric</a>
+  <span class="sep-dot">/</span>
+  <span class="current">Teamcenter Graph Experience</span>
+  <div class="global-links">
+        <a href="index.html#hero">Home</a>
+    <a href="index.html#mini-sites">Mini Sites</a>
+    <a href="index.html#catalog">References</a>
+    <a href="index.html#nx-mcp-story">NX MCP</a>
+    <a href="index.html#about">About</a>
+  </div>
+  <span class="kbd-hint"><kbd>&larr;</kbd> <kbd>&rarr;</kbd> navigate &middot; <kbd>0</kbd>-<kbd>5</kbd> pages</span>
+</div>
+
+<nav>
+  <div class="nav-brand">
+    <div class="wordmark">Live Reference</div>
+    <h1>Teamcenter Graph<br>Experience</h1>
+    <p class="nav-summary">A demo-grade reference for turning Teamcenter relationships into a graph that AI agents can query first, then enrich with MCP only when live state or files are required.</p>
+  </div>
+
+  <div class="nav-section-label">Overview</div>
+  <a class="page-link active" id="nav-overview" onclick="showPage('overview')"><span class="nav-num">00</span>Proof and narrative</a>
+
+  <div class="nav-section-label">Diagrams</div>
+  <a class="page-link" id="nav-stack" onclick="showPage('stack')"><span class="nav-num">01</span>Execution stack</a>
+  <a class="page-link" id="nav-routing" onclick="showPage('routing')"><span class="nav-num">02</span>Agent routing logic</a>
+  <a class="page-link" id="nav-graph" onclick="showPage('graph')"><span class="nav-num">03</span>Interactive graph</a>
+  <a class="page-link" id="nav-readiness" onclick="showPage('readiness')"><span class="nav-num">04</span>Health and readiness</a>
+  <a class="page-link" id="nav-pipeline" onclick="showPage('pipeline')"><span class="nav-num">05</span>AGS graph pipeline</a>
+
+  <div class="nav-footer">
+    <p>Verified demo chain: Item 001024 -> Revision yfMAAQdo5BWnuC -> dataset edges for rendering and specification files.</p>
+  </div>
+</nav>
+
+<main>
+  <div class="page active" id="page-overview">
+    <div class="page-header">
+      <div class="tag">System Overview</div>
+      <h2>From Teamcenter records to agent-ready graph reasoning</h2>
+      <p>We now have a small but meaningful proof of concept graphmart story: Items, revisions, datasets, related revisions, change impacts, and workflow targets all survive into a structure that an agent can traverse in milliseconds. The graph is not replacing Teamcenter - it is becoming the fast semantic layer in front of it.</p>
+    </div>
+    <div class="page-body">
+      <div class="panel-split">
+        <div class="section">
+          <div class="section-label">Why this matters</div>
+          <h3>Graph first for relationships, MCP when the question demands live state</h3>
+          <p>The demo story is no longer "an API is up." It is "a user asks a relationship-heavy PLM question and the agent knows when a graph query is enough, when it should enrich from Teamcenter, and why."</p>
+          <div class="code-block">User: "Show me every revision of item 001024 and which datasets are attached."
+
+Agent route:
+1. Resolve item by graph identity and display attributes
+2. Traverse ITEM_HAS_REVISION
+3. Traverse REVISION_HAS_DATASET + REVISION_HAS_SPECIFICATION_DATASET
+4. Return answer immediately
+5. Only call MCP if user then asks to download or mutate something</div>
+        </div>
+        <div class="kv-grid">
+          <div class="kv-card"><div class="kv-label">Total edges</div><div class="kv-value">9,602 verified relationships across 7 predicate families.</div></div>
+          <div class="kv-card"><div class="kv-label">Semantic uplift</div><div class="kv-value">SOA-informed keys like object_name, item_id, item_revision_id, dataset_type, file_count, owning_user, and release_status make results readable.</div></div>
+          <div class="kv-card"><div class="kv-label">Fast path</div><div class="kv-value">Item -> Revision -> Dataset traversal is the anchor demo. It is deterministic, filterable, and already passing demo gate.</div></div>
+          <div class="kv-card"><div class="kv-label">Fallback path</div><div class="kv-value">BOM expansion, file download, and real-time workflow task state still route to MCP/SOA because those are runtime or binary concerns.</div></div>
+        </div>
+      </div>
+
+      <hr class="section-rule">
+
+      <div class="section">
+        <div class="section-label">What is proven</div>
+        <div class="stats-grid">
+          <div class="stat-chip"><div class="stat-label">Items / revisions</div><div class="stat-value">3,338 item nodes and 3,388 ITEM_HAS_REVISION edges preserve the core version lineage.</div></div>
+          <div class="stat-chip"><div class="stat-label">Datasets</div><div class="stat-value">2,103 general dataset edges and 2,679 specification edges make file-bearing engineering context queryable.</div></div>
+          <div class="stat-chip"><div class="stat-label">Cross links</div><div class="stat-value">904 REVISION_RELATED_TO_REVISION edges add revision-to-revision context for impact and derivation stories.</div></div>
+          <div class="stat-chip"><div class="stat-label">Change + workflow</div><div class="stat-value">293 CHANGE_AFFECTS_REVISION and 231 WORKFLOW_TARGETS_OBJECT edges bring in higher-value business narratives without destabilizing the demo baseline.</div></div>
+        </div>
+      </div>
+
+      <hr class="section-rule">
+
+      <div class="section">
+        <div class="section-label">Navigate this reference</div>
+        <div class="overview-grid">
+          <div class="overview-tile" onclick="showPage('stack')">
+            <div class="ot-num">01</div>
+            <h4>Execution stack</h4>
+            <p>See exactly how Teamcenter tables, SQL views, REST projection, AGS ingestion, and SPARQL fit together - including which APIs are always on.</p>
+            <span class="tag-pill teal">architecture</span>
+          </div>
+          <div class="overview-tile" onclick="showPage('routing')">
+            <div class="ot-num">02</div>
+            <h4>Agent routing logic</h4>
+            <p>User ask by user ask, understand why the agent chooses graph, hybrid, or MCP direct execution.</p>
+            <span class="tag-pill amber">decision policy</span>
+          </div>
+          <div class="overview-tile" onclick="showPage('graph')">
+            <div class="ot-num">03</div>
+            <h4>Interactive graph</h4>
+            <p>Click nodes and edges to inspect meaning, query rationale, and the exact SPARQL an agent would generate.</p>
+            <span class="tag-pill blue">explorable</span>
+          </div>
+          <div class="overview-tile" onclick="showPage('readiness')">
+            <div class="ot-num">04</div>
+            <h4>Health and readiness</h4>
+            <p>Review the endpoint status, regression checks, edge census, and the concrete demo traversal chain.</p>
+            <span class="tag-pill purple">validated</span>
+          </div>
+        </div>
+      </div>
+
+      <hr class="section-rule">
+
+      <div class="inline-proof">
+        <div class="proof-title">Real query example + observed result</div>
+        <div class="code-block">PREFIX tc: <http://siemens.com/teamcenter#>
+SELECT ?dataset ?datasetType WHERE {
+  <tc:rev:yfMAAQdo5BWnuC> ?predicate ?dataset .
+  VALUES ?predicate { tc:hasDataset tc:hasSpecificationDataset }
+  ?dataset tc:dataset_type ?datasetType .
+}
+
+Result rows:
+- tc:dataset:zzEAAQt85BWnuC    IMAN_Rendering
+- tc:dataset:11FAAQdo5BWnuC    IMAN_specification</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-stack">
+    <div class="page-header">
+      <div class="tag">Execution Stack</div>
+      <h2>What is running, what is materialized, and what is on demand</h2>
+      <p>The architecture works because each layer has a narrow job: Teamcenter owns truth, AntiGravity shapes it, AGS materializes it, and the agent chooses the fastest correct interface.</p>
+    </div>
+    <div class="page-body">
+      <div class="diagram-card">
+        <div class="diagram-card-header">Teamcenter -> AntiGravity -> AGS -> Agent</div>
+        <div class="diagram-card-body">
+          <svg class="stack-svg" viewBox="0 0 1120 360" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="stackFlow" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#48ce98"/>
+                <stop offset="100%" stop-color="#8579e5"/>
+              </linearGradient>
+            </defs>
+            <rect x="20" y="48" width="180" height="96" rx="22" fill="#171d28" stroke="#edb050" stroke-opacity="0.4"/>
+            <text x="44" y="84" fill="#edb050" font-size="12" font-family="IBM Plex Mono">SOURCE</text>
+            <text x="44" y="116" fill="#e6eaf3" font-size="24" font-weight="600">Teamcenter SQL</text>
+            <text x="44" y="140" fill="#939db2" font-size="13">PITEM, PITEMREVISION, PDATASET, PIMANRELATION</text>
+
+            <rect x="250" y="48" width="190" height="96" rx="22" fill="#171d28" stroke="#48ce98" stroke-opacity="0.4"/>
+            <text x="274" y="84" fill="#48ce98" font-size="12" font-family="IBM Plex Mono">PROJECTION</text>
+            <text x="274" y="116" fill="#e6eaf3" font-size="24" font-weight="600">SQL Views</text>
+            <text x="274" y="140" fill="#939db2" font-size="13">Normalized predicates, tc: URIs, flattened payloads</text>
+
+            <rect x="490" y="48" width="190" height="96" rx="22" fill="#171d28" stroke="#5d9edf" stroke-opacity="0.4"/>
+            <text x="514" y="84" fill="#5d9edf" font-size="12" font-family="IBM Plex Mono">API</text>
+            <text x="514" y="116" fill="#e6eaf3" font-size="24" font-weight="600">REST :3737</text>
+            <text x="514" y="140" fill="#939db2" font-size="13">Auth-gated JSON with filters and deterministic paging</text>
+
+            <rect x="730" y="48" width="170" height="96" rx="22" fill="#171d28" stroke="#8579e5" stroke-opacity="0.4"/>
+            <text x="754" y="84" fill="#8579e5" font-size="12" font-family="IBM Plex Mono">INGESTION</text>
+            <text x="754" y="116" fill="#e6eaf3" font-size="24" font-weight="600">AGS</text>
+            <text x="754" y="140" fill="#939db2" font-size="13">HttpSource -> graphmart triples</text>
+
+            <rect x="940" y="48" width="160" height="96" rx="22" fill="#171d28" stroke="#48ce98" stroke-opacity="0.4"/>
+            <text x="964" y="84" fill="#48ce98" font-size="12" font-family="IBM Plex Mono">RUNTIME</text>
+            <text x="964" y="116" fill="#e6eaf3" font-size="24" font-weight="600">Agent</text>
+            <text x="964" y="140" fill="#939db2" font-size="13">SPARQL first, MCP when needed</text>
+
+            <path d="M200 96 H250 M440 96 H490 M680 96 H730 M900 96 H940" stroke="url(#stackFlow)" stroke-width="4" stroke-linecap="round"/>
+
+            <rect x="90" y="210" width="230" height="96" rx="22" fill="#121722" stroke="#48ce98" stroke-opacity="0.26"/>
+            <text x="114" y="246" fill="#48ce98" font-size="12" font-family="IBM Plex Mono">ALWAYS ON</text>
+            <text x="114" y="278" fill="#e6eaf3" font-size="21" font-weight="600">Gateway + REST API</text>
+            <text x="114" y="300" fill="#939db2" font-size="13">Health, readyz, nodes, and edges endpoints serve stable demo traffic.</text>
+
+            <rect x="364" y="210" width="230" height="96" rx="22" fill="#121722" stroke="#5d9edf" stroke-opacity="0.26"/>
+            <text x="388" y="246" fill="#5d9edf" font-size="12" font-family="IBM Plex Mono">ON SCHEDULE</text>
+            <text x="388" y="278" fill="#e6eaf3" font-size="21" font-weight="600">AGS Refresh / Reload</text>
+            <text x="388" y="300" fill="#939db2" font-size="13">Graph ingestion runs when data is refreshed - not every user request.</text>
+
+            <rect x="638" y="210" width="230" height="96" rx="22" fill="#121722" stroke="#edb050" stroke-opacity="0.26"/>
+            <text x="662" y="246" fill="#edb050" font-size="12" font-family="IBM Plex Mono">ON DEMAND</text>
+            <text x="662" y="278" fill="#e6eaf3" font-size="21" font-weight="600">Teamcenter MCP / SOA</text>
+            <text x="662" y="300" fill="#939db2" font-size="13">Invoked only when the agent needs runtime BOM, file bytes, write operations, or live task state.</text>
+          </svg>
+        </div>
+      </div>
+
+      <div class="runtime-grid">
+        <div class="section">
+          <div class="section-label">Always on</div>
+          <div class="note-grid">
+            <div class="runtime-item"><strong>Gateway :3000</strong><p>Proxies external calls and keeps the REST surface stable for demos and controlled routing.</p></div>
+            <div class="runtime-item"><strong>REST API :3737</strong><p>Serves items, revisions, datasets, and core edges with strict filters and deterministic pagination.</p></div>
+            <div class="runtime-item"><strong>Graphmart</strong><p>Hosts the materialized triples and serves SPARQL queries for relationship-heavy reasoning.</p></div>
+            <div class="runtime-item"><strong>Health probes</strong><p>/health and /readyz stay simple, predictable, and monitored.</p></div>
+          </div>
+        </div>
+        <div class="section">
+          <div class="section-label">On demand</div>
+          <div class="note-grid">
+            <div class="runtime-item"><strong>MCP file retrieval</strong><p>Used when the question shifts from metadata to actual file download or preview bytes.</p></div>
+            <div class="runtime-item"><strong>BOM expansion</strong><p>Not yet represented as a graph baseline because BOMLine is a runtime construct. Agent routes to SOA.</p></div>
+            <div class="runtime-item"><strong>Workflow detail</strong><p>Graph answers which workflow targets an object; MCP answers live tasks, assignees, and signoff state.</p></div>
+            <div class="runtime-item"><strong>Mutations</strong><p>Any create, revise, attach, or promote action stays out of graph and inside governed Teamcenter operations.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-routing">
+    <div class="page-header">
+      <div class="tag">Decision Engine</div>
+      <h2>What causes the agent to choose graph vs MCP?</h2>
+      <p>The agent is not choosing interfaces randomly. It is choosing based on data shape, freshness requirements, and whether the user asked a relationship question or an operational question.</p>
+    </div>
+    <div class="page-body">
+      <div class="dual-grid">
+        <div class="route-lane">
+          <div class="route-card graph">
+            <span class="tag-pill teal">Graph first</span>
+            <div class="route-ask">"Show me every revision for item 001024 and which datasets each revision carries."</div>
+            <p>This is a relationship-traversal question. The graph already stores the structure, so a SPARQL query is the fastest, safest answer.</p>
+            <div class="conf-row"><div class="conf-track"><div class="conf-fill" style="width:95%;background:var(--teal)"></div></div><div class="conf-text">95%</div></div>
+            <div class="code-block">SELECT ?rev ?dataset ?datasetType WHERE {
+  <tc:item:001024> tc:hasRevision ?rev .
+  OPTIONAL {
+    ?rev ?p ?dataset .
+    VALUES ?p { tc:hasDataset tc:hasSpecificationDataset }
+    ?dataset tc:dataset_type ?datasetType .
+  }
+}</div>
+          </div>
+          <div class="route-card graph">
+            <span class="tag-pill teal">Graph first</span>
+            <div class="route-ask">"Are there any changes affecting this revision?"</div>
+            <p>Now that CHANGE_AFFECTS_REVISION exists, the graph can answer impact questions without a deep change-management crawl.</p>
+            <div class="conf-row"><div class="conf-track"><div class="conf-fill" style="width:90%;background:var(--teal)"></div></div><div class="conf-text">90%</div></div>
+            <div class="code-block">SELECT ?change ?name WHERE {
+  ?change tc:affectsRevision <tc:rev:yfMAAQdo5BWnuC> ;
+          tc:object_name ?name .
+}</div>
+          </div>
+        </div>
+
+        <div class="route-lane">
+          <div class="route-card hybrid">
+            <span class="tag-pill amber">Hybrid</span>
+            <div class="route-ask">"Who has the latest revision checked out right now?"</div>
+            <p>The graph may hold last-known checkout metadata, but checkout state is volatile. The agent uses graph for identity and latest revision, then confirms via MCP.</p>
+            <div class="conf-row"><div class="conf-track"><div class="conf-fill" style="width:68%;background:var(--amber)"></div></div><div class="conf-text">68%</div></div>
+            <div class="code-block">Graph step:
+SELECT ?rev ?user WHERE {
+  <tc:item:001024> tc:hasRevision ?rev .
+  OPTIONAL { ?rev tc:checked_out_user ?user }
+}
+
+If stale or missing -> MCP getProperties(revisionUid)</div>
+          </div>
+          <div class="route-card mcp">
+            <span class="tag-pill purple">MCP direct</span>
+            <div class="route-ask">"Download the JT file and expand the BOM under this assembly."</div>
+            <p>These are runtime or binary requests. The graph helps locate the right object, but the actual action happens through Teamcenter native services.</p>
+            <div class="conf-row"><div class="conf-track"><div class="conf-fill" style="width:20%;background:var(--purple)"></div></div><div class="conf-text">20%</div></div>
+            <div class="code-block">Graph locate:
+SELECT ?dataset WHERE {
+  <tc:rev:yfMAAQdo5BWnuC> tc:hasDataset ?dataset .
+  ?dataset tc:dataset_type "IMAN_Rendering" .
+}
+
+Then MCP:
+- getDatasetFiles(datasetUid)
+- expandPSOneLevel(itemRevisionUid)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-label">Routing rule of thumb</div>
+        <div class="story-grid">
+          <div class="note-card"><div class="note-kicker">Graph</div><p><strong>Ask contains relationships, lineage, impact, attachment context, or filterable business structure.</strong> Use SPARQL first.</p></div>
+          <div class="note-card"><div class="note-kicker">Hybrid</div><p><strong>Ask starts with structure but ends with volatile operational state.</strong> Use graph for fast narrowing, MCP for confirmation.</p></div>
+          <div class="note-card"><div class="note-kicker">MCP</div><p><strong>Ask needs file bytes, runtime BOM, write operations, or live workflow task detail.</strong> Route directly to Teamcenter.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-graph">
+    <div class="page-header">
+      <div class="tag">Interactive Graph</div>
+      <h2>Click the graph to see what the agent understands</h2>
+      <p>This uses real tested IDs and validated predicate families. Click any node or edge to inspect properties, query rationale, and the exact relationship story carried by the graph.</p>
+    </div>
+    <div class="page-body">
+      <div class="graph-layout">
+        <div class="graph-wrap">
+          <svg class="graph-svg" viewBox="0 0 980 560" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="arr" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#96b6ff"></path></marker>
+            </defs>
+            <g opacity="0.10">
+              <path d="M0 80 H980 M0 160 H980 M0 240 H980 M0 320 H980 M0 400 H980 M0 480 H980" stroke="#2e3547" stroke-width="1"/>
+              <path d="M80 0 V560 M160 0 V560 M240 0 V560 M320 0 V560 M400 0 V560 M480 0 V560 M560 0 V560 M640 0 V560 M720 0 V560 M800 0 V560 M880 0 V560" stroke="#2e3547" stroke-width="1"/>
+            </g>
+
+            <g class="graph-edge" data-kind="edge" data-id="item_rev">
+              <line class="graph-edge-hit" x1="188" y1="150" x2="380" y2="150" stroke="transparent" stroke-width="20"/>
+              <line class="graph-edge-line" x1="188" y1="150" x2="380" y2="150" stroke="#48ce98" stroke-width="1.9" marker-end="url(#arr)"/>
+              <text class="graph-edge-label" x="230" y="132">ITEM_HAS_REVISION</text>
+            </g>
+
+            <g class="graph-edge" data-kind="edge" data-id="rev_ds_general">
+              <path class="graph-edge-hit" d="M532 150 C650 150,675 220,760 220" fill="none" stroke="transparent" stroke-width="20"/>
+              <path class="graph-edge-line" d="M532 150 C650 150,675 220,760 220" fill="none" stroke="#5d9edf" stroke-width="1.9" marker-end="url(#arr)"/>
+              <text class="graph-edge-label" x="582" y="188">REVISION_HAS_DATASET</text>
+            </g>
+
+            <g class="graph-edge" data-kind="edge" data-id="rev_ds_spec">
+              <path class="graph-edge-hit" d="M532 155 C650 155,675 320,760 320" fill="none" stroke="transparent" stroke-width="20"/>
+              <path class="graph-edge-line" d="M532 155 C650 155,675 320,760 320" fill="none" stroke="#8579e5" stroke-width="1.9" marker-end="url(#arr)"/>
+              <text class="graph-edge-label" x="532" y="268">REVISION_HAS_SPECIFICATION_DATASET</text>
+            </g>
+
+            <g class="graph-edge" data-kind="edge" data-id="change_rev">
+              <path class="graph-edge-hit" d="M170 420 C280 320,320 220,380 176" fill="none" stroke="transparent" stroke-width="20"/>
+              <path class="graph-edge-line" d="M170 420 C280 320,320 220,380 176" fill="none" stroke="#edb050" stroke-width="1.9" marker-end="url(#arr)"/>
+              <text class="graph-edge-label" x="110" y="356">CHANGE_AFFECTS_REVISION</text>
+            </g>
+
+            <g class="graph-edge" data-kind="edge" data-id="wf_rev">
+              <path class="graph-edge-hit" d="M610 440 C620 360,560 250,514 180" fill="none" stroke="transparent" stroke-width="20"/>
+              <path class="graph-edge-line" d="M610 440 C620 360,560 250,514 180" fill="none" stroke="#db7264" stroke-width="1.9" marker-end="url(#arr)"/>
+              <text class="graph-edge-label" x="620" y="332">WORKFLOW_TARGETS_OBJECT</text>
+            </g>
+
+            <g class="graph-node" data-kind="node" data-id="item">
+              <rect x="70" y="118" width="118" height="64" rx="16" fill="#163925" stroke="#48ce98" stroke-width="1.1"/>
+              <text x="92" y="146" fill="#e6eaf3" font-size="15" font-weight="600">Item</text>
+              <text x="92" y="166" fill="#b9c6df" font-size="11">001024 / yoMAAQdo5BWnuC</text>
+            </g>
+
+            <g class="graph-node" data-kind="node" data-id="revision">
+              <rect x="380" y="116" width="152" height="68" rx="16" fill="#162435" stroke="#5d9edf" stroke-width="1.1"/>
+              <text x="402" y="145" fill="#e6eaf3" font-size="15" font-weight="600">ItemRevision</text>
+              <text x="402" y="165" fill="#b9c6df" font-size="11">yfMAAQdo5BWnuC / rev A</text>
+            </g>
+
+            <g class="graph-node" data-kind="node" data-id="dataset-general">
+              <rect x="760" y="190" width="166" height="64" rx="16" fill="#162435" stroke="#5d9edf" stroke-width="1.1"/>
+              <text x="782" y="218" fill="#e6eaf3" font-size="15" font-weight="600">Dataset</text>
+              <text x="782" y="238" fill="#b9c6df" font-size="11">zzEAAQt85BWnuC / IMAN_Rendering</text>
+            </g>
+
+            <g class="graph-node" data-kind="node" data-id="dataset-spec">
+              <rect x="760" y="290" width="170" height="64" rx="16" fill="#2b1e40" stroke="#8579e5" stroke-width="1.1"/>
+              <text x="782" y="318" fill="#e6eaf3" font-size="15" font-weight="600">Spec Dataset</text>
+              <text x="782" y="338" fill="#b9c6df" font-size="11">11FAAQdo5BWnuC / IMAN_specification</text>
+            </g>
+
+            <g class="graph-node" data-kind="node" data-id="change">
+              <rect x="30" y="392" width="140" height="64" rx="16" fill="#3c2811" stroke="#edb050" stroke-width="1.1"/>
+              <text x="52" y="420" fill="#e6eaf3" font-size="15" font-weight="600">Change</text>
+              <text x="52" y="440" fill="#b9c6df" font-size="11">293 impact edges in graph</text>
+            </g>
+
+            <g class="graph-node" data-kind="node" data-id="workflow">
+              <rect x="574" y="418" width="160" height="64" rx="16" fill="#311f25" stroke="#db7264" stroke-width="1.1"/>
+              <text x="596" y="446" fill="#e6eaf3" font-size="15" font-weight="600">Workflow Job</text>
+              <text x="596" y="466" fill="#b9c6df" font-size="11">231 targeting edges observed</text>
+            </g>
+          </svg>
+          <div class="legend-row">
+            <div class="legend-item"><span class="legend-swatch" style="background:#48ce98"></span>Item</div>
+            <div class="legend-item"><span class="legend-swatch" style="background:#5d9edf"></span>Revision / general dataset</div>
+            <div class="legend-item"><span class="legend-swatch" style="background:#8579e5"></span>Specification dataset</div>
+            <div class="legend-item"><span class="legend-swatch" style="background:#edb050"></span>Change</div>
+            <div class="legend-item"><span class="legend-swatch" style="background:#db7264"></span>Workflow</div>
+          </div>
+        </div>
+
+        <div class="inspector" id="inspector">
+          <div class="inspector-head">
+            <div>
+              <div class="section-label">Selection inspector</div>
+              <h3 id="inspectTitle" style="margin:0">Click a node or edge</h3>
+            </div>
+            <button type="button" onclick="clearSelection()">Clear focus</button>
+          </div>
+          <div class="empty-state" id="inspectEmpty">Select a graph element to reveal what it means, what user ask triggers it, and the SPARQL or MCP path the agent would take.</div>
+          <div class="inspect-grid" id="inspectGrid" style="display:none"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-readiness">
+    <div class="page-header">
+      <div class="tag">Health and Readiness</div>
+      <h2>Demo gate is passing - and here is what that actually means</h2>
+      <p>Availability is healthy, auth is correct, filters are strict, pagination is deterministic, and the core item -> revision -> dataset story stays intact after enrichment.</p>
+    </div>
+    <div class="page-body">
+      <div class="dual-grid">
+        <div class="section">
+          <div class="section-label">Endpoint status</div>
+          <div class="status-table-wrap">
+          <table class="status-table">
+            <thead><tr><th>Endpoint</th><th>Status</th><th>Meaning</th></tr></thead>
+            <tbody>
+              <tr><td>/api/ags/health</td><td class="ok">200</td><td>Service heartbeat healthy</td></tr>
+              <tr><td>/api/ags/readyz</td><td class="ok">200</td><td>Database connected and ready</td></tr>
+              <tr><td>/graph/nodes/items</td><td class="ok">200</td><td>Items visible</td></tr>
+              <tr><td>/graph/nodes/revisions</td><td class="ok">200</td><td>Revisions visible</td></tr>
+              <tr><td>/graph/nodes/datasets</td><td class="ok">200</td><td>Datasets visible</td></tr>
+              <tr><td>/graph/edges/core</td><td class="ok">200</td><td>Predicate filters verified</td></tr>
+              <tr><td>/graph/nodes/changes</td><td class="warn">503</td><td>Intentional load-shed for non-demo mart</td></tr>
+              <tr><td>/graph/nodes/workflows</td><td class="warn">503</td><td>Intentional load-shed for non-demo mart</td></tr>
+            </tbody>
+          </table>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-label">Regression checks</div>
+          <div class="check-table-wrap">
+          <table class="check-table">
+            <thead><tr><th>Check</th><th>Result</th></tr></thead>
+            <tbody>
+              <tr><td>Unauthorized graph call</td><td class="ok">401 as expected</td></tr>
+              <tr><td>predicate filter correctness</td><td class="ok">Pass</td></tr>
+              <tr><td>source_type filter correctness</td><td class="ok">Pass</td></tr>
+              <tr><td>target_type filter correctness</td><td class="ok">Pass</td></tr>
+              <tr><td>tc_uid strictness</td><td class="ok">Pass</td></tr>
+              <tr><td>Pagination determinism</td><td class="ok">Pass across items, revisions, datasets, edges</td></tr>
+              <tr><td>Flat edge payload contract</td><td class="ok">predicate_raw, relation_family, dataset_type, file_count, source_tc_uid, target_tc_uid all present</td></tr>
+            </tbody>
+          </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-label">Current edge census</div>
+        <div class="edge-bars">
+          <div class="edge-row"><div class="edge-label">ITEM_HAS_REVISION</div><div class="edge-track"><div class="edge-fill" style="width:35.3%;background:var(--teal)"></div></div><div class="small-muted">3,388</div></div>
+          <div class="edge-row"><div class="edge-label">REVISION_HAS_DATASET</div><div class="edge-track"><div class="edge-fill" style="width:21.9%;background:var(--blue)"></div></div><div class="small-muted">2,103</div></div>
+          <div class="edge-row"><div class="edge-label">REVISION_HAS_SPECIFICATION_DATASET</div><div class="edge-track"><div class="edge-fill" style="width:27.9%;background:var(--purple)"></div></div><div class="small-muted">2,679</div></div>
+          <div class="edge-row"><div class="edge-label">REVISION_HAS_REFERENCE_DATASET</div><div class="edge-track"><div class="edge-fill" style="width:0.1%;background:var(--amber)"></div></div><div class="small-muted">4</div></div>
+          <div class="edge-row"><div class="edge-label">REVISION_RELATED_TO_REVISION</div><div class="edge-track"><div class="edge-fill" style="width:9.4%;background:var(--coral)"></div></div><div class="small-muted">904</div></div>
+          <div class="edge-row"><div class="edge-label">WORKFLOW_TARGETS_OBJECT</div><div class="edge-track"><div class="edge-fill" style="width:2.4%;background:var(--blue)"></div></div><div class="small-muted">231</div></div>
+          <div class="edge-row"><div class="edge-label">CHANGE_AFFECTS_REVISION</div><div class="edge-track"><div class="edge-fill" style="width:3.1%;background:var(--amber)"></div></div><div class="small-muted">293</div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-label">Demo chain proof</div>
+        <div class="demo-chain">
+          <div class="chain-card"><div class="chain-title">Item 001024</div><div class="chain-id">yoMAAQdo5BWnuC</div></div>
+          <div class="chain-arrow">-></div>
+          <div class="chain-card"><div class="chain-title">Revision A</div><div class="chain-id">yfMAAQdo5BWnuC</div></div>
+          <div class="chain-arrow">-></div>
+          <div class="chain-card"><div class="chain-title">Dataset</div><div class="chain-id">zzEAAQt85BWnuC / IMAN_Rendering</div></div>
+          <div class="chain-arrow">and</div>
+          <div class="chain-card"><div class="chain-title">Spec Dataset</div><div class="chain-id">11FAAQdo5BWnuC / IMAN_specification</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PAGE 05 — AGS Graph Pipeline ═══ -->
+  <div class="page" id="page-pipeline">
+    <div class="page-header">
+      <div class="tag">Live Pipeline</div>
+      <h2>AGS ↔ Teamcenter REST pipeline — live data in the graph</h2>
+      <p>A production-grade data pipeline now connects Teamcenter PLM to Altair Graph Studio via REST. The AGS DataToolkit HttpSource steps pull nodes and edges live from the Teamcenter server, materializing 264K+ triples that agents can traverse with SPARQL in milliseconds.</p>
+    </div>
+    <div class="page-body">
+
+      <!-- stats row -->
+      <div class="pipeline-triple-grid">
+        <div class="pipeline-stat-big"><div class="ps-number" style="color:var(--teal)">264K+</div><div class="ps-label">Triples loaded</div></div>
+        <div class="pipeline-stat-big"><div class="ps-number" style="color:var(--blue)">9,602</div><div class="ps-label">Edges across 7 types</div></div>
+        <div class="pipeline-stat-big"><div class="ps-number" style="color:var(--purple)">3</div><div class="ps-label">HttpSource steps</div></div>
+      </div>
+
+      <div class="pipeline-grid">
+        <div class="section">
+          <div class="section-label">What was built</div>
+          <h3>Live REST → RDF pipeline</h3>
+          <p>The REST API running on the Teamcenter server exposes Items, Revisions, Datasets, and 7 edge types as paginated JSON. AGS DataToolkit HttpSource steps pull this data live and convert it into RDF triples inside the "Proxi Ltd." graphmart.</p>
+          <div class="stats-grid" style="margin-top:14px">
+            <div class="stat-chip"><div class="stat-label">Items</div><div class="stat-value">3,338 Item nodes ingested</div></div>
+            <div class="stat-chip"><div class="stat-label">Revisions</div><div class="stat-value">3,388 ItemRevision nodes</div></div>
+            <div class="stat-chip"><div class="stat-label">Datasets</div><div class="stat-value">26,335 Dataset nodes</div></div>
+            <div class="stat-chip"><div class="stat-label">Edge families</div><div class="stat-value">7 relationship types verified</div></div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-label">Where it lives</div>
+          <h3>AGS deployment details</h3>
+          <div class="kv-grid" style="margin-top:14px">
+            <div class="kv-card"><div class="kv-label">AGS instance</div><div class="kv-value">graphstudio-demo.anzo-solutions.com</div></div>
+            <div class="kv-card"><div class="kv-label">Graphmart</div><div class="kv-value">Proxi Ltd.</div></div>
+            <div class="kv-card"><div class="kv-label">Layer</div><div class="kv-value">Teamcenter Live Data (3 HttpSource steps)</div></div>
+            <div class="kv-card"><div class="kv-label">Namespace</div><div class="kv-value" style="font-family:'IBM Plex Mono',monospace;font-size:11px">http://proxi.demo/tc/ontology#</div></div>
+          </div>
+          <div class="kv-grid" style="margin-top:12px">
+            <div class="kv-card"><div class="kv-label">Nodes graph</div><div class="kv-value" style="font-family:'IBM Plex Mono',monospace;font-size:11px">proxi.demo/tc/nodes</div></div>
+            <div class="kv-card"><div class="kv-label">Edges graph</div><div class="kv-value" style="font-family:'IBM Plex Mono',monospace;font-size:11px">proxi.demo/tc/edges</div></div>
+            <div class="kv-card"><div class="kv-label">Ontology graph</div><div class="kv-value" style="font-family:'IBM Plex Mono',monospace;font-size:11px">proxi.demo/tc/ontology</div></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="section-rule">
+
+      <!-- Edge census (full) -->
+      <div class="section">
+        <div class="section-label">Edge types verified in the pipeline</div>
+        <div class="edge-bars">
+          <div class="edge-row"><div class="edge-label">ITEM_HAS_REVISION</div><div class="edge-track"><div class="edge-fill" style="width:35.3%;background:var(--teal)"></div></div><div class="small-muted">3,388</div></div>
+          <div class="edge-row"><div class="edge-label">REVISION_HAS_SPECIFICATION_DATASET</div><div class="edge-track"><div class="edge-fill" style="width:27.9%;background:var(--purple)"></div></div><div class="small-muted">2,679</div></div>
+          <div class="edge-row"><div class="edge-label">REVISION_HAS_DATASET</div><div class="edge-track"><div class="edge-fill" style="width:21.9%;background:var(--blue)"></div></div><div class="small-muted">2,103</div></div>
+          <div class="edge-row"><div class="edge-label">REVISION_RELATED_TO_REVISION</div><div class="edge-track"><div class="edge-fill" style="width:9.4%;background:var(--coral)"></div></div><div class="small-muted">904</div></div>
+          <div class="edge-row"><div class="edge-label">CHANGE_AFFECTS_REVISION</div><div class="edge-track"><div class="edge-fill" style="width:3.1%;background:var(--amber)"></div></div><div class="small-muted">293</div></div>
+          <div class="edge-row"><div class="edge-label">WORKFLOW_TARGETS_OBJECT</div><div class="edge-track"><div class="edge-fill" style="width:2.4%;background:var(--blue)"></div></div><div class="small-muted">231</div></div>
+          <div class="edge-row"><div class="edge-label">REVISION_HAS_REFERENCE_DATASET</div><div class="edge-track"><div class="edge-fill" style="width:0.1%;background:var(--amber)"></div></div><div class="small-muted">4</div></div>
+        </div>
+      </div>
+
+      <hr class="section-rule">
+
+      <!-- SPARQL proof -->
+      <div class="section">
+        <div class="section-label">SPARQL traversal proof</div>
+        <h3>Item → Revision → Dataset traversal query</h3>
+        <p>Full multi-graph SPARQL queries traverse the pipeline data end-to-end. This query joins edges and node properties across named graphs to resolve the complete Item → Revision → Dataset chain.</p>
+        <div class="code-block">PREFIX tc: &lt;http://proxi.demo/tc/ontology#&gt;
+SELECT ?itemName ?revName ?dsName ?dsType WHERE {
+    GRAPH &lt;http://proxi.demo/tc/edges&gt; {
+        ?item tc:hasRevision ?rev .
+        ?rev tc:hasDataset ?ds .
+    }
+    GRAPH &lt;http://proxi.demo/tc/nodes&gt; {
+        ?item a tc:Item ; tc:objectName ?itemName .
+        ?rev a tc:ItemRevision ; tc:objectName ?revName .
+        ?ds a tc:Dataset ; tc:datasetName ?dsName ; tc:datasetType ?dsType .
+    }
+} LIMIT 15</div>
+      </div>
+
+      <div class="section">
+        <div class="section-label">Observed results</div>
+        <h3>Real rows returned from the pipeline graph</h3>
+        <div class="status-table-wrap">
+        <table class="sparql-result-table">
+          <thead><tr><th>itemName</th><th>revName</th><th>dsName</th><th>dsType</th></tr></thead>
+          <tbody>
+            <tr><td>SL90631641</td><td>PS-0000148-A</td><td>DirectModel</td><td>DirectModel</td></tr>
+            <tr><td>94-1034_01</td><td>001170-A</td><td>DirectModel</td><td>DirectModel</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <p style="margin-top:10px;font-size:12px;color:var(--text3)">Results truncated — full result set available in AGS query console.</p>
+      </div>
+
+      <hr class="section-rule">
+
+      <!-- Additional traversal patterns -->
+      <div class="pipeline-grid">
+        <div class="section">
+          <div class="section-label">More traversals proven</div>
+          <h3>Beyond Item → Revision → Dataset</h3>
+          <p>The pipeline graph supports the full set of relationship-heavy queries agents need.</p>
+          <div class="note-grid" style="margin-top:14px">
+            <div class="note-card"><div class="note-kicker">Change → Affected Parts</div><p><strong>293 CHANGE_AFFECTS_REVISION edges</strong> let the agent answer impact questions — "Is there a pending change touching this revision?" — directly from the graph.</p></div>
+            <div class="note-card"><div class="note-kicker">Workflow → Targets</div><p><strong>231 WORKFLOW_TARGETS_OBJECT edges</strong> detect whether approval machinery exists around an object, without invoking Teamcenter workflow APIs.</p></div>
+            <div class="note-card"><div class="note-kicker">Rev ↔ Rev cross-references</div><p><strong>904 REVISION_RELATED_TO_REVISION edges</strong> expose revision-to-revision derivation and dependency context for traceability queries.</p></div>
+            <div class="note-card"><div class="note-kicker">Reference datasets</div><p><strong>4 REVISION_HAS_REFERENCE_DATASET edges</strong> separate reference attachments from specification and general datasets.</p></div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-label">Object type diversity</div>
+          <h3>Not just Items — the graph covers the full PLM taxonomy</h3>
+          <p>The pipeline ingests all Teamcenter object types present in the source database, giving agents rich type-aware context.</p>
+          <div style="margin-top:14px">
+            <div class="stat-label" style="margin-bottom:6px">Item types</div>
+            <div class="type-pill-grid">
+              <span class="type-pill">Item</span>
+              <span class="type-pill">ProblemReport</span>
+              <span class="type-pill">ChangeRequest</span>
+              <span class="type-pill">M9Device</span>
+              <span class="type-pill">CAEModel</span>
+              <span class="type-pill">WeldPoint</span>
+              <span class="type-pill">Document</span>
+            </div>
+          </div>
+          <div style="margin-top:14px">
+            <div class="stat-label" style="margin-bottom:6px">Revision types</div>
+            <div class="type-pill-grid">
+              <span class="type-pill">ItemRevision</span>
+              <span class="type-pill">ProblemReportRevision</span>
+              <span class="type-pill">ChangeRequestRevision</span>
+              <span class="type-pill">ChangeNoticeRevision</span>
+              <span class="type-pill">M9DeviceRevision</span>
+              <span class="type-pill">MENCMachining Revision</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="section-rule">
+
+      <!-- Pipeline architecture diagram -->
+      <div class="diagram-card">
+        <div class="diagram-card-header">Pipeline flow: Teamcenter SQL → REST API → AGS HttpSource → Named Graphs</div>
+        <div class="diagram-card-body">
+          <svg class="stack-svg" viewBox="0 0 1080 200" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="pipeFlow" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#edb050"/>
+                <stop offset="50%" stop-color="#48ce98"/>
+                <stop offset="100%" stop-color="#8579e5"/>
+              </linearGradient>
+            </defs>
+            <rect x="20" y="50" width="200" height="90" rx="18" fill="#171d28" stroke="#edb050" stroke-opacity="0.4"/>
+            <text x="42" y="80" fill="#edb050" font-size="11" font-family="IBM Plex Mono">TEAMCENTER SQL</text>
+            <text x="42" y="108" fill="#e6eaf3" font-size="18" font-weight="600">3,338 Items</text>
+            <text x="42" y="128" fill="#939db2" font-size="12">+ Revisions, Datasets, Edges</text>
+
+            <rect x="270" y="50" width="200" height="90" rx="18" fill="#171d28" stroke="#48ce98" stroke-opacity="0.4"/>
+            <text x="292" y="80" fill="#48ce98" font-size="11" font-family="IBM Plex Mono">REST API :3737</text>
+            <text x="292" y="108" fill="#e6eaf3" font-size="18" font-weight="600">JSON endpoints</text>
+            <text x="292" y="128" fill="#939db2" font-size="12">Paginated, auth-gated</text>
+
+            <rect x="520" y="50" width="220" height="90" rx="18" fill="#171d28" stroke="#5d9edf" stroke-opacity="0.4"/>
+            <text x="542" y="80" fill="#5d9edf" font-size="11" font-family="IBM Plex Mono">AGS DATATOOLKIT</text>
+            <text x="542" y="108" fill="#e6eaf3" font-size="18" font-weight="600">3 HttpSource steps</text>
+            <text x="542" y="128" fill="#939db2" font-size="12">Nodes, Edges, Ontology</text>
+
+            <rect x="790" y="50" width="260" height="90" rx="18" fill="#171d28" stroke="#8579e5" stroke-opacity="0.4"/>
+            <text x="812" y="80" fill="#8579e5" font-size="11" font-family="IBM Plex Mono">NAMED GRAPHS</text>
+            <text x="812" y="108" fill="#e6eaf3" font-size="18" font-weight="600">264K+ triples</text>
+            <text x="812" y="128" fill="#939db2" font-size="12">proxi.demo/tc/{nodes,edges,ontology}</text>
+
+            <path d="M220 95 H270 M470 95 H520 M740 95 H790" stroke="url(#pipeFlow)" stroke-width="3.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<script>
+const PAGES = ['overview', 'stack', 'routing', 'graph', 'readiness', 'pipeline'];
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('nav .page-link').forEach(a => a.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  document.getElementById('nav-' + id).classList.add('active');
+  clearSelection();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function currentIdx() {
+  return PAGES.findIndex(id => document.getElementById('page-' + id).classList.contains('active'));
+}
+document.addEventListener('keydown', (e) => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  const idx = currentIdx();
+  if (e.key === 'ArrowRight' || e.key === 'l') { if (idx < PAGES.length - 1) showPage(PAGES[idx + 1]); }
+  else if (e.key === 'ArrowLeft' || e.key === 'h') { if (idx > 0) showPage(PAGES[idx - 1]); }
+  else if (e.key >= '0' && e.key <= '5') { showPage(PAGES[parseInt(e.key, 10)]); }
+  else if (e.key === 'Escape') { clearSelection(); }
+});
+
+const GRAPH_DATA = {
+  item: {
+    title: 'Item 001024',
+    rows: [['type', 'Item'], ['uid', 'yoMAAQdo5BWnuC'], ['agent intent', 'Resolve the anchor part the user is asking about.'], ['why graph', 'Identity and lineage lookup is already materialized.']],
+    story: 'When a user starts with a part identifier or part name, the graph is the fastest way to anchor that conversation. The agent resolves the item once, then fans out into revisions and datasets without repeated Teamcenter calls.',
+    query: 'SELECT ?rev WHERE { <tc:item:001024> tc:hasRevision ?rev . }'
+  },
+  revision: {
+    title: 'Revision yfMAAQdo5BWnuC',
+    rows: [['type', 'ItemRevision'], ['revision', 'A'], ['release status', 'Released / demo-enriched'], ['agent intent', 'Use the revision as the hand-off point to datasets, related revisions, changes, and workflows.']],
+    story: 'The revision node is the semantic hinge of the demo. Once the agent reaches the revision, it can answer most structure and attachment questions from the graph alone.',
+    query: 'SELECT ?dataset ?type WHERE {\n  <tc:rev:yfMAAQdo5BWnuC> ?p ?dataset .\n  VALUES ?p { tc:hasDataset tc:hasSpecificationDataset }\n  ?dataset tc:dataset_type ?type .\n}'
+  },
+  'dataset-general': {
+    title: 'General dataset',
+    rows: [['type', 'Dataset'], ['uid', 'zzEAAQt85BWnuC'], ['dataset_type', 'IMAN_Rendering'], ['file_count', '1']],
+    story: 'This is where the graph tells the agent that a previewable representation exists. If the user only wants confirmation, graph is enough. If the user wants the actual JT file, the agent hands off to MCP.',
+    query: 'SELECT ?ds WHERE { <tc:rev:yfMAAQdo5BWnuC> tc:hasDataset ?ds . ?ds tc:dataset_type "IMAN_Rendering" . }'
+  },
+  'dataset-spec': {
+    title: 'Specification dataset',
+    rows: [['type', 'Dataset'], ['uid', '11FAAQdo5BWnuC'], ['dataset_type', 'IMAN_specification'], ['file_count', '1']],
+    story: 'Specification datasets let the agent distinguish authoritative engineering attachments from other supporting files.',
+    query: 'SELECT ?ds WHERE { <tc:rev:yfMAAQdo5BWnuC> tc:hasSpecificationDataset ?ds . }'
+  },
+  change: {
+    title: 'Change impact node',
+    rows: [['type', 'Change-like object'], ['observed edges', '293 CHANGE_AFFECTS_REVISION'], ['agent intent', 'Answer impact and pending-change questions before users open a change workspace.']],
+    story: 'This closes an important semantic gap: the graph can now tell the user whether a revision is under change pressure without requiring a deep change-management crawl.',
+    query: 'SELECT ?change WHERE { ?change tc:affectsRevision <tc:rev:yfMAAQdo5BWnuC> . }'
+  },
+  workflow: {
+    title: 'Workflow target node',
+    rows: [['type', 'EPMJob / workflow'], ['observed edges', '231 WORKFLOW_TARGETS_OBJECT'], ['agent intent', 'Identify whether approval machinery exists around the object.']],
+    story: 'The graph can answer whether a workflow targets the object. If the user needs current task assignees or signoff detail, the agent pivots to Teamcenter.',
+    query: 'SELECT ?wf WHERE { ?wf tc:targetsObject <tc:rev:yfMAAQdo5BWnuC> . }'
+  },
+  item_rev: {
+    title: 'ITEM_HAS_REVISION',
+    rows: [['predicate', 'ITEM_HAS_REVISION'], ['count', '3,388'], ['best user ask', 'What revisions exist for this item?']],
+    story: 'This is the foundational graph edge. It turns revision browsing from a procedural SOA sequence into a single traversal step.',
+    query: 'SELECT ?rev WHERE { <tc:item:001024> tc:hasRevision ?rev . }'
+  },
+  rev_ds_general: {
+    title: 'REVISION_HAS_DATASET',
+    rows: [['predicate', 'REVISION_HAS_DATASET'], ['count', '2,103'], ['best user ask', 'What non-spec datasets are attached?']],
+    story: 'This edge helps the agent separate rendering and supporting content from the main authored specification files.',
+    query: 'SELECT ?ds ?type WHERE { <tc:rev:yfMAAQdo5BWnuC> tc:hasDataset ?ds . ?ds tc:dataset_type ?type . }'
+  },
+  rev_ds_spec: {
+    title: 'REVISION_HAS_SPECIFICATION_DATASET',
+    rows: [['predicate', 'REVISION_HAS_SPECIFICATION_DATASET'], ['count', '2,679'], ['best user ask', 'Which CAD or specification files are authoritative?']],
+    story: 'This is one of the most business-valuable edges because it gives the agent a trustworthy path to the core engineering artifacts.',
+    query: 'SELECT ?ds WHERE { <tc:rev:yfMAAQdo5BWnuC> tc:hasSpecificationDataset ?ds . }'
+  },
+  change_rev: {
+    title: 'CHANGE_AFFECTS_REVISION',
+    rows: [['predicate', 'CHANGE_AFFECTS_REVISION'], ['count', '293'], ['best user ask', 'Is there a pending change touching this revision?']],
+    story: 'This edge lets the agent answer impact questions quickly and frame downstream change conversations before invoking the heavier Teamcenter workflows.',
+    query: 'SELECT ?change ?name WHERE { ?change tc:affectsRevision <tc:rev:yfMAAQdo5BWnuC> ; tc:object_name ?name . }'
+  },
+  wf_rev: {
+    title: 'WORKFLOW_TARGETS_OBJECT',
+    rows: [['predicate', 'WORKFLOW_TARGETS_OBJECT'], ['count', '231'], ['best user ask', 'Is this revision in an approval process?']],
+    story: 'The graph is enough to detect the presence of workflow context. MCP is only necessary once the user asks for live task detail.',
+    query: 'SELECT ?wf WHERE { ?wf tc:targetsObject <tc:rev:yfMAAQdo5BWnuC> . }'
+  }
+};
+
+const graphElements = [...document.querySelectorAll('[data-kind]')];
+const inspectEmpty = document.getElementById('inspectEmpty');
+const inspectGrid = document.getElementById('inspectGrid');
+const inspectTitle = document.getElementById('inspectTitle');
+let selectedId = null;
+
+function renderSelection(id) {
+  const data = GRAPH_DATA[id];
+  if (!data) return clearSelection();
+  selectedId = id;
+  inspectTitle.textContent = data.title;
+  inspectEmpty.style.display = 'none';
+  inspectGrid.style.display = 'grid';
+  inspectGrid.innerHTML = data.rows.map(([k, v]) => `<div class="inspect-row"><div class="inspect-k">${k}</div><div class="inspect-v">${v}</div></div>`).join('') +
+    `<div class="inspect-row"><div class="inspect-k">agent story</div><div class="inspect-v"><strong>${data.story}</strong></div></div>` +
+    `<div class="inspect-row"><div class="inspect-k">query</div><div class="inspect-v"><div class="code-block" style="margin:0">${data.query.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div></div></div>`;
+
+  graphElements.forEach(el => {
+    const isSelected = el.dataset.id === id;
+    el.classList.toggle('selected', isSelected);
+    el.classList.toggle('dim', !isSelected);
+  });
+}
+
+function clearSelection() {
+  selectedId = null;
+  inspectTitle.textContent = 'Click a node or edge';
+  inspectEmpty.style.display = 'block';
+  inspectGrid.style.display = 'none';
+  inspectGrid.innerHTML = '';
+  graphElements.forEach(el => { el.classList.remove('selected'); el.classList.remove('dim'); });
+}
+
+graphElements.forEach(el => {
+  el.addEventListener('click', () => {
+    const id = el.dataset.id;
+    if (selectedId === id) clearSelection();
+    else renderSelection(id);
+  });
+});
+</script>
+</body>
+</html>
+
+
+

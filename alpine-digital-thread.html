@@ -1,0 +1,2038 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alpine Digital Thread - Spatial Story Lab - Digital Fabric</title>
+<link rel="stylesheet" href="styles/fabric.css">
+<style>
+:root {
+  --nav-h: 52px;
+  --accent-rgb: 124, 111, 222;
+  --scene-scale: 0;
+  --scene-rotate: -8;
+  --camera-shift-x: -2;
+  --camera-shift-y: -3;
+  --product-rotate: -6;
+  --product-lift: 0;
+  --product-scale: 0;
+  --depth-shift: 0;
+  --depth-strength: 0.24;
+  --terrain-opacity: 0.82;
+  --thread-progress: 0;
+  --issue-opacity: 1;
+  --context-opacity: 0;
+  --design-opacity: 0;
+  --sim-opacity: 0;
+  --release-opacity: 0;
+  --manufacturing-opacity: 0;
+  --feedback-opacity: 0;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(82,148,214,0.16), transparent 24%),
+    radial-gradient(circle at 12% 18%, rgba(124,111,222,0.1), transparent 28%),
+    linear-gradient(180deg, #05070c 0%, #090d16 34%, #04060a 100%);
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+a { color: inherit; text-decoration: none; }
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid rgba(61,191,138,0.96);
+  outline-offset: 3px;
+  border-radius: 10px;
+}
+
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 220;
+  height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 28px;
+  background: rgba(13,15,20,0.84);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(82,93,112,0.22);
+}
+
+.topbar-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.topbar-brand .sigil {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  border: 1px solid rgba(var(--accent-rgb), 0.5);
+  display: grid;
+  place-items: center;
+  color: rgb(var(--accent-rgb));
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+}
+
+.topbar-nav {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.topbar-nav a {
+  font-size: 12px;
+  color: var(--text2);
+  transition: color 0.18s ease;
+}
+
+.topbar-nav a:hover { color: var(--text); }
+
+.page-shell { padding-top: var(--nav-h); }
+
+.intro {
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 72px 40px 34px;
+  display: grid;
+  gap: 26px;
+}
+
+.intro-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.22fr) 360px;
+  gap: 22px;
+  align-items: start;
+}
+
+.intro-copy {
+  display: grid;
+  gap: 18px;
+}
+
+.intro-eyebrow {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgb(var(--accent-rgb));
+}
+
+.intro h1 {
+  font-size: clamp(40px, 6vw, 82px);
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+}
+
+.intro h1 em {
+  font-style: normal;
+  background: linear-gradient(135deg, rgb(var(--accent-rgb)), var(--teal));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.intro-copy p {
+  max-width: 780px;
+  font-size: 17px;
+  line-height: 1.72;
+  color: var(--text2);
+}
+
+.intro-note {
+  display: grid;
+  gap: 12px;
+  padding: 22px 22px 20px;
+  border-radius: 22px;
+  background: linear-gradient(180deg, rgba(17,21,29,0.96), rgba(10,12,18,0.96));
+  border: 1px solid rgba(82,93,112,0.24);
+  box-shadow: 0 22px 60px rgba(0,0,0,0.22);
+}
+
+.intro-note .note-label,
+.section-label,
+.rail-label,
+.scene-foot-card span,
+.story-mini-card span,
+.story-step-index,
+.stage-kicker,
+.stage-progress {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.intro-note p,
+.summary-card p,
+.outro-links p {
+  font-size: 13px;
+  line-height: 1.66;
+  color: var(--text2);
+}
+
+.experience {
+  max-width: 1480px;
+  margin: 0 auto;
+  padding: 0 40px 112px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 24px;
+  align-items: start;
+}
+
+.stage-shell {
+  position: sticky;
+  top: calc(var(--nav-h) + 16px);
+  height: calc(100vh - var(--nav-h) - 32px);
+  border-radius: 32px;
+  overflow: hidden;
+  border: 1px solid rgba(82,93,112,0.22);
+  background: linear-gradient(180deg, rgba(6,8,13,0.98), rgba(4,6,10,1));
+  box-shadow: 0 36px 110px rgba(0,0,0,0.32), inset 0 1px 0 rgba(255,255,255,0.04);
+  isolation: isolate;
+}
+
+.stage-shell::before,
+.stage-shell::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.stage-shell::before {
+  background:
+    radial-gradient(circle at 50% 14%, rgba(197,225,255,0.15), transparent 18%),
+    radial-gradient(circle at 78% 18%, rgba(var(--accent-rgb), 0.15), transparent 28%),
+    radial-gradient(circle at 18% 30%, rgba(82,148,214,0.11), transparent 26%);
+  z-index: 0;
+}
+
+.stage-shell::after {
+  background:
+    linear-gradient(90deg, rgba(4,6,9,0.54), transparent 18%, transparent 82%, rgba(4,6,9,0.58)),
+    linear-gradient(180deg, rgba(4,6,9,0.18), transparent 20%, transparent 78%, rgba(4,6,9,0.46));
+  opacity: 0.24;
+  z-index: 6;
+}
+
+.stage-ambient {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 10%, rgba(255,255,255,0.06), transparent 12%),
+    radial-gradient(circle at 50% 52%, rgba(var(--accent-rgb), 0.08), transparent 28%),
+    radial-gradient(circle at 50% 88%, rgba(61,191,138,0.07), transparent 22%);
+  z-index: 0;
+}
+
+.stage-viewport {
+  position: absolute;
+  inset: 0;
+  perspective: 1800px;
+  transform-style: preserve-3d;
+  z-index: 1;
+}
+
+.depth-grid {
+  position: absolute;
+  left: -14%;
+  right: -14%;
+  bottom: -22%;
+  height: 72%;
+  background:
+    repeating-linear-gradient(90deg, rgba(127,170,220,0.08) 0 1px, transparent 1px 92px),
+    repeating-linear-gradient(180deg, rgba(127,170,220,0.05) 0 1px, transparent 1px 70px);
+  transform-origin: 50% 100%;
+  transform:
+    rotateX(77deg)
+    translate3d(calc(var(--camera-shift-x) * 0.18%), calc(38px + var(--camera-shift-y) * 0.2px), calc(-320px + var(--depth-shift) * 1px))
+    scale(calc(1.02 + var(--scene-scale) * 0.002));
+  opacity: calc(0.14 + var(--depth-strength) * 0.34);
+  filter: blur(0.2px);
+}
+
+.flight-rings {
+  position: absolute;
+  inset: 14% 18% 17%;
+  display: grid;
+  place-items: center;
+  transform-style: preserve-3d;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.depth-ring {
+  position: absolute;
+  inset: calc(4% + var(--ring-index) * 2.7%);
+  border-radius: 50%;
+  border: 1px solid rgba(140,184,255, calc(0.08 + var(--depth-strength) * 0.12));
+  box-shadow: 0 0 0 1px rgba(var(--accent-rgb), 0.05), 0 0 34px rgba(82,148,214,0.08);
+  transform: translate3d(0, 0, calc((var(--ring-index) - 5) * 120px + var(--depth-shift) * 1px));
+  opacity: calc(0.04 + (9 - var(--ring-index)) * 0.045 + var(--depth-strength) * 0.12);
+}
+
+.terrain-silhouette {
+  position: absolute;
+  left: 5%;
+  right: 5%;
+  bottom: 7%;
+  width: 90%;
+  height: auto;
+  opacity: calc(0.22 + var(--terrain-opacity) * 0.54);
+  transform: translate3d(calc(var(--camera-shift-x) * 0.18%), calc(var(--camera-shift-y) * 0.16%), 0) scale(calc(1.02 + var(--scene-scale) * 0.0018));
+  z-index: 2;
+  pointer-events: none;
+}
+
+.thread-svg {
+  position: absolute;
+  inset: 5%;
+  width: 90%;
+  height: 90%;
+  overflow: visible;
+  transform: translate3d(calc(var(--camera-shift-x) * 0.24%), calc(var(--camera-shift-y) * 0.2%), 0);
+  z-index: 3;
+}
+
+.guide-path {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 1;
+}
+
+.thread-path-base,
+.iteration-path-base {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.thread-path-base {
+  stroke: rgba(136,168,212,0.16);
+  stroke-width: 20;
+}
+
+.thread-path-glow {
+  fill: none;
+  stroke: url(#threadGradient);
+  stroke-width: 11;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 28 24;
+  stroke-dashoffset: calc(var(--thread-progress) * -240px);
+  opacity: 0.95;
+  animation: thread-flow 9s linear infinite;
+}
+
+.iteration-path-base {
+  stroke: rgba(185,214,255,0.14);
+  stroke-width: 16;
+}
+
+.iteration-path-glow {
+  fill: none;
+  stroke: url(#iterationGradient);
+  stroke-width: 8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 16 18;
+  stroke-dashoffset: calc(var(--thread-progress) * -180px);
+  opacity: 0.92;
+  animation: thread-flow 7s linear infinite reverse;
+}
+
+.scene-node .node-halo {
+  fill: rgba(var(--accent-rgb), 0.08);
+  stroke: rgba(var(--accent-rgb), 0.16);
+  stroke-width: 1.5;
+  opacity: 0.12;
+}
+
+.scene-node .node-core {
+  fill: rgba(7,10,14,0.92);
+  stroke: rgba(210,225,245,0.34);
+  stroke-width: 3;
+}
+
+.scene-node.is-visited .node-halo {
+  opacity: 0.32;
+}
+
+.scene-node.is-visited .node-core {
+  fill: rgba(140,184,255,0.58);
+  stroke: rgba(220,236,255,0.7);
+}
+
+.scene-node.is-active .node-halo {
+  fill: rgba(var(--accent-rgb), 0.2);
+  stroke: rgba(var(--accent-rgb), 0.42);
+  opacity: 1;
+}
+
+.scene-node.is-active .node-core {
+  fill: rgba(var(--accent-rgb), 0.94);
+  stroke: rgba(255,255,255,0.92);
+}
+
+.flight-cursor .cursor-halo {
+  fill: rgba(var(--accent-rgb), 0.14);
+  stroke: rgba(var(--accent-rgb), 0.38);
+  stroke-width: 1.4;
+}
+
+.flight-cursor .cursor-core {
+  fill: rgba(255,255,255,0.96);
+}
+
+.product-bob {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: product-bob 6.5s var(--ease-in-out) infinite;
+}
+
+.product-world {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  transform:
+    translateY(calc(var(--product-lift) * 1px))
+    rotate(calc(var(--product-rotate) * 1deg))
+    scale(calc(1 + var(--product-scale) * 0.01));
+}
+
+.product-shadow {
+  fill: rgba(2,4,7,0.66);
+  filter: url(#shadowBlur);
+}
+
+.arm-fill {
+  fill: none;
+  stroke: url(#shellGradient);
+  stroke-width: 18;
+  stroke-linecap: round;
+}
+
+.shell-main,
+.shell-canopy,
+.shell-battery {
+  stroke: rgba(255,255,255,0.18);
+  stroke-width: 2;
+}
+
+.shell-main { fill: url(#shellGradient); }
+.shell-canopy { fill: url(#canopyGradient); }
+.shell-battery { fill: url(#batteryGradient); }
+
+.rotor-ring {
+  fill: rgba(8,14,22,0.46);
+  stroke: rgba(177,218,255,0.34);
+  stroke-width: 4;
+}
+
+.rotor-core {
+  fill: rgba(220,235,255,0.9);
+}
+
+.product-blueprint {
+  opacity: calc(0.04 + var(--context-opacity) * 0.82 + var(--design-opacity) * 0.24);
+}
+
+.measure-line,
+.measure-box {
+  fill: none;
+  stroke: rgba(140,184,255,0.58);
+  stroke-width: 3;
+  stroke-dasharray: 14 12;
+}
+
+.measure-line.inner { stroke-opacity: 0.46; }
+
+.product-design-ghost {
+  opacity: calc(var(--design-opacity) * 0.82);
+}
+
+.ghost-arm,
+.ghost-body {
+  fill: none;
+  stroke: rgba(61,191,138,0.58);
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-dasharray: 10 12;
+}
+
+.product-sim { opacity: var(--sim-opacity); }
+
+.sim-shell {
+  fill: none;
+  stroke: rgba(232,164,68,0.62);
+  stroke-width: 5;
+  stroke-dasharray: 14 10;
+}
+
+.sim-core {
+  fill: url(#thermalGradient);
+  opacity: 0.72;
+}
+
+.vibe-line {
+  fill: none;
+  stroke: rgba(232,164,68,0.8);
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-dasharray: 12 9;
+  animation: thread-flow 4.8s linear infinite;
+}
+
+.vibe-line.secondary { animation-duration: 5.6s; }
+
+.product-release { opacity: var(--release-opacity); }
+
+.release-ring {
+  fill: none;
+  stroke: rgba(214,100,82,0.54);
+  stroke-width: 4;
+  stroke-dasharray: 16 12;
+  animation: thread-flow 9s linear infinite reverse;
+}
+
+.release-card {
+  fill: rgba(17,22,31,0.82);
+  stroke: rgba(214,100,82,0.42);
+  stroke-width: 2;
+}
+
+.release-seal {
+  fill: rgba(214,100,82,0.2);
+  stroke: rgba(255,188,176,0.86);
+  stroke-width: 2;
+}
+
+.release-check,
+.release-lines {
+  fill: none;
+  stroke: rgba(255,236,232,0.88);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.product-manufacturing { opacity: var(--manufacturing-opacity); }
+
+.lane {
+  fill: rgba(61,191,138,0.12);
+  stroke: rgba(61,191,138,0.44);
+  stroke-width: 2;
+}
+
+.fixture {
+  fill: rgba(61,191,138,0.16);
+  stroke: rgba(171,244,210,0.46);
+  stroke-width: 2;
+}
+
+.lane-trace {
+  fill: none;
+  stroke: rgba(171,244,210,0.76);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-dasharray: 18 14;
+  animation: thread-flow 4.5s linear infinite;
+}
+
+.product-feedback { opacity: calc(0.08 + var(--feedback-opacity)); }
+
+.telemetry-wave {
+  fill: none;
+  stroke: rgba(82,148,214,0.78);
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-dasharray: 18 16;
+  animation: thread-flow 6.2s linear infinite;
+}
+
+.telemetry-wave.secondary { animation-duration: 7.8s; }
+
+.signal-ping {
+  fill: rgba(82,148,214,0.1);
+  stroke: rgba(166,212,255,0.74);
+  stroke-width: 3;
+  transform-origin: center center;
+  animation: beacon-pulse 2.8s ease-out infinite;
+}
+
+.signal-ping.secondary { animation-duration: 3.4s; }
+
+.product-issue { opacity: var(--issue-opacity); }
+
+.issue-beacon {
+  fill: rgba(214,100,82,0.08);
+  stroke: rgba(255,162,140,0.86);
+  stroke-width: 3;
+  animation: beacon-pulse 2.4s ease-out infinite;
+}
+
+.issue-beacon.secondary { animation-delay: 0.3s; }
+
+.issue-line {
+  fill: none;
+  stroke: rgba(255,162,140,0.82);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-dasharray: 12 10;
+  animation: thread-flow 3.8s linear infinite;
+}
+
+.issue-line.secondary { animation-duration: 4.2s; }
+
+.stage-chrome {
+  position: absolute;
+  inset: 24px;
+  display: grid;
+  grid-template-columns: 188px minmax(0, 1fr) 188px;
+  grid-template-rows: auto 1fr auto;
+  gap: 18px;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.scene-panel,
+.scene-rail,
+.scene-footer { pointer-events: auto; }
+
+.scene-panel {
+  grid-column: 2;
+  align-self: start;
+  justify-self: center;
+  width: min(520px, 100%);
+  display: grid;
+  gap: 12px;
+  padding: 18px 20px 20px;
+  border-radius: 24px;
+  background: linear-gradient(180deg, rgba(12,15,22,0.84), rgba(7,9,14,0.9));
+  border: 1px solid rgba(82,93,112,0.18);
+  box-shadow: 0 24px 70px rgba(0,0,0,0.24), inset 0 1px 0 rgba(255,255,255,0.06);
+  backdrop-filter: blur(20px) saturate(120%);
+}
+
+.scene-panel-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.stage-kicker { color: rgb(var(--accent-rgb)); }
+
+.stage-progress { color: rgba(255,255,255,0.56); }
+
+.stage-title {
+  font-size: clamp(28px, 3.6vw, 48px);
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+}
+
+.stage-summary {
+  font-size: 13px;
+  line-height: 1.62;
+  color: rgba(226,230,240,0.88);
+}
+
+.stage-focus {
+  padding-top: 10px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  font-size: 12px;
+  line-height: 1.62;
+  color: rgba(214,223,234,0.78);
+}
+
+.tool-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tool-row .tag-pill {
+  padding: 4px 8px;
+  font-size: 10px;
+}
+
+.scene-rail {
+  display: grid;
+  gap: 10px;
+  align-self: center;
+}
+
+.rail-left {
+  grid-column: 1;
+  grid-row: 1 / span 3;
+}
+
+.rail-right {
+  grid-column: 3;
+  grid-row: 1 / span 3;
+}
+
+.rail-label {
+  color: rgba(255,255,255,0.44);
+}
+
+.rail-list {
+  display: grid;
+  gap: 8px;
+}
+
+.rail-item {
+  --item-accent: 124, 111, 222;
+  text-align: left;
+  display: grid;
+  gap: 4px;
+  padding: 10px 12px;
+  border-radius: 18px;
+  border: 1px solid rgba(82,93,112,0.14);
+  background: linear-gradient(180deg, rgba(15,18,25,0.68), rgba(9,11,17,0.82));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+  opacity: 0.56;
+  transition: opacity 0.22s ease, transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+}
+
+.rail-left .rail-item { transform: translateX(10px); }
+.rail-right .rail-item { transform: translateX(-10px); }
+
+.rail-item span {
+  color: rgba(var(--item-accent), 0.92);
+}
+
+.rail-item strong {
+  font-size: 13px;
+  line-height: 1.3;
+  font-weight: 500;
+  color: rgba(239,243,248,0.88);
+}
+
+.rail-item.active {
+  opacity: 1;
+  transform: translateX(0);
+  border-color: rgba(var(--item-accent), 0.42);
+  box-shadow: 0 0 0 1px rgba(var(--item-accent), 0.14), 0 24px 70px rgba(0,0,0,0.22);
+}
+
+.scene-footer {
+  grid-column: 1 / -1;
+  align-self: end;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.scene-foot-card {
+  display: grid;
+  gap: 6px;
+  padding: 14px 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(82,93,112,0.18);
+  background: linear-gradient(180deg, rgba(10,13,19,0.78), rgba(6,8,13,0.86));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+.scene-foot-card span,
+.story-mini-card span {
+  color: rgba(255,255,255,0.46);
+}
+
+.scene-foot-card strong,
+.story-mini-card strong {
+  font-size: 12px;
+  line-height: 1.58;
+  font-weight: 500;
+  color: rgba(239,243,248,0.88);
+}
+
+.story-stack {
+  display: grid;
+  gap: 14px;
+  padding-top: 8px;
+}
+
+.story-step {
+  --card-accent: 124, 111, 222;
+  min-height: 52vh;
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  padding: 18px 18px 16px;
+  border-radius: 24px;
+  background:
+    linear-gradient(180deg, rgba(19,22,30,0.96), rgba(11,13,19,0.98)),
+    radial-gradient(circle at top right, rgba(var(--card-accent), 0.14), transparent 34%);
+  border: 1px solid rgba(82,93,112,0.18);
+  box-shadow: 0 24px 70px rgba(0,0,0,0.18);
+  transition: border-color 0.28s ease, box-shadow 0.28s ease, transform 0.28s ease;
+}
+
+.story-step.active {
+  border-color: rgba(var(--card-accent), 0.42);
+  box-shadow: 0 0 0 1px rgba(var(--card-accent), 0.14), 0 34px 90px rgba(0,0,0,0.24);
+  transform: translateY(-2px);
+}
+
+.story-step-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.story-step-index { color: rgb(var(--card-accent)); }
+
+.story-step h3 {
+  font-size: 24px;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+}
+
+.story-step p {
+  font-size: 14px;
+  line-height: 1.68;
+  color: var(--text2);
+}
+
+.story-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.story-points {
+  display: grid;
+  gap: 10px;
+}
+
+.story-points li,
+.summary-card li {
+  list-style: none;
+  position: relative;
+  padding-left: 16px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text2);
+}
+
+.story-points li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.72em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgb(var(--card-accent));
+  box-shadow: 0 0 12px rgba(var(--card-accent), 0.55);
+}
+
+.summary-card li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.72em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgb(var(--accent-rgb));
+  box-shadow: 0 0 12px rgba(var(--accent-rgb), 0.45);
+}
+
+.story-mini-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.story-mini-card {
+  display: grid;
+  gap: 4px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.summary-strip {
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 0 40px 96px;
+  display: grid;
+  gap: 18px;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.summary-card {
+  display: grid;
+  gap: 10px;
+  padding: 22px;
+  border-radius: 22px;
+  background: linear-gradient(180deg, rgba(19,22,30,0.96), rgba(11,13,19,0.98));
+  border: 1px solid rgba(82,93,112,0.18);
+}
+
+.summary-card h3 {
+  font-size: 18px;
+  line-height: 1.25;
+}
+
+.summary-card ul {
+  display: grid;
+  gap: 8px;
+}
+
+.outro-links {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 18px 22px;
+  border-radius: 22px;
+  border: 1px solid rgba(82,93,112,0.18);
+  background: linear-gradient(180deg, rgba(19,22,30,0.96), rgba(11,13,19,0.98));
+}
+
+.outro-links .link-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.outro-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(82,93,112,0.22);
+  background: rgba(13,15,20,0.7);
+  color: var(--text2);
+  font-size: 12px;
+  transition: color 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+}
+
+.outro-links a:hover {
+  color: var(--text);
+  border-color: rgba(var(--accent-rgb), 0.4);
+  transform: translateY(-1px);
+}
+
+@keyframes thread-flow {
+  to { stroke-dashoffset: -320; }
+}
+
+@keyframes beacon-pulse {
+  0%, 100% { transform: scale(0.92); opacity: 0.4; }
+  50% { transform: scale(1.08); opacity: 1; }
+}
+
+@keyframes product-bob {
+  0%, 100% { transform: translateY(-4px); }
+  50% { transform: translateY(5px); }
+}
+
+@media (max-width: 1180px) {
+  .intro-grid,
+  .experience,
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stage-shell {
+    height: 82vh;
+  }
+
+  .story-step {
+    min-height: 44vh;
+  }
+}
+
+@media (max-width: 920px) {
+  .topbar {
+    height: auto;
+    min-height: var(--nav-h);
+    padding: 10px 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .topbar-nav {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    row-gap: 8px;
+    gap: 12px;
+  }
+  .page-shell { padding-top: calc(var(--nav-h) + 36px); }
+  .intro,
+  .experience,
+  .summary-strip {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .intro { padding-top: 58px; }
+
+  .stage-shell {
+    top: calc(var(--nav-h) + 12px);
+    height: 78vh;
+    min-height: 640px;
+    border-radius: 24px;
+  }
+
+  .stage-chrome {
+    inset: 16px;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto 1fr auto;
+  }
+
+  .scene-panel,
+  .rail-left,
+  .rail-right,
+  .scene-footer {
+    grid-column: 1;
+  }
+
+  .scene-panel {
+    width: 100%;
+    justify-self: stretch;
+  }
+
+  .rail-left,
+  .rail-right {
+    grid-row: auto;
+    align-self: start;
+  }
+
+  .rail-list {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: thin;
+  }
+
+  .rail-item {
+    min-width: 156px;
+    flex: 0 0 auto;
+    transform: none !important;
+  }
+
+  .scene-footer {
+    grid-template-columns: 1fr;
+  }
+
+  .story-mini-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .intro h1 {
+    font-size: clamp(34px, 10vw, 54px);
+  }
+
+  .stage-title {
+    font-size: clamp(24px, 7vw, 34px);
+  }
+
+  .story-step { padding: 16px; }
+  .story-step h3 { font-size: 22px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  .thread-path-glow,
+  .iteration-path-glow,
+  .vibe-line,
+  .release-ring,
+  .lane-trace,
+  .telemetry-wave,
+  .issue-line,
+  .signal-ping,
+  .issue-beacon,
+  .product-bob,
+  .story-step,
+  .rail-item {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-brand">
+    <div class="sigil">df</div>
+    <span>Digital Fabric <span style="color:var(--text3)">/ Experience Lab</span></span>
+  </div>
+  <nav class="topbar-nav">
+        <a href="index.html#hero">Home</a>
+    <a href="index.html#mini-sites">Mini Sites</a>
+    <a href="index.html#catalog">References</a>
+    <a href="index.html#nx-mcp-story">NX MCP</a>
+    <a href="index.html#about">About</a>
+  </nav>
+</div>
+
+<div class="page-shell">
+  <section class="intro">
+    <div class="intro-grid">
+      <div class="intro-copy">
+        <div class="intro-eyebrow">Experience lab / synchronized digital thread</div>
+        <h1>Fly the thread.<br><em>Watch the product iterate.</em></h1>
+        <p>This rebuild keeps the alpine context, but the rescue-UAV change is finally the thing in focus. One scroll now drives the factual Siemens digital thread on the left and the product revision loop on the right, so the experience feels more like a premium product story than a detached 3D demo.</p>
+      </div>
+
+      <aside class="intro-note">
+        <div class="note-label">Interaction model</div>
+        <p>The sticky stage stays primary, the mountain becomes environmental framing, and the scroll rail advances one coherent sequence: field issue, configured context, redesign, verification, release, manufacturing handoff, and operational feedback.</p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="experience" id="threadExperience">
+    <div class="stage-shell" id="threadStage">
+      <div class="stage-ambient" aria-hidden="true"></div>
+
+      <div class="stage-viewport" aria-hidden="true">
+        <div class="depth-grid"></div>
+
+        <div class="flight-rings">
+          <span class="depth-ring" style="--ring-index: 1"></span>
+          <span class="depth-ring" style="--ring-index: 2"></span>
+          <span class="depth-ring" style="--ring-index: 3"></span>
+          <span class="depth-ring" style="--ring-index: 4"></span>
+          <span class="depth-ring" style="--ring-index: 5"></span>
+          <span class="depth-ring" style="--ring-index: 6"></span>
+          <span class="depth-ring" style="--ring-index: 7"></span>
+          <span class="depth-ring" style="--ring-index: 8"></span>
+        </div>
+
+        <svg class="terrain-silhouette" viewBox="0 0 1000 360" fill="none" aria-hidden="true">
+          <defs>
+            <linearGradient id="terrainFill" x1="500" y1="30" x2="500" y2="360" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#d4e8ff" stop-opacity="0.28" />
+              <stop offset="40%" stop-color="#7996bc" stop-opacity="0.14" />
+              <stop offset="100%" stop-color="#141820" stop-opacity="0.82" />
+            </linearGradient>
+          </defs>
+          <path d="M0 286L92 242L172 258L286 124L374 198L490 58L630 206L720 150L820 216L902 178L1000 262V360H0V286Z" fill="url(#terrainFill)" opacity="0.96"></path>
+          <path d="M0 316L88 280L164 292L278 182L382 236L500 120L632 248L730 202L812 250L908 222L1000 292" stroke="rgba(211,229,255,0.26)" stroke-width="2" stroke-linecap="round"></path>
+          <path d="M44 292L122 262L204 274L304 160L388 220L494 90L626 214L710 170L820 226L920 198" stroke="rgba(160,193,235,0.2)" stroke-width="2" stroke-linecap="round"></path>
+          <path d="M82 312L182 294L274 218L380 246L500 152L622 264L730 214L822 258" stroke="rgba(124,111,222,0.18)" stroke-width="2" stroke-linecap="round"></path>
+        </svg>
+
+        <svg class="thread-svg" id="threadScene" viewBox="0 0 1000 720" aria-hidden="true">
+          <defs>
+            <linearGradient id="threadGradient" x1="160" y1="160" x2="820" y2="560" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#8cb8ff" stop-opacity="0.12" />
+              <stop offset="28%" stop-color="#8cb8ff" stop-opacity="0.92" />
+              <stop offset="72%" stop-color="#7c6fde" stop-opacity="0.94" />
+              <stop offset="100%" stop-color="#3dbf8a" stop-opacity="0.92" />
+            </linearGradient>
+            <linearGradient id="iterationGradient" x1="300" y1="240" x2="720" y2="500" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#3dbf8a" stop-opacity="0.9" />
+              <stop offset="58%" stop-color="#8cb8ff" stop-opacity="0.92" />
+              <stop offset="100%" stop-color="#e8a444" stop-opacity="0.9" />
+            </linearGradient>
+            <linearGradient id="shellGradient" x1="360" y1="260" x2="660" y2="470" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#b8c7db" />
+              <stop offset="45%" stop-color="#7285a2" />
+              <stop offset="100%" stop-color="#38485d" />
+            </linearGradient>
+            <linearGradient id="canopyGradient" x1="460" y1="290" x2="560" y2="330" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#d6e8ff" />
+              <stop offset="100%" stop-color="#6b8db7" />
+            </linearGradient>
+            <linearGradient id="batteryGradient" x1="452" y1="398" x2="548" y2="432" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#8390a3" />
+              <stop offset="100%" stop-color="#303a49" />
+            </linearGradient>
+            <radialGradient id="thermalGradient" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#ffd17b" stop-opacity="0.84" />
+              <stop offset="45%" stop-color="#ff9652" stop-opacity="0.48" />
+              <stop offset="100%" stop-color="#ff9652" stop-opacity="0" />
+            </radialGradient>
+            <filter id="shadowBlur" x="-40%" y="-40%" width="180%" height="180%">
+              <feGaussianBlur stdDeviation="18"></feGaussianBlur>
+            </filter>
+          </defs>
+
+          <path id="threadPathGuide" class="guide-path" d="M168 420C156 250 300 118 478 110C660 102 824 220 834 376C842 520 744 610 594 632C420 658 236 594 184 470C170 438 166 430 168 420Z"></path>
+          <use href="#threadPathGuide" class="thread-path-base"></use>
+          <use href="#threadPathGuide" class="thread-path-glow"></use>
+
+          <path id="iterationPathGuide" class="guide-path" d="M316 410C306 314 382 232 488 224C606 214 710 286 714 374C718 454 656 524 548 540C420 558 304 502 296 430C292 424 294 418 316 410Z"></path>
+          <use href="#iterationPathGuide" class="iteration-path-base"></use>
+          <use href="#iterationPathGuide" class="iteration-path-glow"></use>
+
+          <g id="threadNodes"></g>
+          <g id="iterationNodes"></g>
+
+          <g class="flight-cursor" id="threadCursor">
+            <circle class="cursor-halo" r="18"></circle>
+            <circle class="cursor-core" r="7"></circle>
+          </g>
+
+          <g class="flight-cursor iteration-cursor" id="iterationCursor">
+            <circle class="cursor-halo" r="14"></circle>
+            <circle class="cursor-core" r="5.5"></circle>
+          </g>
+
+          <ellipse class="product-shadow" cx="500" cy="472" rx="178" ry="48"></ellipse>
+          <g class="product-bob">
+            <g class="product-world" id="productWorld">
+              <g class="product-feedback">
+                <path class="telemetry-wave" d="M700 276C776 290 818 330 826 382"></path>
+                <path class="telemetry-wave secondary" d="M292 454C232 488 210 524 202 576"></path>
+                <circle class="signal-ping" cx="830" cy="384" r="22"></circle>
+                <circle class="signal-ping secondary" cx="196" cy="580" r="18"></circle>
+              </g>
+
+              <g class="product-release">
+                <circle class="release-ring" cx="500" cy="360" r="186"></circle>
+                <rect class="release-card" x="638" y="248" width="116" height="112" rx="22"></rect>
+                <circle class="release-seal" cx="672" cy="286" r="16"></circle>
+                <path class="release-check" d="M664 286l7 8 16-18"></path>
+                <path class="release-lines" d="M695 278H731M660 318H732M660 338H710"></path>
+              </g>
+
+              <g class="product-manufacturing">
+                <rect class="lane" x="328" y="478" width="344" height="18" rx="9"></rect>
+                <rect class="fixture" x="360" y="454" width="28" height="50" rx="10"></rect>
+                <rect class="fixture" x="488" y="454" width="28" height="50" rx="10"></rect>
+                <rect class="fixture" x="612" y="454" width="28" height="50" rx="10"></rect>
+                <path class="lane-trace" d="M356 487H644"></path>
+              </g>
+
+              <g class="product-sim">
+                <ellipse class="sim-shell" cx="500" cy="360" rx="210" ry="144"></ellipse>
+                <ellipse class="sim-core" cx="500" cy="372" rx="116" ry="62"></ellipse>
+                <path class="vibe-line" d="M274 256C248 284 252 330 286 350C250 374 248 424 286 456"></path>
+                <path class="vibe-line secondary" d="M726 264C750 300 748 336 718 360C750 386 748 420 720 452"></path>
+              </g>
+
+              <g class="product-design-ghost">
+                <g transform="translate(22 -12)">
+                  <path class="ghost-arm" d="M432 334L344 276"></path>
+                  <path class="ghost-arm" d="M568 334L656 276"></path>
+                  <path class="ghost-arm" d="M434 390L352 446"></path>
+                  <path class="ghost-arm" d="M566 390L648 446"></path>
+                  <rect class="ghost-body" x="430" y="316" width="140" height="82" rx="30"></rect>
+                </g>
+                <g transform="translate(-18 10)">
+                  <path class="ghost-arm" d="M432 334L344 276"></path>
+                  <path class="ghost-arm" d="M568 334L656 276"></path>
+                  <path class="ghost-arm" d="M434 390L352 446"></path>
+                  <path class="ghost-arm" d="M566 390L648 446"></path>
+                  <rect class="ghost-body" x="430" y="316" width="140" height="82" rx="30"></rect>
+                </g>
+              </g>
+
+              <g class="product-blueprint">
+                <path class="measure-line" d="M282 222H718"></path>
+                <path class="measure-line" d="M282 498H718"></path>
+                <path class="measure-line" d="M282 222V498"></path>
+                <path class="measure-line" d="M718 222V498"></path>
+                <path class="measure-line inner" d="M330 248H670"></path>
+                <path class="measure-line inner" d="M330 472H670"></path>
+                <rect class="measure-box" x="330" y="248" width="340" height="224" rx="40"></rect>
+              </g>
+
+              <g class="product-shell">
+                <path class="arm-fill" d="M432 334L344 276"></path>
+                <path class="arm-fill" d="M568 334L656 276"></path>
+                <path class="arm-fill" d="M434 390L352 446"></path>
+                <path class="arm-fill" d="M566 390L648 446"></path>
+                <rect class="shell-main" x="430" y="316" width="140" height="82" rx="30"></rect>
+                <rect class="shell-canopy" x="460" y="290" width="80" height="28" rx="14"></rect>
+                <rect class="shell-battery" x="452" y="398" width="96" height="34" rx="16"></rect>
+                <circle class="rotor-ring" cx="324" cy="264" r="30"></circle>
+                <circle class="rotor-ring" cx="676" cy="264" r="30"></circle>
+                <circle class="rotor-ring" cx="324" cy="456" r="30"></circle>
+                <circle class="rotor-ring" cx="676" cy="456" r="30"></circle>
+                <circle class="rotor-core" cx="324" cy="264" r="8"></circle>
+                <circle class="rotor-core" cx="676" cy="264" r="8"></circle>
+                <circle class="rotor-core" cx="324" cy="456" r="8"></circle>
+                <circle class="rotor-core" cx="676" cy="456" r="8"></circle>
+              </g>
+
+              <g class="product-issue">
+                <circle class="issue-beacon" cx="324" cy="456" r="40"></circle>
+                <circle class="issue-beacon secondary" cx="500" cy="416" r="34"></circle>
+                <path class="issue-line" d="M286 456H232"></path>
+                <path class="issue-line secondary" d="M500 452V500"></path>
+              </g>
+            </g>
+          </g>
+        </svg>
+      </div>
+
+      <div class="stage-chrome">
+        <div class="scene-panel">
+          <div class="scene-panel-top">
+            <div class="stage-kicker" id="stageKicker">Field signal / 01</div>
+            <div class="stage-progress" id="stageProgress">01 / 07</div>
+          </div>
+          <h2 class="stage-title" id="stageTitle">Capture the field issue</h2>
+          <p class="stage-summary" id="stageSummary">Mendix captures the incident. Polarion links the requirement. Teamcenter resolves the affected rescue-UAV configuration.</p>
+          <p class="stage-focus" id="stageFocus">Battery cradle, rotor-arm bracket, harness routing, and cold-weather mission evidence stay in frame.</p>
+          <div class="tool-row" id="stageTools"></div>
+        </div>
+
+        <aside class="scene-rail rail-left" aria-label="Digital thread stages">
+          <div class="rail-label">Digital thread</div>
+          <div class="rail-list" id="threadRail"></div>
+        </aside>
+
+        <aside class="scene-rail rail-right" aria-label="Product iteration stages">
+          <div class="rail-label">Iteration loop</div>
+          <div class="rail-list" id="iterationRail"></div>
+        </aside>
+
+        <div class="scene-footer">
+          <div class="scene-foot-card">
+            <span>Human gate</span>
+            <strong id="humanGate">Service lead and chief engineer confirm severity, fleet relevance, and whether the signal deserves formal change control.</strong>
+          </div>
+          <div class="scene-foot-card">
+            <span>Agent work</span>
+            <strong id="agentWork">Normalize the incident, resolve the exact configuration and service history, and assemble the first governed issue package.</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <aside class="story-stack" id="storyStack" aria-label="Scroll chapters"></aside>
+  </section>
+
+  <section class="summary-strip">
+    <div class="summary-grid">
+      <article class="summary-card">
+        <div class="section-label">Why it reads better</div>
+        <h3>The mountain is now context, not the thing the page asks you to admire.</h3>
+        <p>Alpine terrain still frames the cold-weather rescue scenario, but the stage now keeps the rescue-UAV change itself at the center: issue, context, redesign, verification, release, rollout, and feedback.</p>
+      </article>
+
+      <article class="summary-card">
+        <div class="section-label">Synchronized rails</div>
+        <h3>The digital thread and the product revision loop move together.</h3>
+        <ul>
+          <li>The left rail tracks the governed Xcelerator thread across systems.</li>
+          <li>The right rail shows what the product revision looks like at the same moment.</li>
+          <li>The sticky stage keeps both views in one cinematic frame instead of splitting them into unrelated panels.</li>
+        </ul>
+      </article>
+
+      <article class="summary-card">
+        <div class="section-label">Human accountability</div>
+        <h3>The agent accelerates preparation. The human still owns the gates.</h3>
+        <ul>
+          <li>Humans decide whether the fleet signal deserves formal change.</li>
+          <li>Humans choose the acceptable design and verification tradeoff.</li>
+          <li>Humans still approve the release into manufacturing and operations.</li>
+        </ul>
+      </article>
+    </div>
+
+    <div class="outro-links">
+      <p>If you want the hard-architecture version of this story, jump back to the reference decks. If you want to replay the interaction study, use the rail buttons or scroll the chapter stack again.</p>
+      <div class="link-row">
+        <a href="index.html">Return to homepage</a>
+        <a href="mendix-nx-architecture.html">Open Mendix reference</a>
+        <a href="teamcenter-mcp-architecture.html">Open Teamcenter reference</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+(() => {
+  const storyStates = [
+    {
+      kicker: 'Field signal',
+      title: 'Capture the field issue',
+      threadLabel: 'Issue intake',
+      iterationLabel: 'R1 in service',
+      summary: 'Mendix captures the incident. Polarion links the requirement. Teamcenter resolves the affected rescue-UAV configuration.',
+      story: 'A cold-soak rescue UAV comes back with endurance loss and rotor-arm vibration. The digital thread begins when the field signal becomes governed engineering work instead of a loose service anecdote.',
+      focus: 'Battery cradle, rotor-arm bracket, harness routing, and cold-weather mission evidence stay in frame.',
+      human: 'Service lead and chief engineer confirm severity, fleet relevance, and whether the signal deserves formal change control.',
+      agent: 'Normalize the incident, resolve the exact configuration and service history, and assemble the first governed issue package.',
+      tools: ['Mendix', 'Polarion', 'Teamcenter'],
+      pills: [
+        { tone: 'purple', label: 'Field issue intake' },
+        { tone: 'blue', label: 'Requirement context' }
+      ],
+      points: [
+        'Mendix captures the mission log, weather conditions, serial number, and observed failure pattern.',
+        'Polarion ties the incident to endurance, safety, and mission-readiness requirements.',
+        'Teamcenter resolves the exact configured airframe, battery pack, and prior change history.'
+      ],
+      accent: '124,111,222',
+      scene: {
+        sceneScale: 2,
+        sceneRotate: -8,
+        cameraShiftX: -6,
+        cameraShiftY: -3,
+        productRotate: -8,
+        productLift: -12,
+        productScale: 0,
+        depthShift: -60,
+        depthStrength: 0.36,
+        terrainOpacity: 0.94,
+        issueOpacity: 1,
+        contextOpacity: 0.08,
+        designOpacity: 0,
+        simOpacity: 0,
+        releaseOpacity: 0,
+        manufacturingOpacity: 0,
+        feedbackOpacity: 0.14
+      }
+    },
+    {
+      kicker: 'Configured context',
+      title: 'Load the configured context',
+      threadLabel: 'Configured context',
+      iterationLabel: 'Configuration resolved',
+      summary: 'Teamcenter assembles the configured structure, JT view, electrical context, and requirement traces for the aircraft under investigation.',
+      story: 'A useful digital thread is not just a record chain. It is a context graph for the exact product instance that matters. Here the agent pulls the rescue-UAV structure, visualization, E/E architecture, and traceability together before redesign starts.',
+      focus: 'Configured BOM, JT view, harness variant, and trace links replace guesswork.',
+      human: 'Systems engineering confirms the retrieved slice is the right aircraft, the right harness variant, and the right requirement set.',
+      agent: 'Traverse the configured BOM, fetch JT and E/E context, summarize requirement traces, and surface likely impact zones.',
+      tools: ['Teamcenter', 'JT', 'Capital', 'Polarion'],
+      pills: [
+        { tone: 'blue', label: 'Configured BOM' },
+        { tone: 'teal', label: 'E/E + traceability' }
+      ],
+      points: [
+        'Teamcenter and JT identify the exact airframe, battery, and rotor-arm configuration under investigation.',
+        'Capital brings harness, connector, and network context into the same engineering slice.',
+        'Polarion makes the affected requirements, tests, and compliance expectations visible before redesign begins.'
+      ],
+      accent: '82,148,214',
+      scene: {
+        sceneScale: 10,
+        sceneRotate: -4,
+        cameraShiftX: -1,
+        cameraShiftY: -5,
+        productRotate: -3,
+        productLift: -6,
+        productScale: 6,
+        depthShift: 12,
+        depthStrength: 0.44,
+        terrainOpacity: 0.74,
+        issueOpacity: 0.42,
+        contextOpacity: 0.96,
+        designOpacity: 0.1,
+        simOpacity: 0,
+        releaseOpacity: 0,
+        manufacturingOpacity: 0,
+        feedbackOpacity: 0.1
+      }
+    },
+    {
+      kicker: 'Design response',
+      title: 'Redesign in NX',
+      threadLabel: 'NX redesign',
+      iterationLabel: 'Variant A / B',
+      summary: 'NX revises the battery cradle and rotor-arm bracket within approved interface limits while electrical packaging stays visible.',
+      story: 'The strongest human-in-the-loop pattern is not approval after the fact. It is guardrails first. The human defines what may move on the rescue UAV, and the agent uses NX to explore alternatives without losing the governed change context.',
+      focus: 'Battery tray stiffness, connector keep-out, harness bend radius, and landing-load paths stay visible together.',
+      human: 'The design lead decides what geometry may change, what interfaces are frozen, and how much packaging freedom exists.',
+      agent: 'Drive NX alternatives, preserve the Teamcenter thread, and keep the electrical constraints in view while geometry moves.',
+      tools: ['NX', 'Capital', 'Teamcenter', 'Mendix'],
+      pills: [
+        { tone: 'teal', label: 'NX geometry' },
+        { tone: 'amber', label: 'Harness-aware packaging' }
+      ],
+      points: [
+        'NX explores bracket stiffness, battery envelope, and landing-load paths within approved limits.',
+        'Capital keeps bend radius, connector access, and routing conflicts visible while geometry changes.',
+        'Every alternative stays tied to the same configured product and issue record instead of becoming a detached CAD experiment.'
+      ],
+      accent: '61,191,138',
+      scene: {
+        sceneScale: 15,
+        sceneRotate: 0,
+        cameraShiftX: 2,
+        cameraShiftY: -1,
+        productRotate: -1,
+        productLift: -2,
+        productScale: 10,
+        depthShift: 54,
+        depthStrength: 0.52,
+        terrainOpacity: 0.62,
+        issueOpacity: 0.16,
+        contextOpacity: 0.78,
+        designOpacity: 1,
+        simOpacity: 0,
+        releaseOpacity: 0,
+        manufacturingOpacity: 0,
+        feedbackOpacity: 0.08
+      }
+    },
+    {
+      kicker: 'Virtual verification',
+      title: 'Verify in Simcenter',
+      threadLabel: 'Verification loop',
+      iterationLabel: 'Candidate verified',
+      summary: 'Simcenter evaluates vibration, thermal behavior, and endurance so engineering selects a fix before release.',
+      story: 'The digital thread gets stronger when design and verification stay adjacent. For the rescue UAV, the agent can run the simulation work quickly, but the human still decides whether the result is good enough for the fleet.',
+      focus: 'Structural loads, rotor vibration, battery thermal behavior, and system tradeoffs stay over the same product frame.',
+      human: 'The responsible engineer accepts the tradeoff across vibration, thermal behavior, endurance, and safety margin. This is the quality gate.',
+      agent: 'Launch structural, thermal, and system studies, compare the alternatives, and summarize why one fix is safer, lighter, or more durable in alpine missions.',
+      tools: ['Simcenter 3D', 'Amesim', 'HEEDS', 'Capital'],
+      pills: [
+        { tone: 'amber', label: 'Simulation gate' },
+        { tone: 'blue', label: 'Tradeoff sweep' }
+      ],
+      points: [
+        'Simcenter 3D checks structural response and rotor-arm vibration under cold-weather loading.',
+        'System studies capture thermal behavior and endurance changes around the battery pack.',
+        'HEEDS helps compare the candidate fixes instead of leaving the human with one unexplained answer.'
+      ],
+      accent: '232,164,68',
+      scene: {
+        sceneScale: 19,
+        sceneRotate: 4,
+        cameraShiftX: 5,
+        cameraShiftY: 2,
+        productRotate: 2,
+        productLift: 3,
+        productScale: 12,
+        depthShift: 92,
+        depthStrength: 0.64,
+        terrainOpacity: 0.48,
+        issueOpacity: 0.08,
+        contextOpacity: 0.34,
+        designOpacity: 0.62,
+        simOpacity: 1,
+        releaseOpacity: 0,
+        manufacturingOpacity: 0,
+        feedbackOpacity: 0.04
+      }
+    },
+    {
+      kicker: 'Governed decision',
+      title: 'Govern the release',
+      threadLabel: 'Release decision',
+      iterationLabel: 'Revision approved',
+      summary: 'Teamcenter and Polarion turn the selected fix into governed change data, approval evidence, and release workflow.',
+      story: 'This is where the thread stops being exploratory and becomes organizationally binding. Teamcenter becomes the backbone again: the human chooses the fix, the agent packages the evidence, and the rescue-UAV update becomes a governed release candidate.',
+      focus: 'The selected geometry, verification evidence, approval route, and release criteria are compressed into one decision package.',
+      human: 'The approver decides that the chosen design and evidence package are mature enough to enter formal change control.',
+      agent: 'Create the change object, attach the verification trail, route participants, and preserve the rationale chain across the governed record.',
+      tools: ['Teamcenter Change', 'Polarion', 'Mendix', 'Workflow'],
+      pills: [
+        { tone: 'coral', label: 'Change package' },
+        { tone: 'blue', label: 'Verification trace' }
+      ],
+      points: [
+        'Teamcenter Change binds the affected structure, chosen geometry, and impacted downstream definitions.',
+        'Polarion links the evidence back to requirements, tests, and signoff expectations.',
+        'Workflow surfaces keep the humans in the approval loop instead of burying the decision in tooling.'
+      ],
+      accent: '214,100,82',
+      scene: {
+        sceneScale: 12,
+        sceneRotate: 8,
+        cameraShiftX: 2,
+        cameraShiftY: -1,
+        productRotate: 4,
+        productLift: 0,
+        productScale: 8,
+        depthShift: 36,
+        depthStrength: 0.48,
+        terrainOpacity: 0.42,
+        issueOpacity: 0.04,
+        contextOpacity: 0.18,
+        designOpacity: 0.22,
+        simOpacity: 0.28,
+        releaseOpacity: 1,
+        manufacturingOpacity: 0,
+        feedbackOpacity: 0.02
+      }
+    },
+    {
+      kicker: 'Manufacturing handoff',
+      title: 'Hand off to manufacturing',
+      threadLabel: 'Manufacturing handoff',
+      iterationLabel: 'Rollout in build',
+      summary: 'Tecnomatix prepares process impact and Opcenter carries the released definition into manufacturing operations.',
+      story: 'The rescue-UAV thread becomes truly useful when the same decision reaches production and test without manual reinterpretation. Teamcenter still anchors the release, Tecnomatix validates the process impact, and Opcenter turns that released definition into real operational work.',
+      focus: 'Fixture deltas, process twin impact, work instructions, and released execution data move downstream together.',
+      human: 'The manufacturing lead confirms fixture, test, and rollout readiness before the updated configuration moves downstream.',
+      agent: 'Update the process twin, prepare work-instruction deltas, and package the released manufacturing handoff with the right provenance.',
+      tools: ['Tecnomatix', 'Opcenter', 'Teamcenter', 'NX'],
+      pills: [
+        { tone: 'teal', label: 'Process twin' },
+        { tone: 'amber', label: 'Execution handoff' }
+      ],
+      points: [
+        'Tecnomatix maps fixture, assembly, and test impacts before anything changes on the line.',
+        'Opcenter carries the released work definition into manufacturing operations as controlled execution data.',
+        'The human confirms operational readiness, not just technical completeness.'
+      ],
+      accent: '61,191,138',
+      scene: {
+        sceneScale: 9,
+        sceneRotate: 10,
+        cameraShiftX: -2,
+        cameraShiftY: 5,
+        productRotate: 5,
+        productLift: 8,
+        productScale: 7,
+        depthShift: 12,
+        depthStrength: 0.4,
+        terrainOpacity: 0.34,
+        issueOpacity: 0.02,
+        contextOpacity: 0.1,
+        designOpacity: 0.08,
+        simOpacity: 0.12,
+        releaseOpacity: 0.38,
+        manufacturingOpacity: 1,
+        feedbackOpacity: 0.06
+      }
+    },
+    {
+      kicker: 'Operational loop',
+      title: 'Close the loop',
+      threadLabel: 'Operational feedback',
+      iterationLabel: 'R2 monitored',
+      summary: 'Operational and service signals return to the governed record so the next engineering cycle starts from evidence, not recollection.',
+      story: 'A digital thread is valuable because it remembers. Mission telemetry, service reports, and manufacturing outcomes feed the same governed record chain. The next rescue-UAV orbit starts from evidence instead of guesswork.',
+      focus: 'Fleet health, telemetry drift, service workflows, and the next governed issue package re-enter the same stage.',
+      human: 'Fleet management and product ownership decide whether the observed drift justifies the next formal change cycle.',
+      agent: 'Correlate telemetry, service reports, and exceptions, then reopen the governed loop with the right context already assembled.',
+      tools: ['Industrial Edge', 'Insights Hub', 'Mendix', 'Teamcenter'],
+      pills: [
+        { tone: 'blue', label: 'Telemetry loop' },
+        { tone: 'purple', label: 'Thread memory' }
+      ],
+      points: [
+        'Operational telemetry and service feedback return to the same governed product thread instead of living in side systems.',
+        'Edge and insights signals make drift and recurring failure patterns visible earlier.',
+        'The next orbit starts from a better evidence base, not from zero.'
+      ],
+      accent: '82,148,214',
+      scene: {
+        sceneScale: 5,
+        sceneRotate: 12,
+        cameraShiftX: -4,
+        cameraShiftY: -2,
+        productRotate: 3,
+        productLift: -4,
+        productScale: 4,
+        depthShift: -24,
+        depthStrength: 0.34,
+        terrainOpacity: 0.76,
+        issueOpacity: 0.22,
+        contextOpacity: 0.24,
+        designOpacity: 0.04,
+        simOpacity: 0.04,
+        releaseOpacity: 0.08,
+        manufacturingOpacity: 0.22,
+        feedbackOpacity: 1
+      }
+    }
+  ];
+
+  const toolClasses = ['purple', 'blue', 'teal', 'amber', 'coral'];
+  const sceneKeys = Object.keys(storyStates[0].scene);
+  const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  const stage = document.getElementById('threadStage');
+  const storyStack = document.getElementById('storyStack');
+  const threadRail = document.getElementById('threadRail');
+  const iterationRail = document.getElementById('iterationRail');
+  const stageKicker = document.getElementById('stageKicker');
+  const stageProgress = document.getElementById('stageProgress');
+  const stageTitle = document.getElementById('stageTitle');
+  const stageSummary = document.getElementById('stageSummary');
+  const stageFocus = document.getElementById('stageFocus');
+  const stageTools = document.getElementById('stageTools');
+  const humanGate = document.getElementById('humanGate');
+  const agentWork = document.getElementById('agentWork');
+  const threadPathGuide = document.getElementById('threadPathGuide');
+  const iterationPathGuide = document.getElementById('iterationPathGuide');
+  const threadNodes = document.getElementById('threadNodes');
+  const iterationNodes = document.getElementById('iterationNodes');
+  const threadCursor = document.getElementById('threadCursor');
+  const iterationCursor = document.getElementById('iterationCursor');
+
+  const svgNs = 'http://www.w3.org/2000/svg';
+  const totalSteps = storyStates.length;
+
+  let activeIndex = 0;
+  let storyCards = [];
+  let threadButtons = [];
+  let iterationButtons = [];
+  let threadMarkers = [];
+  let iterationMarkers = [];
+  let rafId = 0;
+  let scrollTicking = false;
+
+  const currentScene = { progress: 0, ...storyStates[0].scene };
+  const targetScene = { progress: 0, ...storyStates[0].scene };
+
+  function clamp(value, min, max) {
+    return Math.min(max, Math.max(min, value));
+  }
+
+  function escapeHtml(value) {
+    return String(value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function toolMarkup(tool, index) {
+    return `<span class="tag-pill ${toolClasses[index % toolClasses.length]}">${escapeHtml(tool)}</span>`;
+  }
+
+  function pillMarkup(pill) {
+    return `<span class="tag-pill ${pill.tone}">${escapeHtml(pill.label)}</span>`;
+  }
+
+  function renderStoryStack() {
+    storyStack.innerHTML = storyStates.map((state, index) => `
+      <article class="story-step${index === 0 ? ' active' : ''}" data-index="${index}" style="--card-accent: ${state.accent}" tabindex="-1">
+        <div class="story-step-header">
+          <div>
+            <div class="story-step-index">${String(index + 1).padStart(2, '0')} / ${escapeHtml(state.kicker)}</div>
+            <h3>${escapeHtml(state.title)}</h3>
+          </div>
+        </div>
+        <p>${escapeHtml(state.story)}</p>
+        <div class="story-meta">${state.pills.map(pillMarkup).join('')}</div>
+        <ul class="story-points">
+          ${state.points.map((point) => `<li>${escapeHtml(point)}</li>`).join('')}
+        </ul>
+        <div class="story-mini-grid">
+          <div class="story-mini-card">
+            <span>Human gate</span>
+            <strong>${escapeHtml(state.human)}</strong>
+          </div>
+          <div class="story-mini-card">
+            <span>Agent work</span>
+            <strong>${escapeHtml(state.agent)}</strong>
+          </div>
+        </div>
+      </article>
+    `).join('');
+
+    storyCards = Array.from(storyStack.querySelectorAll('.story-step'));
+  }
+
+  function renderRails() {
+    threadRail.innerHTML = storyStates.map((state, index) => `
+      <button type="button" class="rail-item${index === 0 ? ' active' : ''}" style="--item-accent: ${state.accent}" data-index="${index}" aria-current="${index === 0 ? 'step' : 'false'}" aria-label="Jump to ${escapeHtml(state.threadLabel)}">
+        <span>${String(index + 1).padStart(2, '0')}</span>
+        <strong>${escapeHtml(state.threadLabel)}</strong>
+      </button>
+    `).join('');
+
+    iterationRail.innerHTML = storyStates.map((state, index) => `
+      <button type="button" class="rail-item${index === 0 ? ' active' : ''}" style="--item-accent: ${state.accent}" data-index="${index}" aria-current="${index === 0 ? 'step' : 'false'}" aria-label="Jump to ${escapeHtml(state.iterationLabel)}">
+        <span>${String(index + 1).padStart(2, '0')}</span>
+        <strong>${escapeHtml(state.iterationLabel)}</strong>
+      </button>
+    `).join('');
+
+    threadButtons = Array.from(threadRail.querySelectorAll('.rail-item'));
+    iterationButtons = Array.from(iterationRail.querySelectorAll('.rail-item'));
+  }
+
+  function markerGroup(point, index) {
+    const group = document.createElementNS(svgNs, 'g');
+    group.setAttribute('class', `scene-node${index === 0 ? ' is-active' : ''}`);
+    group.dataset.index = String(index);
+
+    const halo = document.createElementNS(svgNs, 'circle');
+    halo.setAttribute('class', 'node-halo');
+    halo.setAttribute('cx', point.x.toFixed(2));
+    halo.setAttribute('cy', point.y.toFixed(2));
+    halo.setAttribute('r', '20');
+
+    const core = document.createElementNS(svgNs, 'circle');
+    core.setAttribute('class', 'node-core');
+    core.setAttribute('cx', point.x.toFixed(2));
+    core.setAttribute('cy', point.y.toFixed(2));
+    core.setAttribute('r', '7.5');
+
+    group.appendChild(halo);
+    group.appendChild(core);
+    return group;
+  }
+
+  function buildMarkers() {
+    const threadLength = threadPathGuide.getTotalLength();
+    const iterationLength = iterationPathGuide.getTotalLength();
+
+    storyStates.forEach((_, index) => {
+      const progress = totalSteps === 1 ? 0 : index / (totalSteps - 1);
+      const threadPoint = threadPathGuide.getPointAtLength(threadLength * progress);
+      const iterationPoint = iterationPathGuide.getPointAtLength(iterationLength * progress);
+
+      const threadMarker = markerGroup(threadPoint, index);
+      const iterationMarker = markerGroup(iterationPoint, index);
+
+      threadNodes.appendChild(threadMarker);
+      iterationNodes.appendChild(iterationMarker);
+
+      threadMarkers.push(threadMarker);
+      iterationMarkers.push(iterationMarker);
+    });
+  }
+
+  function setCursorPosition(pathElement, cursorElement, progress) {
+    const length = pathElement.getTotalLength();
+    const point = pathElement.getPointAtLength(length * clamp(progress, 0, 1));
+    cursorElement.setAttribute('transform', `translate(${point.x.toFixed(2)} ${point.y.toFixed(2)})`);
+  }
+
+  function applyScene() {
+    stage.style.setProperty('--scene-scale', currentScene.sceneScale.toFixed(4));
+    stage.style.setProperty('--scene-rotate', currentScene.sceneRotate.toFixed(4));
+    stage.style.setProperty('--camera-shift-x', currentScene.cameraShiftX.toFixed(4));
+    stage.style.setProperty('--camera-shift-y', currentScene.cameraShiftY.toFixed(4));
+    stage.style.setProperty('--product-rotate', currentScene.productRotate.toFixed(4));
+    stage.style.setProperty('--product-lift', currentScene.productLift.toFixed(4));
+    stage.style.setProperty('--product-scale', currentScene.productScale.toFixed(4));
+    stage.style.setProperty('--depth-shift', currentScene.depthShift.toFixed(4));
+    stage.style.setProperty('--depth-strength', currentScene.depthStrength.toFixed(4));
+    stage.style.setProperty('--terrain-opacity', currentScene.terrainOpacity.toFixed(4));
+    stage.style.setProperty('--thread-progress', currentScene.progress.toFixed(4));
+    stage.style.setProperty('--issue-opacity', currentScene.issueOpacity.toFixed(4));
+    stage.style.setProperty('--context-opacity', currentScene.contextOpacity.toFixed(4));
+    stage.style.setProperty('--design-opacity', currentScene.designOpacity.toFixed(4));
+    stage.style.setProperty('--sim-opacity', currentScene.simOpacity.toFixed(4));
+    stage.style.setProperty('--release-opacity', currentScene.releaseOpacity.toFixed(4));
+    stage.style.setProperty('--manufacturing-opacity', currentScene.manufacturingOpacity.toFixed(4));
+    stage.style.setProperty('--feedback-opacity', currentScene.feedbackOpacity.toFixed(4));
+
+    setCursorPosition(threadPathGuide, threadCursor, currentScene.progress);
+    setCursorPosition(iterationPathGuide, iterationCursor, currentScene.progress);
+  }
+
+  function stepAnimation() {
+    rafId = 0;
+    let needsAnotherFrame = false;
+
+    for (const key of [...sceneKeys, 'progress']) {
+      const delta = targetScene[key] - currentScene[key];
+      if (Math.abs(delta) > 0.001) {
+        currentScene[key] += delta * 0.14;
+        needsAnotherFrame = true;
+      } else {
+        currentScene[key] = targetScene[key];
+      }
+    }
+
+    applyScene();
+
+    if (needsAnotherFrame) {
+      rafId = window.requestAnimationFrame(stepAnimation);
+    }
+  }
+
+  function startAnimation() {
+    if (!rafId) {
+      rafId = window.requestAnimationFrame(stepAnimation);
+    }
+  }
+
+  function updateRailState(buttons, index) {
+    buttons.forEach((button, buttonIndex) => {
+      const isActive = buttonIndex === index;
+      button.classList.toggle('active', isActive);
+      button.setAttribute('aria-current', isActive ? 'step' : 'false');
+    });
+  }
+
+  function updateMarkerState(markers, index) {
+    markers.forEach((marker, markerIndex) => {
+      marker.classList.toggle('is-active', markerIndex === index);
+      marker.classList.toggle('is-visited', markerIndex < index);
+    });
+  }
+
+  function setActive(index) {
+    if (index < 0 || index >= totalSteps || index === activeIndex) {
+      return;
+    }
+
+    activeIndex = index;
+    const state = storyStates[index];
+
+    document.documentElement.style.setProperty('--accent-rgb', state.accent);
+
+    stageKicker.textContent = `${state.kicker} / ${String(index + 1).padStart(2, '0')}`;
+    stageProgress.textContent = `${String(index + 1).padStart(2, '0')} / ${String(totalSteps).padStart(2, '0')}`;
+    stageTitle.textContent = state.title;
+    stageSummary.textContent = state.summary;
+    stageFocus.textContent = state.focus;
+    humanGate.textContent = state.human;
+    agentWork.textContent = state.agent;
+    stageTools.innerHTML = state.tools.map(toolMarkup).join('');
+
+    storyCards.forEach((card, cardIndex) => {
+      card.classList.toggle('active', cardIndex === index);
+    });
+
+    updateRailState(threadButtons, index);
+    updateRailState(iterationButtons, index);
+    updateMarkerState(threadMarkers, index);
+    updateMarkerState(iterationMarkers, index);
+
+    targetScene.progress = totalSteps === 1 ? 0 : index / (totalSteps - 1);
+    for (const key of sceneKeys) {
+      targetScene[key] = state.scene[key];
+    }
+
+    if (reduceMotionQuery.matches) {
+      currentScene.progress = targetScene.progress;
+      for (const key of sceneKeys) {
+        currentScene[key] = targetScene[key];
+      }
+      applyScene();
+      return;
+    }
+
+    startAnimation();
+  }
+
+  function scrollToStep(index) {
+    const card = storyCards[index];
+    if (!card) {
+      return;
+    }
+
+    card.scrollIntoView({ behavior: reduceMotionQuery.matches ? 'auto' : 'smooth', block: 'center' });
+    window.setTimeout(() => {
+      card.focus({ preventScroll: true });
+    }, reduceMotionQuery.matches ? 0 : 220);
+  }
+
+  function updateActiveFromViewport() {
+    if (!storyCards.length) {
+      return;
+    }
+
+    const viewportCenter = window.innerHeight * 0.5;
+    let closestIndex = activeIndex;
+    let closestDistance = Number.POSITIVE_INFINITY;
+
+    storyCards.forEach((card, index) => {
+      const rect = card.getBoundingClientRect();
+      const center = rect.top + rect.height / 2;
+      const distance = Math.abs(center - viewportCenter);
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closestIndex = index;
+      }
+    });
+
+    if (closestIndex !== activeIndex) {
+      setActive(closestIndex);
+    }
+  }
+
+  function requestViewportCheck() {
+    if (scrollTicking) {
+      return;
+    }
+
+    scrollTicking = true;
+    window.requestAnimationFrame(() => {
+      scrollTicking = false;
+      updateActiveFromViewport();
+    });
+  }
+
+  function handleReducedMotionChange() {
+    if (!reduceMotionQuery.matches) {
+      startAnimation();
+      return;
+    }
+
+    if (rafId) {
+      window.cancelAnimationFrame(rafId);
+      rafId = 0;
+    }
+
+    currentScene.progress = targetScene.progress;
+    for (const key of sceneKeys) {
+      currentScene[key] = targetScene[key];
+    }
+    applyScene();
+  }
+
+  renderStoryStack();
+  renderRails();
+  buildMarkers();
+
+  storyCards.forEach((card, index) => {
+    card.addEventListener('focusin', () => setActive(index));
+  });
+
+  threadButtons.forEach((button, index) => {
+    button.addEventListener('click', () => scrollToStep(index));
+  });
+
+  iterationButtons.forEach((button, index) => {
+    button.addEventListener('click', () => scrollToStep(index));
+  });
+
+  stageTools.innerHTML = storyStates[0].tools.map(toolMarkup).join('');
+  updateMarkerState(threadMarkers, 0);
+  updateMarkerState(iterationMarkers, 0);
+  applyScene();
+
+  window.addEventListener('scroll', requestViewportCheck, { passive: true });
+  window.addEventListener('resize', requestViewportCheck);
+
+  if (typeof reduceMotionQuery.addEventListener === 'function') {
+    reduceMotionQuery.addEventListener('change', handleReducedMotionChange);
+  } else if (typeof reduceMotionQuery.addListener === 'function') {
+    reduceMotionQuery.addListener(handleReducedMotionChange);
+  }
+
+  requestViewportCheck();
+})();
+</script>
+</body>
+</html>
+

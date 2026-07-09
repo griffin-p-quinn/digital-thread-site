@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teamcenter MCP — Agentic PLM Integration — Digital Fabric</title>
+<link rel="stylesheet" href="styles/fabric.css">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+
+:root { --nav-w: 220px; }
+body { display: flex; min-height: 100vh; overflow-x: hidden; }
+
+/* ── hub bar ── */
+.hub-bar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  min-height: 44px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  padding: 8px 20px;
+  background: rgba(13,15,20,0.88); backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border); font-size: 12px;
+}
+.hub-bar a { color: var(--text3); text-decoration: none; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; transition: color 0.15s; }
+.hub-bar a:hover { color: var(--text); }
+.hub-bar .sep-dot { color: var(--text3); font-size: 10px; }
+.hub-bar .current { color: var(--text2); font-weight: 500; }
+.hub-bar .global-links { margin-left: auto; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.hub-bar .global-links a { font-size: 11px; color: var(--text3); }
+.hub-bar .global-links a:hover { color: var(--text); }
+.hub-bar .kbd-hint { margin-left: 10px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--text3); }
+.hub-bar .kbd-hint kbd { display: inline-block; padding: 1px 5px; border: 1px solid var(--border2); border-radius: 3px; font-family: inherit; font-size: 10px; background: var(--bg3); color: var(--text3); margin: 0 1px; }
+@media (max-width: 980px) {
+  .hub-bar .global-links { width: 100%; margin-left: 0; justify-content: center; }
+  .hub-bar .current { display: none; }
+}
+@media (max-width: 760px) { .hub-bar .kbd-hint { display: none; } }
+
+/* ── nav ── */
+nav {
+  width: var(--nav-w); min-height: 100vh; background: var(--bg2); border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; position: fixed; top: 44px; left: 0; z-index: 100;
+  height: calc(100vh - 44px); padding: 0 0 24px;
+}
+.nav-brand { padding: 24px 20px 20px; border-bottom: 1px solid var(--border); }
+.nav-brand .wordmark { font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; color: var(--text3); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 6px; }
+.nav-brand h1 { font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.35; }
+.nav-section-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; color: var(--text3); letter-spacing: 0.1em; text-transform: uppercase; padding: 20px 20px 8px; }
+nav a { display: flex; align-items: flex-start; gap: 10px; padding: 9px 20px; text-decoration: none; color: var(--text2); font-size: 13px; font-weight: 400; line-height: 1.4; border-left: 2px solid transparent; transition: all 0.15s; cursor: pointer; }
+nav a:hover { color: var(--text); background: var(--bg3); }
+nav a.active { color: var(--text); border-left-color: var(--blue); background: var(--blue-bg); }
+nav a .nav-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--text3); margin-top: 1px; flex-shrink: 0; }
+.nav-footer { margin-top: auto; padding: 16px 20px 0; border-top: 1px solid var(--border); }
+.nav-footer p { font-size: 11px; color: var(--text3); line-height: 1.5; }
+
+/* ── main ── */
+main { margin-left: var(--nav-w); margin-top: 44px; flex: 1; min-height: 100vh; }
+.page { display: none; opacity: 0; transform: translateX(18px); transition: opacity 0.25s var(--ease-out), transform 0.25s var(--ease-out); }
+.page.active { display: block; opacity: 1; transform: translateX(0); }
+.page-header { border-bottom: 1px solid var(--border); padding: 28px 48px 20px; }
+.page-header .tag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue); margin-bottom: 8px; }
+.page-header h2 { font-size: 22px; font-weight: 600; color: var(--text); line-height: 1.2; margin-bottom: 8px; }
+.page-header p { font-size: 13px; color: var(--text2); max-width: 680px; line-height: 1.6; }
+.page-body { padding: 24px 48px 48px; }
+.section { margin-bottom: 32px; }
+.section-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); margin-bottom: 10px; }
+.section h3 { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+.section p { font-size: 13px; color: var(--text2); line-height: 1.65; max-width: 760px; }
+.section p + p { margin-top: 8px; }
+hr.section-rule { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+/* ── cards ── */
+.kv-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr)); gap: 10px; margin-top: 12px; }
+.kv-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; }
+.kv-card .kv-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
+.kv-card .kv-value { font-size: 12px; font-weight: 500; color: var(--text); line-height: 1.4; }
+.kv-card.blue   { border-color: #2a3d55; background: var(--blue-bg); }
+.kv-card.blue   .kv-label { color: var(--blue); }
+.kv-card.purple { border-color: var(--purple-dim); background: var(--purple-bg); }
+.kv-card.purple .kv-label { color: var(--purple); }
+.kv-card.teal   { border-color: var(--teal-dim); background: var(--teal-bg); }
+.kv-card.teal   .kv-label { color: var(--teal); }
+.kv-card.amber  { border-color: var(--amber-dim); background: var(--amber-bg); }
+.kv-card.amber  .kv-label { color: var(--amber); }
+.kv-card.coral  { border-color: rgba(214,100,82,0.3); background: var(--coral-bg); }
+.kv-card.coral  .kv-label { color: var(--coral); }
+
+/* ── diagram card ── */
+.diagram-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.diagram-card-header { padding: 8px 14px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.diagram-card-header .dot { width: 8px; height: 8px; border-radius: 50%; }
+.diagram-card-header .title { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--text3); }
+.diagram-card-body { padding: 16px; }
+.stage-card {
+  border-color: rgba(82,93,112,0.28);
+  box-shadow: 0 24px 72px rgba(0,0,0,0.16), inset 0 1px 0 rgba(255,255,255,0.03);
+}
+.diag-wrap {
+  overflow: hidden;
+  min-height: clamp(340px, 62vh, 760px);
+  padding: 14px;
+  position: relative;
+}
+.diag-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 6% 6% 8%;
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 18% 24%, rgba(82,148,214,0.12), transparent 32%),
+    radial-gradient(circle at 82% 18%, rgba(124,111,222,0.1), transparent 28%),
+    radial-gradient(circle at 50% 84%, rgba(61,191,138,0.08), transparent 34%);
+  filter: blur(22px);
+  pointer-events: none;
+}
+.diag-wrap svg {
+  max-height: min(64vh, 720px);
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── tool table ── */
+.tool-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; }
+.tool-table th, .tool-table td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--border); }
+.tool-table th { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 500; color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; }
+.tool-table td { color: var(--text2); }
+.tool-table td:first-child { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--text); }
+.tool-table tr:hover td { background: rgba(82,148,214,0.04); }
+
+/* ── overview tiles ── */
+.overview-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 14px; }
+.overview-tile { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 14px; cursor: pointer; transition: border-color 0.15s; }
+.overview-tile:hover { border-color: var(--border2); }
+.overview-tile .ot-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--text3); margin-bottom: 6px; }
+.overview-tile h4 { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.overview-tile p { font-size: 11px; color: var(--text2); line-height: 1.45; }
+.overview-tile .ot-badge { display: inline-block; margin-top: 8px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; padding: 2px 7px; border-radius: 4px; font-weight: 500; }
+
+/* ── split layout ── */
+.panel-split { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: 20px; align-items: start; }
+.panel-split.wide-text { grid-template-columns: minmax(0, 420px) minmax(0, 1fr); }
+@media (max-width: 1000px) { .panel-split, .panel-split.wide-text { grid-template-columns: 1fr; } }
+
+.story-shell {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: stretch;
+}
+
+.story-shell > .stage-card {
+  width: 100%;
+}
+
+.page.diagram-first.active {
+  display: flex;
+  flex-direction: column;
+}
+
+.page.diagram-first .page-body {
+  order: 1;
+  padding-top: 14px;
+}
+
+.page.diagram-first .page-header {
+  order: 2;
+  border-bottom: none;
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+}
+
+.story-panel {
+  display: grid;
+  gap: 10px;
+  padding: 14px 16px 16px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(26,30,40,0.95), rgba(19,22,30,0.96));
+  border: 1px solid var(--border);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+}
+
+.story-panel .story-note {
+  font-size: 11px;
+  color: var(--text3);
+  line-height: 1.5;
+}
+
+.story-panel .story-beat {
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(82,148,214,0.14), rgba(61,191,138,0.08));
+  border: 1px solid rgba(82,148,214,0.22);
+  color: var(--text);
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+/* ── inline node workbench ── */
+.focus-panel { display: none; }
+
+.diagram-card-body.has-workbench {
+  display: grid;
+  gap: 12px;
+}
+
+.diagram-card-body.has-workbench .diag-wrap {
+  position: relative;
+  isolation: isolate;
+  padding: clamp(16px, 2vw, 24px) clamp(16px, 2.2vw, 28px) clamp(18px, 2.6vw, 32px);
+}
+
+.diagram-toolbar {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+
+.diagram-toolbar .toolbar-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-right: auto;
+}
+
+.diagram-inline-focus {
+  --tour-x: 16px;
+  --tour-y: 16px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 3;
+  width: min(360px, calc(100% - 28px));
+  max-height: min(320px, calc(100% - 28px));
+  overflow: auto;
+  background: linear-gradient(180deg, rgba(26,30,40,0.95), rgba(19,22,30,0.96));
+  border: 1px solid rgba(133,183,235,0.24);
+  border-radius: 14px;
+  padding: 13px 15px;
+  box-shadow: 0 20px 56px rgba(0,0,0,0.34), 0 0 0 1px rgba(255,255,255,0.03) inset;
+  backdrop-filter: blur(14px);
+  scrollbar-width: thin;
+  scrollbar-color: var(--border2) transparent;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate3d(var(--tour-x), var(--tour-y), 0) scale(0.94);
+  transition: opacity 0.28s cubic-bezier(0.16,1,0.3,1), transform 0.28s cubic-bezier(0.16,1,0.3,1);
+}
+
+.diagram-inline-focus.empty {
+  opacity: 0.86;
+}
+
+.diagram-inline-focus.active {
+  opacity: 1;
+  transform: translate3d(var(--tour-x), var(--tour-y), 0) scale(1);
+}
+
+.diagram-inline-focus .focus-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.diagram-inline-focus .focus-title {
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.35;
+}
+
+.diagram-inline-focus .focus-body {
+  font-size: 12px;
+  color: var(--text2);
+  line-height: 1.55;
+  margin-top: 6px;
+}
+
+.diagram-inline-focus .focus-adjacent {
+  font-size: 11px;
+  color: var(--text2);
+  line-height: 1.5;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+
+.diagram-inline-focus .focus-meta {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  margin-top: 8px;
+}
+
+/* ── SVG classes ── */
+.c-blue rect { fill: #0d1e30; stroke: #185FA5; }
+.c-blue text { fill: #85B7EB; }
+.c-blue .th { fill: #B5D4F4; }
+.c-blue .ts { fill: #378ADD; }
+.c-purple rect { fill: #1e1a3d; stroke: #534AB7; }
+.c-purple text { fill: #AFA9EC; }
+.c-purple .th { fill: #CECBF6; }
+.c-purple .ts { fill: #7F77DD; }
+.c-teal rect { fill: #0d2a20; stroke: #0F6E56; }
+.c-teal text { fill: #5DCAA5; }
+.c-teal .th { fill: #9FE1CB; }
+.c-teal .ts { fill: #1D9E75; }
+.c-amber rect { fill: #2a1e08; stroke: #854F0B; }
+.c-amber text { fill: #EF9F27; }
+.c-amber .th { fill: #FAC775; }
+.c-amber .ts { fill: #BA7517; }
+.c-gray rect { fill: #1a1c20; stroke: #5F5E5A; }
+.c-gray text { fill: #B4B2A9; }
+.c-gray .th { fill: #D3D1C7; }
+.c-gray .ts { fill: #888780; }
+.c-coral rect { fill: #2a1510; stroke: #8B3A2D; }
+.c-coral text { fill: #E88A7D; }
+.c-coral .th { fill: #F2B5AD; }
+.c-coral .ts { fill: #D66452; }
+.node { cursor: pointer; }
+.node:hover { opacity: 0.8; }
+.th { font-family: 'IBM Plex Sans', sans-serif; font-size: 12px; font-weight: 500; fill: #e2e6f0; }
+.ts { font-family: 'IBM Plex Sans', sans-serif; font-size: 10px; fill: #8892a4; }
+
+/* Improve text readability when connectors pass nearby at reduced scale. */
+.th, .ts {
+  paint-order: stroke fill;
+  stroke: rgba(13,15,20,0.72);
+  stroke-width: 1.6px;
+  stroke-linejoin: round;
+}
+
+.diag-wrap svg path,
+.diag-wrap svg line {
+  vector-effect: non-scaling-stroke;
+}
+.diag-wrap svg path[stroke="#2e3547"],
+.diag-wrap svg line[stroke="#2e3547"],
+.diag-wrap svg line[stroke="#525d70"] {
+  opacity: 0.45;
+}
+
+.diag-wrap svg path[marker-end],
+.diag-wrap svg line[marker-end],
+.flow {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.diag-wrap svg.svg-focus-active .node {
+  opacity: 0.42;
+  transition: opacity 0.16s ease;
+}
+.diag-wrap svg.svg-focus-active .node.selected {
+  opacity: 1;
+}
+.diag-wrap svg .node rect,
+.diag-wrap svg .node circle {
+  transition: stroke-width 0.18s ease, filter 0.18s ease, opacity 0.18s ease;
+}
+.diag-wrap svg .node.selected rect {
+  stroke-width: 1.4;
+  filter: drop-shadow(0 0 12px rgba(226,230,240,0.3));
+}
+@keyframes dash-flow { to { stroke-dashoffset: -20; } }
+.flow { stroke-dasharray: 6 5; animation: dash-flow 0.65s linear infinite; transition: opacity 0.18s ease, filter 0.18s ease; }
+.flow.active-flow { filter: drop-shadow(0 0 8px rgba(226,230,240,0.24)); }
+</style>
+</head>
+<body>
+
+<!-- ═══ HUB BAR ═══ -->
+<div class="hub-bar">
+  <a href="index.html"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M11 7H3M3 7l3-3M3 7l3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Digital Fabric</a>
+  <span class="sep-dot">/</span>
+  <span class="current">Teamcenter MCP</span>
+  <div class="global-links">
+        <a href="index.html#hero">Home</a>
+    <a href="index.html#mini-sites">Mini Sites</a>
+    <a href="index.html#catalog">References</a>
+    <a href="index.html#nx-mcp-story">NX MCP</a>
+    <a href="index.html#about">About</a>
+  </div>
+  <span class="kbd-hint"><kbd>&larr;</kbd> <kbd>&rarr;</kbd> navigate &middot; <kbd>0</kbd>&ndash;<kbd>4</kbd> pages</span>
+</div>
+
+<!-- ═══ NAV ═══ -->
+<nav>
+  <div class="nav-brand">
+    <div class="wordmark">Architecture Reference</div>
+    <h1>Teamcenter MCP<br>Agentic PLM Integration</h1>
+  </div>
+  <div class="nav-section-label">Overview</div>
+  <a onclick="showPage('overview')" id="nav-overview" class="active"><span class="nav-num">00</span>System &amp; tool surface</a>
+  <div class="nav-section-label">Diagrams</div>
+  <a onclick="showPage('arch')" id="nav-arch"><span class="nav-num">01</span>Agent &rarr; SOA architecture</a>
+  <a onclick="showPage('supply-chain')" id="nav-supply-chain"><span class="nav-num">02</span>Supply chain intelligence</a>
+  <a onclick="showPage('change-flow')" id="nav-change-flow"><span class="nav-num">03</span>Change management flow</a>
+  <a onclick="showPage('bom-3d')" id="nav-bom-3d"><span class="nav-num">04</span>BOM &amp; 3D understanding</a>
+  <div class="nav-footer"><p>60+ tools · search · BOM · change · 3D · vendor · program delivery</p></div>
+</nav>
+
+<!-- ═══ MAIN ═══ -->
+<main>
+
+<!-- ═══════ PAGE 0 — OVERVIEW ═══════ -->
+<div class="page active" id="page-overview">
+  <div class="page-header">
+    <div class="tag">System overview</div>
+    <h2>Teamcenter MCP — agentic PLM integration</h2>
+    <p>A reference MCP architecture that gives AI agents structured, governed access to Teamcenter. 60+ tools sit behind runtime mutation gates and deterministic session control for search, BOM, change management, 3D/JT, vendor intelligence, OFAC screening, and program delivery.</p>
+  </div>
+  <div class="page-body">
+
+    <!-- Principle + cards side by side -->
+    <div class="panel-split">
+      <div>
+        <div class="section-label">Architecture principle</div>
+        <h3 style="font-size:15px;font-weight:600;color:var(--text);margin-bottom:8px">SOA bridge with mutation safety</h3>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6">Wraps Teamcenter SOA services as typed MCP tools with schema validation and runtime policy enforcement. Mutations require explicit <code style="font-size:12px;color:var(--amber)">TC_MUTATION_MODE</code> activation. Read-only tools are always available.</p>
+      </div>
+      <div class="kv-grid" style="grid-template-columns: repeat(2, 1fr);">
+        <div class="kv-card blue"><div class="kv-label">Transport</div><div class="kv-value">Streamable HTTP :8088/mcp + SSE push. Stdio for local dev.</div></div>
+        <div class="kv-card purple"><div class="kv-label">Auth</div><div class="kv-value">SOA credentials + CSRF bootstrap. Service accounts for headless.</div></div>
+        <div class="kv-card teal"><div class="kv-label">Mutation gate</div><div class="kv-value">TC_MUTATION_MODE controls access. Runtime changeable via admin tools.</div></div>
+        <div class="kv-card amber"><div class="kv-label">Session</div><div class="kv-value">Deterministic guard — explicit tc_login required. No implicit sessions.</div></div>
+      </div>
+    </div>
+
+    <hr class="section-rule">
+
+    <!-- Navigation tiles -->
+    <div class="section-label">What's in this reference</div>
+    <div class="overview-grid">
+      <div class="overview-tile" onclick="showPage('arch')">
+        <div class="ot-num">01</div>
+        <h4>Agent &rarr; SOA arch</h4>
+        <p>Full system map: AI agent through MCP server policy and session layers to TC SOA.</p>
+        <span class="ot-badge tag-pill blue">architecture</span>
+      </div>
+      <div class="overview-tile" onclick="showPage('supply-chain')">
+        <div class="ot-num">02</div>
+        <h4>Supply chain intel</h4>
+        <p>001418 trackside bracket: part lookup &rarr; GLEIF &rarr; OFAC &rarr; workflow.</p>
+        <span class="ot-badge tag-pill coral">live benchmark</span>
+      </div>
+      <div class="overview-tile" onclick="showPage('change-flow')">
+        <div class="ot-num">03</div>
+        <h4>Change management</h4>
+        <p>Mutation-gated creation, participant strategy, impact analysis, verification.</p>
+        <span class="ot-badge tag-pill amber">mutation-gated</span>
+      </div>
+      <div class="overview-tile" onclick="showPage('bom-3d')">
+        <div class="ot-num">04</div>
+        <h4>BOM &amp; 3D</h4>
+        <p>JT readiness, BOM shape profiling, assembly 3D deep insights, Excel export.</p>
+        <span class="ot-badge tag-pill teal">read-only</span>
+      </div>
+    </div>
+
+    <hr class="section-rule">
+
+    <!-- Tool surface table -->
+    <div class="section-label">Tool surface — 60+ tools in 12 categories</div>
+    <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
+    <table class="tool-table">
+      <thead><tr><th>Category</th><th>Key tools</th><th>#</th><th>Mode</th></tr></thead>
+      <tbody>
+        <tr><td>Auth &amp; session</td><td>tc_login, tc_logout, tc_session_info, tc_auth_policy</td><td>6</td><td>always</td></tr>
+        <tr><td>Search</td><td>tc_search (smart routing), tc_csl_search, tc_execute_saved_query</td><td>5</td><td>read</td></tr>
+        <tr><td>Object &amp; relation</td><td>tc_load_objects, tc_get_item_and_related, tc_relation_explain, tc_where_used</td><td>8</td><td>read</td></tr>
+        <tr><td>BOM &amp; structure</td><td>tc_create_bom_window, tc_expand_ps_all_levels, tc_export_bom_excel</td><td>7</td><td>read</td></tr>
+        <tr><td>3D / JT</td><td>tc_understand_jt, tc_understand_bom_3d_deep, tc_jt_readiness_score</td><td>8</td><td>read</td></tr>
+        <tr><td>Change mgmt</td><td>tc_create_change, tc_verify_change_outcome, tc_workflow_impact</td><td>7</td><td>write</td></tr>
+        <tr><td>Create &amp; mutate</td><td>tc_create_object, tc_create_relation, tc_set_properties</td><td>3</td><td>write</td></tr>
+        <tr><td>Vendor intel</td><td>tc_vendor_resolve_identity, tc_vendor_investigation_report</td><td>4</td><td>mixed</td></tr>
+        <tr><td>Compliance</td><td>tc_ofac_screen, tc_ofac_refresh_lists, tc_oasis_search_and_link</td><td>3</td><td>read</td></tr>
+        <tr><td>Program delivery</td><td>tc_program_delivery_visual (Mermaid)</td><td>2</td><td>read</td></tr>
+        <tr><td>Files</td><td>tc_download_file, tc_get_file_read_tickets, tc_create_launch_file</td><td>3</td><td>read</td></tr>
+        <tr><td>Admin</td><td>tc_admin_set_mutation_mode, tc_admin_get_runtime_config</td><td>5</td><td>admin</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="margin-top:8px;font-size:12px;color:var(--text3)">Plus 20+ skill/prompt resources embedding domain-specific orchestration logic.</p>
+  </div>
+</div>
+
+
+<!-- ═══════ PAGE 1 — ARCHITECTURE ═══════ -->
+<div class="page diagram-first" id="page-arch">
+  <div class="page-body">
+    <div class="story-shell">
+      <div class="diagram-card stage-card">
+          <div class="diagram-card-header">
+            <div class="dot" style="background:#5294d6"></div>
+            <div class="dot" style="background:#7c6fde"></div>
+            <div class="dot" style="background:#3dbf8a"></div>
+            <span class="title">agent-to-soa-architecture.svg</span>
+          </div>
+          <div class="diagram-card-body">
+            <div class="diag-wrap">
+<svg viewBox="0 0 480 520" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="a1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round"/></marker></defs>
+
+<!-- Agent -->
+<g class="c-purple"><rect x="10" y="8" width="460" height="48" rx="10" stroke-width="0.5" fill-opacity="0.12"/><text class="th" x="24" y="28">AI Agent / Orchestrator</text><text class="ts" x="24" y="42">Claude, GPT, n8n, Mendix — any MCP client</text></g>
+<line x1="240" y1="58" x2="240" y2="72" stroke="#525d70" stroke-width="0.8" marker-end="url(#a1)"/>
+<text font-family="'IBM Plex Mono',monospace" font-size="8" fill="#525d70" x="250" y="68">HTTP/stdio</text>
+
+<!-- MCP Server -->
+<g class="c-blue"><rect x="10" y="74" width="460" height="220" rx="10" stroke-width="0.5" fill-opacity="0.08"/><text class="th" x="24" y="92">MCP Server (Python)</text></g>
+
+<g class="node c-blue"><rect x="20" y="100" width="130" height="36" rx="6" stroke-width="0.5"/><text class="th" x="85" y="115" text-anchor="middle" dominant-baseline="central" style="font-size:11px">Session guard</text><text class="ts" x="85" y="127" text-anchor="middle" dominant-baseline="central" style="font-size:9px">require_session</text></g>
+<g class="node c-blue"><rect x="160" y="100" width="150" height="36" rx="6" stroke-width="0.5"/><text class="th" x="235" y="115" text-anchor="middle" dominant-baseline="central" style="font-size:11px">Tool dispatch</text><text class="ts" x="235" y="127" text-anchor="middle" dominant-baseline="central" style="font-size:9px">60+ typed MCP tools</text></g>
+<g class="node c-blue"><rect x="320" y="100" width="140" height="36" rx="6" stroke-width="0.5"/><text class="th" x="390" y="115" text-anchor="middle" dominant-baseline="central" style="font-size:11px">Trace logging</text><text class="ts" x="390" y="127" text-anchor="middle" dominant-baseline="central" style="font-size:9px">_trace_tool per call</text></g>
+
+<!-- Policy gate -->
+<rect x="20" y="148" width="440" height="28" rx="5" fill="#2a1e08" stroke="#854F0B" stroke-width="0.5"/>
+<text x="240" y="160" text-anchor="middle" dominant-baseline="central" style="fill:#FAC775;font-family:'IBM Plex Sans',sans-serif;font-size:11px;font-weight:500">Runtime policy gate — TC_MUTATION_MODE · read-only bypass</text>
+
+<!-- Module row -->
+<g class="node c-blue"><rect x="20" y="188" width="80" height="32" rx="5" stroke-width="0.5"/><text class="ts" x="60" y="207" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#85B7EB">Search</text></g>
+<g class="node c-blue"><rect x="108" y="188" width="70" height="32" rx="5" stroke-width="0.5"/><text class="ts" x="143" y="207" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#85B7EB">BOM</text></g>
+<g class="node c-blue"><rect x="186" y="188" width="80" height="32" rx="5" stroke-width="0.5"/><text class="ts" x="226" y="207" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#85B7EB">Change</text></g>
+<g class="node c-blue"><rect x="274" y="188" width="70" height="32" rx="5" stroke-width="0.5"/><text class="ts" x="309" y="207" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#85B7EB">3D/JT</text></g>
+<g class="node c-blue"><rect x="352" y="188" width="70" height="32" rx="5" stroke-width="0.5"/><text class="ts" x="387" y="207" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#85B7EB">Vendor</text></g>
+<g class="node c-blue"><rect x="430" y="188" width="30" height="32" rx="5" stroke-width="0.5"/><text class="ts" x="445" y="207" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#85B7EB">…</text></g>
+
+<!-- Skills -->
+<g class="node c-blue"><rect x="20" y="230" width="440" height="22" rx="4" stroke-width="0.5"/><text class="ts" x="240" y="244" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#378ADD">Skills: change reasoning · BOM describe · vendor-spec match · nonconformance</text></g>
+<text font-family="'IBM Plex Mono',monospace" font-size="8" fill="#525d70" x="250" y="272">HTTPS + CSRF + SOA JSON</text>
+<line x1="240" y1="260" x2="240" y2="282" stroke="#525d70" stroke-width="0.8" marker-end="url(#a1)"/>
+
+<!-- TC SOA -->
+<g class="c-teal"><rect x="10" y="284" width="460" height="150" rx="10" stroke-width="0.5" fill-opacity="0.08"/><text class="th" x="24" y="302">Teamcenter SOA Services</text></g>
+
+<g class="node c-teal"><rect x="20" y="312" width="104" height="32" rx="5" stroke-width="0.5"/><text class="ts" x="72" y="325" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#5DCAA5">Core-*</text><text class="ts" x="72" y="337" text-anchor="middle" dominant-baseline="central" style="font-size:8px">Session, DataMgmt</text></g>
+<g class="node c-teal"><rect x="132" y="312" width="104" height="32" rx="5" stroke-width="0.5"/><text class="ts" x="184" y="325" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#5DCAA5">Query-*</text><text class="ts" x="184" y="337" text-anchor="middle" dominant-baseline="central" style="font-size:8px">SavedQuery, FullText</text></g>
+<g class="node c-teal"><rect x="244" y="312" width="104" height="32" rx="5" stroke-width="0.5"/><text class="ts" x="296" y="325" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#5DCAA5">StructureMgmt</text><text class="ts" x="296" y="337" text-anchor="middle" dominant-baseline="central" style="font-size:8px">BOM, PS expand</text></g>
+<g class="node c-teal"><rect x="356" y="312" width="104" height="32" rx="5" stroke-width="0.5"/><text class="ts" x="408" y="325" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#5DCAA5">Workflow-*</text><text class="ts" x="408" y="337" text-anchor="middle" dominant-baseline="central" style="font-size:8px">Tasks, actions</text></g>
+
+<g class="node c-teal"><rect x="20" y="354" width="104" height="32" rx="5" stroke-width="0.5"/><text class="ts" x="72" y="367" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#5DCAA5">ChangeMgmt</text><text class="ts" x="72" y="379" text-anchor="middle" dominant-baseline="central" style="font-size:8px">ECR, ECN</text></g>
+<g class="node c-teal"><rect x="132" y="354" width="104" height="32" rx="5" stroke-width="0.5"/><text class="ts" x="184" y="367" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#5DCAA5">Classification</text><text class="ts" x="184" y="379" text-anchor="middle" dominant-baseline="central" style="font-size:8px">ICO, groups</text></g>
+<g class="node c-teal"><rect x="244" y="354" width="104" height="32" rx="5" stroke-width="0.5"/><text class="ts" x="296" y="367" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#5DCAA5">VendorMgmt</text><text class="ts" x="296" y="379" text-anchor="middle" dominant-baseline="central" style="font-size:8px">Contracts</text></g>
+<g class="node c-teal"><rect x="356" y="354" width="104" height="32" rx="5" stroke-width="0.5"/><text class="ts" x="408" y="367" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#5DCAA5">Visualization</text><text class="ts" x="408" y="379" text-anchor="middle" dominant-baseline="central" style="font-size:8px">JT, preview</text></g>
+
+<g class="node c-teal"><rect x="20" y="398" width="440" height="22" rx="4" stroke-width="0.5"/><text class="ts" x="240" y="412" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#1D9E75">+ Siemens visibility services · FMS file tickets · TCXML import/export</text></g>
+
+<!-- External -->
+<g class="c-coral"><rect x="10" y="444" width="460" height="34" rx="8" stroke-width="0.5" fill-opacity="0.12"/><text class="ts" x="240" y="464" text-anchor="middle" dominant-baseline="central" style="font-size:10px;fill:#E88A7D">External APIs — GLEIF (vendor identity) · OFAC/SDN (sanctions) · OASIS (portal)</text></g>
+
+<line x1="240" y1="8" x2="240" y2="520" stroke="#525d70" stroke-width="0.3" opacity="0.15" class="flow"/>
+</svg>
+            </div>
+          </div>
+      </div>
+
+      <div class="story-panel">
+        <div class="section-label">How to read it</div>
+        <div class="story-beat">Beat: the agent asks for intent, the MCP layer decides whether it is allowed, and only then does Teamcenter SOA get touched.</div>
+        <p class="story-note">Read this top to bottom. The top band is the client/orchestrator, the middle band is the governed MCP surface, and the lower band is Teamcenter SOA plus external data sources.</p>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <span class="tag-pill purple">Agent / client</span>
+          <span class="tag-pill blue">MCP server</span>
+          <span class="tag-pill teal">TC SOA</span>
+          <span class="tag-pill amber">Policy gate</span>
+        </div>
+        <div class="kv-grid" style="grid-template-columns:repeat(2, minmax(0, 1fr));gap:8px;margin-top:4px">
+          <div class="kv-card amber"><div class="kv-label">Policy gate</div><div class="kv-value">Checks TC_MUTATION_MODE before every dispatch. Read-only tools bypass.</div></div>
+          <div class="kv-card blue"><div class="kv-label">Skills layer</div><div class="kv-value">20+ prompt resources: change reasoning, BOM describe, vendor-spec match, nonconformance.</div></div>
+        </div>
+        <p style="font-size:12px;color:var(--text2);line-height:1.6">Session guard (<code style="font-size:11px">require_session</code>) sits in front of all data tools, search uses smart routing instead of brittle saved-query dependence, and mutation mode can be changed at runtime without restarting the server.</p>
+      </div>
+    </div>
+  </div>
+  <div class="page-header">
+    <div class="tag">Diagram 01</div>
+    <h2>Agent &rarr; SOA architecture</h2>
+    <p>Full path from AI agent tool call through MCP server policy/session layers to Teamcenter SOA endpoints. Runtime policy gate in every mutation's hot path — read-only tools bypass entirely.</p>
+  </div>
+</div>
+
+
+<!-- ═══════ PAGE 2 — SUPPLY CHAIN ═══════ -->
+<div class="page diagram-first" id="page-supply-chain">
+  <div class="page-body">
+    <div class="story-shell">
+      <div class="diagram-card stage-card">
+          <div class="diagram-card-header">
+            <div class="dot" style="background:#d66452"></div>
+            <div class="dot" style="background:#5294d6"></div>
+            <div class="dot" style="background:#3dbf8a"></div>
+            <span class="title">001418-supply-chain-flow.svg</span>
+          </div>
+          <div class="diagram-card-body">
+            <div class="diag-wrap">
+<svg viewBox="0 0 420 480" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="a2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round"/></marker></defs>
+
+<g class="node c-blue"><rect x="10" y="6" width="190" height="36" rx="6" stroke-width="0.5"/><text class="th" x="105" y="20" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_search &rarr; 001418</text><text class="ts" x="105" y="32" text-anchor="middle" dominant-baseline="central" style="font-size:8px">Smart routing full-text</text></g>
+<line x1="105" y1="44" x2="105" y2="54" stroke="#525d70" stroke-width="0.7" marker-end="url(#a2)"/>
+
+<g class="node c-blue"><rect x="10" y="56" width="190" height="36" rx="6" stroke-width="0.5"/><text class="th" x="105" y="70" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_get_item_and_related</text><text class="ts" x="105" y="82" text-anchor="middle" dominant-baseline="central" style="font-size:8px">Revision, relations, attachments</text></g>
+<line x1="105" y1="94" x2="105" y2="104" stroke="#525d70" stroke-width="0.7" marker-end="url(#a2)"/>
+
+<g class="node c-blue"><rect x="10" y="106" width="190" height="36" rx="6" stroke-width="0.5"/><text class="th" x="105" y="120" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_relation_explain</text><text class="ts" x="105" y="132" text-anchor="middle" dominant-baseline="central" style="font-size:8px">&rarr; SPEC PDF discovered</text></g>
+<path d="M200 124 L220 124" fill="none" stroke="#525d70" stroke-width="0.4" stroke-dasharray="3 2" marker-end="url(#a2)"/>
+<g class="node c-gray"><rect x="222" y="110" width="188" height="28" rx="5" stroke-width="0.5"/><text class="ts" x="316" y="127" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#B4B2A9">tc_download_file &rarr; PDF</text></g>
+<line x1="105" y1="144" x2="105" y2="154" stroke="#525d70" stroke-width="0.7" marker-end="url(#a2)"/>
+
+<g class="node c-amber"><rect x="10" y="156" width="190" height="36" rx="6" stroke-width="0.5"/><text class="th" x="105" y="170" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_get_partner_contracts</text><text class="ts" x="105" y="182" text-anchor="middle" dominant-baseline="central" style="font-size:8px">VendorMgmt &rarr; supplier name</text></g>
+<path d="M200 174 L220 174" fill="none" stroke="#525d70" stroke-width="0.4" stroke-dasharray="3 2" marker-end="url(#a2)"/>
+<g class="node c-gray"><rect x="222" y="160" width="188" height="28" rx="5" stroke-width="0.5"/><text class="ts" x="316" y="177" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#B4B2A9">Supplier: Brembo</text></g>
+<line x1="105" y1="194" x2="105" y2="204" stroke="#525d70" stroke-width="0.7" marker-end="url(#a2)"/>
+
+<g class="node c-coral"><rect x="10" y="206" width="190" height="36" rx="6" stroke-width="0.5"/><text class="th" x="105" y="220" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_vendor_resolve_identity</text><text class="ts" x="105" y="232" text-anchor="middle" dominant-baseline="central" style="font-size:8px">GLEIF API &rarr; LEI + legal entity</text></g>
+<path d="M200 224 L220 224" fill="none" stroke="#525d70" stroke-width="0.4" stroke-dasharray="3 2" marker-end="url(#a2)"/>
+<g class="node c-coral"><rect x="222" y="210" width="188" height="28" rx="5" stroke-width="0.5"/><text class="ts" x="316" y="227" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#E88A7D">002400-BREMBO N.V.</text></g>
+<line x1="105" y1="244" x2="105" y2="254" stroke="#525d70" stroke-width="0.7" marker-end="url(#a2)"/>
+
+<g class="node c-coral"><rect x="10" y="256" width="190" height="36" rx="6" stroke-width="0.5"/><text class="th" x="105" y="270" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_vendor_get_hierarchy</text><text class="ts" x="105" y="282" text-anchor="middle" dominant-baseline="central" style="font-size:8px">Parent/child entities</text></g>
+<line x1="105" y1="294" x2="105" y2="304" stroke="#525d70" stroke-width="0.7" marker-end="url(#a2)"/>
+
+<g class="node c-coral"><rect x="10" y="306" width="190" height="36" rx="6" stroke-width="0.5"/><text class="th" x="105" y="320" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_ofac_screen</text><text class="ts" x="105" y="332" text-anchor="middle" dominant-baseline="central" style="font-size:8px">OFAC/SDN &rarr; CLEAR</text></g>
+<path d="M200 324 L220 324" fill="none" stroke="#525d70" stroke-width="0.4" stroke-dasharray="3 2" marker-end="url(#a2)"/>
+<g class="node c-gray"><rect x="222" y="310" width="188" height="28" rx="5" stroke-width="0.5"/><text class="ts" x="316" y="327" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#B4B2A9">tc_oasis_search_and_link</text></g>
+<line x1="105" y1="344" x2="105" y2="354" stroke="#525d70" stroke-width="0.7" marker-end="url(#a2)"/>
+
+<g class="node c-blue"><rect x="10" y="356" width="190" height="36" rx="6" stroke-width="0.5"/><text class="th" x="105" y="370" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_vendor_investigation_report</text><text class="ts" x="105" y="382" text-anchor="middle" dominant-baseline="central" style="font-size:8px">Consolidated dossier</text></g>
+<line x1="105" y1="394" x2="105" y2="404" stroke="#525d70" stroke-width="0.7" marker-end="url(#a2)"/>
+
+<g class="node c-teal"><rect x="10" y="406" width="190" height="36" rx="6" stroke-width="0.5"/><text class="th" x="105" y="420" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_create_change + workflow</text><text class="ts" x="105" y="432" text-anchor="middle" dominant-baseline="central" style="font-size:8px">submitToWorkflow=true</text></g>
+<path d="M200 424 L220 424" fill="none" stroke="#525d70" stroke-width="0.4" stroke-dasharray="3 2" marker-end="url(#a2)"/>
+<g class="node c-teal"><rect x="222" y="410" width="188" height="28" rx="5" stroke-width="0.5"/><text class="ts" x="316" y="427" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#5DCAA5">tc_verify_change_outcome &#x2713;</text></g>
+
+<text font-family="'IBM Plex Mono',monospace" font-size="8" fill="#85B7EB" x="14" y="462">Blue = TC read</text>
+<text font-family="'IBM Plex Mono',monospace" font-size="8" fill="#E88A7D" x="105" y="462">Coral = external</text>
+<text font-family="'IBM Plex Mono',monospace" font-size="8" fill="#5DCAA5" x="200" y="462">Teal = mutation</text>
+<text font-family="'IBM Plex Mono',monospace" font-size="8" fill="#EF9F27" x="300" y="462">Amber = internal</text>
+</svg>
+            </div>
+          </div>
+      </div>
+
+      <div class="story-panel">
+        <div class="section-label">The 001418 benchmark scenario</div>
+        <div class="story-beat">Beat: one benchmark agent session can move from Teamcenter discovery to external diligence to governed corrective action without losing traceability.</div>
+        <p class="story-note">Read the left column as the deterministic Teamcenter path and the right-hand callouts as benchmark evidence gathered from external or adjacent systems. This page is intentionally a reference scenario, not a claim about one production supplier case.</p>
+        <div class="kv-grid" style="grid-template-columns:repeat(3, minmax(0, 1fr));gap:8px;margin-top:4px">
+          <div class="kv-card coral"><div class="kv-label">Item</div><div class="kv-value">001418 — trackside bracket</div></div>
+          <div class="kv-card coral"><div class="kv-label">Supplier</div><div class="kv-value">Brembo (partner contracts)</div></div>
+          <div class="kv-card coral"><div class="kv-label">Vendor match</div><div class="kv-value">002400-BREMBO N.V. — LEI</div></div>
+          <div class="kv-card teal"><div class="kv-label">OFAC</div><div class="kv-value">CLEAR — no SDN matches</div></div>
+          <div class="kv-card blue"><div class="kv-label">Spec PDF</div><div class="kv-value">SRD_001418A_FitSpec.pdf</div></div>
+          <div class="kv-card teal"><div class="kv-label">Outcome</div><div class="kv-value">Change submitted + verified</div></div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-header">
+    <div class="tag">Diagram 02</div>
+    <h2>Supply chain intelligence</h2>
+    <p>The 001418 trackside bracket benchmark scenario: part lookup &rarr; vendor resolution &rarr; OFAC screening &rarr; corrective action workflow. It shows how one governed agent session can keep the digital thread intact across read, external, and write steps.</p>
+  </div>
+</div>
+
+
+<!-- ═══════ PAGE 3 — CHANGE MANAGEMENT ═══════ -->
+<div class="page diagram-first" id="page-change-flow">
+  <div class="page-body">
+    <div class="story-shell">
+      <div class="diagram-card stage-card">
+          <div class="diagram-card-header">
+            <div class="dot" style="background:#e8a444"></div>
+            <div class="dot" style="background:#3dbf8a"></div>
+            <span class="title">change-management-flow.svg</span>
+          </div>
+          <div class="diagram-card-body">
+            <div class="diag-wrap">
+<svg viewBox="0 0 380 290" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="a3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round"/></marker></defs>
+
+<!-- Mutation gate -->
+<rect x="8" y="6" width="364" height="24" rx="5" fill="#2a1e08" stroke="#854F0B" stroke-width="0.5"/>
+<text x="190" y="15" text-anchor="middle" dominant-baseline="central" style="fill:#FAC775;font-size:10px;font-family:'IBM Plex Sans',sans-serif;font-weight:500">TC_MUTATION_MODE = full_write required</text>
+<line x1="190" y1="32" x2="190" y2="42" stroke="#525d70" stroke-width="0.7" marker-end="url(#a3)"/>
+
+<!-- Step 1 -->
+<g class="node c-blue"><rect x="8" y="44" width="175" height="36" rx="6" stroke-width="0.5"/><text class="th" x="96" y="58" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_get_creatable_change_types</text><text class="ts" x="96" y="70" text-anchor="middle" dominant-baseline="central" style="font-size:8px">Discover ECR/ECN types</text></g>
+<path d="M183 62 L198 62" fill="none" stroke="#525d70" stroke-width="0.4" stroke-dasharray="3 2" marker-end="url(#a3)"/>
+<g class="node c-gray"><rect x="200" y="48" width="170" height="28" rx="5" stroke-width="0.5"/><text class="ts" x="285" y="65" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#B4B2A9">tc_workflow_impact (pre-assess)</text></g>
+<line x1="96" y1="82" x2="96" y2="96" stroke="#525d70" stroke-width="0.7" marker-end="url(#a3)"/>
+
+<!-- Step 2 -->
+<g class="node c-teal"><rect x="8" y="98" width="175" height="36" rx="6" stroke-width="0.5"/><text class="th" x="96" y="112" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_create_change</text><text class="ts" x="96" y="124" text-anchor="middle" dominant-baseline="central" style="font-size:8px">submitToWorkflow=true</text></g>
+<path d="M183 116 L198 116" fill="none" stroke="#525d70" stroke-width="0.4" stroke-dasharray="3 2" marker-end="url(#a3)"/>
+<g class="node c-teal"><rect x="200" y="102" width="170" height="28" rx="5" stroke-width="0.5"/><text class="ts" x="285" y="119" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#5DCAA5">tc_add_participants</text></g>
+<line x1="96" y1="136" x2="96" y2="150" stroke="#525d70" stroke-width="0.7" marker-end="url(#a3)"/>
+
+<!-- Step 3 -->
+<g class="node c-teal"><rect x="8" y="152" width="175" height="36" rx="6" stroke-width="0.5"/><text class="th" x="96" y="166" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_verify_change_outcome</text><text class="ts" x="96" y="178" text-anchor="middle" dominant-baseline="central" style="font-size:8px">Deterministic check</text></g>
+<path d="M183 170 L198 170" fill="none" stroke="#525d70" stroke-width="0.4" stroke-dasharray="3 2" marker-end="url(#a3)"/>
+<g class="node c-gray"><rect x="200" y="156" width="170" height="28" rx="5" stroke-width="0.5"/><text class="ts" x="285" y="173" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#B4B2A9">tc_perform_workflow_action</text></g>
+
+<!-- Skills + anti-pattern -->
+<rect x="8" y="206" width="362" height="22" rx="5" fill="none" stroke="#534AB7" stroke-width="0.5"/>
+<text x="189" y="220" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#7F77DD;font-family:'IBM Plex Mono',monospace">Skills: change_flow_orchestration · change_participant_strategy</text>
+
+<rect x="8" y="240" width="362" height="22" rx="5" fill="none" stroke="#8B3A2D" stroke-width="0.5"/>
+<text x="189" y="254" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#D66452;font-weight:500;font-family:'IBM Plex Sans',sans-serif">Anti-pattern: don't preflight tc_get_workflow_templates</text>
+</svg>
+            </div>
+          </div>
+      </div>
+
+      <div class="story-panel">
+        <div class="section-label">Canonical flow</div>
+        <div class="story-beat">Beat: write operations are allowed only when policy says so, and every change must end in deterministic verification rather than hope.</div>
+        <p class="story-note">Read this top to bottom. The amber bar is the mutation gate, the left column is the recommended execution sequence, and the right callouts show optional adjacent actions or anti-patterns.</p>
+        <div class="kv-grid" style="grid-template-columns:repeat(3, minmax(0, 1fr));gap:8px;margin-top:4px">
+          <div class="kv-card amber"><div class="kv-label">off</div><div class="kv-value">Read-only. All mutations blocked. Safe for demos.</div></div>
+          <div class="kv-card amber"><div class="kv-label">managed</div><div class="kv-value">Create/relate OK. Workflow submit blocked.</div></div>
+          <div class="kv-card teal"><div class="kv-label">full_write</div><div class="kv-value">Everything enabled. For production autonomous flows.</div></div>
+        </div>
+        <p style="font-size:12px;color:var(--text2);line-height:1.55">Preferred flow: discover types, create with <code style="font-size:11px">submitToWorkflow=true</code>, then verify outcome. Anti-pattern: do not preflight with <code style="font-size:11px">tc_get_workflow_templates</code> unless explicitly needed. Skill resources such as <code style="font-size:11px">change_flow_orchestration</code> and <code style="font-size:11px">change_participant_strategy</code> guide the agent through the multi-step reasoning.</p>
+      </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-header">
+    <div class="tag">Diagram 03</div>
+    <h2>Change management flow</h2>
+    <p>Mutation-gated change creation and verification. Every write passes through the runtime policy gate. Preferred: <code style="font-size:12px;color:var(--amber)">submitToWorkflow=true</code> + deterministic outcome verification.</p>
+  </div>
+</div>
+
+
+<!-- ═══════ PAGE 4 — BOM & 3D ═══════ -->
+<div class="page diagram-first" id="page-bom-3d">
+  <div class="page-body">
+    <div class="story-shell">
+      <div class="diagram-card stage-card">
+          <div class="diagram-card-header">
+            <div class="dot" style="background:#3dbf8a"></div>
+            <div class="dot" style="background:#5294d6"></div>
+            <span class="title">bom-3d-understanding.svg</span>
+          </div>
+          <div class="diagram-card-body">
+            <div class="diag-wrap">
+<svg viewBox="0 0 440 320" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="a4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round"/></marker></defs>
+
+<!-- Left: BOM flow -->
+<g class="node c-blue"><rect x="8" y="6" width="180" height="36" rx="6" stroke-width="0.5"/><text class="th" x="98" y="20" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_search</text><text class="ts" x="98" y="32" text-anchor="middle" dominant-baseline="central" style="font-size:8px">Find ItemRevision UID</text></g>
+<line x1="98" y1="44" x2="98" y2="54" stroke="#525d70" stroke-width="0.7" marker-end="url(#a4)"/>
+
+<g class="node c-teal"><rect x="8" y="56" width="180" height="36" rx="6" stroke-width="0.5"/><text class="th" x="98" y="70" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_create_bom_window</text><text class="ts" x="98" y="82" text-anchor="middle" dominant-baseline="central" style="font-size:8px">Opens BOM &rarr; BOMLine UID</text></g>
+<line x1="98" y1="94" x2="98" y2="104" stroke="#525d70" stroke-width="0.7" marker-end="url(#a4)"/>
+
+<g class="node c-blue"><rect x="8" y="106" width="180" height="36" rx="6" stroke-width="0.5"/><text class="th" x="98" y="120" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_expand_ps_all_levels</text><text class="ts" x="98" y="132" text-anchor="middle" dominant-baseline="central" style="font-size:8px">Full BOM tree</text></g>
+<line x1="98" y1="144" x2="98" y2="154" stroke="#525d70" stroke-width="0.7" marker-end="url(#a4)"/>
+
+<g class="node c-blue"><rect x="8" y="156" width="180" height="36" rx="6" stroke-width="0.5"/><text class="th" x="98" y="170" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_profile_bom_shapes</text><text class="ts" x="98" y="182" text-anchor="middle" dominant-baseline="central" style="font-size:8px">Shape distribution stats</text></g>
+<line x1="98" y1="194" x2="98" y2="204" stroke="#525d70" stroke-width="0.7" marker-end="url(#a4)"/>
+
+<g class="node c-teal"><rect x="8" y="206" width="180" height="36" rx="6" stroke-width="0.5"/><text class="th" x="98" y="220" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_export_bom_excel</text><text class="ts" x="98" y="232" text-anchor="middle" dominant-baseline="central" style="font-size:8px">BOM &rarr; .xlsx export</text></g>
+<line x1="98" y1="244" x2="98" y2="254" stroke="#525d70" stroke-width="0.7" marker-end="url(#a4)"/>
+
+<g class="node c-teal"><rect x="8" y="256" width="180" height="36" rx="6" stroke-width="0.5"/><text class="th" x="98" y="270" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_close_bom_window</text><text class="ts" x="98" y="282" text-anchor="middle" dominant-baseline="central" style="font-size:8px">Clean up session</text></g>
+
+<!-- Right: 3D tools -->
+<path d="M188 74 L230 74" fill="none" stroke="#525d70" stroke-width="0.4" stroke-dasharray="3 2" marker-end="url(#a4)"/>
+
+<g class="node c-blue"><rect x="232" y="56" width="198" height="36" rx="6" stroke-width="0.5"/><text class="th" x="331" y="70" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_jt_readiness_score</text><text class="ts" x="331" y="82" text-anchor="middle" dominant-baseline="central" style="font-size:8px">3D data quality scoring</text></g>
+<line x1="331" y1="94" x2="331" y2="104" stroke="#525d70" stroke-width="0.7" marker-end="url(#a4)"/>
+
+<g class="node c-blue"><rect x="232" y="106" width="198" height="36" rx="6" stroke-width="0.5"/><text class="th" x="331" y="120" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_understand_bom_3d</text><text class="ts" x="331" y="132" text-anchor="middle" dominant-baseline="central" style="font-size:8px">Assembly 3D overview</text></g>
+<line x1="331" y1="144" x2="331" y2="154" stroke="#525d70" stroke-width="0.7" marker-end="url(#a4)"/>
+
+<g class="node c-blue"><rect x="232" y="156" width="198" height="36" rx="6" stroke-width="0.5"/><text class="th" x="331" y="170" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_understand_bom_3d_deep</text><text class="ts" x="331" y="182" text-anchor="middle" dominant-baseline="central" style="font-size:8px">Per-component geometry</text></g>
+<line x1="331" y1="194" x2="331" y2="204" stroke="#525d70" stroke-width="0.7" marker-end="url(#a4)"/>
+
+<g class="node c-blue"><rect x="232" y="206" width="198" height="36" rx="6" stroke-width="0.5"/><text class="th" x="331" y="220" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_understand_jt</text><text class="ts" x="331" y="232" text-anchor="middle" dominant-baseline="central" style="font-size:8px">JT file metadata</text></g>
+<line x1="331" y1="244" x2="331" y2="254" stroke="#525d70" stroke-width="0.7" marker-end="url(#a4)"/>
+
+<g class="node c-blue"><rect x="232" y="256" width="198" height="36" rx="6" stroke-width="0.5"/><text class="th" x="331" y="270" text-anchor="middle" dominant-baseline="central" style="font-size:10px">tc_get_assembly_jt</text><text class="ts" x="331" y="282" text-anchor="middle" dominant-baseline="central" style="font-size:8px">Assembly JT retrieval</text></g>
+
+<text font-family="'IBM Plex Mono',monospace" font-size="8" fill="#525d70" x="12" y="310">BOM traversal &amp; export</text>
+<text font-family="'IBM Plex Mono',monospace" font-size="8" fill="#525d70" x="236" y="310">3D readiness &amp; understanding</text>
+</svg>
+            </div>
+          </div>
+      </div>
+
+      <div class="story-panel">
+        <div class="section-label">Canonical BOM flow</div>
+        <div class="story-beat">Beat: the left rail builds the structure, while the right rail extracts geometry meaning from the same BOM without creating mutation risk.</div>
+        <p class="story-note">Read the left column as the deterministic BOM session lifecycle and the right column as read-only 3D understanding tools that can run in parallel once structure is available.</p>
+        <div class="kv-grid" style="grid-template-columns:repeat(2, minmax(0, 1fr));gap:8px;margin-top:4px">
+          <div class="kv-card blue"><div class="kv-label">JT readiness</div><div class="kv-value">Per-part scoring: data presence, topology, tessellation quality, metadata.</div></div>
+          <div class="kv-card blue"><div class="kv-label">Shape profiling</div><div class="kv-value">Statistical distributions across BOM trees. Identifies outliers + missing 3D.</div></div>
+          <div class="kv-card teal"><div class="kv-label">BOM Excel</div><div class="kv-value">Full BOM &rarr; .xlsx with BOMLine props, ItemRevision attrs, inline base64.</div></div>
+          <div class="kv-card blue"><div class="kv-label">Deep 3D</div><div class="kv-value">Per-component geometry analysis in assembly context. Structured output.</div></div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-header">
+    <div class="tag">Diagram 04</div>
+    <h2>BOM &amp; 3D understanding</h2>
+    <p>Read-only tools for BOM traversal, JT readiness, 3D shape profiling, and Excel export. Structured machine-readable output — no mutation risk.</p>
+  </div>
+</div>
+
+</main>
+
+<script>
+const PAGES = ['overview', 'arch', 'supply-chain', 'change-flow', 'bom-3d'];
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  const n = document.getElementById('nav-' + id);
+  if (n) n.classList.add('active');
+  clearAllNodeFocus();
+  setFocusPanelIdle();
+}
+
+const svgWorkbench = new WeakMap();
+
+function cloneBox(box) {
+  return { x: box.x, y: box.y, width: box.width, height: box.height };
+}
+
+function parseViewBox(svg) {
+  const raw = svg.getAttribute('viewBox');
+  if (raw) {
+    const parts = raw.trim().split(/\s+/).map(Number);
+    if (parts.length === 4 && parts.every(Number.isFinite)) {
+      return { x: parts[0], y: parts[1], width: parts[2], height: parts[3] };
+    }
+  }
+
+  const width = svg.viewBox && svg.viewBox.baseVal && svg.viewBox.baseVal.width ? svg.viewBox.baseVal.width : (svg.clientWidth || 1200);
+  const height = svg.viewBox && svg.viewBox.baseVal && svg.viewBox.baseVal.height ? svg.viewBox.baseVal.height : (svg.clientHeight || 700);
+  return { x: 0, y: 0, width, height };
+}
+
+function writeViewBox(svg, box) {
+  svg.setAttribute('viewBox', [box.x, box.y, box.width, box.height].map(v => Math.round(v * 100) / 100).join(' '));
+}
+
+function boundBox(box, bounds) {
+  const minWidth = bounds.width * 0.2;
+  const minHeight = bounds.height * 0.22;
+  const width = Math.min(bounds.width, Math.max(minWidth, box.width));
+  const height = Math.min(bounds.height, Math.max(minHeight, box.height));
+  const x = Math.min(bounds.x + bounds.width - width, Math.max(bounds.x, box.x));
+  const y = Math.min(bounds.y + bounds.height - height, Math.max(bounds.y, box.y));
+  return { x, y, width, height };
+}
+
+function setWorkbenchIdle(workbench) {
+  const page = workbench.svg.closest('.page');
+  const pageTitleEl = page ? page.querySelector('.page-header h2') : null;
+  const pageTitle = pageTitleEl ? pageTitleEl.textContent.trim() : 'this page';
+  workbench.panel.classList.add('empty');
+  workbench.panel.classList.add('active');
+  workbench.anchorBox = null;
+  workbench.label.textContent = 'Tour Hint';
+  workbench.title.textContent = 'Select a node';
+  workbench.body.textContent = 'Click any node in this diagram to open a quick tour card that explains the component without making you leave the stage.';
+  workbench.adjacent.textContent = 'The same card pattern is reused across the architecture pages so exploration feels consistent.';
+  workbench.meta.textContent = 'Active page: ' + pageTitle;
+  positionFocusPanel(workbench.svg, null);
+}
+
+function ensureWorkbench(svg) {
+  if (svgWorkbench.has(svg)) return svgWorkbench.get(svg);
+
+  const diagWrap = svg.closest('.diag-wrap');
+  const body = svg.closest('.diagram-card-body');
+  if (!diagWrap || !body) return null;
+
+  body.classList.add('has-workbench');
+
+  const toolbar = document.createElement('div');
+  toolbar.className = 'diagram-toolbar';
+  toolbar.innerHTML = `
+    <div class="toolbar-label">Diagram controls</div>
+    <button type="button" class="btn" data-action="fit">Fit</button>
+    <button type="button" class="btn" data-action="clear">Clear focus</button>
+    <button type="button" class="btn" data-action="zoom-in">Zoom in</button>
+    <button type="button" class="btn" data-action="zoom-out">Zoom out</button>
+  `;
+
+  const panel = document.createElement('div');
+  panel.className = 'diagram-inline-focus empty';
+  panel.innerHTML = `
+    <div class="focus-label">Node Focus</div>
+    <h3 class="focus-title"></h3>
+    <p class="focus-body"></p>
+    <div class="focus-adjacent"></div>
+    <div class="focus-meta"></div>
+  `;
+
+  body.insertBefore(toolbar, diagWrap);
+  diagWrap.appendChild(panel);
+
+  const workbench = {
+    svg,
+    diagWrap,
+    toolbar,
+    panel,
+    label: panel.querySelector('.focus-label'),
+    title: panel.querySelector('.focus-title'),
+    body: panel.querySelector('.focus-body'),
+    adjacent: panel.querySelector('.focus-adjacent'),
+    meta: panel.querySelector('.focus-meta'),
+    defaultBox: cloneBox(parseViewBox(svg)),
+    anchorBox: null
+  };
+
+  toolbar.querySelector('[data-action="fit"]').addEventListener('click', () => resetSvgView(svg));
+  toolbar.querySelector('[data-action="clear"]').addEventListener('click', () => {
+    clearAllNodeFocus();
+    setFocusPanelIdle();
+  });
+  toolbar.querySelector('[data-action="zoom-in"]').addEventListener('click', () => zoomSvg(svg, 0.82));
+  toolbar.querySelector('[data-action="zoom-out"]').addEventListener('click', () => zoomSvg(svg, 1.2));
+
+  svg.addEventListener('click', (event) => {
+    if (event.target === svg) {
+      clearAllNodeFocus();
+      setFocusPanelIdle();
+    }
+  });
+
+  svgWorkbench.set(svg, workbench);
+  setWorkbenchIdle(workbench);
+  return workbench;
+}
+
+function setFocusPanel(title, body, adjacent, meta, svg, options = {}) {
+  const workbench = ensureWorkbench(svg);
+  if (!workbench) return;
+  workbench.panel.classList.remove('empty');
+  workbench.panel.classList.add('active');
+  workbench.anchorBox = options.anchorBox ? cloneBox(options.anchorBox) : null;
+  workbench.label.textContent = options.label || 'Node Focus';
+  workbench.title.textContent = title;
+  workbench.body.textContent = body;
+  workbench.adjacent.textContent = adjacent;
+  workbench.meta.textContent = meta;
+  positionFocusPanel(svg, workbench.anchorBox);
+}
+
+function svgBoxToWrapPixels(svg, box) {
+  if (!box) return null;
+  const workbench = ensureWorkbench(svg);
+  if (!workbench) return null;
+  const matrix = svg.getScreenCTM();
+  if (!matrix) return null;
+
+  const wrapRect = workbench.diagWrap.getBoundingClientRect();
+  const corners = [
+    new DOMPoint(box.x, box.y),
+    new DOMPoint(box.x + box.width, box.y),
+    new DOMPoint(box.x, box.y + box.height),
+    new DOMPoint(box.x + box.width, box.y + box.height)
+  ].map(point => point.matrixTransform(matrix));
+
+  const xs = corners.map(point => point.x - wrapRect.left);
+  const ys = corners.map(point => point.y - wrapRect.top);
+  return {
+    left: Math.min(...xs),
+    right: Math.max(...xs),
+    top: Math.min(...ys),
+    bottom: Math.max(...ys),
+    cx: (Math.min(...xs) + Math.max(...xs)) / 2,
+    cy: (Math.min(...ys) + Math.max(...ys)) / 2
+  };
+}
+
+function clampValue(value, min, max) {
+  return Math.min(max, Math.max(min, value));
+}
+
+function rectOverlapArea(a, b) {
+  const overlapX = Math.max(0, Math.min(a.right, b.right) - Math.max(a.left, b.left));
+  const overlapY = Math.max(0, Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top));
+  return overlapX * overlapY;
+}
+
+function positionFocusPanel(svg, anchorBox = null) {
+  const workbench = ensureWorkbench(svg);
+  if (!workbench) return;
+
+  const panel = workbench.panel;
+  const wrap = workbench.diagWrap;
+  const margin = 16;
+  const gap = 18;
+  const width = panel.offsetWidth || Math.min(360, Math.max(260, wrap.clientWidth - margin * 2));
+  const height = panel.offsetHeight || 176;
+  const anchor = svgBoxToWrapPixels(svg, anchorBox);
+  const maxX = Math.max(margin, wrap.clientWidth - width - margin);
+  const maxY = Math.max(margin, wrap.clientHeight - height - margin);
+
+  let placement = {
+    x: maxX,
+    y: margin,
+    placement: 'corner'
+  };
+
+  if (anchor) {
+    if (wrap.clientWidth < 760 || wrap.clientHeight < 360) {
+      placement = {
+        x: clampValue(anchor.cx - width / 2, margin, maxX),
+        y: maxY,
+        placement: 'dock-bottom'
+      };
+    } else {
+      const anchorRect = {
+        left: anchor.left - gap * 0.35,
+        right: anchor.right + gap * 0.35,
+        top: anchor.top - gap * 0.35,
+        bottom: anchor.bottom + gap * 0.35
+      };
+
+      const candidates = [
+        {
+          placement: 'right',
+          x: anchor.right + gap,
+          y: clampValue(anchor.top - height * 0.18, margin, maxY)
+        },
+        {
+          placement: 'left',
+          x: anchor.left - width - gap,
+          y: clampValue(anchor.top - height * 0.18, margin, maxY)
+        },
+        {
+          placement: 'bottom',
+          x: clampValue(anchor.cx - width / 2, margin, maxX),
+          y: anchor.bottom + gap
+        },
+        {
+          placement: 'top',
+          x: clampValue(anchor.cx - width / 2, margin, maxX),
+          y: anchor.top - height - gap
+        }
+      ].map((candidate) => {
+        const x = clampValue(candidate.x, margin, maxX);
+        const y = clampValue(candidate.y, margin, maxY);
+        const rect = { left: x, right: x + width, top: y, bottom: y + height };
+        const overlap = rectOverlapArea(rect, anchorRect);
+        const distance = Math.abs((rect.left + rect.right) / 2 - anchor.cx) + Math.abs((rect.top + rect.bottom) / 2 - anchor.cy);
+        const clampedPenalty = (candidate.x !== x || candidate.y !== y) ? 420 : 0;
+        return { placement: candidate.placement, x, y, score: overlap * 3 + distance * 0.35 + clampedPenalty };
+      });
+
+      placement = candidates.sort((a, b) => a.score - b.score)[0];
+    }
+  }
+
+  panel.dataset.placement = placement.placement;
+  panel.style.setProperty('--tour-x', Math.round(placement.x) + 'px');
+  panel.style.setProperty('--tour-y', Math.round(placement.y) + 'px');
+}
+
+function resetSvgView(svg) {
+  const workbench = ensureWorkbench(svg);
+  if (!workbench) return;
+  writeViewBox(svg, workbench.defaultBox);
+  if (workbench.panel.classList.contains('active')) positionFocusPanel(svg, workbench.anchorBox);
+}
+
+function zoomSvg(svg, multiplier) {
+  const workbench = ensureWorkbench(svg);
+  if (!workbench) return;
+
+  const current = parseViewBox(svg);
+  const nextWidth = current.width * multiplier;
+  const nextHeight = current.height * multiplier;
+  const next = {
+    x: current.x + (current.width - nextWidth) / 2,
+    y: current.y + (current.height - nextHeight) / 2,
+    width: nextWidth,
+    height: nextHeight
+  };
+
+  writeViewBox(svg, boundBox(next, workbench.defaultBox));
+  if (workbench.panel.classList.contains('active')) positionFocusPanel(svg, workbench.anchorBox);
+}
+
+function zoomToNode(svg, node) {
+  const workbench = ensureWorkbench(svg);
+  if (!workbench) return;
+
+  const defaultBox = workbench.defaultBox;
+  const bbox = node.getBBox();
+  const cx = bbox.x + bbox.width / 2;
+  const cy = bbox.y + bbox.height / 2;
+  const aspect = defaultBox.width / defaultBox.height;
+
+  let width = Math.max(defaultBox.width * 0.26, bbox.width * 3.1);
+  let height = Math.max(defaultBox.height * 0.3, bbox.height * 3.5);
+
+  if (width / height > aspect) {
+    height = width / aspect;
+  } else {
+    width = height * aspect;
+  }
+
+  writeViewBox(svg, boundBox({
+    x: cx - width / 2,
+    y: cy - height / 2,
+    width,
+    height
+  }, defaultBox));
+  if (workbench.panel.classList.contains('active')) positionFocusPanel(svg, workbench.anchorBox);
+}
+
+function clearAllNodeFocus(resetZoom = true) {
+  document.querySelectorAll('.diag-wrap svg').forEach(svg => {
+    ensureWorkbench(svg);
+    svg.classList.remove('svg-focus-active');
+    svg.querySelectorAll('.node.selected').forEach(node => node.classList.remove('selected'));
+    if (resetZoom) resetSvgView(svg);
+  });
+}
+
+function setFocusPanelIdle() {
+  document.querySelectorAll('.diag-wrap svg').forEach(svg => {
+    const workbench = ensureWorkbench(svg);
+    if (workbench) setWorkbenchIdle(workbench);
+  });
+}
+
+const NODE_CONTEXT = {
+  'Session guard': {
+    role: 'Deterministic session policy boundary that blocks implicit data access.',
+    adjacent: 'Upstream: client authentication intent. Downstream: all data/tool dispatch paths.'
+  },
+  'Tool dispatch': {
+    role: 'Typed router from MCP calls to schema-validated Teamcenter operations.',
+    adjacent: 'Upstream: session guard + request schema. Downstream: service modules and SOA endpoints.'
+  },
+  'Trace logging': {
+    role: 'Per-call audit and diagnostics trail for deterministic postmortems.',
+    adjacent: 'Upstream: every tool invocation. Downstream: telemetry, audit, and incident analysis.'
+  },
+  'Capability registry': {
+    role: 'Compatibility and release control point for what can run where.',
+    adjacent: 'Upstream: release/version metadata. Downstream: routing, canary policy, and rollout safety.'
+  },
+  'Worker manager': {
+    role: 'Operational orchestrator for canary rollout and execution slot lifecycle.',
+    adjacent: 'Upstream: queue/routing decisions. Downstream: runtime execution slots and completion signals.'
+  },
+  'Teamcenter': {
+    role: 'System of record for product structure, revision, and compliance lineage.',
+    adjacent: 'Upstream: SOA writes/reads. Downstream: enterprise reporting, change workflows, and consumers.'
+  },
+  'tc_search': {
+    role: 'Primary entry point to locate business objects for any downstream workflow.',
+    adjacent: 'Upstream: agent intent. Downstream: relation traversal, BOM, change, and compliance tools.'
+  },
+  'tc_create_change': {
+    role: 'Creates governed change objects with optional direct workflow submission.',
+    adjacent: 'Upstream: impact and participant context. Downstream: workflow tasks and outcome verification.'
+  },
+  'tc_expand_ps_all_levels': {
+    role: 'Expands assembly structure for multi-level BOM understanding and export.',
+    adjacent: 'Upstream: BOM window creation. Downstream: profiling, JT readiness, and reporting.'
+  }
+};
+
+document.querySelectorAll('.node').forEach(node => {
+  node.setAttribute('tabindex', '0');
+  node.setAttribute('role', 'button');
+
+  function focusNode() {
+    const svg = node.closest('svg');
+    if (!svg) return;
+
+    const wasSelected = node.classList.contains('selected');
+    clearAllNodeFocus();
+
+    if (wasSelected) {
+      setFocusPanelIdle();
+      return;
+    }
+
+    svg.classList.add('svg-focus-active');
+    node.classList.add('selected');
+    if (svg.dataset.focusMode === 'zoom') {
+      zoomToNode(svg, node);
+    }
+
+    const th = node.querySelector('.th');
+    const ts = node.querySelector('.ts');
+    const title = th ? th.textContent.trim() : 'Diagram node';
+    const subtitle = ts ? ts.textContent.trim() : '';
+    const context = NODE_CONTEXT[title];
+    const details = context ? context.role : (subtitle ? subtitle : 'Selected component in the current architecture flow.');
+    const adjacent = context ? ('Adjacency: ' + context.adjacent) : 'Adjacency: context not mapped for this node yet.';
+
+    const page = node.closest('.page');
+    const pageTitleEl = page ? page.querySelector('.page-header h2') : null;
+    const pageTitle = pageTitleEl ? pageTitleEl.textContent.trim() : 'Architecture';
+    const meta = subtitle ? pageTitle + ' · ' + subtitle : pageTitle;
+    setFocusPanel(title, details, adjacent, meta, svg, {
+      label: 'Node Focus',
+      anchorBox: node.getBBox()
+    });
+  }
+
+  node.addEventListener('click', focusNode);
+  node.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      focusNode();
+    }
+  });
+});
+
+function currentIdx() {
+  for (let i = 0; i < PAGES.length; i++) {
+    if (document.getElementById('page-' + PAGES[i]).classList.contains('active')) return i;
+  }
+  return 0;
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  const idx = currentIdx();
+  if (e.key === 'ArrowRight' || e.key === 'l') { if (idx < PAGES.length - 1) showPage(PAGES[idx + 1]); }
+  else if (e.key === 'ArrowLeft' || e.key === 'h') { if (idx > 0) showPage(PAGES[idx - 1]); }
+  else if (e.key >= '0' && e.key <= '4') { showPage(PAGES[parseInt(e.key)]); }
+  else if (e.key === 'Escape') {
+    clearAllNodeFocus();
+    setFocusPanelIdle();
+  }
+});
+
+document.querySelectorAll('.diag-wrap svg').forEach(svg => ensureWorkbench(svg));
+window.addEventListener('resize', () => {
+  document.querySelectorAll('.diag-wrap svg').forEach(svg => {
+    const workbench = svgWorkbench.get(svg);
+    if (workbench) positionFocusPanel(svg, workbench.anchorBox);
+  });
+});
+setFocusPanelIdle();
+</script>
+</body>
+</html>
+
+
+

@@ -1,0 +1,2478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mendix + NX Architecture Reference — Digital Fabric</title>
+<link rel="stylesheet" href="styles/fabric.css">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+
+:root {
+  --bg: #0d1016;
+  --bg2: #131720;
+  --bg3: #1b1f2a;
+  --border: #272c3a;
+  --border2: #303748;
+  --text: #e6eaf3;
+  --text2: #939db2;
+  --text3: #5e6a7c;
+  --purple: #8579e5;
+  --purple-dim: #403b7a;
+  --purple-bg: rgba(133,121,229,0.09);
+  --teal: #48ce98;
+  --teal-dim: #1d6248;
+  --teal-bg: rgba(72,206,152,0.09);
+  --amber: #edb050;
+  --amber-dim: #74511c;
+  --amber-bg: rgba(237,176,80,0.09);
+  --blue: #5d9edf;
+  --blue-bg: rgba(93,158,223,0.09);
+  --coral: #db7264;
+  --nav-w: 220px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'IBM Plex Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+}
+
+/* ── NAV ── */
+nav {
+  width: var(--nav-w);
+  min-height: 100vh;
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0; left: 0;
+  z-index: 100;
+  padding: 0 0 24px;
+}
+
+.nav-brand {
+  padding: 24px 20px 20px;
+  border-bottom: 1px solid var(--border);
+}
+.nav-brand .wordmark {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text3);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.nav-brand h1 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.35;
+}
+
+.nav-section-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text3);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 20px 20px 8px;
+}
+
+nav a {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 9px 20px;
+  text-decoration: none;
+  color: var(--text2);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.4;
+  border-left: 2px solid transparent;
+  transition: all 0.15s;
+  cursor: pointer;
+}
+nav a:hover { color: var(--text); background: var(--bg3); }
+nav a.active {
+  color: var(--text);
+  border-left-color: var(--purple);
+  background: var(--purple-bg);
+}
+nav a .nav-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  margin-top: 1px;
+  flex-shrink: 0;
+}
+
+.nav-footer {
+  margin-top: auto;
+  padding: 16px 20px 0;
+  border-top: 1px solid var(--border);
+}
+.nav-footer p {
+  font-size: 11px;
+  color: var(--text3);
+  line-height: 1.5;
+}
+
+/* ── MAIN ── */
+main {
+  margin-left: var(--nav-w);
+  flex: 1;
+  min-height: 100vh;
+}
+
+.page { display: none; }
+.page.active { display: block; }
+
+/* ── PAGE HEADER ── */
+.page-header {
+  border-bottom: 1px solid var(--border);
+  padding: 16px 40px 12px;
+}
+.page-header .tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--purple);
+  margin-bottom: 12px;
+}
+.page-header h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.2;
+  margin-bottom: 4px;
+}
+.page-header p {
+  font-size: 12px;
+  color: var(--text2);
+  max-width: 720px;
+  line-height: 1.45;
+}
+
+/* ── CONTENT AREA ── */
+.page-body {
+  padding: 16px 32px 28px;
+}
+
+/* ── SECTION ── */
+.section {
+  margin-bottom: 16px;
+}
+.section-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 16px;
+}
+.section h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.section p {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.55;
+  max-width: 760px;
+}
+.section p + p { margin-top: 6px; }
+
+/* ── DIAGRAM CARD ── */
+.diagram-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 10px;
+}
+.diagram-card-header {
+  padding: 6px 14px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.diagram-card-header .dot { width:8px;height:8px;border-radius:50%; flex-shrink:0; }
+.diagram-card-header .title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--text3);
+}
+.diagram-card-body {
+  padding: 10px;
+}
+
+/* ── KEY-VALUE GRID ── */
+.kv-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 8px;
+  margin-top: 10px;
+}
+.kv-card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+.kv-card .kv-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.kv-card .kv-value {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.4;
+}
+.kv-card.purple { border-color: var(--purple-dim); background: var(--purple-bg); }
+.kv-card.purple .kv-label { color: var(--purple); }
+.kv-card.teal   { border-color: var(--teal-dim);   background: var(--teal-bg); }
+.kv-card.teal   .kv-label { color: var(--teal); }
+.kv-card.amber  { border-color: var(--amber-dim);  background: var(--amber-bg); }
+.kv-card.amber  .kv-label { color: var(--amber); }
+.kv-card.blue   { border-color: #2a3d55; background: var(--blue-bg); }
+.kv-card.blue   .kv-label { color: var(--blue); }
+
+/* ── INLINE TAG ── */
+.tag-pill {
+  display: inline-block;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  padding: 2px 7px;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+}
+.tag-pill.purple { background: var(--purple-bg); color: var(--purple); border: 1px solid var(--purple-dim); }
+.tag-pill.teal   { background: var(--teal-bg);   color: var(--teal);   border: 1px solid var(--teal-dim); }
+.tag-pill.amber  { background: var(--amber-bg);  color: var(--amber);  border: 1px solid var(--amber-dim); }
+.tag-pill.blue   { background: var(--blue-bg);   color: var(--blue);   border: 1px solid #2a3d55; }
+
+/* ── STEP CONTROLS ── */
+.step-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.btn {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 6px;
+  border: 1px solid var(--border2);
+  background: var(--bg3);
+  color: var(--text2);
+  cursor: pointer;
+  transition: all 0.12s;
+}
+.btn:hover { border-color: var(--border2); color: var(--text); background: var(--bg); }
+.btn:disabled { opacity: 0.3; cursor: default; }
+.btn.primary { background: var(--purple-bg); border-color: var(--purple-dim); color: var(--purple); }
+.btn.primary:hover { background: rgba(124,111,222,0.15); }
+.btn.scenario { font-size: 11px; padding: 5px 8px; }
+.btn.scenario.active { border-color: var(--purple-dim); color: var(--purple); background: var(--purple-bg); }
+
+.step-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--text3);
+}
+
+.info-box {
+  margin-top: 12px;
+  padding: 12px 16px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.65;
+  min-height: 52px;
+}
+
+.story-beat {
+  margin-top: 8px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(124,111,222,0.14), rgba(61,191,138,0.08));
+  border: 1px solid rgba(124,111,222,0.22);
+  color: var(--text);
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.story-note {
+  font-size: 11px;
+  color: var(--text3);
+  line-height: 1.5;
+}
+
+/* ── STORY DECK + INTERACTIVE PANELS ── */
+.story-switch {
+  display: inline-flex;
+  gap: 8px;
+  padding: 6px;
+  border-radius: 12px;
+  background: rgba(26,30,40,0.92);
+  border: 1px solid var(--border);
+  margin-bottom: 14px;
+}
+
+.story-switch .btn.active {
+  background: linear-gradient(135deg, rgba(124,111,222,0.18), rgba(61,191,138,0.12));
+  border-color: rgba(124,111,222,0.24);
+  color: var(--text);
+}
+
+.story-deck {
+  overflow: hidden;
+}
+
+.story-track {
+  display: flex;
+  width: 200%;
+  transition: transform 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.story-deck[data-view="walkthrough"] .story-track {
+  transform: translateX(-50%);
+}
+
+.story-pane {
+  flex: 0 0 50%;
+  width: 50%;
+  padding-right: 0;
+}
+
+.interactive-split {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: stretch;
+}
+.interactive-split > .diagram-card {
+  margin-top: 0;
+  min-width: 0;
+  order: 1;
+  width: 100%;
+}
+.interactive-split .side-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  max-width: none;
+  order: 2;
+  padding: 14px 16px 16px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(26,30,40,0.95), rgba(19,22,30,0.96));
+  border: 1px solid var(--border);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+}
+.interactive-split .side-panel .info-box { margin-top: 0; }
+.interactive-split .step-controls { margin-bottom: 4px; }
+@media (max-width: 1000px) {
+  .story-switch { width: 100%; }
+  .story-switch .btn { flex: 1; justify-content: center; }
+}
+
+/* ── SVG DIAGRAM STYLES ── */
+.diag-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 0;
+  overflow: hidden;
+  min-height: clamp(340px, 62vh, 780px);
+  padding: 14px;
+  position: relative;
+}
+.diag-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 6% 6% 8%;
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 18% 24%, rgba(124,111,222,0.12), transparent 32%),
+    radial-gradient(circle at 82% 18%, rgba(61,191,138,0.12), transparent 28%),
+    radial-gradient(circle at 50% 84%, rgba(82,148,214,0.08), transparent 34%);
+  filter: blur(22px);
+  pointer-events: none;
+}
+.diag-wrap svg {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  max-height: min(64vh, 740px);
+  display: block;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* Node classes for SVGs */
+.c-purple rect, .c-purple circle { fill: #1e1a3d; stroke: #534AB7; }
+.c-purple text { fill: #AFA9EC; }
+.c-purple .th, .c-purple .sb { fill: #CECBF6; }
+.c-purple .ts, .c-purple .sc { fill: #7F77DD; }
+
+.c-teal rect, .c-teal circle { fill: #0d2a20; stroke: #0F6E56; }
+.c-teal text { fill: #5DCAA5; }
+.c-teal .th, .c-teal .sb { fill: #9FE1CB; }
+.c-teal .ts, .c-teal .sc { fill: #1D9E75; }
+
+.c-amber rect, .c-amber circle { fill: #2a1e08; stroke: #854F0B; }
+.c-amber text { fill: #EF9F27; }
+.c-amber .th, .c-amber .sb { fill: #FAC775; }
+.c-amber .ts, .c-amber .sc { fill: #BA7517; }
+
+.c-blue rect, .c-blue circle { fill: #0d1e30; stroke: #185FA5; }
+.c-blue text { fill: #85B7EB; }
+.c-blue .th, .c-blue .sb { fill: #B5D4F4; }
+.c-blue .ts, .c-blue .sc { fill: #378ADD; }
+
+.c-gray rect, .c-gray circle { fill: #1a1c20; stroke: #5F5E5A; }
+.c-gray text { fill: #B4B2A9; }
+.c-gray .th { fill: #D3D1C7; }
+.c-gray .ts { fill: #888780; }
+
+.box { fill: #1a1e28; stroke: #2e3547; }
+.arr { stroke: #525d70; stroke-width: 1.5; fill: none; }
+.leader { stroke: #525d70; stroke-width: 0.5; stroke-dasharray: 3 3; fill: none; }
+.node { cursor: pointer; }
+.node:hover { opacity: 0.8; }
+.t  { font-family: 'IBM Plex Sans', sans-serif; font-size: 12px; fill: #e2e6f0; }
+.th { font-family: 'IBM Plex Sans', sans-serif; font-size: 12px; font-weight: 500; fill: #e2e6f0; }
+.ts { font-family: 'IBM Plex Sans', sans-serif; font-size: 10px; fill: #8892a4; }
+
+/* Keep lines from visually cutting through text at scale. */
+.th, .ts {
+  paint-order: stroke fill;
+  stroke: rgba(13,15,20,0.72);
+  stroke-width: 1.8px;
+  stroke-linejoin: round;
+}
+
+/* De-emphasize static connectors and keep stroke widths stable during scaling. */
+.diag-wrap svg path,
+.diag-wrap svg line {
+  vector-effect: non-scaling-stroke;
+}
+.diag-wrap svg path[stroke="#2e3547"],
+.diag-wrap svg line[stroke="#2e3547"],
+.diag-wrap svg line[stroke="#525d70"] {
+  opacity: 0.45;
+}
+
+.diag-wrap svg path[marker-end],
+.diag-wrap svg line[marker-end],
+.flow {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Click-focus mode: one selected node is visually primary. */
+.diag-wrap svg.svg-focus-active .node {
+  opacity: 0.42;
+  transition: opacity 0.16s ease;
+}
+.diag-wrap svg.svg-focus-active .node.selected {
+  opacity: 1;
+}
+.diag-wrap svg .node rect,
+.diag-wrap svg .node circle {
+  transition: stroke-width 0.18s ease, filter 0.18s ease, opacity 0.18s ease;
+}
+.diag-wrap svg .node.selected rect {
+  stroke-width: 1.4;
+  filter: drop-shadow(0 0 12px rgba(226,230,240,0.3));
+}
+
+.diag-wrap svg .node.pulse rect,
+.diag-wrap svg .node.selected circle,
+.diag-wrap svg .node.pulse circle {
+  stroke-width: 1.3;
+  filter: drop-shadow(0 0 10px rgba(124,111,222,0.26));
+}
+
+@keyframes dash-flow { to { stroke-dashoffset: -20; } }
+@keyframes pulse-d { 0%,100%{opacity:1} 50%{opacity:0.45} }
+.flow {
+  stroke-dasharray: 6 5;
+  animation: dash-flow 0.65s linear infinite;
+  transition: opacity 0.18s ease, filter 0.18s ease;
+}
+.flow.active-flow {
+  filter: drop-shadow(0 0 8px rgba(226,230,240,0.24));
+}
+.pulse rect { animation: pulse-d 1s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .flow { animation: none; }
+  .pulse rect { animation: none; }
+}
+
+.stage-card {
+  border-color: rgba(82,93,112,0.28);
+  box-shadow: 0 24px 72px rgba(0,0,0,0.16), inset 0 1px 0 rgba(255,255,255,0.03);
+}
+
+.stage-card .diagram-card-body {
+  padding: 8px;
+}
+
+.page.diagram-first.active {
+  display: flex;
+  flex-direction: column;
+}
+
+.page.diagram-first .page-body {
+  order: 1;
+  padding-top: 14px;
+}
+
+.page.diagram-first .page-header {
+  order: 2;
+  border-bottom: none;
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+}
+
+/* Page 1 overview specific */
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 20px;
+}
+.overview-tile {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+.overview-tile:hover { border-color: var(--border2); }
+.overview-tile .ot-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  margin-bottom: 10px;
+}
+.overview-tile h4 { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+.overview-tile p { font-size: 12px; color: var(--text2); line-height: 1.5; }
+.overview-tile .ot-badge {
+  display: inline-block;
+  margin-top: 12px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+hr.section-rule {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 12px 0;
+}
+
+/* ── hub topbar ── */
+.hub-bar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  height: 44px;
+  display: flex; align-items: center; gap: 14px;
+  padding: 0 20px;
+  background: rgba(13,15,20,0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+}
+.hub-bar a {
+  color: var(--text3); text-decoration: none;
+  display: flex; align-items: center; gap: 6px;
+  transition: color 0.15s;
+}
+.hub-bar a:hover { color: var(--text); }
+.hub-bar .sep-dot { color: var(--text3); font-size: 10px; }
+.hub-bar .current {
+  color: var(--text2); font-weight: 500;
+}
+.hub-bar .kbd-hint {
+  margin-left: auto;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; color: var(--text3);
+  letter-spacing: 0.05em;
+}
+.hub-bar .kbd-hint kbd {
+  display: inline-block;
+  padding: 1px 5px;
+  border: 1px solid var(--border2);
+  border-radius: 3px;
+  font-family: inherit;
+  font-size: 10px;
+  background: var(--bg3);
+  color: var(--text3);
+  margin: 0 1px;
+}
+
+/* offset nav + main for hub bar */
+nav { top: 44px; height: calc(100vh - 44px); }
+main { margin-top: 44px; }
+
+/* ── page transitions ── */
+.page {
+  display: none;
+  opacity: 0;
+  transform: translateX(20px);
+  transition: opacity 0.32s cubic-bezier(0.16,1,0.3,1), transform 0.32s cubic-bezier(0.16,1,0.3,1);
+}
+.page.active {
+  display: block;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ── persistent node focus panel ── */
+.focus-panel { display: none; }
+
+.diagram-card-body.has-workbench {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+}
+
+.diagram-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  grid-column: 1 / -1;
+}
+
+.diagram-card-body.has-workbench .diag-wrap {
+  grid-column: 1;
+  position: relative;
+  isolation: isolate;
+  padding: clamp(16px, 2vw, 24px) clamp(16px, 2.2vw, 28px) clamp(18px, 2.6vw, 32px);
+}
+
+.diagram-card-body.has-workbench .diagram-inline-focus {
+  grid-column: 1;
+}
+
+.diagram-toolbar .toolbar-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-right: auto;
+}
+
+.diagram-inline-focus {
+  --tour-x: 16px;
+  --tour-y: 16px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 3;
+  width: min(360px, calc(100% - 28px));
+  background: linear-gradient(180deg, rgba(26,30,40,0.95), rgba(19,22,30,0.96));
+  border: 1px solid rgba(133,183,235,0.24);
+  border-radius: 14px;
+  padding: 13px 15px;
+  max-width: 100%;
+  max-height: min(320px, calc(100% - 28px));
+  overflow: auto;
+  box-shadow: 0 20px 56px rgba(0,0,0,0.34), 0 0 0 1px rgba(255,255,255,0.03) inset;
+  backdrop-filter: blur(14px);
+  scrollbar-width: thin;
+  scrollbar-color: var(--border2) transparent;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate3d(var(--tour-x), var(--tour-y), 0) scale(0.94);
+  transition: opacity 0.28s cubic-bezier(0.16,1,0.3,1), transform 0.28s cubic-bezier(0.16,1,0.3,1);
+}
+
+.diagram-inline-focus.empty {
+  opacity: 0.86;
+}
+
+.diagram-inline-focus.active {
+  opacity: 1;
+  transform: translate3d(var(--tour-x), var(--tour-y), 0) scale(1);
+}
+
+.diagram-inline-focus .focus-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.diagram-inline-focus .focus-title {
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.35;
+}
+
+.diagram-inline-focus .focus-body {
+  font-size: 12px;
+  color: var(--text2);
+  line-height: 1.55;
+  margin-top: 6px;
+}
+
+.diagram-inline-focus .focus-adjacent {
+  font-size: 11px;
+  color: var(--text2);
+  line-height: 1.5;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+
+.diagram-inline-focus .focus-meta {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  margin-top: 8px;
+}
+
+.walkthrough-controls .story-beat,
+.walkthrough-controls .info-box {
+  display: none;
+}
+
+.walkthrough-controls .step-label {
+  margin-top: 2px;
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════ HUB BAR ══════════════ -->
+<div class="hub-bar">
+  <a href="index.html">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M11 7H3M3 7l3-3M3 7l3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Digital Fabric
+  </a>
+  <span class="sep-dot">/</span>
+  <span class="current">Mendix + NX Architecture</span>
+  <span class="kbd-hint"><kbd>←</kbd> <kbd>→</kbd> navigate &middot; <kbd>0</kbd>–<kbd>4</kbd> pages</span>
+</div>
+
+<!-- ══════════════ NAV ══════════════ -->
+<nav>
+  <div class="nav-brand">
+    <div class="wordmark">Architecture Reference</div>
+    <h1>Mendix + NX<br>at 200-User Scale</h1>
+  </div>
+
+  <div class="nav-section-label">Overview</div>
+  <a onclick="showPage('overview')" id="nav-overview" class="active">
+    <span class="nav-num">00</span>
+    System overview &amp; principles
+  </a>
+
+  <div class="nav-section-label">Diagrams</div>
+  <a onclick="showPage('three-planes')" id="nav-three-planes">
+    <span class="nav-num">01</span>
+    Three-plane architecture
+  </a>
+  <a onclick="showPage('aws-infra')" id="nav-aws-infra">
+    <span class="nav-num">02</span>
+    AWS infrastructure layout
+  </a>
+  <a onclick="showPage('e2e-flow')" id="nav-e2e-flow">
+    <span class="nav-num">03</span>
+    End-to-end request flow
+  </a>
+  <a onclick="showPage('release-trains')" id="nav-release-trains">
+    <span class="nav-num">04</span>
+    Release trains &amp; capability model
+  </a>
+
+  <div class="nav-footer">
+    <p>Click any node in a diagram to explore that component further.</p>
+  </div>
+</nav>
+
+<!-- ══════════════ MAIN ══════════════ -->
+<main>
+
+<!-- ════════════════════════════════════════
+     PAGE 0 — OVERVIEW
+════════════════════════════════════════ -->
+<div class="page active" id="page-overview">
+  <div class="page-header">
+    <div class="tag">System overview</div>
+    <h2>Mendix + NX at 200-user scale</h2>
+    <p>A reference architecture for delivering controlled, parameterized CAD changes to business users at roughly 200 named users while preserving engineering governance, license efficiency, and system reliability. It uses a three-plane model that separates workflow orchestration, deterministic NX execution, and PLM record management.</p>
+  </div>
+  <div class="page-body">
+
+    <div class="section">
+      <div class="section-label">Architecture principle</div>
+      <h3>Three planes, one control point</h3>
+      <p>The system is divided into three clearly bounded planes. Each plane has a single owner, a clear data contract, and an explicit handoff. The template registry sits at the boundary between the workflow and execution planes — it is a mandatory control point that every job must pass through.</p>
+      <div class="kv-grid">
+        <div class="kv-card purple">
+          <div class="kv-label">Plane 1 — Workflow</div>
+          <div class="kv-value">Mendix + stateless AWS services. Owns user interaction, approvals, orchestration, and monitoring.</div>
+        </div>
+        <div class="kv-card teal">
+          <div class="kv-label">Plane 2 — Execution</div>
+          <div class="kv-value">NX on governed EC2 worker slots. Owns deterministic CAD regeneration and artifact production.</div>
+        </div>
+        <div class="kv-card blue">
+          <div class="kv-label">Plane 3 — PLM</div>
+          <div class="kv-value">Teamcenter as system of record. Owns released objects, revisions, and BOM relationships.</div>
+        </div>
+        <div class="kv-card amber">
+          <div class="kv-label">Governance boundary</div>
+          <div class="kv-value">Template registry + admission control. No job enters the execution plane without passing both gates.</div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="section-rule">
+
+    <div class="section">
+      <div class="section-label">What's in this reference</div>
+      <div class="overview-grid">
+        <div class="overview-tile" onclick="showPage('three-planes')">
+          <div class="ot-num">01</div>
+          <h4>Three-plane architecture</h4>
+          <p>The full system map: all services across all three planes with the governance boundary called out.</p>
+          <span class="ot-badge tag-pill purple">interactive</span>
+        </div>
+        <div class="overview-tile" onclick="showPage('aws-infra')">
+          <div class="ot-num">02</div>
+          <h4>AWS infrastructure</h4>
+          <p>How the execution plane maps onto AWS — VPC, subnets, EC2 worker slots, SQS, ElastiCache, and S3.</p>
+          <span class="ot-badge tag-pill teal">2 diagrams</span>
+        </div>
+        <div class="overview-tile" onclick="showPage('e2e-flow')">
+          <div class="ot-num">03</div>
+          <h4>End-to-end request flow</h4>
+          <p>Step-by-step animated trace from a user clicking Submit in Mendix to a result appearing and an artifact landing in Teamcenter.</p>
+          <span class="ot-badge tag-pill teal">9-step walkthrough</span>
+        </div>
+        <div class="overview-tile" onclick="showPage('release-trains')">
+          <div class="ot-num">04</div>
+          <h4>Release trains &amp; capabilities</h4>
+          <p>How fast-train Mendix changes and slow-train NX execution changes coexist. Includes the edge blend DLL scenario.</p>
+          <span class="ot-badge tag-pill amber">4 scenarios</span>
+        </div>
+      </div>
+    </div>
+
+    <hr class="section-rule">
+
+    <div class="section">
+      <div class="section-label">Key design decisions</div>
+      <h3>Why these choices matter at 200 users</h3>
+      <p>At 200 concurrent users, NX license tokens become the binding constraint — not queue depth, not CPU. Every design decision flows from this. The license controller sits in the hot dispatch path specifically to prevent token exhaustion from causing silent job failures or indefinite queuing.</p>
+      <p>Separating the workflow plane from the execution plane allows Mendix to iterate continuously without forcing NX worker restarts or template validation cycles. The slower governed train for the execution plane is intentional: a bad rollout here can invalidate outputs, waste license capacity, and break traceability across released artifacts.</p>
+      <div class="kv-grid" style="margin-top:20px">
+        <div class="kv-card">
+          <div class="kv-label">Autoscaling signal</div>
+          <div class="kv-value">Queue depth + license headroom. Upper bound is license capacity, not queue depth alone.</div>
+        </div>
+        <div class="kv-card">
+          <div class="kv-label">Retry policy</div>
+          <div class="kv-value">Recoverable failures retry within envelope. Non-recoverable go to DLQ immediately — no token burning.</div>
+        </div>
+        <div class="kv-card">
+          <div class="kv-label">Template governance</div>
+          <div class="kv-value">Signed bundles. Compatibility matrix. Controlled rollback. No ad-hoc template deployment.</div>
+        </div>
+        <div class="kv-card">
+          <div class="kv-label">Target SLO</div>
+          <div class="kv-value">95% of standard jobs completed within agreed turnaround. Dead-letter routing for non-recoverable errors.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════
+     PAGE 1 — THREE-PLANE ARCH
+════════════════════════════════════════ -->
+<div class="page diagram-first" id="page-three-planes">
+  <div class="page-body">
+        <div class="section">
+          <div class="story-switch" role="tablist" aria-label="Three-plane view switcher">
+            <button class="btn active" id="tp-view-exec" data-deck="tp" data-view="exec" aria-controls="tp-story-deck" aria-selected="true">Executive snapshot</button>
+            <button class="btn" id="tp-view-walk" data-deck="tp" data-view="walkthrough" aria-controls="tp-story-deck" aria-selected="false">Architecture walkthrough</button>
+          </div>
+          <div class="story-deck" id="tp-story-deck" data-view="exec">
+            <div class="story-track">
+              <div class="story-pane">
+                <div class="section-label">Level 0 executive view</div>
+                <p style="margin-bottom:12px">Left to right, this shows the commercial stack only: workflow on the left, governed AWS execution in the middle, and PLM record management on the right. It is the shortest, clearest story on the page.</p>
+                <div class="diagram-card stage-card">
+        <div class="diagram-card-header">
+          <div class="dot" style="background:#7c6fde"></div>
+          <div class="dot" style="background:#e8a444"></div>
+          <div class="dot" style="background:#5294d6"></div>
+          <span class="title">executive-level-architecture.svg</span>
+        </div>
+        <div class="diagram-card-body">
+          <div class="diag-wrap">
+<svg viewBox="0 0 980 250" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="ar0" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<g class="c-purple"><rect x="20" y="30" width="250" height="150" rx="14" stroke-width="0.6" fill-opacity="0.12"/><text class="th" x="40" y="58">Business workflow layer</text><text class="ts" x="40" y="76">User-facing intake and approvals</text></g>
+<g class="node c-purple"><rect x="42" y="96" width="94" height="48" rx="8" stroke-width="0.5"/><text class="th" x="89" y="116" text-anchor="middle" dominant-baseline="central" style="font-size:11px">Mendix</text><text class="ts" x="89" y="131" text-anchor="middle" dominant-baseline="central" style="font-size:9px">Apps + workflows</text></g>
+<g class="node c-purple"><rect x="154" y="96" width="94" height="48" rx="8" stroke-width="0.5"/><text class="th" x="201" y="116" text-anchor="middle" dominant-baseline="central" style="font-size:11px">API Gateway</text><text class="ts" x="201" y="131" text-anchor="middle" dominant-baseline="central" style="font-size:9px">Auth + ingress</text></g>
+<line x1="270" y1="105" x2="360" y2="105" stroke="#854F0B" stroke-width="2" marker-end="url(#ar0)"/>
+<text class="ts" x="315" y="95" text-anchor="middle" style="fill:#EF9F27">governed job handoff</text>
+<g class="c-amber"><rect x="360" y="30" width="260" height="150" rx="14" stroke-width="0.6" fill-opacity="0.12"/><text class="th" x="380" y="58">Governed execution layer</text><text class="ts" x="380" y="76">Paid AWS services running the NX estate</text></g>
+<g class="node c-amber"><rect x="382" y="96" width="96" height="48" rx="8" stroke-width="0.5"/><text class="th" x="430" y="116" text-anchor="middle" dominant-baseline="central" style="font-size:11px">SQS</text><text class="ts" x="430" y="131" text-anchor="middle" dominant-baseline="central" style="font-size:9px">Job queue</text></g>
+<g class="node c-amber"><rect x="492" y="96" width="96" height="48" rx="8" stroke-width="0.5"/><text class="th" x="540" y="116" text-anchor="middle" dominant-baseline="central" style="font-size:11px">ECS + Redis</text><text class="ts" x="540" y="131" text-anchor="middle" dominant-baseline="central" style="font-size:9px">Control plane</text></g>
+<g class="node c-amber"><rect x="438" y="154" width="132" height="48" rx="8" stroke-width="0.5"/><text class="th" x="504" y="174" text-anchor="middle" dominant-baseline="central" style="font-size:11px">EC2 Windows + NX</text><text class="ts" x="504" y="189" text-anchor="middle" dominant-baseline="central" style="font-size:9px">Deterministic CAD execution</text></g>
+<line x1="620" y1="105" x2="710" y2="105" stroke="#378ADD" stroke-width="2" marker-end="url(#ar0)"/>
+<text class="ts" x="665" y="95" text-anchor="middle" style="fill:#378ADD">released output + provenance</text>
+<g class="c-blue"><rect x="710" y="30" width="250" height="150" rx="14" stroke-width="0.6" fill-opacity="0.12"/><text class="th" x="730" y="58">PLM system-of-record layer</text><text class="ts" x="730" y="76">Released objects and traceability</text></g>
+<g class="node c-blue"><rect x="732" y="96" width="96" height="48" rx="8" stroke-width="0.5"/><text class="th" x="780" y="116" text-anchor="middle" dominant-baseline="central" style="font-size:11px">Teamcenter</text><text class="ts" x="780" y="131" text-anchor="middle" dominant-baseline="central" style="font-size:9px">Revision + BOM</text></g>
+<g class="node c-blue"><rect x="844" y="96" width="94" height="48" rx="8" stroke-width="0.5"/><text class="th" x="891" y="116" text-anchor="middle" dominant-baseline="central" style="font-size:11px">Release svc</text><text class="ts" x="891" y="131" text-anchor="middle" dominant-baseline="central" style="font-size:9px">Promotion path</text></g>
+<text class="ts" x="20" y="226">Commercial stack in play: Mendix, Siemens NX, Teamcenter, API Gateway, ECS Fargate, SQS, ElastiCache for Redis, EC2 Windows, S3, EventBridge.</text>
+</svg>
+          </div>
+        </div>
+            </div>
+            <div class="kv-grid" style="margin-top:12px;grid-template-columns:repeat(3, minmax(0, 1fr));">
+              <div class="kv-card purple">
+                <div class="kv-label">Paid products</div>
+                <div class="kv-value">Mendix, Siemens NX, Teamcenter</div>
+              </div>
+              <div class="kv-card amber">
+                <div class="kv-label">Paid AWS services</div>
+                <div class="kv-value">API Gateway, ECS Fargate, SQS, ElastiCache for Redis, EC2 Windows, S3, EventBridge</div>
+              </div>
+              <div class="kv-card blue">
+                <div class="kv-label">What executives should hear</div>
+                <div class="kv-value">Workflow product, governed execution platform, and PLM record system are intentionally separated so each cost center can scale and release independently.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="story-pane">
+            <div class="interactive-split">
+              <div class="diagram-card stage-card">
+                <div class="diagram-card-header">
+                  <div class="dot" style="background:#7c6fde"></div>
+                  <div class="dot" style="background:#3dbf8a"></div>
+                  <div class="dot" style="background:#5294d6"></div>
+                  <span class="title">mendix-nx-three-plane-architecture.svg</span>
+                </div>
+                <div class="diagram-card-body">
+                  <div class="diag-wrap">
+<svg id="tpdiag" viewBox="0 0 680 820" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="ar1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<!-- Plane 1 -->
+<g class="c-purple"><rect x="20" y="20" width="640" height="210" rx="14" stroke-width="0.5" fill-opacity="0.12"/><text class="th" x="36" y="46">Plane 1 — Digital workflow</text><text class="ts" x="36" y="62">Mendix + stateless services</text></g>
+<g id="tp-n1" class="node c-purple"><rect x="36" y="74" width="144" height="56" rx="8" stroke-width="0.5"/><text class="th" x="108" y="97" text-anchor="middle" dominant-baseline="central">Mendix apps</text><text class="ts" x="108" y="115" text-anchor="middle" dominant-baseline="central">Intake, approvals, release</text></g>
+<g id="tp-n2" class="node c-purple"><rect x="196" y="74" width="144" height="56" rx="8" stroke-width="0.5"/><text class="th" x="268" y="97" text-anchor="middle" dominant-baseline="central">API gateway</text><text class="ts" x="268" y="115" text-anchor="middle" dominant-baseline="central">SSO, RBAC, rate limits</text></g>
+<g id="tp-n3" class="node c-purple"><rect x="356" y="74" width="144" height="56" rx="8" stroke-width="0.5"/><text class="th" x="428" y="97" text-anchor="middle" dominant-baseline="central">Preflight validation</text><text class="ts" x="428" y="115" text-anchor="middle" dominant-baseline="central">Schema, policy checks</text></g>
+<g id="tp-n4" class="node c-purple"><rect x="516" y="74" width="140" height="56" rx="8" stroke-width="0.5"/><text class="th" x="586" y="97" text-anchor="middle" dominant-baseline="central">Admission control</text><text class="ts" x="586" y="115" text-anchor="middle" dominant-baseline="central">License, SLA, dedup</text></g>
+<g id="tp-n5" class="node c-purple"><rect x="36" y="150" width="195" height="56" rx="8" stroke-width="0.5"/><text class="th" x="133" y="173" text-anchor="middle" dominant-baseline="central">Job orchestration</text><text class="ts" x="133" y="191" text-anchor="middle" dominant-baseline="central">Lifecycle, retry, cancel</text></g>
+<g id="tp-n6" class="node c-purple"><rect x="247" y="150" width="180" height="56" rx="8" stroke-width="0.5"/><text class="th" x="337" y="173" text-anchor="middle" dominant-baseline="central">Queue / event bus</text><text class="ts" x="337" y="191" text-anchor="middle" dominant-baseline="central">Durable async, backpressure</text></g>
+<g id="tp-n7" class="node c-purple"><rect x="443" y="150" width="213" height="56" rx="8" stroke-width="0.5"/><text class="th" x="549" y="173" text-anchor="middle" dominant-baseline="central">Audit / trace</text><text class="ts" x="549" y="191" text-anchor="middle" dominant-baseline="central">Lineage, compliance events</text></g>
+<!-- Governance -->
+<rect x="20" y="248" width="640" height="44" rx="8" stroke-width="0.5" fill="#2a1e08" stroke="#854F0B"/>
+<text class="th" x="340" y="265" text-anchor="middle" dominant-baseline="central" style="fill:#FAC775">Template registry &amp; pack service</text>
+<text class="ts" x="340" y="281" text-anchor="middle" dominant-baseline="central" style="fill:#EF9F27">Approved templates · compatibility matrix · signed bundles · rollback</text>
+<line x1="340" y1="232" x2="340" y2="246" stroke="#854F0B" stroke-width="1" marker-end="url(#ar1)"/>
+<!-- Plane 2 -->
+<g class="c-teal"><rect x="20" y="310" width="640" height="232" rx="14" stroke-width="0.5" fill-opacity="0.12"/><text class="th" x="36" y="336">Plane 2 — Engineering execution</text><text class="ts" x="36" y="352">NX job execution service</text></g>
+<line x1="340" y1="294" x2="340" y2="308" stroke="#1D9E75" stroke-width="1" marker-end="url(#ar1)"/>
+<g id="tp-n8" class="node c-teal"><rect x="36" y="364" width="160" height="56" rx="8" stroke-width="0.5"/><text class="th" x="116" y="387" text-anchor="middle" dominant-baseline="central">Worker manager</text><text class="ts" x="116" y="405" text-anchor="middle" dominant-baseline="central">Lifecycle, health, isolation</text></g>
+<g id="tp-n9" class="node c-teal"><rect x="212" y="364" width="160" height="56" rx="8" stroke-width="0.5"/><text class="th" x="292" y="387" text-anchor="middle" dominant-baseline="central">License controller</text><text class="ts" x="292" y="405" text-anchor="middle" dominant-baseline="central">Real token gating</text></g>
+<g id="tp-n10" class="node c-teal"><rect x="388" y="364" width="168" height="56" rx="8" stroke-width="0.5"/><text class="th" x="472" y="387" text-anchor="middle" dominant-baseline="central">Template pack runtime</text><text class="ts" x="472" y="405" text-anchor="middle" dominant-baseline="central">Approved versions only</text></g>
+<g id="tp-n11" class="node c-teal"><rect x="572" y="364" width="76" height="56" rx="8" stroke-width="0.5"/><text class="th" x="610" y="387" text-anchor="middle" dominant-baseline="central">NX slot</text><text class="ts" x="610" y="405" text-anchor="middle" dominant-baseline="central">Governed</text></g>
+<rect x="36" y="440" width="612" height="44" rx="8" fill="none" stroke-width="0.5" stroke="#0F6E56"/>
+<text class="ts" x="342" y="457" text-anchor="middle" dominant-baseline="central" style="fill:#1D9E75">Load template → apply parameters → regenerate → run checks</text>
+<text class="ts" x="342" y="473" text-anchor="middle" dominant-baseline="central" style="fill:#085041">Neutral/native outputs + machine-readable validation report</text>
+<line x1="116" y1="422" x2="116" y2="438" stroke="#0F6E56" stroke-width="1" marker-end="url(#ar1)"/>
+<!-- Plane 3 -->
+<g class="c-blue"><rect x="20" y="562" width="640" height="120" rx="14" stroke-width="0.5" fill-opacity="0.12"/><text class="th" x="36" y="588">Plane 3 — PLM</text><text class="ts" x="36" y="604">Teamcenter as system of record</text></g>
+<line x1="340" y1="546" x2="340" y2="560" stroke="#378ADD" stroke-width="1" marker-end="url(#ar1)"/>
+<g id="tp-n12" class="node c-blue"><rect x="36" y="614" width="224" height="52" rx="8" stroke-width="0.5"/><text class="th" x="148" y="636" text-anchor="middle" dominant-baseline="central">Teamcenter</text><text class="ts" x="148" y="654" text-anchor="middle" dominant-baseline="central">Objects, revisions, BOM</text></g>
+<g id="tp-n13" class="node c-blue"><rect x="276" y="614" width="196" height="52" rx="8" stroke-width="0.5"/><text class="th" x="374" y="636" text-anchor="middle" dominant-baseline="central">Mendix state store</text><text class="ts" x="374" y="654" text-anchor="middle" dominant-baseline="central">Workflow + biz context only</text></g>
+<g id="tp-n14" class="node c-blue"><rect x="488" y="614" width="156" height="52" rx="8" stroke-width="0.5"/><text class="th" x="566" y="636" text-anchor="middle" dominant-baseline="central">Release service</text><text class="ts" x="566" y="654" text-anchor="middle" dominant-baseline="central">Promotes with provenance</text></g>
+<!-- Security / Observability -->
+<rect x="20" y="702" width="308" height="100" rx="10" fill="none" stroke-width="0.5" stroke="#525d70"/>
+<text class="th" x="36" y="724" style="fill:#e2e6f0">Security &amp; compliance</text>
+<text class="ts" x="36" y="742">End-to-end request signing</text>
+<text class="ts" x="36" y="758">Per-job sandboxed workspace</text>
+<text class="ts" x="36" y="774">Secrets managed centrally</text>
+<text class="ts" x="36" y="790">Full request-to-revision traceability</text>
+<rect x="342" y="702" width="318" height="100" rx="10" fill="none" stroke-width="0.5" stroke="#525d70"/>
+<text class="th" x="358" y="724" style="fill:#e2e6f0">Observability &amp; SLOs</text>
+<text class="ts" x="358" y="742">Admission latency, queue wait, NX run</text>
+<text class="ts" x="358" y="758">Error taxonomy: 5 failure classes</text>
+<text class="ts" x="358" y="774">95% standard jobs within SLA window</text>
+<text class="ts" x="358" y="790">Dead-letter routing for non-recoverable</text>
+</svg>
+                  </div>
+                </div>
+              </div>
+
+              <div class="side-panel walkthrough-controls">
+                <div class="section-label">Architecture walkthrough</div>
+                <div class="story-note">Read the full system left to right. Each step now opens as an anchored popup inside the stage instead of dropping the explanation below the diagram.</div>
+                <div class="step-controls">
+                  <button class="btn" id="tp-prev" disabled aria-label="Previous architecture step">Prev</button>
+                  <button class="btn primary" id="tp-next" aria-label="Next architecture step">Next</button>
+                  <button class="btn" id="tp-reset">Reset</button>
+                </div>
+                <div class="step-label" id="tp-lbl"></div>
+                <div class="story-beat" id="tp-beat"></div>
+                <div class="info-box" id="tp-info"></div>
+              </div>
+            </div>
+
+            <div class="section">
+              <div class="section-label">Color legend</div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;">
+                <span class="tag-pill purple">Workflow plane</span>
+                <span class="tag-pill teal">Execution plane</span>
+                <span class="tag-pill blue">PLM plane</span>
+                <span class="tag-pill amber">Governance boundary</span>
+              </div>
+            </div>
+
+          </div>
+          <div class="page-header">
+            <div class="tag">Diagram 01</div>
+            <h2>Three-plane architecture</h2>
+            <p>The complete system map showing all services across the workflow, execution, and PLM planes. The amber governance boundary is a mandatory gate — every job must pass through the template registry and admission control before entering the execution plane. Click any node to explore it.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════
+     PAGE 2 — AWS INFRA
+════════════════════════════════════════ -->
+<div class="page diagram-first" id="page-aws-infra">
+  <div class="page-body">
+
+    <div class="section">
+      <div class="section-label">Infrastructure layout</div>
+      <div class="diagram-card">
+        <div class="diagram-card-header">
+          <div class="dot" style="background:#3dbf8a"></div>
+          <span class="title">aws-vpc-layout.svg</span>
+        </div>
+        <div class="diagram-card-body">
+          <div class="diag-wrap">
+<svg viewBox="0 0 680 860" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="ar2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<g class="c-blue"><rect x="16" y="16" width="648" height="824" rx="16" stroke-width="0.5" fill-opacity="0.07"/><text class="th" x="32" y="42">AWS VPC</text><text class="ts" x="32" y="58">Single region · private subnets · no public ingress on NX hosts</text></g>
+<g class="node c-gray"><rect x="220" y="68" width="240" height="44" rx="8" stroke-width="0.5"/><text class="th" x="340" y="85" text-anchor="middle" dominant-baseline="central">Job payload from workflow plane</text><text class="ts" x="340" y="102" text-anchor="middle" dominant-baseline="central">API Gateway · signed + validated</text></g>
+<line x1="340" y1="114" x2="340" y2="138" stroke="#525d70" stroke-width="1" marker-end="url(#ar2)"/>
+<g class="node c-teal"><rect x="180" y="140" width="320" height="56" rx="8" stroke-width="0.5"/><text class="th" x="340" y="162" text-anchor="middle" dominant-baseline="central">Amazon SQS — job queue</text><text class="ts" x="340" y="180" text-anchor="middle" dominant-baseline="central">FIFO · per-SLA-class queues · DLQ attached</text></g>
+<line x1="340" y1="198" x2="340" y2="222" stroke="#525d70" stroke-width="1" marker-end="url(#ar2)"/>
+<g class="c-purple"><rect x="30" y="224" width="620" height="208" rx="12" stroke-width="0.5" fill-opacity="0.09"/><text class="th" x="46" y="248">Control plane — private subnet A</text><text class="ts" x="46" y="264">ECS Fargate (stateless containers)</text></g>
+<g class="node c-purple"><rect x="46" y="274" width="178" height="56" rx="8" stroke-width="0.5"/><text class="th" x="135" y="296" text-anchor="middle" dominant-baseline="central">Worker manager</text><text class="ts" x="135" y="314" text-anchor="middle" dominant-baseline="central">ECS task · lifecycle + health</text></g>
+<g class="node c-purple"><rect x="242" y="274" width="178" height="56" rx="8" stroke-width="0.5"/><text class="th" x="331" y="296" text-anchor="middle" dominant-baseline="central">License controller</text><text class="ts" x="331" y="314" text-anchor="middle" dominant-baseline="central">ECS task · token semaphore</text></g>
+<g class="node c-purple"><rect x="438" y="274" width="192" height="56" rx="8" stroke-width="0.5"/><text class="th" x="534" y="296" text-anchor="middle" dominant-baseline="central">Template pack runtime</text><text class="ts" x="534" y="314" text-anchor="middle" dominant-baseline="central">ECS task · pulls from ECR</text></g>
+<g class="node c-purple"><rect x="46" y="356" width="584" height="44" rx="8" stroke-width="0.5"/><text class="th" x="338" y="373" text-anchor="middle" dominant-baseline="central">ElastiCache (Redis) — license token state + worker slot registry</text><text class="ts" x="338" y="390" text-anchor="middle" dominant-baseline="central">Atomic counters · TTL-based slot leases · sub-ms reads</text></g>
+<line x1="340" y1="434" x2="340" y2="458" stroke="#525d70" stroke-width="1" marker-end="url(#ar2)"/>
+<g class="c-teal"><rect x="30" y="460" width="620" height="190" rx="12" stroke-width="0.5" fill-opacity="0.09"/><text class="th" x="46" y="484">NX worker subnet — private subnet B</text><text class="ts" x="46" y="500">EC2 (Windows Server) · dedicated per-slot VMs · no outbound internet</text></g>
+<g class="node c-teal"><rect x="46" y="510" width="178" height="56" rx="8" stroke-width="0.5"/><text class="th" x="135" y="532" text-anchor="middle" dominant-baseline="central">NX worker slot A</text><text class="ts" x="135" y="550" text-anchor="middle" dominant-baseline="central">EC2 · ephemeral EBS workspace</text></g>
+<g class="node c-teal"><rect x="242" y="510" width="178" height="56" rx="8" stroke-width="0.5"/><text class="th" x="331" y="532" text-anchor="middle" dominant-baseline="central">NX worker slot B</text><text class="ts" x="331" y="550" text-anchor="middle" dominant-baseline="central">EC2 · ephemeral EBS workspace</text></g>
+<g class="node c-teal"><rect x="438" y="510" width="192" height="56" rx="8" stroke-width="0.5"/><text class="th" x="534" y="532" text-anchor="middle" dominant-baseline="central">NX worker slot N</text><text class="ts" x="534" y="550" text-anchor="middle" dominant-baseline="central">ASG · license-capped ceiling</text></g>
+<g class="node c-teal"><rect x="46" y="584" width="584" height="44" rx="8" stroke-width="0.5"/><text class="th" x="338" y="601" text-anchor="middle" dominant-baseline="central">S3 — template bundles (read) + job artifacts (write)</text><text class="ts" x="338" y="618" text-anchor="middle" dominant-baseline="central">Versioned · signed URLs · lifecycle policy for artifact expiry</text></g>
+<line x1="340" y1="652" x2="340" y2="676" stroke="#525d70" stroke-width="1" marker-end="url(#ar2)"/>
+<rect x="30" y="678" width="298" height="130" rx="10" fill="none" stroke-width="0.5" stroke="#525d70"/>
+<text class="th" x="46" y="700" style="fill:#e2e6f0">Observability</text>
+<g class="node c-gray"><rect x="46" y="710" width="266" height="44" rx="8" stroke-width="0.5"/><text class="th" x="179" y="727" text-anchor="middle" dominant-baseline="central">CloudWatch</text><text class="ts" x="179" y="745" text-anchor="middle" dominant-baseline="central">Metrics · logs · alarms</text></g>
+<g class="node c-gray"><rect x="46" y="762" width="266" height="34" rx="8" stroke-width="0.5"/><text class="th" x="179" y="779" text-anchor="middle" dominant-baseline="central">X-Ray — end-to-end job traces</text></g>
+<rect x="352" y="678" width="298" height="130" rx="10" fill="none" stroke-width="0.5" stroke="#525d70"/>
+<text class="th" x="368" y="700" style="fill:#e2e6f0">Secrets + config</text>
+<g class="node c-gray"><rect x="368" y="710" width="266" height="44" rx="8" stroke-width="0.5"/><text class="th" x="501" y="727" text-anchor="middle" dominant-baseline="central">Secrets Manager</text><text class="ts" x="501" y="745" text-anchor="middle" dominant-baseline="central">NX license keys · Teamcenter creds</text></g>
+<g class="node c-gray"><rect x="368" y="762" width="266" height="34" rx="8" stroke-width="0.5"/><text class="th" x="501" y="779" text-anchor="middle" dominant-baseline="central">Parameter Store — worker config</text></g>
+<g class="node c-gray"><rect x="180" y="826" width="320" height="34" rx="8" stroke-width="0.5"/><text class="th" x="340" y="839" text-anchor="middle" dominant-baseline="central">Artifacts + validation report</text><text class="ts" x="340" y="852" text-anchor="middle" dominant-baseline="central">promoted to Teamcenter</text></g>
+</svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="interactive-split">
+      <div class="side-panel">
+        <div class="section-label">Job execution sequence</div>
+        <h3 style="margin-top:4px">Five deterministic steps per job</h3>
+        <p style="font-size:12px;color:var(--text2);line-height:1.55">1) SQS dequeue, 2) synchronous license gate, 3) slot assignment, 4) NX execution, 5) artifact upload. The worker manager holds SQS visibility until Redis confirms token availability.</p>
+        <div style="margin-top:16px">
+          <div class="section-label">Key AWS decisions</div>
+          <p style="font-size:12px;color:var(--text2);line-height:1.55;margin-top:4px">NX workers use EC2 Windows Server, not Fargate — NX requires a licensed Windows session with persistent process state. The control plane is Fargate (stateless). Redis on ElastiCache for the license token semaphore: atomic decrements, sub-ms reads, TTL-based slot leases that auto-expire on crash. EventBridge decouples execution from workflow — no direct API dependency.</p>
+        </div>
+      </div>
+
+      <div class="diagram-card" style="margin-top:0">
+        <div class="diagram-card-header">
+          <div class="dot" style="background:#3dbf8a"></div>
+          <span class="title">aws-job-execution-sequence.svg</span>
+        </div>
+        <div class="diagram-card-body">
+          <div class="diag-wrap">
+<svg viewBox="0 0 680 620" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="ar3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<g class="node c-teal"><rect x="40" y="20" width="280" height="56" rx="8" stroke-width="0.5"/><text class="th" x="180" y="42" text-anchor="middle" dominant-baseline="central">SQS message received</text><text class="ts" x="180" y="60" text-anchor="middle" dominant-baseline="central">Worker manager long-polls queue</text></g>
+<line x1="180" y1="78" x2="180" y2="102" stroke="#525d70" stroke-width="1" marker-end="url(#ar3)"/>
+<g class="node c-teal"><rect x="40" y="104" width="280" height="56" rx="8" stroke-width="0.5"/><text class="th" x="180" y="126" text-anchor="middle" dominant-baseline="central">License controller check</text><text class="ts" x="180" y="144" text-anchor="middle" dominant-baseline="central">Redis atomic decrement · block if zero</text></g>
+<path d="M320 132 L360 132" fill="none" stroke="#525d70" stroke-width="0.5" stroke-dasharray="4 3" marker-end="url(#ar3)"/>
+<g class="node c-gray"><rect x="362" y="110" width="256" height="44" rx="8" stroke-width="0.5"/><text class="th" x="490" y="127" text-anchor="middle" dominant-baseline="central">No token available</text><text class="ts" x="490" y="145" text-anchor="middle" dominant-baseline="central">Visibility timeout → requeue</text></g>
+<line x1="180" y1="162" x2="180" y2="186" stroke="#525d70" stroke-width="1" marker-end="url(#ar3)"/>
+<g class="node c-teal"><rect x="40" y="188" width="280" height="56" rx="8" stroke-width="0.5"/><text class="th" x="180" y="210" text-anchor="middle" dominant-baseline="central">Slot assignment</text><text class="ts" x="180" y="228" text-anchor="middle" dominant-baseline="central">Worker manager reserves EC2 slot · SSM run</text></g>
+<line x1="180" y1="246" x2="180" y2="270" stroke="#525d70" stroke-width="1" marker-end="url(#ar3)"/>
+<g class="node c-teal"><rect x="40" y="272" width="280" height="56" rx="8" stroke-width="0.5"/><text class="th" x="180" y="294" text-anchor="middle" dominant-baseline="central">Template fetch</text><text class="ts" x="180" y="312" text-anchor="middle" dominant-baseline="central">S3 signed URL · verify bundle signature</text></g>
+<path d="M320 300 L360 300" fill="none" stroke="#525d70" stroke-width="0.5" stroke-dasharray="4 3" marker-end="url(#ar3)"/>
+<g class="node c-gray"><rect x="362" y="278" width="256" height="44" rx="8" stroke-width="0.5"/><text class="th" x="490" y="295" text-anchor="middle" dominant-baseline="central">Signature mismatch</text><text class="ts" x="490" y="313" text-anchor="middle" dominant-baseline="central">Dead-letter · alert · release token</text></g>
+<line x1="180" y1="330" x2="180" y2="354" stroke="#525d70" stroke-width="1" marker-end="url(#ar3)"/>
+<g class="node c-teal"><rect x="40" y="356" width="280" height="56" rx="8" stroke-width="0.5"/><text class="th" x="180" y="378" text-anchor="middle" dominant-baseline="central">NX execution</text><text class="ts" x="180" y="396" text-anchor="middle" dominant-baseline="central">Load · params · regen · checks · export</text></g>
+<path d="M320 384 L360 384" fill="none" stroke="#525d70" stroke-width="0.5" stroke-dasharray="4 3" marker-end="url(#ar3)"/>
+<g class="node c-gray"><rect x="362" y="362" width="256" height="44" rx="8" stroke-width="0.5"/><text class="th" x="490" y="379" text-anchor="middle" dominant-baseline="central">NX runtime failure</text><text class="ts" x="490" y="397" text-anchor="middle" dominant-baseline="central">Retry envelope → DLQ on exhaustion</text></g>
+<line x1="180" y1="414" x2="180" y2="438" stroke="#525d70" stroke-width="1" marker-end="url(#ar3)"/>
+<g class="node c-teal"><rect x="40" y="440" width="280" height="56" rx="8" stroke-width="0.5"/><text class="th" x="180" y="462" text-anchor="middle" dominant-baseline="central">Artifact upload to S3</text><text class="ts" x="180" y="480" text-anchor="middle" dominant-baseline="central">Native + neutral outputs · validation report</text></g>
+<line x1="180" y1="498" x2="180" y2="522" stroke="#525d70" stroke-width="1" marker-end="url(#ar3)"/>
+<g class="node c-teal"><rect x="40" y="524" width="280" height="56" rx="8" stroke-width="0.5"/><text class="th" x="180" y="546" text-anchor="middle" dominant-baseline="central">Token release + slot cleanup</text><text class="ts" x="180" y="564" text-anchor="middle" dominant-baseline="central">Redis increment · EBS workspace purge</text></g>
+<path d="M320 552 L360 552" fill="none" stroke="#525d70" stroke-width="0.5" marker-end="url(#ar3)"/>
+<g class="node c-gray"><rect x="362" y="530" width="256" height="44" rx="8" stroke-width="0.5"/><text class="th" x="490" y="547" text-anchor="middle" dominant-baseline="central">EventBridge event</text><text class="ts" x="490" y="565" text-anchor="middle" dominant-baseline="central">job.completed → workflow plane callback</text></g>
+<rect x="40" y="596" width="12" height="8" rx="2" fill="none" stroke="#525d70" stroke-width="0.5" stroke-dasharray="4 3"/>
+<text class="ts" x="58" y="604">Guard / failure path</text>
+</svg>
+          </div>
+        </div>
+      </div>
+    </div><!-- /interactive-split -->
+
+  </div>
+  <div class="page-header">
+    <div class="tag">Diagram 02</div>
+    <h2>AWS infrastructure layout</h2>
+    <p>One viable AWS mapping for the execution plane. The control-plane services (worker manager, license controller, template pack runtime) run as stateless ECS Fargate containers. NX workers run on EC2 Windows Server because NX requires a licensed Windows session and persistent process state. This page pairs the VPC topology with the per-job execution sequence.</p>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════
+     PAGE 3 — END-TO-END FLOW
+════════════════════════════════════════ -->
+<div class="page diagram-first" id="page-e2e-flow">
+  <div class="page-body">
+    <div class="section">
+      <div class="section-label">Color legend</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
+        <span class="tag-pill purple">Purple — workflow</span>
+        <span class="tag-pill teal">Teal — execution</span>
+        <span class="tag-pill blue">Blue — PLM</span>
+      </div>
+
+      <div class="interactive-split">
+      <div class="diagram-card stage-card">
+        <div class="diagram-card-header">
+          <div class="dot" style="background:#7c6fde"></div>
+          <div class="dot" style="background:#3dbf8a"></div>
+          <div class="dot" style="background:#5294d6"></div>
+          <span class="title">mendix-to-teamcenter-end-to-end-flow.svg</span>
+        </div>
+        <div class="diagram-card-body">
+          <div class="diag-wrap">
+<svg id="e2ediag" viewBox="0 0 1460 470" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="ar4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect x="20" y="20" width="1420" height="110" rx="14" fill="#1e1a3d" fill-opacity="0.1" stroke="#534AB7" stroke-width="0.5"/>
+<text class="th" x="40" y="44">Workflow plane</text><text class="ts" x="40" y="60">Mendix + stateless AWS services</text>
+<rect x="20" y="160" width="1420" height="150" rx="14" fill="#0d2a20" fill-opacity="0.1" stroke="#0F6E56" stroke-width="0.5"/>
+<text class="th" x="40" y="184">Engineering execution plane</text><text class="ts" x="40" y="200">AWS control plane + governed NX workers</text>
+<rect x="20" y="330" width="1420" height="100" rx="14" fill="#0d1e30" fill-opacity="0.1" stroke="#185FA5" stroke-width="0.5"/>
+<text class="th" x="40" y="354">Result + PLM plane</text><text class="ts" x="40" y="370">Workflow callback, promotion, revision record</text>
+
+<g id="e2e-n1" class="node c-purple"><rect x="40" y="68" width="150" height="48" rx="8" stroke-width="0.5"/><text class="th" x="115" y="87" text-anchor="middle" dominant-baseline="central" style="font-size:11px">Mendix UI</text><text class="ts" x="115" y="102" text-anchor="middle" dominant-baseline="central" style="font-size:9px">User clicks Submit</text></g>
+<g id="e2e-n3" class="node c-purple"><rect x="220" y="68" width="150" height="48" rx="8" stroke-width="0.5"/><text class="th" x="295" y="87" text-anchor="middle" dominant-baseline="central" style="font-size:11px">API gateway</text><text class="ts" x="295" y="102" text-anchor="middle" dominant-baseline="central" style="font-size:9px">HTTPS · JWT · rate limit</text></g>
+<g id="e2e-n2" class="node c-purple"><rect x="400" y="68" width="150" height="48" rx="8" stroke-width="0.5"/><text class="th" x="475" y="87" text-anchor="middle" dominant-baseline="central" style="font-size:11px">Preflight service</text><text class="ts" x="475" y="102" text-anchor="middle" dominant-baseline="central" style="font-size:9px">Schema · policy · RBAC</text></g>
+<g id="e2e-n4" class="node c-purple"><rect x="580" y="68" width="150" height="48" rx="8" stroke-width="0.5"/><text class="th" x="655" y="87" text-anchor="middle" dominant-baseline="central" style="font-size:11px">Admission control</text><text class="ts" x="655" y="102" text-anchor="middle" dominant-baseline="central" style="font-size:9px">Idempotency · SLA · quota</text></g>
+<g id="e2e-n4b" class="node c-purple"><rect x="760" y="68" width="150" height="48" rx="8" stroke-width="0.5"/><text class="th" x="835" y="87" text-anchor="middle" dominant-baseline="central" style="font-size:11px">Job orchestration</text><text class="ts" x="835" y="102" text-anchor="middle" dominant-baseline="central" style="font-size:9px">Immutable package · lifecycle</text></g>
+
+<g id="e2e-n5" class="node c-teal"><rect x="840" y="206" width="150" height="48" rx="8" stroke-width="0.5"/><text class="th" x="915" y="225" text-anchor="middle" dominant-baseline="central" style="font-size:11px">SQS FIFO queue</text><text class="ts" x="915" y="240" text-anchor="middle" dominant-baseline="central" style="font-size:9px">Per-SLA-class · DLQ</text></g>
+<g id="e2e-n6" class="node c-teal"><rect x="1010" y="206" width="150" height="48" rx="8" stroke-width="0.5"/><text class="th" x="1085" y="225" text-anchor="middle" dominant-baseline="central" style="font-size:11px">ElastiCache</text><text class="ts" x="1085" y="240" text-anchor="middle" dominant-baseline="central" style="font-size:9px">Redis license state</text></g>
+<g id="e2e-n7" class="node c-teal"><rect x="1180" y="206" width="140" height="48" rx="8" stroke-width="0.5"/><text class="th" x="1250" y="225" text-anchor="middle" dominant-baseline="central" style="font-size:11px">Worker manager</text><text class="ts" x="1250" y="240" text-anchor="middle" dominant-baseline="central" style="font-size:9px">Dispatch coordinator</text></g>
+<g id="e2e-n8" class="node c-teal"><rect x="840" y="256" width="150" height="48" rx="8" stroke-width="0.5"/><text class="th" x="915" y="275" text-anchor="middle" dominant-baseline="central" style="font-size:11px">S3 — templates</text><text class="ts" x="915" y="290" text-anchor="middle" dominant-baseline="central" style="font-size:9px">Signed bundle</text></g>
+<g id="e2e-n9" class="node c-teal"><rect x="1010" y="256" width="150" height="48" rx="8" stroke-width="0.5"/><text class="th" x="1085" y="275" text-anchor="middle" dominant-baseline="central" style="font-size:11px">NX worker (EC2)</text><text class="ts" x="1085" y="290" text-anchor="middle" dominant-baseline="central" style="font-size:9px">Load · regen · export</text></g>
+<g id="e2e-n10" class="node c-teal"><rect x="1180" y="256" width="140" height="48" rx="8" stroke-width="0.5"/><text class="th" x="1250" y="275" text-anchor="middle" dominant-baseline="central" style="font-size:11px">S3 — artifacts</text><text class="ts" x="1250" y="290" text-anchor="middle" dominant-baseline="central" style="font-size:9px">CAD outputs</text></g>
+<g id="e2e-n11" class="node c-teal"><rect x="1310" y="256" width="110" height="48" rx="8" stroke-width="0.5"/><text class="th" x="1365" y="275" text-anchor="middle" dominant-baseline="central" style="font-size:11px">EventBridge</text><text class="ts" x="1365" y="290" text-anchor="middle" dominant-baseline="central" style="font-size:9px">job.completed</text></g>
+
+<g id="e2e-n12" class="node c-purple"><rect x="960" y="356" width="150" height="48" rx="8" stroke-width="0.5"/><text class="th" x="1035" y="375" text-anchor="middle" dominant-baseline="central" style="font-size:11px">Mendix UI</text><text class="ts" x="1035" y="390" text-anchor="middle" dominant-baseline="central" style="font-size:9px">Status + download link</text></g>
+<g id="e2e-n13" class="node c-blue"><rect x="1140" y="356" width="140" height="48" rx="8" stroke-width="0.5"/><text class="th" x="1210" y="375" text-anchor="middle" dominant-baseline="central" style="font-size:11px">Release service</text><text class="ts" x="1210" y="390" text-anchor="middle" dominant-baseline="central" style="font-size:9px">Promotion path</text></g>
+<g id="e2e-n14" class="node c-blue"><rect x="1300" y="356" width="140" height="48" rx="8" stroke-width="0.5"/><text class="th" x="1370" y="375" text-anchor="middle" dominant-baseline="central" style="font-size:11px">Teamcenter</text><text class="ts" x="1370" y="390" text-anchor="middle" dominant-baseline="central" style="font-size:9px">Revision + provenance</text></g>
+
+<path d="M190 92 L220 92" fill="none" stroke="#2e3547" stroke-width="0.5" marker-end="url(#ar4)"/>
+<path d="M370 92 L400 92" fill="none" stroke="#2e3547" stroke-width="0.5" marker-end="url(#ar4)"/>
+<path d="M550 108 L550 116 L370 116" fill="none" stroke="#2e3547" stroke-width="0.5" stroke-dasharray="3 3"/>
+<path d="M550 92 L580 92" fill="none" stroke="#2e3547" stroke-width="0.5" marker-end="url(#ar4)"/>
+<path d="M655 116 L655 176 L1085 176 L1085 206" fill="none" stroke="#2e3547" stroke-width="0.5" marker-end="url(#ar4)"/>
+<path d="M730 92 L760 92" fill="none" stroke="#2e3547" stroke-width="0.5" marker-end="url(#ar4)"/>
+<path d="M910 92 L920 92 L920 206" fill="none" stroke="#2e3547" stroke-width="0.5" marker-end="url(#ar4)"/>
+<path d="M990 230 L1000 230 L1000 188 L1250 188 L1250 206" fill="none" stroke="#2e3547" stroke-width="0.5" marker-end="url(#ar4)"/>
+<path d="M1160 230 L1180 230" fill="none" stroke="#2e3547" stroke-width="0.5" marker-end="url(#ar4)"/>
+<path d="M1250 254 L1250 280 L1160 280" fill="none" stroke="#2e3547" stroke-width="0.5" marker-end="url(#ar4)"/>
+<path d="M990 280 L1010 280" fill="none" stroke="#2e3547" stroke-width="0.5" marker-end="url(#ar4)"/>
+<path d="M1160 280 L1180 280" fill="none" stroke="#2e3547" stroke-width="0.5" marker-end="url(#ar4)"/>
+<path d="M1250 256 L1250 176 L1365 176 L1365 256" fill="none" stroke="#2e3547" stroke-width="0.5" marker-end="url(#ar4)"/>
+<path d="M1365 304 L1365 338 L1035 338 L1035 356" fill="none" stroke="#2e3547" stroke-width="0.5" marker-end="url(#ar4)"/>
+<path d="M1365 304 L1365 332 L1210 332 L1210 356" fill="none" stroke="#2e3547" stroke-width="0.5" marker-end="url(#ar4)"/>
+<path d="M1280 380 L1300 380" fill="none" stroke="#2e3547" stroke-width="0.5" marker-end="url(#ar4)"/>
+
+<path id="e2ef1" class="flow" d="M190 92 L220 92" fill="none" stroke="#7F77DD" stroke-width="2.5" marker-end="url(#ar4)" opacity="0"/>
+<path id="e2ef2" class="flow" d="M370 92 L400 92" fill="none" stroke="#7F77DD" stroke-width="2.5" marker-end="url(#ar4)" opacity="0"/>
+<path id="e2ef3" class="flow" d="M550 108 L550 116 L370 116" fill="none" stroke="#7F77DD" stroke-width="1.5" stroke-dasharray="4 4" opacity="0"/>
+<path id="e2ef4" class="flow" d="M550 92 L580 92" fill="none" stroke="#7F77DD" stroke-width="2.5" marker-end="url(#ar4)" opacity="0"/>
+<path id="e2ef5" class="flow" d="M655 116 L655 176 L1085 176 L1085 206" fill="none" stroke="#1D9E75" stroke-width="2.5" marker-end="url(#ar4)" opacity="0"/>
+<path id="e2ef6" class="flow" d="M730 92 L760 92" fill="none" stroke="#7F77DD" stroke-width="2.5" marker-end="url(#ar4)" opacity="0"/>
+<path id="e2ef7" class="flow" d="M910 92 L920 92 L920 206" fill="none" stroke="#1D9E75" stroke-width="2.5" marker-end="url(#ar4)" opacity="0"/>
+<path id="e2ef8" class="flow" d="M990 230 L1000 230 L1000 188 L1250 188 L1250 206" fill="none" stroke="#1D9E75" stroke-width="2.5" marker-end="url(#ar4)" opacity="0"/>
+<path id="e2ef9" class="flow" d="M1160 230 L1180 230" fill="none" stroke="#1D9E75" stroke-width="2.5" marker-end="url(#ar4)" opacity="0"/>
+<path id="e2ef10" class="flow" d="M1250 254 L1250 280 L1160 280" fill="none" stroke="#1D9E75" stroke-width="2.5" marker-end="url(#ar4)" opacity="0"/>
+<path id="e2ef11" class="flow" d="M990 280 L1010 280" fill="none" stroke="#1D9E75" stroke-width="2.5" marker-end="url(#ar4)" opacity="0"/>
+<path id="e2ef12" class="flow" d="M1160 280 L1180 280" fill="none" stroke="#1D9E75" stroke-width="2.5" marker-end="url(#ar4)" opacity="0"/>
+<path id="e2ef13" class="flow" d="M1250 256 L1250 176 L1365 176 L1365 256" fill="none" stroke="#1D9E75" stroke-width="2.5" marker-end="url(#ar4)" opacity="0"/>
+<path id="e2ef14" class="flow" d="M1365 304 L1365 338 L1035 338 L1035 356" fill="none" stroke="#7F77DD" stroke-width="2.5" marker-end="url(#ar4)" opacity="0"/>
+<path id="e2ef15" class="flow" d="M1365 304 L1365 332 L1210 332 L1210 356" fill="none" stroke="#378ADD" stroke-width="2.5" marker-end="url(#ar4)" opacity="0"/>
+<path id="e2ef16" class="flow" d="M1280 380 L1300 380" fill="none" stroke="#378ADD" stroke-width="2.5" marker-end="url(#ar4)" opacity="0"/>
+</svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="side-panel walkthrough-controls">
+        <div class="section-label">Narrated walkthrough</div>
+        <div class="story-note">Each beat appears as a guided popup inside the map, so the handoff explanation stays attached to the active architecture moment.</div>
+        <div id="e2e-controls" class="step-controls">
+          <button class="btn" id="e2e-prev" disabled aria-label="Previous step">Prev</button>
+          <button class="btn primary" id="e2e-next" aria-label="Next step">Next</button>
+          <button class="btn" id="e2e-reset">Reset</button>
+        </div>
+        <div class="step-label" id="e2e-lbl"></div>
+        <div class="story-beat" id="e2e-beat"></div>
+        <div class="info-box" id="e2e-info"></div>
+      </div>
+      </div><!-- end interactive-split -->
+    </div>
+  </div>
+  <div class="page-header">
+    <div class="tag">Diagram 03</div>
+    <h2>End-to-end request flow</h2>
+    <p>A step-by-step reference trace of a single governed request: from a user clicking Submit in Mendix with bracket parameters, through every service boundary, to a result appearing in the Mendix UI and a new revision landing in Teamcenter. Each step shows which boundary is crossed and why the handoff exists.</p>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════
+     PAGE 4 — RELEASE TRAINS
+════════════════════════════════════════ -->
+<div class="page diagram-first" id="page-release-trains">
+  <div class="page-body">
+
+    <div class="section">
+      <div class="section-label">Four scenarios</div>
+      <p>Select a scenario to see which components are touched, which are not, and why. Scenario D covers the specific case of adding a new NX operation (edge blend) that requires a facade DLL change — the most complex deployment path.</p>
+
+      <div class="interactive-split">
+      <div class="diagram-card stage-card">
+        <div class="diagram-card-header">
+          <div class="dot" style="background:#7c6fde"></div>
+          <div class="dot" style="background:#e8a444"></div>
+          <div class="dot" style="background:#3dbf8a"></div>
+          <span class="title">release-trains-capability-model.svg</span>
+        </div>
+        <div class="diagram-card-body">
+          <div class="diag-wrap">
+<svg id="rtdiag" viewBox="0 0 1420 430" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="ar5" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect x="20" y="20" width="1380" height="130" rx="14" fill="#1e1a3d" fill-opacity="0.1" stroke="#534AB7" stroke-width="0.5"/>
+<text class="th" x="40" y="44">Fast train</text><text class="ts" x="40" y="60">Mendix + control plane continuous CI/CD</text>
+<rect x="20" y="200" width="1380" height="190" rx="14" fill="#0d2a20" fill-opacity="0.1" stroke="#0F6E56" stroke-width="0.5"/>
+<text class="th" x="40" y="224">Slow train</text><text class="ts" x="40" y="240">Governed NX execution plane with rollout controls</text>
+
+<g id="rt-nMX" class="node c-purple"><rect x="40" y="68" width="150" height="48" rx="8" stroke-width="0.5"/><text class="th" x="115" y="87" text-anchor="middle" dominant-baseline="central" style="font-size:11px">Mendix app</text><text class="ts" x="115" y="102" text-anchor="middle" dominant-baseline="central" style="font-size:9px">Forms · approvals</text></g>
+<g id="rt-nGW" class="node c-purple"><rect x="220" y="68" width="150" height="48" rx="8" stroke-width="0.5"/><text class="th" x="295" y="87" text-anchor="middle" dominant-baseline="central" style="font-size:11px">API gateway</text><text class="ts" x="295" y="102" text-anchor="middle" dominant-baseline="central" style="font-size:9px">JWT · RBAC</text></g>
+<g id="rt-nPF" class="node c-purple"><rect x="400" y="68" width="150" height="48" rx="8" stroke-width="0.5"/><text class="th" x="475" y="87" text-anchor="middle" dominant-baseline="central" style="font-size:11px">Preflight service</text><text class="ts" x="475" y="102" text-anchor="middle" dominant-baseline="central" style="font-size:9px">Schema · policy</text></g>
+<g id="rt-nAD" class="node c-purple"><rect x="580" y="68" width="150" height="48" rx="8" stroke-width="0.5"/><text class="th" x="655" y="87" text-anchor="middle" dominant-baseline="central" style="font-size:11px">Admission control</text><text class="ts" x="655" y="102" text-anchor="middle" dominant-baseline="central" style="font-size:9px">Quota · SLA</text></g>
+<g id="rt-nCR" class="node c-amber"><rect x="760" y="58" width="180" height="68" rx="8" stroke-width="0.5"/><text class="th" x="850" y="79" text-anchor="middle" dominant-baseline="central" style="font-size:11px">Capability registry</text><text class="ts" x="850" y="95" text-anchor="middle" dominant-baseline="central" style="font-size:9px">Worker image · facade</text><text class="ts" x="850" y="109" text-anchor="middle" dominant-baseline="central" style="font-size:9px">handler pack · template pack</text></g>
+<g id="rt-nJO" class="node c-purple"><rect x="970" y="68" width="150" height="48" rx="8" stroke-width="0.5"/><text class="th" x="1045" y="87" text-anchor="middle" dominant-baseline="central" style="font-size:11px">Job orchestration</text><text class="ts" x="1045" y="102" text-anchor="middle" dominant-baseline="central" style="font-size:9px">Capability match</text></g>
+<g id="rt-nSQ" class="node c-purple"><rect x="1180" y="68" width="170" height="48" rx="8" stroke-width="0.5"/><text class="th" x="1265" y="87" text-anchor="middle" dominant-baseline="central" style="font-size:11px">SQS FIFO queue</text><text class="ts" x="1265" y="102" text-anchor="middle" dominant-baseline="central" style="font-size:9px">Routed by capability</text></g>
+
+<g id="rt-nECR" class="node c-teal"><rect x="100" y="268" width="140" height="48" rx="8" stroke-width="0.5"/><text class="th" x="170" y="287" text-anchor="middle" dominant-baseline="central" style="font-size:11px">ECR image store</text><text class="ts" x="170" y="302" text-anchor="middle" dominant-baseline="central" style="font-size:9px">Worker image + DLL</text></g>
+<g id="rt-nHP" class="node c-teal"><rect x="280" y="268" width="140" height="48" rx="8" stroke-width="0.5"/><text class="th" x="350" y="287" text-anchor="middle" dominant-baseline="central" style="font-size:11px">S3 handler packs</text><text class="ts" x="350" y="302" text-anchor="middle" dominant-baseline="central" style="font-size:9px">Signed bundles</text></g>
+<g id="rt-nWM" class="node c-teal"><rect x="460" y="268" width="150" height="48" rx="8" stroke-width="0.5"/><text class="th" x="535" y="287" text-anchor="middle" dominant-baseline="central" style="font-size:11px">Worker manager</text><text class="ts" x="535" y="302" text-anchor="middle" dominant-baseline="central" style="font-size:9px">Canary + rollout control</text></g>
+<g id="rt-nNX" class="node c-teal"><rect x="680" y="248" width="350" height="110" rx="10" stroke-width="0.5"/><text class="th" x="855" y="269" text-anchor="middle" dominant-baseline="central" style="font-size:11px">NX worker slot (EC2 Windows)</text></g>
+<g id="rt-nRF" class="node"><rect x="705" y="286" width="130" height="44" rx="6" stroke-width="0.5" fill="#0d2a20" stroke="#1D9E75"/><text class="th" x="770" y="304" text-anchor="middle" dominant-baseline="central" style="font-size:12px;fill:#9FE1CB">Remoting facade</text><text class="ts" x="770" y="319" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#1D9E75">DLL + registry</text></g>
+<g id="rt-nDH" class="node"><rect x="855" y="286" width="150" height="44" rx="6" stroke-width="0.5" fill="#0d2a20" stroke="#1D9E75"/><text class="th" x="930" y="304" text-anchor="middle" dominant-baseline="central" style="font-size:12px;fill:#9FE1CB">Dynamic handler host</text><text class="ts" x="930" y="319" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#1D9E75">Hot-load extension</text></g>
+<rect x="705" y="334" width="300" height="14" rx="4" stroke-width="0.5" fill="#1D9E75" fill-opacity="0.12" stroke="#0F6E56"/>
+<text class="ts" x="855" y="344" text-anchor="middle" dominant-baseline="central" style="font-size:9px;fill:#1D9E75">Ephemeral EBS workspace · purged on completion</text>
+<g id="rt-nART" class="node c-teal"><rect x="1130" y="268" width="180" height="48" rx="8" stroke-width="0.5"/><text class="th" x="1220" y="287" text-anchor="middle" dominant-baseline="central" style="font-size:11px">S3 — artifacts</text><text class="ts" x="1220" y="302" text-anchor="middle" dominant-baseline="central" style="font-size:9px">CAD outputs + report</text></g>
+
+<path d="M190 92 L220 92" fill="none" stroke="#2e3547" stroke-width="0.5" marker-end="url(#ar5)"/>
+<path d="M370 92 L400 92" fill="none" stroke="#2e3547" stroke-width="0.5" marker-end="url(#ar5)"/>
+<path d="M550 92 L580 92" fill="none" stroke="#2e3547" stroke-width="0.5" marker-end="url(#ar5)"/>
+<path d="M730 92 L760 92" fill="none" stroke="#2e3547" stroke-width="0.5" marker-end="url(#ar5)"/>
+<path d="M940 92 L970 92" fill="none" stroke="#2e3547" stroke-width="0.5" marker-end="url(#ar5)"/>
+<path d="M550 102 L550 126 L1045 126" fill="none" stroke="#2e3547" stroke-width="0.5" marker-end="url(#ar5)"/>
+<path d="M1120 92 L1180 92" fill="none" stroke="#2e3547" stroke-width="0.5" marker-end="url(#ar5)"/>
+<path d="M1265 116 L1265 238 L535 238 L535 268" fill="none" stroke="#2e3547" stroke-width="0.5" marker-end="url(#ar5)"/>
+<path d="M610 292 L680 292" fill="none" stroke="#2e3547" stroke-width="0.5" marker-end="url(#ar5)"/>
+<path d="M240 292 L240 252 L770 252 L770 286" fill="none" stroke="#2e3547" stroke-width="0.5" stroke-dasharray="3 3" marker-end="url(#ar5)"/>
+<path d="M420 292 L420 244 L930 244 L930 286" fill="none" stroke="#2e3547" stroke-width="0.5" stroke-dasharray="3 3" marker-end="url(#ar5)"/>
+<path d="M1030 292 L1130 292" fill="none" stroke="#2e3547" stroke-width="0.5" marker-end="url(#ar5)"/>
+<path d="M835 308 L855 308" fill="none" stroke="#2e3547" stroke-width="0.5" marker-end="url(#ar5)"/>
+<path d="M240 292 L770 308" fill="none" stroke="#2e3547" stroke-width="0.5" marker-end="url(#ar5)" opacity="0"/>
+
+<path id="rt-f1" class="flow" d="M190 92 L220 92" fill="none" stroke="#7F77DD" stroke-width="2.5" marker-end="url(#ar5)" opacity="0"/>
+<path id="rt-f2" class="flow" d="M370 92 L400 92" fill="none" stroke="#7F77DD" stroke-width="2.5" marker-end="url(#ar5)" opacity="0"/>
+<path id="rt-f3" class="flow" d="M550 92 L580 92" fill="none" stroke="#7F77DD" stroke-width="2.5" marker-end="url(#ar5)" opacity="0"/>
+<path id="rt-f4" class="flow" d="M730 92 L760 92" fill="none" stroke="#EF9F27" stroke-width="2.5" marker-end="url(#ar5)" opacity="0"/>
+<path id="rt-f5" class="flow" d="M940 92 L970 92" fill="none" stroke="#EF9F27" stroke-width="2.5" marker-end="url(#ar5)" opacity="0"/>
+<path id="rt-f6" class="flow" d="M550 102 L550 126 L1045 126" fill="none" stroke="#7F77DD" stroke-width="2.5" marker-end="url(#ar5)" opacity="0"/>
+<path id="rt-f7" class="flow" d="M1120 92 L1180 92" fill="none" stroke="#7F77DD" stroke-width="2.5" marker-end="url(#ar5)" opacity="0"/>
+<path id="rt-f8" class="flow" d="M1265 116 L1265 238 L535 238 L535 268" fill="none" stroke="#1D9E75" stroke-width="2.5" marker-end="url(#ar5)" opacity="0"/>
+<path id="rt-f9" class="flow" d="M610 292 L680 292" fill="none" stroke="#1D9E75" stroke-width="2.5" marker-end="url(#ar5)" opacity="0"/>
+<path id="rt-f10" class="flow" d="M240 292 L240 252 L770 252 L770 286" fill="none" stroke="#1D9E75" stroke-width="2.5" marker-end="url(#ar5)" opacity="0"/>
+<path id="rt-f11" class="flow" d="M420 292 L420 244 L930 244 L930 286" fill="none" stroke="#EF9F27" stroke-width="2.5" marker-end="url(#ar5)" opacity="0"/>
+<path id="rt-f12" class="flow" d="M1030 292 L1130 292" fill="none" stroke="#1D9E75" stroke-width="2.5" marker-end="url(#ar5)" opacity="0"/>
+<path id="rt-f13" class="flow" d="M835 308 L855 308" fill="none" stroke="#EF9F27" stroke-width="2.5" marker-end="url(#ar5)" opacity="0"/>
+<path id="rt-f14" class="flow" d="M240 292 L240 220 L770 220 L770 286" fill="none" stroke="#D85A30" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ar5)" opacity="0"/>
+</svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="side-panel walkthrough-controls">
+        <div class="section-label">Scenario map</div>
+        <div class="step-controls" style="flex-wrap:wrap">
+          <button class="btn scenario active" id="rt-tb0" data-scenario="0" aria-label="Scenario A workflow-only">A workflow</button>
+          <button class="btn scenario" id="rt-tb1" data-scenario="1" aria-label="Scenario B template-only">B template</button>
+          <button class="btn scenario" id="rt-tb2" data-scenario="2" aria-label="Scenario C dynamic handler">C handler</button>
+          <button class="btn scenario" id="rt-tb3" data-scenario="3" aria-label="Scenario D facade DLL rollout">D DLL</button>
+        </div>
+        <p class="story-note" style="margin-top:-2px;margin-bottom:4px">A: workflow-only, B: new template, C: new handler pack, D: facade DLL rollout.</p>
+        <div class="info-box" id="rt-summary" style="min-height:0;margin-top:2px"></div>
+        <div class="step-controls">
+          <button class="btn" id="rt-prev" disabled aria-label="Previous step">Prev</button>
+          <button class="btn primary" id="rt-next" aria-label="Next step">Next</button>
+          <button class="btn" id="rt-reset">Reset</button>
+        </div>
+        <div class="step-label" id="rt-lbl"></div>
+        <div class="story-beat" id="rt-beat"></div>
+        <div class="info-box" id="rt-info"></div>
+      </div>
+      </div><!-- end interactive-split -->
+    </div>
+
+    <hr class="section-rule">
+
+    <div class="section">
+      <div class="section-label">The edge blend question answered</div>
+      <h3>How a new NX operation gets added</h3>
+      <p>The answer depends on where the new operation lands in the stack. There are three cases, ordered from fastest to most involved.</p>
+      <div class="kv-grid" style="margin-top:16px">
+        <div class="kv-card teal">
+          <div class="kv-label">Case 1 — already exposed</div>
+          <div class="kv-value">Edge blend method already registered in the facade. Only a new template bundle and schema update needed. No worker change. Scenario B.</div>
+        </div>
+        <div class="kv-card amber">
+          <div class="kv-label">Case 2 — dynamic handler path</div>
+          <div class="kv-value">Facade transport can carry it but the handler isn't written yet. New signed .NET assembly hot-loaded into the dynamic handler host. No NX restart on steady-state workers. Scenario C.</div>
+        </div>
+        <div class="kv-card" style="border-color:#6b2a20;background:rgba(214,100,82,0.08)">
+          <div class="kv-label" style="color:#d66452">Case 3 — facade DLL change</div>
+          <div class="kv-value">New IPC message type or shared memory contract needed. Full DLL rebuild, new ECR image, canary pool spinup, NX process restart per slot, regression pack, rolling promotion. Scenario D.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Safe rollout pattern (scenario D)</div>
+      <p>1. Rebuild and push new worker image to ECR. 2. Update capability registry compatibility matrix. 3. Spin up canary pool with new image — stable pool stays live. 4. Drain in-flight jobs on canary slots, stop NX host, replace DLL, restart NX host, signal ready. 5. Run full NX regression pack on canary. 6. Rolling replace stable pool one slot at a time. 7. Keep old pool warm for 24-hour rollback window. 8. Mark old facade version deprecated in registry.</p>
+    </div>
+
+  </div>
+  <div class="page-header">
+    <div class="tag">Diagram 04</div>
+    <h2>Release trains &amp; capability model</h2>
+    <p>The system runs two release trains: a fast train for Mendix and the control plane (continuous CI/CD, no NX involvement) and a slow governed train for the NX execution plane (versioned, signed, regression-tested). The capability registry is the coordination point between them — it stores the compatibility matrix and ensures jobs are only routed to worker pools that carry the required capability set.</p>
+  </div>
+</div>
+
+</main>
+
+<script>
+// ── NAVIGATION ──
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  document.getElementById('nav-' + id).classList.add('active');
+  clearAllNodeFocus();
+  if (!restoreActiveWalkthroughState(id)) {
+    setFocusPanelIdle();
+  }
+}
+
+// ── THREE-PLANE WALKTHROUGH ──
+const TP_NODES = ['tp-n1','tp-n2','tp-n3','tp-n4','tp-n5','tp-n6','tp-n7','tp-n8','tp-n9','tp-n10','tp-n11','tp-n12','tp-n13','tp-n14'];
+const TP_STEPS = [
+  { lbl:'0/5 — full system', beat:'Beat: take in the whole operating model before isolating any one plane.', info:'Full architecture at rest. Step through the planes to see how a governed CAD request moves from Mendix intake through the hard gate into NX execution and then back into PLM.', active:[], box:null },
+  { lbl:'1/5 — workflow intake', beat:'Beat: the business-facing plane frames the request before engineering spends a single token.', info:'Workflow plane owns the human-facing side: Mendix captures intent, API Gateway enforces identity and rate limits, Preflight validates request shape, and Admission Control decides whether the job is allowed to enter the system at all.', active:['tp-n1','tp-n2','tp-n3','tp-n4'] },
+  { lbl:'2/5 — orchestration spine', beat:'Beat: this is the operating spine that turns a request into controlled work, not a hopeful API call.', info:'Once admitted, the orchestration spine creates an immutable package, records audit lineage, and hands the work into the durable queue/event layer. This is the operational heartbeat of the workflow plane.', active:['tp-n5','tp-n6','tp-n7'] },
+  { lbl:'3/5 — governance boundary', beat:'Beat: the amber gate is where bad jobs are stopped before they can burn money or trust.', info:'The amber strip is the hard gate. It decides whether the requested template version exists, is approved, matches a worker image, and carries a valid signature. Fail here and the request never burns a license token.', active:[], box:{ x:72, y:212, width:536, height:162 } },
+  { lbl:'4/5 — governed NX execution', beat:'Beat: execution is deliberately boring, because predictable CAD beats clever CAD in production.', info:'Inside the execution plane, Worker Manager allocates a slot, License Controller enforces token limits, Template Runtime resolves only approved packs, and the NX slot performs deterministic regeneration and checking.', active:['tp-n8','tp-n9','tp-n10','tp-n11'] },
+  { lbl:'5/5 — PLM handoff', beat:'Beat: value is only real once output lands with provenance in the system of record.', info:'Outputs do not become authoritative until they land in the PLM plane. Release Service promotes artifacts with provenance, Teamcenter becomes the source of record, and Mendix only retains workflow state and business context.', active:['tp-n12','tp-n13','tp-n14'] }
+];
+let tpCur = 0;
+
+// ── E2E FLOW ──
+const E2E_STEPS = [
+  { lbl:"0/9 — idle", beat:"Beat: the whole journey is visible before any one handoff is emphasized.", info:"The full architecture at rest. Click next to trace a request from Mendix button click to Teamcenter revision.", active:[], flows:[] },
+  { lbl:"1/9 — user submits", beat:"Beat: the story starts with intent becoming a signed request, not with compute waking up.", info:"User fills in bracket parameters in the Mendix form and clicks Submit. Mendix serialises the payload as a signed HTTPS POST to the API Gateway.", active:["e2e-n1"], flows:["e2ef1"] },
+  { lbl:"2/9 — preflight + API gateway", beat:"Beat: reject bad work while the user is still at the front door.", info:"API Gateway verifies the JWT, enforces rate limits, and routes to Preflight. Preflight checks required fields, enum ranges, dependency rules, and RBAC. A 200 or 422 returns synchronously to the browser before the job is admitted.", active:["e2e-n2","e2e-n3"], flows:["e2ef2","e2ef3"] },
+  { lbl:"3/9 — admission control", beat:"Beat: this is the economic gate where quota, SLA, and license reality meet the request.", info:"Admission control runs four checks: idempotency key lookup, license forecast against Redis, SLA-class threshold, and tenant quota. If all pass, a job package is created.", active:["e2e-n4"], flows:["e2ef4","e2ef5"] },
+  { lbl:"4/9 — job orchestration → SQS", beat:"Beat: once accepted, the request becomes durable operational work.", info:"Job orchestration wraps the validated payload into an immutable signed job package and enqueues it onto the correct SQS FIFO queue. MessageGroupId = tenant ID for fairness.", active:["e2e-n4b","e2e-n5"], flows:["e2ef6","e2ef7"] },
+  { lbl:"5/9 — worker manager dequeues", beat:"Beat: licenses are treated as a hard production budget, not a hopeful assumption.", info:"Worker manager long-polls SQS and receives the message. It atomically decrements the license token counter in Redis. If the counter is zero, the message visibility timeout keeps it hidden until a token frees up.", active:["e2e-n5","e2e-n6","e2e-n7"], flows:["e2ef8","e2ef9"] },
+  { lbl:"6/9 — NX slot executes", beat:"Beat: the runtime does one thing well: load, regenerate, validate, export.", info:"Worker manager sends an SSM RunCommand to the target EC2 Windows slot. The worker fetches the signed template bundle from S3, verifies the signature, loads NX, applies parameters, runs regeneration, executes engineering checks (mass, interference, naming), and exports native + neutral artifacts.", active:["e2e-n8","e2e-n9","e2e-n10"], flows:["e2ef10","e2ef11","e2ef12"] },
+  { lbl:"7/9 — artifacts written, event fired", beat:"Beat: completion is published as a clean event, not buried inside the worker.", info:"NX worker uploads artifact package and validation report to S3. Worker manager releases the ElastiCache token and deletes the SQS message. EventBridge fires job.completed with the S3 artifact path.", active:["e2e-n10","e2e-n11"], flows:["e2ef13"] },
+  { lbl:"8/9 — result surfaces in Mendix", beat:"Beat: the business surface gets a crisp answer without knowing execution internals.", info:"EventBridge triggers a Lambda that calls back into the Mendix workflow API, updating job status and attaching a signed S3 presigned URL. Mendix renders the status and download link.", active:["e2e-n12"], flows:["e2ef14"] },
+  { lbl:"9/9 — release to Teamcenter", beat:"Beat: the close of the story is provenance in PLM, not a file sitting in storage.", info:"Release service fetches artifacts from S3 and promotes them into Teamcenter via the TC Rich Client API — creating a new item revision, attaching the dataset, and recording provenance links back to the Mendix job ID.", active:["e2e-n13","e2e-n14"], flows:["e2ef15","e2ef16"] },
+];
+let e2eCur = 0;
+
+function e2eGo(n) {
+  e2eCur = Math.max(0, Math.min(E2E_STEPS.length - 1, n));
+  const s = E2E_STEPS[e2eCur];
+  document.getElementById('e2e-lbl').textContent = s.lbl;
+  document.getElementById('e2e-beat').textContent = s.beat;
+  document.getElementById('e2e-info').textContent = s.info;
+  document.getElementById('e2e-prev').disabled = e2eCur === 0;
+  document.getElementById('e2e-next').disabled = e2eCur === E2E_STEPS.length - 1;
+  ['e2e-n1','e2e-n2','e2e-n3','e2e-n4','e2e-n4b','e2e-n5','e2e-n6','e2e-n7','e2e-n8','e2e-n9','e2e-n10','e2e-n11','e2e-n12','e2e-n13','e2e-n14'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('pulse', s.active.includes(id));
+  });
+  setFlowState('e2ef', 16, s.flows);
+
+  focusSvgForStep('e2ediag', s.active, {
+    focusIds: [...s.active, ...s.flows],
+    panelTitle: s.lbl + ' — End-to-end flow',
+    panelBody: s.info,
+    panelAdjacent: s.beat,
+    panelLabel: 'Guided Tour',
+    panelMeta: 'End-to-end walkthrough',
+    zoom: false
+  });
+}
+
+// ── RELEASE TRAINS ──
+const RT_SCENARIOS = [
+  { label:"A — workflow only", steps:[
+    { lbl:"0/4 — idle", info:"Read this as the cheapest possible change story: the business workflow changes, but the engineering runtime does not. The path should stay almost entirely in the fast train.", active:[], flows:[] },
+    { lbl:"1/4 — business rule lands", info:"A product owner asks for an extra approval on heavier brackets. That change lives in Mendix first, so the team ships a workflow edit without touching the execution estate.", active:["rt-nMX"], flows:["rt-f1"] },
+    { lbl:"2/4 — contract stays in sync", info:"One supporting control-plane update follows: preflight learns the new field so the request contract still makes sense end to end. This is still fast-train work and rolls out like any other stateless service change.", active:["rt-nPF"], flows:["rt-f2","rt-f6"] },
+    { lbl:"3/4 — routing logic stays calm", info:"Nothing about quota, admission, or capability matching changes. The important point is organizational: orchestration keeps running exactly as before because no execution capability moved.", active:["rt-nAD","rt-nJO"], flows:["rt-f3","rt-f4","rt-f5","rt-f7"] },
+    { lbl:"4/4 — execution never notices", info:"Jobs still fall into the same queue and onto the same NX workers. The runtime sees the same payload shape and the same approved capability set, so engineering output stays deterministic while the workflow around it evolved.", active:["rt-nSQ","rt-nWM","rt-nNX"], flows:["rt-f8","rt-f9","rt-f12"] },
+  ]},
+  { label:"B — new business use", steps:[
+    { lbl:"0/4 — idle", info:"This scenario is about reuse. The business wants a new variant, but the execution engine already knows how to do the operation. The story is mostly packaging and routing, not code change.", active:[], flows:[] },
+    { lbl:"1/4 — publish the new recipe", info:"Engineering packages a new template bundle and widens the accepted parameter ranges. The capability registry is the contract checkpoint that says which version is now valid for production use.", active:["rt-nCR"], flows:["rt-f4","rt-f5"] },
+    { lbl:"2/4 — intake learns the new limits", info:"Preflight rolls forward so users can submit the new product-line values without getting rejected at the door. That keeps the business interface aligned with the newly approved template pack.", active:["rt-nPF"], flows:["rt-f2","rt-f6"] },
+    { lbl:"3/4 — routing picks the right pool", info:"Orchestration does the real coordination work here: it looks at the requested capability version, finds workers already carrying the right pack, and sends the job there. No runtime surgery is required.", active:["rt-nJO","rt-nCR"], flows:["rt-f5","rt-f7"] },
+    { lbl:"4/4 — execution uses the same engine", info:"At execution time nothing exotic happens. The worker pulls the newer approved template, but it still calls the same existing edge-blend operation in the facade. That is why this stays a low-risk release.", active:["rt-nNX","rt-nRF"], flows:["rt-f8","rt-f9","rt-f10","rt-f12"] },
+  ]},
+  { label:"C — dynamic handler", steps:[
+    { lbl:"0/5 — idle", info:"This is the extension story. A genuinely new NX behavior is needed, but the platform was designed with a plug-in lane so the team does not have to rebuild the core facade first.", active:[], flows:[] },
+    { lbl:"1/5 — package the new behavior", info:"An engineer writes the handler as a signed assembly, tests it against a development NX session, and prepares it like a governed add-on rather than a platform rebuild. The distinction matters: this is extension, not infrastructure replacement.", active:["rt-nHP"], flows:[] },
+    { lbl:"2/5 — register it as deployable capability", info:"The new pack is published to S3 and then declared in the capability registry. That registry entry is what turns a pile of code into something the platform can reason about, route to, and contain behind canaries.", active:["rt-nHP","rt-nCR"], flows:["rt-f4","rt-f5","rt-f11"] },
+    { lbl:"3/5 — canary workers absorb it live", info:"Now the interesting part: canary workers pull the signed pack, verify it, load it into the dynamic host, and expose the new method through the existing facade surface. The runtime expands without restarting the NX host.", active:["rt-nWM","rt-nDH","rt-nRF","rt-nHP"], flows:["rt-f8","rt-f9","rt-f11","rt-f13"] },
+    { lbl:"4/5 — prove it before broadening", info:"Regression is the trust-building step. The team validates geometry, checks, exports, and rollback posture before widening the blast radius. Promotion only happens after the canary earns it.", active:["rt-nCR","rt-nWM"], flows:["rt-f4","rt-f5","rt-f8","rt-f9"] },
+    { lbl:"5/5 — extension becomes platform", info:"Once promoted, the new handler is just another governed capability. Users see a new option in the business surface, but under the hood the platform achieved that without a facade rebuild or steady-state NX restarts.", active:["rt-nNX","rt-nDH","rt-nRF"], flows:["rt-f9","rt-f11","rt-f12","rt-f13"] },
+  ]},
+  { label:"D — facade DLL rollout", steps:[
+    { lbl:"0/6 — idle", info:"This is the expensive change story. The new operation breaks through the extension lane and needs a deeper transport change, so now release engineering has to treat the facade itself as the product being rolled out.", active:[], flows:[] },
+    { lbl:"1/6 — rebuild the platform layer", info:"The team changes the facade contract, signs a new binary, and bakes it into a fresh worker image. This is the moment the change stops being a feature tweak and becomes an execution-platform rollout.", active:["rt-nECR"], flows:["rt-f14"] },
+    { lbl:"2/6 — declare compatibility explicitly", info:"Before anything runs, the registry is updated so orchestration can reason about who is allowed to receive jobs needing the new capability. That compatibility matrix is what prevents accidental mixed-version execution.", active:["rt-nCR"], flows:["rt-f4","rt-f5"] },
+    { lbl:"3/6 — create a safe proving ground", info:"Worker manager stands up a canary pool beside the stable one. That gives the team a place to prove the new image while production traffic keeps flowing on known-good workers.", active:["rt-nWM","rt-nECR"], flows:["rt-f8","rt-f10"] },
+    { lbl:"4/6 — drain, swap, restart", info:"Each canary slot is drained, the NX host is restarted with the new facade DLL, and only then is the slot marked ready again. This is the operationally expensive part the earlier scenarios avoided.", active:["rt-nNX","rt-nRF"], flows:["rt-f9","rt-f10","rt-f13"] },
+    { lbl:"5/6 — earn the rollout", info:"Regression on the canary pool has one job: prove the platform change is boring. Once that happens, rollout can proceed slot by slot while queues, DLQs, and the old pool keep risk contained.", active:["rt-nWM","rt-nNX","rt-nCR"], flows:["rt-f8","rt-f9","rt-f12"] },
+    { lbl:"6/6 — promote with a rollback window", info:"The new facade becomes the default runtime, but the old pool is kept warm for a controlled rollback period. From the business side nothing else changed; the whole story was about evolving the execution substrate safely.", active:["rt-nNX","rt-nRF","rt-nDH","rt-nART"], flows:["rt-f9","rt-f11","rt-f12","rt-f13"] },
+  ]},
+];
+let rtScIdx = 0, rtCur = 0;
+
+const RT_SCENARIO_SUMMARIES = [
+  'Story line: a business workflow rule changes, but the execution plane should remain untouched. Follow how the path stays in the fast train and proves release independence.',
+  'Story line: a new business variant arrives, but the runtime already knows the operation. Watch packaging, schema, and routing adapt without rebuilding workers.',
+  'Story line: the platform grows through an extension lane. A signed handler is introduced, canaried, and promoted without rebuilding the facade.',
+  'Story line: the platform itself changes. This path is about image rebuilds, canary pools, controlled NX restarts, and rollback-safe promotion.'
+];
+
+const RT_SCENARIO_BEATS = [
+  [
+    'Beat: stay in the fast train and prove nothing in execution needs to move.',
+    'Beat: the business workflow changes first, before engineering runtime does anything.',
+    'Beat: the request contract catches up so the new workflow field can travel safely.',
+    'Beat: routing stays stable because no capability boundary changed.',
+    'Beat: the NX estate keeps running exactly as before, which is the whole win.'
+  ],
+  [
+    'Beat: reuse an existing execution capability rather than inventing a new one.',
+    'Beat: publish a new approved recipe and declare it in the capability contract.',
+    'Beat: intake learns the new limits so users can ask for the new variant safely.',
+    'Beat: orchestration sends work only to pools that already carry the right pack.',
+    'Beat: execution uses the same underlying operation, so release risk stays low.'
+  ],
+  [
+    'Beat: extend the platform through the handler lane instead of rebuilding the core.',
+    'Beat: package the new behavior as a governed add-on, not a platform replacement.',
+    'Beat: register the handler as an explicit capability the platform can reason about.',
+    'Beat: canary workers absorb handler-lane changes live when the facade contract is already in place.',
+    'Beat: regression earns the right to widen the blast radius.',
+    'Beat: the extension is now normal platform behavior, not a special case.'
+  ],
+  [
+    'Beat: this is a substrate change, so release engineering becomes the story.',
+    'Beat: rebuild the worker image because the facade contract itself changed.',
+    'Beat: update compatibility rules before a single job touches the new runtime.',
+    'Beat: create a safe canary pool so production traffic can stay on the old image.',
+    'Beat: drain, swap, and restart each slot because this path cannot hot-load.',
+    'Beat: prove the new platform is boring before replacing the stable pool.',
+    'Beat: promote with rollback insurance instead of pretending the change is trivial.'
+  ]
+];
+
+const RT_NODES = ['rt-nMX','rt-nGW','rt-nPF','rt-nAD','rt-nCR','rt-nJO','rt-nSQ','rt-nWM','rt-nECR','rt-nHP','rt-nNX','rt-nRF','rt-nDH','rt-nART'];
+
+function unionBoxes(a, b) {
+  if (!a) return { x: b.x, y: b.y, width: b.width, height: b.height };
+  const minX = Math.min(a.x, b.x);
+  const minY = Math.min(a.y, b.y);
+  const maxX = Math.max(a.x + a.width, b.x + b.width);
+  const maxY = Math.max(a.y + a.height, b.y + b.height);
+  return { x: minX, y: minY, width: maxX - minX, height: maxY - minY };
+}
+
+function easeInOutQuint(t) {
+  return t < 0.5
+    ? 16 * t * t * t * t * t
+    : 1 - Math.pow(-2 * t + 2, 5) / 2;
+}
+
+function animateViewBox(svg, targetBox, duration = 420) {
+  const workbench = ensureWorkbench(svg);
+  if (!workbench) return;
+
+  const startBox = cloneBox(parseViewBox(svg));
+  const endBox = cloneBox(targetBox);
+
+  if (workbench.rafId) cancelAnimationFrame(workbench.rafId);
+
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    writeViewBox(svg, endBox);
+    workbench.rafId = null;
+    return;
+  }
+
+  const start = performance.now();
+  function tick(now) {
+    const t = Math.min(1, (now - start) / duration);
+    const e = easeInOutQuint(t);
+    writeViewBox(svg, {
+      x: startBox.x + (endBox.x - startBox.x) * e,
+      y: startBox.y + (endBox.y - startBox.y) * e,
+      width: startBox.width + (endBox.width - startBox.width) * e,
+      height: startBox.height + (endBox.height - startBox.height) * e
+    });
+    if (workbench.panel.classList.contains('active')) {
+      positionFocusPanel(svg, workbench.anchorBox);
+    }
+
+    if (t < 1) {
+      workbench.rafId = requestAnimationFrame(tick);
+    } else {
+      workbench.rafId = null;
+    }
+  }
+
+  workbench.rafId = requestAnimationFrame(tick);
+}
+
+function focusBoxForElements(svg, elementIds, options = {}) {
+  const workbench = ensureWorkbench(svg);
+  if (!workbench) return null;
+
+  const defaultBox = workbench.defaultBox;
+  const elements = elementIds.map(id => document.getElementById(id)).filter(Boolean);
+  if (!elements.length) return cloneBox(defaultBox);
+
+  let combined = null;
+  elements.forEach(el => {
+    combined = unionBoxes(combined, el.getBBox());
+  });
+
+  const paddingX = options.paddingX == null ? 38 : options.paddingX;
+  const paddingY = options.paddingY == null ? 42 : options.paddingY;
+  const padded = {
+    x: combined.x - paddingX,
+    y: combined.y - paddingY,
+    width: combined.width + paddingX * 2,
+    height: combined.height + paddingY * 2
+  };
+
+  const aspect = defaultBox.width / defaultBox.height;
+  let width = Math.max(defaultBox.width * (options.minWidthRatio || 0.5), padded.width);
+  let height = Math.max(defaultBox.height * (options.minHeightRatio || 0.26), padded.height);
+
+  if (width / height > aspect) {
+    height = width / aspect;
+  } else {
+    width = height * aspect;
+  }
+
+  return boundBox({
+    x: padded.x + padded.width / 2 - width / 2,
+    y: padded.y + padded.height / 2 - height / 2,
+    width,
+    height
+  }, defaultBox);
+}
+
+function rawBoxForElements(elementIds) {
+  const elements = elementIds.map(id => document.getElementById(id)).filter(Boolean);
+  if (!elements.length) return null;
+
+  let combined = null;
+  elements.forEach(el => {
+    combined = unionBoxes(combined, el.getBBox());
+  });
+  return combined;
+}
+
+function applySvgSelection(svg, activeIds) {
+  svg.classList.toggle('svg-focus-active', activeIds.length > 0);
+  svg.querySelectorAll('.node.selected').forEach(node => node.classList.remove('selected'));
+  activeIds.forEach(id => {
+    const node = document.getElementById(id);
+    if (node && node.closest('svg') === svg) node.classList.add('selected');
+  });
+}
+
+function setFlowState(prefix, count, activeIds) {
+  for (let index = 1; index <= count; index++) {
+    const id = prefix + index;
+    const el = document.getElementById(id);
+    if (!el) continue;
+    const active = activeIds.includes(id);
+    el.style.opacity = active ? '1' : '0';
+    el.classList.toggle('active-flow', active);
+  }
+}
+
+function focusSvgForStep(svgId, activeIds, options = {}) {
+  const svg = document.getElementById(svgId);
+  if (!svg) return;
+
+  const workbench = ensureWorkbench(svg);
+  if (!workbench) return;
+  applySvgSelection(svg, activeIds);
+
+  const focusIds = options.focusIds && options.focusIds.length
+    ? options.focusIds
+    : activeIds;
+  const anchorBox = options.anchorBox || options.box || (focusIds.length ? rawBoxForElements(focusIds) : null);
+
+  if (options.panelTitle) {
+    setFocusPanel(
+      options.panelTitle,
+      options.panelBody || '',
+      options.panelAdjacent || 'Beat: walkthrough-driven focus.',
+      options.panelMeta || 'Guided walkthrough',
+      svg,
+      {
+        label: options.panelLabel || 'Guided Tour',
+        anchorBox
+      }
+    );
+  }
+
+  const targetBox = options.zoom === false
+    ? cloneBox(workbench.defaultBox)
+    : (options.box
+      ? boundBox(options.box, workbench.defaultBox)
+      : (focusIds.length ? focusBoxForElements(svg, focusIds, options) : cloneBox(workbench.defaultBox)));
+
+  animateViewBox(svg, targetBox, options.duration || 460);
+}
+
+function bindDeckControls() {
+  const tpPrev = document.getElementById('tp-prev');
+  const tpNext = document.getElementById('tp-next');
+  const tpReset = document.getElementById('tp-reset');
+  if (tpPrev) tpPrev.addEventListener('click', () => tpGo(tpCur - 1));
+  if (tpNext) tpNext.addEventListener('click', () => tpGo(tpCur + 1));
+  if (tpReset) tpReset.addEventListener('click', () => tpGo(0));
+
+  const e2ePrev = document.getElementById('e2e-prev');
+  const e2eNext = document.getElementById('e2e-next');
+  const e2eReset = document.getElementById('e2e-reset');
+  if (e2ePrev) e2ePrev.addEventListener('click', () => e2eGo(e2eCur - 1));
+  if (e2eNext) e2eNext.addEventListener('click', () => e2eGo(e2eCur + 1));
+  if (e2eReset) e2eReset.addEventListener('click', () => e2eGo(0));
+
+  const rtPrev = document.getElementById('rt-prev');
+  const rtNext = document.getElementById('rt-next');
+  const rtReset = document.getElementById('rt-reset');
+  if (rtPrev) rtPrev.addEventListener('click', () => rtGo(rtCur - 1));
+  if (rtNext) rtNext.addEventListener('click', () => rtGo(rtCur + 1));
+  if (rtReset) rtReset.addEventListener('click', () => rtGo(0));
+
+  document.querySelectorAll('[data-scenario]').forEach(button => {
+    button.addEventListener('click', () => rtLoadScenario(parseInt(button.dataset.scenario, 10)));
+  });
+
+  document.querySelectorAll('[data-deck][data-view]').forEach(button => {
+    button.addEventListener('click', () => setStoryDeck(button.dataset.deck, button.dataset.view));
+  });
+}
+
+function tpGo(n) {
+  tpCur = Math.max(0, Math.min(TP_STEPS.length - 1, n));
+  const step = TP_STEPS[tpCur];
+  document.getElementById('tp-lbl').textContent = step.lbl;
+  document.getElementById('tp-beat').textContent = step.beat;
+  document.getElementById('tp-info').textContent = step.info;
+  document.getElementById('tp-prev').disabled = tpCur === 0;
+  document.getElementById('tp-next').disabled = tpCur === TP_STEPS.length - 1;
+
+  TP_NODES.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('pulse', step.active.includes(id));
+  });
+
+  focusSvgForStep('tpdiag', step.active, {
+    box: step.box || null,
+    panelTitle: step.lbl + ' — Three-plane architecture',
+    panelBody: step.info,
+    panelAdjacent: step.beat,
+    panelLabel: 'Guided Tour',
+    panelMeta: 'Three-plane walkthrough',
+    zoom: false
+  });
+}
+
+function setStoryDeck(deck, view) {
+  if (deck !== 'tp') return;
+  const deckEl = document.getElementById('tp-story-deck');
+  if (!deckEl) return;
+  deckEl.dataset.view = view;
+  document.querySelectorAll('[data-deck="tp"]').forEach(button => {
+    const active = button.dataset.view === view;
+    button.classList.toggle('active', active);
+    button.setAttribute('aria-selected', active ? 'true' : 'false');
+  });
+}
+
+function rtLoadScenario(i) {
+  rtScIdx = i; rtCur = 0;
+  [0,1,2,3].forEach(j => {
+    const b = document.getElementById('rt-tb'+j);
+    b.classList.toggle('active', j === i);
+  });
+  const summary = document.getElementById('rt-summary');
+  if (summary) summary.textContent = RT_SCENARIO_SUMMARIES[i];
+  rtRender();
+}
+
+function rtGo(n) {
+  rtCur = Math.max(0, Math.min(RT_SCENARIOS[rtScIdx].steps.length - 1, n));
+  rtRender();
+}
+
+function rtRender() {
+  const step = RT_SCENARIOS[rtScIdx].steps[rtCur];
+  document.getElementById('rt-lbl').textContent = step.lbl + ' — ' + RT_SCENARIOS[rtScIdx].label;
+  document.getElementById('rt-beat').textContent = RT_SCENARIO_BEATS[rtScIdx][rtCur];
+  document.getElementById('rt-info').textContent = step.info;
+  const summary = document.getElementById('rt-summary');
+  if (summary) {
+    summary.textContent = RT_SCENARIO_SUMMARIES[rtScIdx];
+  }
+  document.getElementById('rt-prev').disabled = rtCur === 0;
+  document.getElementById('rt-next').disabled = rtCur === RT_SCENARIOS[rtScIdx].steps.length - 1;
+  RT_NODES.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('pulse', step.active.includes(id));
+  });
+  setFlowState('rt-f', 14, step.flows);
+
+  focusSvgForStep('rtdiag', step.active, {
+    focusIds: [...step.active, ...step.flows],
+    panelTitle: step.lbl + ' — ' + RT_SCENARIOS[rtScIdx].label,
+    panelBody: step.info,
+    panelAdjacent: RT_SCENARIO_BEATS[rtScIdx][rtCur],
+    panelLabel: 'Scenario Tour',
+    panelMeta: 'Release-train walkthrough',
+    zoom: false
+  });
+}
+
+/* ── PAGE TRANSITIONS ── */
+const origShowPage = showPage;
+window.showPage = function(id) {
+  const cur = document.querySelector('.page.active');
+  if (cur) {
+    cur.style.opacity = '0';
+    cur.style.transform = 'translateX(-20px)';
+    setTimeout(() => {
+      origShowPage(id);
+      const next = document.getElementById('page-' + id);
+      if (next) {
+        requestAnimationFrame(() => {
+          next.style.opacity = '1';
+          next.style.transform = 'translateX(0)';
+        });
+      }
+    }, 150);
+  } else {
+    origShowPage(id);
+  }
+};
+
+/* ── KEYBOARD NAV ── */
+const PAGES = ['overview', 'three-planes', 'aws-infra', 'e2e-flow', 'release-trains'];
+
+function currentPageIdx() {
+  for (let i = 0; i < PAGES.length; i++) {
+    const el = document.getElementById('page-' + PAGES[i]);
+    if (el && el.classList.contains('active')) return i;
+  }
+  return 0;
+}
+
+function currentPageId() {
+  const idx = currentPageIdx();
+  return PAGES[idx] || PAGES[0];
+}
+
+function restoreActiveWalkthroughState(pageId = currentPageId()) {
+  if (pageId === 'three-planes') {
+    tpGo(tpCur);
+    return true;
+  }
+  if (pageId === 'e2e-flow') {
+    e2eGo(e2eCur);
+    return true;
+  }
+  if (pageId === 'release-trains') {
+    rtRender();
+    return true;
+  }
+  return false;
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  const idx = currentPageIdx();
+
+  if (e.key === 'ArrowRight' || e.key === 'l') {
+    if (idx < PAGES.length - 1) showPage(PAGES[idx + 1]);
+  } else if (e.key === 'ArrowLeft' || e.key === 'h') {
+    if (idx > 0) showPage(PAGES[idx - 1]);
+  } else if (e.key >= '0' && e.key <= '4') {
+    const pi = parseInt(e.key);
+    if (pi < PAGES.length) showPage(PAGES[pi]);
+  }
+
+  // E2E flow step controls
+  const e2ePage = document.getElementById('page-e2e-flow');
+  if (e2ePage && e2ePage.classList.contains('active')) {
+    if (e.key === 'ArrowDown' || e.key === 'j') { e.preventDefault(); e2eGo(e2eCur + 1); }
+    if (e.key === 'ArrowUp' || e.key === 'k') { e.preventDefault(); e2eGo(e2eCur - 1); }
+  }
+
+  // Release trains step controls
+  const rtPage = document.getElementById('page-release-trains');
+  if (rtPage && rtPage.classList.contains('active')) {
+    if (e.key === 'ArrowDown' || e.key === 'j') { e.preventDefault(); rtGo(rtCur + 1); }
+    if (e.key === 'ArrowUp' || e.key === 'k') { e.preventDefault(); rtGo(rtCur - 1); }
+  }
+
+  if (e.key === 'Escape') {
+    clearAllNodeFocus();
+    setFocusPanelIdle();
+  }
+});
+
+/* ── NODE WORKBENCH ── */
+const svgWorkbench = new WeakMap();
+
+function cloneBox(box) {
+  return { x: box.x, y: box.y, width: box.width, height: box.height };
+}
+
+function parseViewBox(svg) {
+  const raw = svg.getAttribute('viewBox');
+  if (raw) {
+    const parts = raw.trim().split(/\s+/).map(Number);
+    if (parts.length === 4 && parts.every(Number.isFinite)) {
+      return { x: parts[0], y: parts[1], width: parts[2], height: parts[3] };
+    }
+  }
+
+  const width = svg.viewBox && svg.viewBox.baseVal && svg.viewBox.baseVal.width ? svg.viewBox.baseVal.width : (svg.clientWidth || 1200);
+  const height = svg.viewBox && svg.viewBox.baseVal && svg.viewBox.baseVal.height ? svg.viewBox.baseVal.height : (svg.clientHeight || 700);
+  return { x: 0, y: 0, width, height };
+}
+
+function writeViewBox(svg, box) {
+  svg.setAttribute('viewBox', [box.x, box.y, box.width, box.height].map(v => Math.round(v * 100) / 100).join(' '));
+}
+
+function boundBox(box, bounds) {
+  const minWidth = bounds.width * 0.2;
+  const minHeight = bounds.height * 0.22;
+  const width = Math.min(bounds.width, Math.max(minWidth, box.width));
+  const height = Math.min(bounds.height, Math.max(minHeight, box.height));
+  const x = Math.min(bounds.x + bounds.width - width, Math.max(bounds.x, box.x));
+  const y = Math.min(bounds.y + bounds.height - height, Math.max(bounds.y, box.y));
+  return { x, y, width, height };
+}
+
+function setWorkbenchIdle(workbench) {
+  const page = workbench.svg.closest('.page');
+  const pageTitleEl = page ? page.querySelector('.page-header h2') : null;
+  const pageTitle = pageTitleEl ? pageTitleEl.textContent.trim() : 'this page';
+  workbench.panel.classList.add('empty');
+  workbench.panel.classList.add('active');
+  workbench.anchorBox = null;
+  workbench.label.textContent = 'Tour Hint';
+  workbench.title.textContent = 'Select a node';
+  workbench.body.textContent = 'Click any node in this diagram to open a quick tour card that explains the component without making you leave the stage.';
+  workbench.adjacent.textContent = 'Guided walkthroughs reuse the same card pattern, anchored next to the active architecture step.';
+  workbench.meta.textContent = 'Active page: ' + pageTitle;
+  positionFocusPanel(workbench.svg, null);
+}
+
+function ensureWorkbench(svg) {
+  if (svgWorkbench.has(svg)) return svgWorkbench.get(svg);
+
+  const diagWrap = svg.closest('.diag-wrap');
+  const body = svg.closest('.diagram-card-body');
+  if (!diagWrap || !body) return null;
+
+  body.classList.add('has-workbench');
+
+  const toolbar = document.createElement('div');
+  toolbar.className = 'diagram-toolbar';
+  toolbar.innerHTML = `
+    <div class="toolbar-label">Diagram controls</div>
+    <button type="button" class="btn" data-action="fit">Fit</button>
+    <button type="button" class="btn" data-action="clear">Clear focus</button>
+    <button type="button" class="btn" data-action="zoom-in">Zoom in</button>
+    <button type="button" class="btn" data-action="zoom-out">Zoom out</button>
+  `;
+
+  const panel = document.createElement('div');
+  panel.className = 'diagram-inline-focus empty';
+  panel.innerHTML = `
+    <div class="focus-label">Node Focus</div>
+    <h3 class="focus-title"></h3>
+    <p class="focus-body"></p>
+    <div class="focus-adjacent"></div>
+    <div class="focus-meta"></div>
+  `;
+
+  body.insertBefore(toolbar, diagWrap);
+  diagWrap.appendChild(panel);
+
+  const workbench = {
+    svg,
+    diagWrap,
+    toolbar,
+    panel,
+    label: panel.querySelector('.focus-label'),
+    title: panel.querySelector('.focus-title'),
+    body: panel.querySelector('.focus-body'),
+    adjacent: panel.querySelector('.focus-adjacent'),
+    meta: panel.querySelector('.focus-meta'),
+    defaultBox: cloneBox(parseViewBox(svg)),
+    anchorBox: null
+  };
+
+  toolbar.querySelector('[data-action="fit"]').addEventListener('click', () => resetSvgView(svg));
+  toolbar.querySelector('[data-action="clear"]').addEventListener('click', () => restoreContextForSvg(svg));
+  toolbar.querySelector('[data-action="zoom-in"]').addEventListener('click', () => zoomSvg(svg, 0.82));
+  toolbar.querySelector('[data-action="zoom-out"]').addEventListener('click', () => zoomSvg(svg, 1.2));
+
+  svg.addEventListener('click', (event) => {
+    if (event.target === svg) {
+      restoreContextForSvg(svg);
+    }
+  });
+
+  svgWorkbench.set(svg, workbench);
+  setWorkbenchIdle(workbench);
+  return workbench;
+}
+
+function setFocusPanel(title, body, adjacent, meta, svg, options = {}) {
+  const workbench = ensureWorkbench(svg);
+  if (!workbench) return;
+  workbench.panel.classList.remove('empty');
+  workbench.panel.classList.add('active');
+  workbench.anchorBox = options.anchorBox ? cloneBox(options.anchorBox) : null;
+  workbench.label.textContent = options.label || 'Node Focus';
+  workbench.title.textContent = title;
+  workbench.body.textContent = body;
+  workbench.adjacent.textContent = adjacent;
+  workbench.meta.textContent = meta;
+  positionFocusPanel(svg, workbench.anchorBox);
+}
+
+function svgBoxToWrapPixels(svg, box) {
+  if (!box) return null;
+  const workbench = ensureWorkbench(svg);
+  if (!workbench) return null;
+  const matrix = svg.getScreenCTM();
+  if (!matrix) return null;
+
+  const wrapRect = workbench.diagWrap.getBoundingClientRect();
+  const corners = [
+    new DOMPoint(box.x, box.y),
+    new DOMPoint(box.x + box.width, box.y),
+    new DOMPoint(box.x, box.y + box.height),
+    new DOMPoint(box.x + box.width, box.y + box.height)
+  ].map(point => point.matrixTransform(matrix));
+
+  const xs = corners.map(point => point.x - wrapRect.left);
+  const ys = corners.map(point => point.y - wrapRect.top);
+  return {
+    left: Math.min(...xs),
+    right: Math.max(...xs),
+    top: Math.min(...ys),
+    bottom: Math.max(...ys),
+    cx: (Math.min(...xs) + Math.max(...xs)) / 2,
+    cy: (Math.min(...ys) + Math.max(...ys)) / 2
+  };
+}
+
+function clampValue(value, min, max) {
+  return Math.min(max, Math.max(min, value));
+}
+
+function rectOverlapArea(a, b) {
+  const overlapX = Math.max(0, Math.min(a.right, b.right) - Math.max(a.left, b.left));
+  const overlapY = Math.max(0, Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top));
+  return overlapX * overlapY;
+}
+
+function positionFocusPanel(svg, anchorBox = null) {
+  const workbench = ensureWorkbench(svg);
+  if (!workbench) return;
+
+  const panel = workbench.panel;
+  const wrap = workbench.diagWrap;
+  const margin = 16;
+  const gap = 18;
+  const width = panel.offsetWidth || Math.min(360, Math.max(260, wrap.clientWidth - margin * 2));
+  const height = panel.offsetHeight || 176;
+  const anchor = svgBoxToWrapPixels(svg, anchorBox);
+  const maxX = Math.max(margin, wrap.clientWidth - width - margin);
+  const maxY = Math.max(margin, wrap.clientHeight - height - margin);
+
+  let placement = {
+    x: maxX,
+    y: margin,
+    placement: 'corner'
+  };
+
+  if (anchor) {
+    if (wrap.clientWidth < 760 || wrap.clientHeight < 360) {
+      placement = {
+        x: clampValue(anchor.cx - width / 2, margin, maxX),
+        y: maxY,
+        placement: 'dock-bottom'
+      };
+    } else {
+      const anchorRect = {
+        left: anchor.left - gap * 0.35,
+        right: anchor.right + gap * 0.35,
+        top: anchor.top - gap * 0.35,
+        bottom: anchor.bottom + gap * 0.35
+      };
+
+      const candidates = [
+        {
+          placement: 'right',
+          x: anchor.right + gap,
+          y: clampValue(anchor.top - height * 0.18, margin, maxY)
+        },
+        {
+          placement: 'left',
+          x: anchor.left - width - gap,
+          y: clampValue(anchor.top - height * 0.18, margin, maxY)
+        },
+        {
+          placement: 'bottom',
+          x: clampValue(anchor.cx - width / 2, margin, maxX),
+          y: anchor.bottom + gap
+        },
+        {
+          placement: 'top',
+          x: clampValue(anchor.cx - width / 2, margin, maxX),
+          y: anchor.top - height - gap
+        }
+      ].map((candidate) => {
+        const x = clampValue(candidate.x, margin, maxX);
+        const y = clampValue(candidate.y, margin, maxY);
+        const rect = { left: x, right: x + width, top: y, bottom: y + height };
+        const overlap = rectOverlapArea(rect, anchorRect);
+        const distance = Math.abs((rect.left + rect.right) / 2 - anchor.cx) + Math.abs((rect.top + rect.bottom) / 2 - anchor.cy);
+        const clampedPenalty = (candidate.x !== x || candidate.y !== y) ? 420 : 0;
+        return { placement: candidate.placement, x, y, score: overlap * 3 + distance * 0.35 + clampedPenalty };
+      });
+
+      placement = candidates.sort((a, b) => a.score - b.score)[0];
+    }
+  }
+
+  panel.dataset.placement = placement.placement;
+  panel.style.setProperty('--tour-x', Math.round(placement.x) + 'px');
+  panel.style.setProperty('--tour-y', Math.round(placement.y) + 'px');
+}
+
+function resetSvgView(svg) {
+  const workbench = ensureWorkbench(svg);
+  if (!workbench) return;
+  animateViewBox(svg, workbench.defaultBox, 420);
+}
+
+function pageIdFromElement(el) {
+  const page = el ? el.closest('.page') : null;
+  return page ? page.id.replace(/^page-/, '') : null;
+}
+
+function clearSvgNodeFocus(svg, resetZoom = true) {
+  ensureWorkbench(svg);
+  svg.classList.remove('svg-focus-active');
+  svg.querySelectorAll('.node.selected').forEach(node => node.classList.remove('selected'));
+  if (resetZoom) resetSvgView(svg);
+}
+
+function restoreContextForSvg(svg) {
+  const workbench = ensureWorkbench(svg);
+  if (!workbench) return;
+
+  clearSvgNodeFocus(svg, false);
+  const restored = restoreActiveWalkthroughState(pageIdFromElement(svg));
+  if (!restored) {
+    resetSvgView(svg);
+    setWorkbenchIdle(workbench);
+  }
+}
+
+function zoomSvg(svg, multiplier) {
+  const workbench = ensureWorkbench(svg);
+  if (!workbench) return;
+
+  const current = parseViewBox(svg);
+  const nextWidth = current.width * multiplier;
+  const nextHeight = current.height * multiplier;
+  const next = {
+    x: current.x + (current.width - nextWidth) / 2,
+    y: current.y + (current.height - nextHeight) / 2,
+    width: nextWidth,
+    height: nextHeight
+  };
+
+  animateViewBox(svg, boundBox(next, workbench.defaultBox), 260);
+}
+
+function zoomToNode(svg, node) {
+  const workbench = ensureWorkbench(svg);
+  if (!workbench) return;
+
+  const defaultBox = workbench.defaultBox;
+  const bbox = node.getBBox();
+  const cx = bbox.x + bbox.width / 2;
+  const cy = bbox.y + bbox.height / 2;
+  const aspect = defaultBox.width / defaultBox.height;
+  const paddingX = Math.max(28, bbox.width * 0.5);
+  const paddingY = Math.max(30, bbox.height * 0.75);
+
+  let width = Math.max(defaultBox.width * 0.52, bbox.width + paddingX * 2);
+  let height = Math.max(defaultBox.height * 0.3, bbox.height + paddingY * 2);
+
+  if (width / height > aspect) {
+    height = width / aspect;
+  } else {
+    width = height * aspect;
+  }
+
+  animateViewBox(svg, boundBox({
+    x: cx - width / 2,
+    y: cy - height / 2,
+    width,
+    height
+  }, defaultBox), 540);
+}
+
+function clearAllNodeFocus(resetZoom = true) {
+  document.querySelectorAll('.diag-wrap svg').forEach(svg => {
+    clearSvgNodeFocus(svg, resetZoom);
+  });
+}
+
+function setFocusPanelIdle() {
+  document.querySelectorAll('.diag-wrap svg').forEach(svg => {
+    const workbench = ensureWorkbench(svg);
+    if (workbench) setWorkbenchIdle(workbench);
+  });
+
+  restoreActiveWalkthroughState();
+}
+
+function sendFlowsBehindNodes() {
+  document.querySelectorAll('.diag-wrap svg').forEach(svg => {
+    const firstNode = svg.querySelector('.node');
+    if (!firstNode) return;
+    Array.from(svg.querySelectorAll('.flow')).forEach(flow => {
+      if (flow.parentNode === svg) {
+        svg.insertBefore(flow, firstNode);
+      }
+    });
+  });
+}
+
+const NODE_CONTEXT = {
+  'Mendix apps': {
+    role: 'Workflow front door for intake, approval, and release actions.',
+    adjacent: 'Upstream: business user intent. Downstream: API gateway request contract.'
+  },
+  'Mendix UI': {
+    role: 'User-facing intake and result surface for submit/status/release.',
+    adjacent: 'Upstream: user action. Downstream: API gateway submit and callback consumption.'
+  },
+  'API gateway': {
+    role: 'Auth and policy ingress boundary before any compute is consumed.',
+    adjacent: 'Upstream: Mendix submit traffic. Downstream: preflight validation service.'
+  },
+  'Preflight service': {
+    role: 'Synchronous validator for schema, ranges, policy, and RBAC.',
+    adjacent: 'Upstream: API gateway. Downstream: admission control (pass) or caller rejection (fail).'
+  },
+  'Preflight validation': {
+    role: 'Synchronous validator for schema, ranges, policy, and RBAC.',
+    adjacent: 'Upstream: API gateway. Downstream: admission control or fail-fast response.'
+  },
+  'Admission control': {
+    role: 'Idempotency, quota, and license-forecast gate before queueing.',
+    adjacent: 'Upstream: preflight pass. Downstream: job orchestration and queue admission.'
+  },
+  'Job orchestration': {
+    role: 'Builds immutable signed execution package and lifecycle envelope.',
+    adjacent: 'Upstream: admission control. Downstream: SQS queue and worker manager dispatch logic.'
+  },
+  'Queue / event bus': {
+    role: 'Durable async buffer and event fanout boundary.',
+    adjacent: 'Upstream: orchestration enqueue. Downstream: worker dequeue and completion events.'
+  },
+  'SQS FIFO queue': {
+    role: 'Ordered durable execution queue with DLQ safety.',
+    adjacent: 'Upstream: job orchestration. Downstream: worker manager dequeue and token gating.'
+  },
+  'Amazon SQS — job queue': {
+    role: 'Primary queue for SLA-partitioned execution requests.',
+    adjacent: 'Upstream: workflow orchestration. Downstream: worker manager + Redis token check.'
+  },
+  'ElastiCache (Redis)': {
+    role: 'Atomic license semaphore and worker slot lease registry.',
+    adjacent: 'Upstream: dispatcher token requests. Downstream: worker assignment and release.'
+  },
+  'Worker manager': {
+    role: 'Dispatch coordinator for slot lifecycle, health, and cleanup.',
+    adjacent: 'Upstream: queue + license state. Downstream: NX worker slot execution.'
+  },
+  'License controller': {
+    role: 'Enforces hard license ceiling before execution begins.',
+    adjacent: 'Upstream: dispatch intent. Downstream: queue visibility release or slot allocation.'
+  },
+  'Template pack runtime': {
+    role: 'Loads only approved, signed template and handler combinations.',
+    adjacent: 'Upstream: capability requirements. Downstream: deterministic NX execution path.'
+  },
+  'S3 — templates': {
+    role: 'Versioned source of approved template bundles and assets.',
+    adjacent: 'Upstream: package publication pipeline. Downstream: NX worker fetch and signature verification.'
+  },
+  'NX worker (EC2)': {
+    role: 'Deterministic CAD regeneration, checks, and export boundary.',
+    adjacent: 'Upstream: worker manager dispatch + template fetch. Downstream: artifact storage and completion event.'
+  },
+  'S3 — artifacts': {
+    role: 'Durable storage for outputs and validation reports.',
+    adjacent: 'Upstream: NX worker write. Downstream: callback/update and Teamcenter promotion.'
+  },
+  'EventBridge': {
+    role: 'Decouples completion signaling from execution internals.',
+    adjacent: 'Upstream: worker completion signal. Downstream: Mendix callback and release orchestration.'
+  },
+  'Capability registry': {
+    role: 'Controls compatible combinations of worker, facade, handler, and template versions.',
+    adjacent: 'Upstream: release engineering updates. Downstream: orchestration routing and deployment safety.'
+  },
+  'NX worker slot (EC2 Windows)': {
+    role: 'Governed execution slot for a single isolated NX run context.',
+    adjacent: 'Upstream: worker manager assignment. Downstream: artifact emission and slot cleanup.'
+  },
+  'Remoting facade': {
+    role: 'NX-side invocation surface exposing governed operations.',
+    adjacent: 'Upstream: orchestration call contract. Downstream: handler/NX operation execution.'
+  },
+  'Dynamic handler host': {
+    role: 'Hot-load extension point for signed operational handlers.',
+    adjacent: 'Upstream: signed handler pack retrieval. Downstream: execution against facade-exposed contracts.'
+  },
+  'Teamcenter': {
+    role: 'Authoritative PLM store for released revisions and BOM lineage.',
+    adjacent: 'Upstream: release-service promotion. Downstream: enterprise consumption and audit traceability.'
+  },
+  'Mendix state store': {
+    role: 'Workflow state and business context store, not CAD master data.',
+    adjacent: 'Upstream: workflow lifecycle events. Downstream: user-facing status and approval state.'
+  },
+  'Release service': {
+    role: 'Promotes validated artifacts into Teamcenter with provenance links.',
+    adjacent: 'Upstream: artifact availability + policy checks. Downstream: Teamcenter revision/bom updates.'
+  }
+};
+
+document.querySelectorAll('.node').forEach(node => {
+  node.setAttribute('tabindex', '0');
+  node.setAttribute('role', 'button');
+
+  function focusNode() {
+    const svg = node.closest('svg');
+    if (!svg) return;
+
+    const wasSelected = node.classList.contains('selected');
+    clearAllNodeFocus();
+
+    if (wasSelected) {
+      setFocusPanelIdle();
+      return;
+    }
+
+    svg.classList.add('svg-focus-active');
+    node.classList.add('selected');
+    if (svg.dataset.focusMode === 'zoom') {
+      zoomToNode(svg, node);
+    }
+
+    const th = node.querySelector('.th');
+    const ts = node.querySelector('.ts');
+    const title = th ? th.textContent.trim() : 'Diagram node';
+    const subtitle = ts ? ts.textContent.trim() : '';
+    const context = NODE_CONTEXT[title];
+    const details = context ? context.role : (subtitle ? subtitle : 'Selected component in the current architecture flow.');
+    const adjacent = context ? ('Adjacency: ' + context.adjacent) : 'Adjacency: context not mapped for this node yet.';
+
+    const page = node.closest('.page');
+    const pageTitleEl = page ? page.querySelector('.page-header h2') : null;
+    const pageTitle = pageTitleEl ? pageTitleEl.textContent.trim() : 'Architecture';
+    const meta = subtitle ? pageTitle + ' · ' + subtitle : pageTitle;
+    setFocusPanel(title, details, adjacent, meta, svg, {
+      label: 'Node Focus',
+      anchorBox: node.getBBox()
+    });
+
+    if (page && page.id === 'page-three-planes') {
+      TP_NODES.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.remove('pulse');
+      });
+    }
+  }
+
+  node.addEventListener('click', focusNode);
+  node.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      focusNode();
+    }
+  });
+});
+
+document.querySelectorAll('.diag-wrap svg').forEach(svg => ensureWorkbench(svg));
+sendFlowsBehindNodes();
+bindDeckControls();
+rtLoadScenario(0);
+e2eGo(0);
+tpGo(0);
+setStoryDeck('tp', 'exec');
+window.addEventListener('resize', () => {
+  document.querySelectorAll('.diag-wrap svg').forEach(svg => {
+    const workbench = svgWorkbench.get(svg);
+    if (workbench) positionFocusPanel(svg, workbench.anchorBox);
+  });
+});
+restoreActiveWalkthroughState();
+
+window.showPage = window.showPage || showPage;
+window.e2eGo = e2eGo;
+window.rtGo = rtGo;
+window.rtLoadScenario = rtLoadScenario;
+window.tpGo = tpGo;
+</script>
+</body>
+</html>

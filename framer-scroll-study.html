@@ -1,0 +1,1519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Platform Architecture — Motion Study — Digital Fabric</title>
+<link rel="stylesheet" href="styles/fabric.css">
+<style>
+:root {
+  --nav-h: 52px;
+  --accent-rgb: 124, 111, 222;
+  --camera-x: -2;
+  --camera-y: -3;
+  --camera-depth: -60;
+  --object-rotate-x: -16;
+  --object-rotate-y: 22;
+  --object-rotate-z: -8;
+  --object-scale: 0.92;
+  --ring-tilt: -14;
+  --glow-strength: 0.46;
+  --grid-opacity: 0.1;
+  --fog-opacity: 0.84;
+  --specular-shift: -18;
+  --halo-scale: 0.9;
+  --phase-progress: 0;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(82,148,214,0.16), transparent 22%),
+    radial-gradient(circle at 14% 18%, rgba(124,111,222,0.12), transparent 26%),
+    radial-gradient(circle at 86% 16%, rgba(61,191,138,0.08), transparent 22%),
+    linear-gradient(180deg, #05070c 0%, #090d16 36%, #04060a 100%);
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+a { color: inherit; text-decoration: none; }
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid rgba(61,191,138,0.96);
+  outline-offset: 3px;
+  border-radius: 10px;
+}
+
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 220;
+  height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 28px;
+  background: rgba(13,15,20,0.84);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(82,93,112,0.22);
+}
+
+.topbar-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.topbar-brand .sigil {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  border: 1px solid rgba(var(--accent-rgb), 0.5);
+  display: grid;
+  place-items: center;
+  color: rgb(var(--accent-rgb));
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+}
+
+.topbar-nav {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.topbar-nav a {
+  font-size: 12px;
+  color: var(--text2);
+  transition: color 0.18s ease;
+}
+
+.topbar-nav a:hover { color: var(--text); }
+
+.page-shell { padding-top: var(--nav-h); }
+
+.intro {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 78px 40px 38px;
+  display: grid;
+  gap: 24px;
+}
+
+.intro-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) 320px;
+  gap: 22px;
+  align-items: start;
+}
+
+.intro-copy {
+  display: grid;
+  gap: 16px;
+}
+
+.intro-eyebrow,
+.note-label,
+.scene-label,
+.phase-index,
+.beat-index,
+.footer-note .label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.intro-eyebrow,
+.phase-index {
+  color: rgb(var(--accent-rgb));
+}
+
+.intro h1 {
+  font-size: clamp(42px, 6vw, 84px);
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+}
+
+.intro h1 em {
+  font-style: normal;
+  background: linear-gradient(135deg, rgb(var(--accent-rgb)), var(--teal));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.intro-copy p {
+  max-width: 780px;
+  font-size: 17px;
+  line-height: 1.72;
+  color: var(--text2);
+}
+
+.intro-note {
+  display: grid;
+  gap: 12px;
+  padding: 22px 22px 20px;
+  border-radius: 22px;
+  background: linear-gradient(180deg, rgba(17,21,29,0.96), rgba(10,12,18,0.96));
+  border: 1px solid rgba(82,93,112,0.24);
+  box-shadow: 0 22px 60px rgba(0,0,0,0.22);
+}
+
+.intro-note p,
+.footer-note p,
+.outro-links p {
+  font-size: 13px;
+  line-height: 1.66;
+  color: var(--text2);
+}
+
+.experience {
+  max-width: 1480px;
+  margin: 0 auto;
+  padding: 0 40px 112px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 24px;
+  align-items: start;
+}
+
+.stage-shell {
+  position: sticky;
+  top: calc(var(--nav-h) + 16px);
+  height: calc(100vh - var(--nav-h) - 32px);
+  min-height: 720px;
+  border-radius: 34px;
+  overflow: hidden;
+  border: 1px solid rgba(82,93,112,0.22);
+  background: linear-gradient(180deg, rgba(6,8,13,0.98), rgba(4,6,10,1));
+  box-shadow: 0 36px 110px rgba(0,0,0,0.32), inset 0 1px 0 rgba(255,255,255,0.04);
+  isolation: isolate;
+}
+
+.stage-shell::before,
+.stage-shell::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.stage-shell::before {
+  background:
+    radial-gradient(circle at 50% 12%, rgba(214,233,255,0.16), transparent 18%),
+    radial-gradient(circle at 80% 18%, rgba(var(--accent-rgb), 0.14), transparent 30%),
+    radial-gradient(circle at 18% 26%, rgba(82,148,214,0.12), transparent 28%);
+  z-index: 0;
+}
+
+.stage-shell::after {
+  background:
+    linear-gradient(90deg, rgba(4,6,9,0.48), transparent 18%, transparent 82%, rgba(4,6,9,0.54)),
+    linear-gradient(180deg, rgba(4,6,9,0.16), transparent 18%, transparent 80%, rgba(4,6,9,0.48));
+  opacity: 0.22;
+  z-index: 6;
+}
+
+.stage-viewport {
+  position: absolute;
+  inset: 0;
+  perspective: 2200px;
+  transform-style: preserve-3d;
+  z-index: 1;
+}
+
+.scene-sky {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255,255,255,0.08), transparent 14%),
+    radial-gradient(circle at 50% 34%, rgba(var(--accent-rgb), calc(0.05 + var(--glow-strength) * 0.1)), transparent 24%),
+    radial-gradient(circle at 50% 82%, rgba(61,191,138,0.06), transparent 20%);
+  z-index: 0;
+}
+
+.light-bloom,
+.light-bloom::before,
+.light-bloom::after {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(52px);
+  pointer-events: none;
+}
+
+.light-bloom {
+  width: 36vw;
+  height: 36vw;
+  left: 50%;
+  top: 12%;
+  transform: translate(-50%, 0) scale(calc(0.72 + var(--glow-strength) * 0.5));
+  background: radial-gradient(circle, rgba(214,233,255,0.16), rgba(214,233,255,0));
+  opacity: calc(0.24 + var(--glow-strength) * 0.48);
+  z-index: 0;
+}
+
+.light-bloom::before,
+.light-bloom::after {
+  content: '';
+  inset: auto;
+}
+
+.light-bloom::before {
+  width: 28vw;
+  height: 28vw;
+  left: -18vw;
+  top: 24vh;
+  background: radial-gradient(circle, rgba(124,111,222,0.12), rgba(124,111,222,0));
+}
+
+.light-bloom::after {
+  width: 24vw;
+  height: 24vw;
+  right: -14vw;
+  top: 12vh;
+  background: radial-gradient(circle, rgba(61,191,138,0.08), rgba(61,191,138,0));
+}
+
+.scene-world {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transform: translate3d(calc(var(--camera-x) * 1%), calc(var(--camera-y) * 1%), calc(var(--camera-depth) * 1px));
+}
+
+.depth-grid {
+  position: absolute;
+  left: -14%;
+  right: -14%;
+  bottom: -24%;
+  height: 72%;
+  background:
+    repeating-linear-gradient(90deg, rgba(127,170,220,0.08) 0 1px, transparent 1px 90px),
+    repeating-linear-gradient(180deg, rgba(127,170,220,0.05) 0 1px, transparent 1px 72px);
+  transform-origin: 50% 100%;
+  transform: rotateX(77deg) translate3d(calc(var(--camera-x) * 0.25%), calc(48px + var(--camera-y) * 0.18px), calc(-320px + var(--camera-depth) * 1px));
+  opacity: var(--grid-opacity);
+}
+
+.depth-orb {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, var(--color), transparent 72%);
+  filter: blur(var(--blur));
+  transform: translate3d(calc(var(--camera-x) * 0.3%), calc(var(--camera-y) * 0.3%), var(--z));
+  opacity: calc(var(--opacity) * (0.6 + var(--glow-strength) * 0.65));
+  pointer-events: none;
+}
+
+.scene-guide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  transform: translate3d(calc(var(--camera-x) * 0.18%), calc(var(--camera-y) * 0.18%), 0);
+  z-index: 1;
+}
+
+.guide-path {
+  fill: none;
+  stroke: transparent;
+}
+
+.orbit-guide-base,
+.orbit-guide-glow {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.orbit-guide-base {
+  stroke: rgba(150,182,226,0.12);
+  stroke-width: 16;
+}
+
+.orbit-guide-glow {
+  stroke: url(#guideGradient);
+  stroke-width: 8;
+  stroke-dasharray: 18 22;
+  animation: guide-flow 7.8s linear infinite;
+  opacity: calc(0.32 + var(--glow-strength) * 0.64);
+}
+
+.orbit-cursor .cursor-halo {
+  fill: rgba(var(--accent-rgb), 0.14);
+  stroke: rgba(var(--accent-rgb), 0.42);
+  stroke-width: 1.4;
+}
+
+.orbit-cursor .cursor-core {
+  fill: rgba(255,255,255,0.96);
+}
+
+#orbitGlow {
+  fill: rgb(var(--accent-rgb));
+  opacity: calc(0.16 + var(--glow-strength) * 0.24);
+  filter: url(#pathGlow);
+}
+
+.object-cluster {
+  position: absolute;
+  left: 54%;
+  top: 50%;
+  width: 560px;
+  height: 560px;
+  transform-style: preserve-3d;
+  transform:
+    translate(-50%, -48%)
+    rotateX(calc(var(--object-rotate-x) * 1deg))
+    rotateY(calc(var(--object-rotate-y) * 1deg))
+    rotateZ(calc(var(--object-rotate-z) * 1deg))
+    scale(var(--object-scale));
+}
+
+.object-halo {
+  position: absolute;
+  inset: 118px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(var(--accent-rgb), calc(0.06 + var(--glow-strength) * 0.12)), rgba(var(--accent-rgb), 0));
+  transform: translateZ(-120px) scale(var(--halo-scale));
+  filter: blur(42px);
+}
+
+.object-shadow {
+  position: absolute;
+  left: 138px;
+  right: 138px;
+  bottom: 86px;
+  height: 72px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(2,4,7,0.68), rgba(2,4,7,0));
+  filter: blur(22px);
+  transform: translateZ(-160px) scale(calc(0.88 + var(--halo-scale) * 0.12));
+}
+
+.caustic {
+  position: absolute;
+  left: 156px;
+  right: 156px;
+  bottom: 112px;
+  height: 108px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 40%, rgba(214,233,255, calc(0.08 + var(--glow-strength) * 0.12)), rgba(214,233,255, 0) 62%),
+    radial-gradient(circle at 46% 68%, rgba(124,111,222, calc(0.04 + var(--glow-strength) * 0.08)), rgba(124,111,222, 0) 68%);
+  filter: blur(24px);
+  transform: translateZ(-80px) scale(calc(0.84 + var(--halo-scale) * 0.18));
+}
+
+.ring {
+  position: absolute;
+  left: 104px;
+  top: 118px;
+  width: 352px;
+  height: 352px;
+  border-radius: 50%;
+  background: conic-gradient(from 160deg, rgba(255,255,255,0.0), rgba(214,233,255,0.64), rgba(124,111,222,0.42), rgba(255,255,255,0.06), rgba(255,255,255,0.0));
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 22px), #000 calc(100% - 18px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 22px), #000 calc(100% - 18px));
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.04);
+}
+
+.ring.back {
+  opacity: 0.3;
+  filter: blur(0.4px) drop-shadow(0 0 24px rgba(140,184,255,0.12));
+  transform: translateZ(-110px) rotateX(calc(75deg + var(--ring-tilt) * 1deg)) rotateZ(-18deg);
+}
+
+.ring.front {
+  opacity: 0.14;
+  filter: drop-shadow(0 0 14px rgba(var(--accent-rgb), 0.1));
+  transform: translateZ(48px) rotateX(calc(74deg + var(--ring-tilt) * 1deg)) rotateZ(6deg);
+}
+
+.monolith-stack {
+  position: absolute;
+  inset: 62px;
+  transform-style: preserve-3d;
+}
+
+.monolith-plate {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 298px;
+  height: 412px;
+  border-radius: 52px;
+  transform-style: preserve-3d;
+}
+
+.monolith-back {
+  transform: translate(-50%, -50%) translate3d(20px, 18px, -128px) rotateZ(-7deg);
+  background: linear-gradient(180deg, rgba(114,133,162,0.18), rgba(34,45,61,0.36));
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.22);
+  opacity: 0.52;
+  filter: blur(1px);
+}
+
+.monolith-main {
+  transform: translate(-50%, -50%) translateZ(36px) rotateZ(-5deg);
+  background:
+    radial-gradient(circle at 22% 14%, rgba(255,255,255,0.34), rgba(255,255,255,0) 30%),
+    linear-gradient(160deg, rgba(241,247,255,0.18), rgba(159,183,214,0.08) 28%, rgba(48,61,80,0.5) 72%, rgba(18,22,31,0.84));
+  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.16),
+    inset 0 -40px 70px rgba(4,7,12,0.42),
+    0 34px 90px rgba(0,0,0,0.24);
+  overflow: hidden;
+}
+
+.monolith-front {
+  transform: translate(-50%, -50%) translate3d(-12px, -10px, 112px) rotateZ(-4deg);
+  border: 1px solid rgba(255,255,255,0.24);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0.02) 34%, rgba(255,255,255,0)),
+    linear-gradient(180deg, rgba(190,214,244,0.14), rgba(69,85,108,0.06));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.22);
+  opacity: 0.58;
+}
+
+.monolith-window {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 174px;
+  height: 234px;
+  transform: translate(-50%, -50%);
+  border-radius: 62px;
+  background:
+    radial-gradient(circle at 50% 24%, rgba(214,233,255,0.3), rgba(214,233,255,0) 34%),
+    linear-gradient(180deg, rgba(14,20,29,0.28), rgba(8,11,16,0.76));
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.14),
+    inset 0 -18px 28px rgba(0,0,0,0.34),
+    0 0 0 1px rgba(255,255,255,0.04);
+}
+
+.window-core {
+  position: absolute;
+  inset: 22px;
+  border-radius: 46px;
+  background:
+    radial-gradient(circle at 50% 32%, rgba(255,255,255,0.16), rgba(255,255,255,0) 28%),
+    linear-gradient(180deg, rgba(22,29,40,0.66), rgba(7,10,15,0.92));
+  border: 1px solid rgba(171,207,255,0.12);
+  overflow: hidden;
+}
+
+.window-graph {
+  position: absolute;
+  inset: 14px;
+  opacity: 0.68;
+}
+
+.window-graph line {
+  stroke: rgba(140,184,255,0.22);
+  stroke-width: 1;
+}
+
+.window-graph circle {
+  stroke: rgba(255,255,255,0.28);
+  stroke-width: 0.5;
+}
+
+.window-graph .wg-dim { fill: rgba(133,121,229,0.5); }
+.window-graph .wg-mid { fill: rgba(93,158,223,0.6); }
+.window-graph .wg-bright { fill: rgba(255,255,255,0.72); }
+
+.window-ring {
+  position: absolute;
+  inset: 38px 42px;
+  border-radius: 999px;
+  border: 1px solid rgba(191,221,255,0.2);
+  box-shadow: 0 0 26px rgba(140,184,255,0.08), inset 0 0 0 1px rgba(255,255,255,0.04);
+}
+
+.monolith-line {
+  position: absolute;
+  left: 30px;
+  right: 30px;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255,255,255,0), rgba(214,233,255,0.32), rgba(255,255,255,0));
+}
+
+.monolith-line-a { top: 92px; }
+.monolith-line-b { bottom: 92px; }
+
+.monolith-side-glow {
+  position: absolute;
+  top: 38px;
+  bottom: 38px;
+  width: 18px;
+  right: 28px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,0.22), rgba(255,255,255,0));
+  filter: blur(6px);
+  opacity: 0.78;
+}
+
+.specular-sweep {
+  position: absolute;
+  left: 292px;
+  top: 94px;
+  width: 78px;
+  height: 392px;
+  background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,0.22), rgba(255,255,255,0));
+  filter: blur(12px);
+  transform: translateZ(156px) translateX(calc(var(--specular-shift) * 1px)) rotateZ(10deg);
+  opacity: calc(0.28 + var(--glow-strength) * 0.3);
+}
+
+.mist-plane {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: 12%;
+  height: 28%;
+  background:
+    radial-gradient(circle at 50% 40%, rgba(255,255,255,0.06), rgba(255,255,255,0) 54%),
+    radial-gradient(circle at 24% 60%, rgba(124,111,222,0.05), rgba(124,111,222,0) 58%),
+    radial-gradient(circle at 78% 58%, rgba(82,148,214,0.07), rgba(82,148,214,0) 56%);
+  filter: blur(34px);
+  opacity: var(--fog-opacity);
+  transform: translateZ(-200px);
+}
+
+.overlay {
+  position: absolute;
+  inset: 24px;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 18px;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.overlay > * { pointer-events: auto; }
+
+.scene-label {
+  justify-self: start;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(82,93,112,0.18);
+  background: rgba(12,15,22,0.52);
+  color: rgba(214,223,234,0.72);
+  backdrop-filter: blur(12px);
+}
+
+.phase-card {
+  align-self: end;
+  justify-self: start;
+  width: min(300px, 100%);
+  display: grid;
+  gap: 8px;
+  padding: 16px 18px 18px;
+  border-radius: 24px;
+  border: 1px solid rgba(82,93,112,0.18);
+  background: linear-gradient(180deg, rgba(12,15,22,0.72), rgba(7,9,14,0.84));
+  box-shadow: 0 24px 70px rgba(0,0,0,0.24), inset 0 1px 0 rgba(255,255,255,0.06);
+  backdrop-filter: blur(18px) saturate(120%);
+}
+
+.phase-card h2 {
+  font-size: clamp(24px, 3vw, 36px);
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+}
+
+.phase-card p {
+  font-size: 13px;
+  line-height: 1.62;
+  color: rgba(226,230,240,0.86);
+}
+
+.phase-note {
+  font-size: 11px;
+  line-height: 1.55;
+  color: rgba(214,223,234,0.62);
+}
+
+.beat-nav {
+  justify-self: end;
+  align-self: end;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.beat-dot {
+  width: 44px;
+  height: 44px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 999px;
+  border: 1px solid rgba(82,93,112,0.18);
+  background: rgba(12,15,22,0.56);
+  color: rgba(214,223,234,0.64);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+  transition: border-color 0.22s ease, color 0.22s ease, transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.beat-dot:hover {
+  color: rgba(239,243,248,0.9);
+  transform: translateY(-1px);
+}
+
+.beat-dot.active {
+  border-color: rgba(var(--accent-rgb), 0.42);
+  color: rgb(var(--accent-rgb));
+  box-shadow: 0 0 0 1px rgba(var(--accent-rgb), 0.12), 0 22px 56px rgba(0,0,0,0.22);
+}
+
+.beat-dot span {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+}
+
+.beat-stack {
+  display: grid;
+  gap: 0;
+  padding-top: 0;
+}
+
+.beat-card {
+  --card-accent: 124, 111, 222;
+  min-height: 118vh;
+  position: relative;
+  display: grid;
+  align-items: start;
+  padding: 0;
+}
+
+.beat-card-inner {
+  position: sticky;
+  top: 24vh;
+  width: min(216px, 100%);
+  margin-left: auto;
+  display: grid;
+  gap: 8px;
+  padding: 14px 16px 14px;
+  border-radius: 22px;
+  border: 1px solid rgba(82,93,112,0.12);
+  background:
+    linear-gradient(180deg, rgba(18,22,30,0.66), rgba(10,12,18,0.8)),
+    radial-gradient(circle at top right, rgba(var(--card-accent), 0.08), transparent 38%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+  backdrop-filter: blur(16px) saturate(118%);
+  opacity: 0.48;
+  transform: translateY(16px) scale(0.98);
+  transition: opacity 0.28s ease, transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease;
+}
+
+.beat-card.active .beat-card-inner {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  border-color: rgba(var(--card-accent), 0.34);
+  box-shadow: 0 0 0 1px rgba(var(--card-accent), 0.12), 0 26px 70px rgba(0,0,0,0.18);
+}
+
+.beat-index { color: rgb(var(--card-accent)); }
+
+.beat-card h3 {
+  font-size: 20px;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+}
+
+.beat-card p {
+  font-size: 12px;
+  line-height: 1.58;
+  color: var(--text2);
+}
+
+.beat-card .soft-note {
+  font-size: 11px;
+  line-height: 1.5;
+  color: rgba(239,243,248,0.7);
+}
+
+.footer-note {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 40px 24px;
+  display: grid;
+  gap: 10px;
+}
+
+.outro-links {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 40px 96px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.outro-links .link-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.outro-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(82,93,112,0.22);
+  background: rgba(13,15,20,0.7);
+  color: var(--text2);
+  font-size: 12px;
+  transition: color 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+}
+
+.outro-links a:hover {
+  color: var(--text);
+  border-color: rgba(var(--accent-rgb), 0.4);
+  transform: translateY(-1px);
+}
+
+@keyframes guide-flow {
+  to { stroke-dashoffset: -260; }
+}
+
+@keyframes ambient-drift {
+  0%, 100% { transform: translate(-50%, -48%) rotateX(calc(var(--object-rotate-x) * 1deg)) rotateY(calc(var(--object-rotate-y) * 1deg)) rotateZ(calc(var(--object-rotate-z) * 1deg)) scale(var(--object-scale)); }
+  50% { transform: translate(-50%, -47%) rotateX(calc(var(--object-rotate-x) * 1deg + 1deg)) rotateY(calc(var(--object-rotate-y) * 1deg - 1deg)) rotateZ(calc(var(--object-rotate-z) * 1deg + 1deg)) scale(calc(var(--object-scale) * 1.008)); }
+}
+
+.object-cluster.animated {
+  animation: ambient-drift 8.2s var(--ease-in-out) infinite;
+}
+
+@media (max-width: 1180px) {
+  .intro-grid,
+  .experience {
+    grid-template-columns: 1fr;
+  }
+
+  .stage-shell {
+    height: 82vh;
+    min-height: 680px;
+  }
+
+  .beat-card {
+    min-height: 90vh;
+  }
+}
+
+@media (max-width: 920px) {
+  .topbar {
+    height: auto;
+    min-height: var(--nav-h);
+    padding: 10px 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .topbar-nav {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    row-gap: 8px;
+    gap: 12px;
+  }
+  .page-shell { padding-top: calc(var(--nav-h) + 36px); }
+
+  .intro,
+  .experience,
+  .footer-note,
+  .outro-links {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .intro { padding-top: 58px; }
+
+  .stage-shell {
+    top: calc(var(--nav-h) + 12px);
+    height: 78vh;
+    min-height: 620px;
+    border-radius: 24px;
+  }
+
+  .overlay {
+    inset: 16px;
+    grid-template-rows: auto 1fr auto;
+  }
+
+  .phase-card {
+    width: min(100%, 300px);
+  }
+
+  .beat-dot {
+    width: 40px;
+    height: 40px;
+  }
+
+  .beat-card {
+    min-height: 84vh;
+  }
+
+  .beat-card-inner {
+    top: 18vh;
+    width: min(240px, 100%);
+  }
+
+  .object-cluster {
+    left: 52%;
+    width: 500px;
+    height: 500px;
+  }
+
+  .ring {
+    left: 92px;
+    top: 102px;
+    width: 312px;
+    height: 312px;
+  }
+
+  .monolith-stack {
+    inset: 54px;
+  }
+
+  .specular-sweep {
+    left: 254px;
+    height: 338px;
+  }
+}
+
+@media (max-width: 640px) {
+  .intro h1 {
+    font-size: clamp(34px, 10vw, 58px);
+  }
+
+  .phase-card h2 {
+    font-size: clamp(24px, 8vw, 32px);
+  }
+
+  .beat-card {
+    min-height: 72vh;
+  }
+
+  .beat-card h3 {
+    font-size: 22px;
+  }
+
+  .beat-card-inner {
+    position: static;
+    width: 100%;
+    margin-top: 12px;
+    transform: none;
+    opacity: 0.92;
+  }
+
+  .object-cluster {
+    left: 50%;
+    width: 420px;
+    height: 420px;
+  }
+
+  .ring {
+    left: 76px;
+    top: 84px;
+    width: 268px;
+    height: 268px;
+  }
+
+  .monolith-stack {
+    inset: 44px;
+  }
+
+  .specular-sweep {
+    left: 212px;
+    top: 78px;
+    width: 66px;
+    height: 276px;
+  }
+
+  .object-shadow {
+    left: 104px;
+    right: 104px;
+    bottom: 68px;
+  }
+
+  .caustic {
+    left: 118px;
+    right: 118px;
+    bottom: 90px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  .orbit-guide-glow,
+  .object-cluster,
+  .beat-card,
+  .beat-dot {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-brand">
+    <div class="sigil">df</div>
+    <span>Digital Fabric <span style="color:var(--text3)">/ Platform Architecture</span></span>
+  </div>
+  <nav class="topbar-nav">
+        <a href="index.html#hero">Home</a>
+    <a href="index.html#mini-sites">Mini Sites</a>
+    <a href="index.html#catalog">References</a>
+    <a href="index.html#nx-mcp-story">NX MCP</a>
+    <a href="index.html#about">About</a>
+  </nav>
+</div>
+
+<div class="page-shell">
+  <section class="intro">
+    <div class="intro-grid">
+      <div class="intro-copy">
+        <div class="intro-eyebrow">Experience lab / design system motion study</div>
+        <h1>One platform.<br><em>Every discipline.</em></h1>
+        <p>This page uses ambient scroll motion to walk through the five layers of a unified digital engineering platform: the governed infrastructure, the tool connections, the intelligence that drives decisions, the orchestration that closes loops, and the continuous evolution that makes each cycle better.</p>
+      </div>
+
+      <aside class="intro-note">
+        <div class="note-label">What this page is</div>
+        <p>An ambient motion study that carries real architectural meaning. The sticky stage and floating object create a premium scroll feel, while each beat maps to a real layer of the Digital Fabric platform.</p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="experience" id="motionExperience">
+    <div class="stage-shell" id="motionStage">
+      <div class="stage-viewport">
+        <div class="scene-sky"></div>
+        <div class="light-bloom"></div>
+
+        <div class="scene-world">
+          <div class="depth-grid"></div>
+          <div class="depth-orb" style="--x: 12%; --y: 22%; --size: 260px; --z: -280px; --blur: 48px; --opacity: 0.24; --color: rgba(124,111,222,0.62);"></div>
+          <div class="depth-orb" style="--x: 78%; --y: 18%; --size: 220px; --z: -160px; --blur: 40px; --opacity: 0.18; --color: rgba(82,148,214,0.68);"></div>
+
+          <svg class="scene-guide" viewBox="0 0 1200 900" aria-hidden="true">
+            <defs>
+              <filter id="pathGlow" x="-100%" y="-100%" width="300%" height="300%">
+                <feGaussianBlur stdDeviation="22"></feGaussianBlur>
+              </filter>
+              <mask id="guideMask">
+                <path d="M270 600C248 410 370 250 592 236C804 222 960 330 978 504C992 648 892 742 664 760C412 780 284 714 270 600Z" stroke="white" stroke-width="46" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+              </mask>
+              <linearGradient id="guideGradient" x1="230" y1="624" x2="952" y2="320" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#8cb8ff" stop-opacity="0.34"></stop>
+                <stop offset="56%" stop-color="#f2f7ff" stop-opacity="0.88"></stop>
+                <stop offset="100%" stop-color="#7c6fde" stop-opacity="0.58"></stop>
+              </linearGradient>
+            </defs>
+
+            <g mask="url(#guideMask)">
+              <circle id="orbitGlow" cx="270" cy="600" r="90"></circle>
+            </g>
+            <path id="orbitGuide" class="guide-path" d="M270 600C248 410 370 250 592 236C804 222 960 330 978 504C992 648 892 742 664 760C412 780 284 714 270 600Z"></path>
+            <use href="#orbitGuide" class="orbit-guide-base"></use>
+            <use href="#orbitGuide" class="orbit-guide-glow"></use>
+
+            <g class="orbit-cursor" id="orbitCursor">
+              <circle class="cursor-halo" r="18"></circle>
+              <circle class="cursor-core" r="6.5"></circle>
+            </g>
+          </svg>
+
+          <div class="mist-plane"></div>
+
+          <div class="object-cluster animated" id="objectCluster" aria-hidden="true">
+            <div class="object-halo"></div>
+            <div class="object-shadow"></div>
+            <div class="caustic"></div>
+            <div class="ring back"></div>
+            <div class="monolith-stack">
+              <div class="monolith-plate monolith-back"></div>
+              <div class="monolith-plate monolith-main">
+                <div class="monolith-window">
+                  <div class="window-core">
+                    <svg class="window-graph" viewBox="0 0 100 140" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+                      <!-- connection lines -->
+                      <line x1="50" y1="20" x2="24" y2="52"/>
+                      <line x1="50" y1="20" x2="76" y2="52"/>
+                      <line x1="24" y1="52" x2="50" y2="72"/>
+                      <line x1="76" y1="52" x2="50" y2="72"/>
+                      <line x1="50" y1="72" x2="30" y2="100"/>
+                      <line x1="50" y1="72" x2="70" y2="100"/>
+                      <line x1="30" y1="100" x2="50" y2="124"/>
+                      <line x1="70" y1="100" x2="50" y2="124"/>
+                      <!-- nodes -->
+                      <circle class="wg-bright" cx="50" cy="20" r="4.5"/>
+                      <circle class="wg-mid" cx="24" cy="52" r="3.5"/>
+                      <circle class="wg-mid" cx="76" cy="52" r="3.5"/>
+                      <circle class="wg-bright" cx="50" cy="72" r="5"/>
+                      <circle class="wg-dim" cx="30" cy="100" r="3"/>
+                      <circle class="wg-dim" cx="70" cy="100" r="3"/>
+                      <circle class="wg-bright" cx="50" cy="124" r="4"/>
+                    </svg>
+                  </div>
+                  <div class="window-ring"></div>
+                </div>
+                <div class="monolith-line monolith-line-a"></div>
+                <div class="monolith-line monolith-line-b"></div>
+                <div class="monolith-side-glow"></div>
+              </div>
+              <div class="monolith-plate monolith-front"></div>
+            </div>
+
+            <div class="specular-sweep"></div>
+            <div class="ring front"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="overlay">
+        <div class="scene-label">Digital Fabric / platform architecture</div>
+
+        <div class="phase-card">
+          <div class="phase-index" id="phaseIndex">01 / Foundation</div>
+          <h2 id="phaseTitle">Governed infrastructure</h2>
+          <p id="phaseSummary">MCP servers, remoting facades, and execution queues form the reliable base layer.</p>
+          <div class="phase-note" id="phaseNote">Every tool call passes through governed remoting before reaching NX, Teamcenter, or Simcenter.</div>
+        </div>
+
+        <div class="beat-nav" id="beatNav"></div>
+      </div>
+    </div>
+
+    <aside class="beat-stack" id="beatStack" aria-label="Scroll beats"></aside>
+  </section>
+
+  <section class="footer-note">
+    <div class="label">Five layers, one platform</div>
+    <p>Each scroll beat maps to a real layer of the Digital Fabric architecture: governed infrastructure, tool connectivity, embedded intelligence, closed-loop orchestration, and continuous evolution. The ambient motion is just the delivery vehicle.</p>
+  </section>
+
+  <div class="outro-links">
+    <p>For more depth on any layer, explore the full architecture references or the alpine digital thread experiment.</p>
+    <div class="link-row">
+      <a href="index.html">Return to homepage</a>
+      <a href="alpine-digital-thread.html">Open alpine study</a>
+    </div>
+  </div>
+</div>
+
+<script>
+(() => {
+  const beats = [
+    {
+      label: 'Foundation',
+      title: 'Governed infrastructure',
+      summary: 'MCP servers, remoting facades, and execution queues form the reliable base layer.',
+      note: 'Every tool call passes through governed remoting before reaching NX, Teamcenter, or Simcenter.',
+      accent: '133,121,229',
+      scene: {
+        cameraX: -5,
+        cameraY: -4,
+        cameraDepth: -72,
+        objectRotateX: -16,
+        objectRotateY: 20,
+        objectRotateZ: -9,
+        objectScale: 0.9,
+        ringTilt: -16,
+        glowStrength: 0.34,
+        gridOpacity: 0.06,
+        fogOpacity: 0.92,
+        specularShift: -20,
+        haloScale: 0.84
+      }
+    },
+    {
+      label: 'Connection',
+      title: 'Tool bridges',
+      summary: 'NX, Teamcenter, Simcenter, and Mendix linked through 68 MCP operations and a shared protocol.',
+      note: 'The same agent session can drive geometry in NX, traverse a BOM in Teamcenter, and launch a simulation in Simcenter.',
+      accent: '93,158,223',
+      scene: {
+        cameraX: -2,
+        cameraY: -2,
+        cameraDepth: -28,
+        objectRotateX: -12,
+        objectRotateY: 15,
+        objectRotateZ: -6,
+        objectScale: 0.97,
+        ringTilt: -10,
+        glowStrength: 0.46,
+        gridOpacity: 0.1,
+        fogOpacity: 0.82,
+        specularShift: -8,
+        haloScale: 0.92
+      }
+    },
+    {
+      label: 'Intelligence',
+      title: 'Embedded decisions',
+      summary: 'Intent classification, parametric generation, and rule-backed modeling turn instructions into engineered geometry.',
+      note: 'From CST airfoils to cargo ship benchmarks — the agent reads intent and drives NX through governed multi-step builds.',
+      accent: '72,206,152',
+      scene: {
+        cameraX: 2,
+        cameraY: 0,
+        cameraDepth: -2,
+        objectRotateX: -8,
+        objectRotateY: 8,
+        objectRotateZ: -2,
+        objectScale: 1.01,
+        ringTilt: -6,
+        glowStrength: 0.58,
+        gridOpacity: 0.12,
+        fogOpacity: 0.72,
+        specularShift: 10,
+        haloScale: 0.98
+      }
+    },
+    {
+      label: 'Orchestration',
+      title: 'Closed-loop execution',
+      summary: 'From field issue to redesign to simulation to manufacturing handoff — every step stays on the same governed thread.',
+      note: 'Human-in-the-loop gates keep accountability at every quality decision point.',
+      accent: '237,176,80',
+      scene: {
+        cameraX: 0,
+        cameraY: 1,
+        cameraDepth: 12,
+        objectRotateX: -5,
+        objectRotateY: -4,
+        objectRotateZ: 3,
+        objectScale: 1.05,
+        ringTilt: -2,
+        glowStrength: 0.68,
+        gridOpacity: 0.09,
+        fogOpacity: 0.64,
+        specularShift: 20,
+        haloScale: 1.08
+      }
+    },
+    {
+      label: 'Evolution',
+      title: 'Continuous improvement',
+      summary: 'Telemetry, service feedback, and benchmark-driven refinement make each design cycle better than the last.',
+      note: 'The governed record remembers — so the next engineering orbit starts from evidence, not guesswork.',
+      accent: '133,121,229',
+      scene: {
+        cameraX: -3,
+        cameraY: 0,
+        cameraDepth: -36,
+        objectRotateX: -10,
+        objectRotateY: -14,
+        objectRotateZ: 8,
+        objectScale: 0.96,
+        ringTilt: -8,
+        glowStrength: 0.4,
+        gridOpacity: 0.06,
+        fogOpacity: 0.88,
+        specularShift: -12,
+        haloScale: 0.9
+      }
+    }
+  ];
+
+  const sceneKeys = Object.keys(beats[0].scene);
+  const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const stage = document.getElementById('motionStage');
+  const beatStack = document.getElementById('beatStack');
+  const beatNav = document.getElementById('beatNav');
+  const phaseIndex = document.getElementById('phaseIndex');
+  const phaseTitle = document.getElementById('phaseTitle');
+  const phaseSummary = document.getElementById('phaseSummary');
+  const phaseNote = document.getElementById('phaseNote');
+  const orbitGuide = document.getElementById('orbitGuide');
+  const orbitCursor = document.getElementById('orbitCursor');
+  const orbitGlow = document.getElementById('orbitGlow');
+  const objectCluster = document.getElementById('objectCluster');
+
+  const totalBeats = beats.length;
+  let beatCards = [];
+  let navButtons = [];
+  let uiIndex = 0;
+  let rafId = 0;
+  let scrollTicking = false;
+
+  const currentScene = { progress: 0, ...beats[0].scene };
+  const targetScene = { progress: 0, ...beats[0].scene };
+
+  function clamp(value, min, max) {
+    return Math.min(max, Math.max(min, value));
+  }
+
+  function lerp(a, b, t) {
+    return a + (b - a) * t;
+  }
+
+  function escapeHtml(value) {
+    return String(value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function renderBeats() {
+    beatStack.innerHTML = beats.map((beat, index) => `
+      <article class="beat-card${index === 0 ? ' active' : ''}" data-index="${index}" style="--card-accent: ${beat.accent}" tabindex="-1">
+        <div class="beat-card-inner">
+          <div class="beat-index">${String(index + 1).padStart(2, '0')} / ${escapeHtml(beat.label)}</div>
+          <h3>${escapeHtml(beat.title)}</h3>
+          <p>${escapeHtml(beat.summary)}</p>
+          <div class="soft-note">${escapeHtml(beat.note)}</div>
+        </div>
+      </article>
+    `).join('');
+
+    beatCards = Array.from(beatStack.querySelectorAll('.beat-card'));
+  }
+
+  function renderNav() {
+    beatNav.innerHTML = beats.map((beat, index) => `
+      <button type="button" class="beat-dot${index === 0 ? ' active' : ''}" data-index="${index}" aria-current="${index === 0 ? 'step' : 'false'}" aria-label="Jump to ${escapeHtml(beat.label)}">
+        <span>${String(index + 1).padStart(2, '0')}</span>
+      </button>
+    `).join('');
+
+    navButtons = Array.from(beatNav.querySelectorAll('.beat-dot'));
+  }
+
+  function setCursor(progress) {
+    const length = orbitGuide.getTotalLength();
+    const point = orbitGuide.getPointAtLength(length * clamp(progress, 0, 1));
+    orbitCursor.setAttribute('transform', `translate(${point.x.toFixed(2)} ${point.y.toFixed(2)})`);
+    orbitGlow.setAttribute('cx', point.x.toFixed(2));
+    orbitGlow.setAttribute('cy', point.y.toFixed(2));
+  }
+
+  function applyScene() {
+    stage.style.setProperty('--camera-x', currentScene.cameraX.toFixed(4));
+    stage.style.setProperty('--camera-y', currentScene.cameraY.toFixed(4));
+    stage.style.setProperty('--camera-depth', currentScene.cameraDepth.toFixed(4));
+    stage.style.setProperty('--object-rotate-x', currentScene.objectRotateX.toFixed(4));
+    stage.style.setProperty('--object-rotate-y', currentScene.objectRotateY.toFixed(4));
+    stage.style.setProperty('--object-rotate-z', currentScene.objectRotateZ.toFixed(4));
+    stage.style.setProperty('--object-scale', currentScene.objectScale.toFixed(4));
+    stage.style.setProperty('--ring-tilt', currentScene.ringTilt.toFixed(4));
+    stage.style.setProperty('--glow-strength', currentScene.glowStrength.toFixed(4));
+    stage.style.setProperty('--grid-opacity', currentScene.gridOpacity.toFixed(4));
+    stage.style.setProperty('--fog-opacity', currentScene.fogOpacity.toFixed(4));
+    stage.style.setProperty('--specular-shift', currentScene.specularShift.toFixed(4));
+    stage.style.setProperty('--halo-scale', currentScene.haloScale.toFixed(4));
+    stage.style.setProperty('--phase-progress', currentScene.progress.toFixed(4));
+    setCursor(currentScene.progress);
+  }
+
+  function animateScene() {
+    rafId = 0;
+    let needsMore = false;
+
+    for (const key of [...sceneKeys, 'progress']) {
+      const delta = targetScene[key] - currentScene[key];
+      if (Math.abs(delta) > 0.001) {
+        currentScene[key] += delta * 0.14;
+        needsMore = true;
+      } else {
+        currentScene[key] = targetScene[key];
+      }
+    }
+
+    applyScene();
+
+    if (needsMore) {
+      rafId = window.requestAnimationFrame(animateScene);
+    }
+  }
+
+  function startAnimation() {
+    if (!rafId) {
+      rafId = window.requestAnimationFrame(animateScene);
+    }
+  }
+
+  function updateUi(index) {
+    if (index === uiIndex) {
+      return;
+    }
+
+    uiIndex = index;
+    const beat = beats[index];
+    document.documentElement.style.setProperty('--accent-rgb', beat.accent);
+    phaseIndex.textContent = `${String(index + 1).padStart(2, '0')} / ${beat.label}`;
+    phaseTitle.textContent = beat.title;
+    phaseSummary.textContent = beat.summary;
+    phaseNote.textContent = beat.note;
+
+    beatCards.forEach((card, cardIndex) => {
+      card.classList.toggle('active', cardIndex === index);
+    });
+
+    navButtons.forEach((button, buttonIndex) => {
+      const isActive = buttonIndex === index;
+      button.classList.toggle('active', isActive);
+      button.setAttribute('aria-current', isActive ? 'step' : 'false');
+    });
+  }
+
+  function mixScene(a, b, t) {
+    targetScene.progress = totalBeats === 1 ? 0 : (a.index + t) / (totalBeats - 1);
+    for (const key of sceneKeys) {
+      targetScene[key] = lerp(a.scene[key], b.scene[key], t);
+    }
+  }
+
+  function computeScrollState() {
+    if (!beatCards.length) {
+      return;
+    }
+
+    const viewportCenter = window.scrollY + window.innerHeight * 0.52;
+    const centers = beatCards.map((card) => {
+      const rect = card.getBoundingClientRect();
+      return window.scrollY + rect.top + rect.height / 2;
+    });
+
+    if (viewportCenter <= centers[0]) {
+      updateUi(0);
+      mixScene({ index: 0, scene: beats[0].scene }, { index: 1, scene: beats[1].scene }, 0);
+    } else if (viewportCenter >= centers[centers.length - 1]) {
+      updateUi(totalBeats - 1);
+      mixScene({ index: totalBeats - 2, scene: beats[totalBeats - 2].scene }, { index: totalBeats - 1, scene: beats[totalBeats - 1].scene }, 1);
+    } else {
+      for (let index = 0; index < centers.length - 1; index += 1) {
+        const start = centers[index];
+        const end = centers[index + 1];
+        if (viewportCenter >= start && viewportCenter <= end) {
+          const t = clamp((viewportCenter - start) / (end - start || 1), 0, 1);
+          const nearest = t < 0.5 ? index : index + 1;
+          updateUi(nearest);
+          mixScene({ index, scene: beats[index].scene }, { index: index + 1, scene: beats[index + 1].scene }, t);
+          break;
+        }
+      }
+    }
+
+    if (reduceMotionQuery.matches) {
+      currentScene.progress = targetScene.progress;
+      for (const key of sceneKeys) {
+        currentScene[key] = targetScene[key];
+      }
+      applyScene();
+      return;
+    }
+
+    startAnimation();
+  }
+
+  function requestScrollState() {
+    if (scrollTicking) {
+      return;
+    }
+
+    scrollTicking = true;
+    window.requestAnimationFrame(() => {
+      scrollTicking = false;
+      computeScrollState();
+    });
+  }
+
+  function scrollToBeat(index) {
+    const card = beatCards[index];
+    if (!card) {
+      return;
+    }
+
+    card.scrollIntoView({ behavior: reduceMotionQuery.matches ? 'auto' : 'smooth', block: 'center' });
+    window.setTimeout(() => {
+      card.focus({ preventScroll: true });
+    }, reduceMotionQuery.matches ? 0 : 220);
+  }
+
+  function handleReducedMotionChange() {
+    objectCluster.classList.toggle('animated', !reduceMotionQuery.matches);
+
+    if (reduceMotionQuery.matches) {
+      if (rafId) {
+        window.cancelAnimationFrame(rafId);
+        rafId = 0;
+      }
+      currentScene.progress = targetScene.progress;
+      for (const key of sceneKeys) {
+        currentScene[key] = targetScene[key];
+      }
+      applyScene();
+      return;
+    }
+
+    startAnimation();
+  }
+
+  renderBeats();
+  renderNav();
+  objectCluster.classList.toggle('animated', !reduceMotionQuery.matches);
+
+  beatCards.forEach((card, index) => {
+    card.addEventListener('focusin', () => updateUi(index));
+  });
+
+  navButtons.forEach((button, index) => {
+    button.addEventListener('click', () => scrollToBeat(index));
+  });
+
+  document.documentElement.style.setProperty('--accent-rgb', beats[0].accent);
+  applyScene();
+  requestScrollState();
+
+  window.addEventListener('scroll', requestScrollState, { passive: true });
+  window.addEventListener('resize', requestScrollState);
+
+  if (typeof reduceMotionQuery.addEventListener === 'function') {
+    reduceMotionQuery.addEventListener('change', handleReducedMotionChange);
+  } else if (typeof reduceMotionQuery.addListener === 'function') {
+    reduceMotionQuery.addListener(handleReducedMotionChange);
+  }
+})();
+</script>
+</body>
+</html>
+

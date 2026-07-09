@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agentic Digital Thread 3D Experience</title>
+<link rel="stylesheet" href="styles/fabric.css">
+<style>
+:root { --nav-h: 52px; }
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; }
+body {
+  color: var(--text);
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at 16% 8%, rgba(72,206,152,0.1), transparent 28%),
+    radial-gradient(circle at 82% 10%, rgba(133,121,229,0.14), transparent 34%),
+    linear-gradient(180deg, #05070d 0%, #090d16 42%, #04060a 100%);
+}
+a { color: inherit; text-decoration: none; }
+.topbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: var(--nav-h); display: flex; align-items: center; justify-content: space-between;
+  gap: 14px; padding: 0 22px;
+  border-bottom: 1px solid rgba(82,93,112,0.22);
+  background: rgba(13,15,20,0.86); backdrop-filter: blur(14px);
+}
+.topbar-brand { display: inline-flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 500; }
+.topbar-brand .sigil {
+  width: 22px; height: 22px; border-radius: 6px; border: 1px solid rgba(72,206,152,0.4);
+  display: grid; place-items: center; color: var(--teal); font-family: "IBM Plex Mono", monospace; font-size: 11px;
+}
+.topbar-nav { display: flex; align-items: center; gap: 18px; }
+.topbar-nav a { color: var(--text2); font-size: 12px; }
+.topbar-nav a:hover, .topbar-nav a.active { color: var(--text); }
+.page { padding-top: var(--nav-h); }
+.hero, .controls, .shell, .blueprint { max-width: 1400px; margin: 0 auto; }
+.hero { padding: 68px 34px 28px; display: grid; gap: 14px; }
+.eyebrow, .label { font-family: "IBM Plex Mono", monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); }
+.hero h1 { margin: 0; font-size: clamp(42px, 5vw, 72px); line-height: 1.02; letter-spacing: -0.045em; }
+.hero p { margin: 0; max-width: 920px; color: var(--text2); font-size: 15px; line-height: 1.7; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.btn {
+  border: 1px solid rgba(82,93,112,0.3); border-radius: 999px; padding: 9px 14px;
+  background: rgba(14,18,25,0.8); color: var(--text2); font-size: 12px; letter-spacing: 0.03em;
+}
+.btn:hover { color: var(--text); border-color: rgba(72,206,152,0.38); }
+.btn.primary {
+  color: #07110d; border-color: rgba(93,158,223,0.66);
+  background: linear-gradient(135deg, rgba(72,206,152,0.95), rgba(93,158,223,0.9));
+  font-weight: 600;
+}
+.controls {
+  margin-top: 6px;
+  padding: 12px 16px;
+  border: 1px solid rgba(82,93,112,0.22); border-radius: 18px;
+  background: linear-gradient(180deg, rgba(18,22,30,0.96), rgba(10,12,18,0.96));
+  display: grid; gap: 10px;
+}
+.row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.pill {
+  border: 1px solid rgba(82,93,112,0.24); border-radius: 999px; padding: 7px 10px;
+  background: rgba(14,18,25,0.86); color: var(--text2); font-size: 11px; text-transform: uppercase;
+  letter-spacing: 0.05em; cursor: pointer;
+}
+.pill.active { border-color: rgba(72,206,152,0.4); background: rgba(72,206,152,0.14); color: var(--text); }
+.controls select {
+  border: 1px solid rgba(82,93,112,0.32); border-radius: 10px; padding: 7px 8px;
+  background: rgba(8,10,15,0.9); color: var(--text2); font-size: 12px;
+}
+#modeCopy { color: var(--text2); font-size: 13px; line-height: 1.5; }
+#mobileNote { color: var(--text3); font-size: 11px; line-height: 1.5; }
+.shell {
+  margin-top: 14px; padding: 0 34px 58px;
+  display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr); gap: 16px; align-items: start;
+}
+.card {
+  border: 1px solid rgba(82,93,112,0.22); border-radius: 20px;
+  background: linear-gradient(180deg, rgba(18,22,30,0.96), rgba(10,12,18,0.96));
+  box-shadow: 0 22px 60px rgba(0,0,0,0.24);
+}
+.scene { padding: 14px; display: grid; gap: 12px; }
+.scene-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.scene-title { font-size: 20px; letter-spacing: -0.02em; }
+.scene-note { font-size: 12px; color: var(--text3); }
+.canvas-wrap {
+  position: relative; min-height: 620px; overflow: hidden; border-radius: 16px;
+  border: 1px solid rgba(82,93,112,0.2);
+  background:
+    radial-gradient(circle at 20% 18%, rgba(72,206,152,0.08), transparent 32%),
+    radial-gradient(circle at 82% 12%, rgba(133,121,229,0.08), transparent 34%),
+    linear-gradient(180deg, rgba(9,11,16,0.96), rgba(5,7,11,0.98));
+}
+#threadCanvas { width: 100%; height: 100%; display: block; }
+.scene-overlay { position: absolute; inset: 0; pointer-events: none; display: flex; flex-direction: column; justify-content: space-between; padding: 12px; }
+.overlay-row { display: flex; justify-content: space-between; gap: 8px; }
+.overlay-chip {
+  border: 1px solid rgba(82,93,112,0.28); border-radius: 999px; padding: 5px 9px;
+  background: rgba(11,14,20,0.9); color: var(--text2); font-size: 11px;
+}
+.timeline {
+  border: 1px solid rgba(82,93,112,0.2); border-radius: 14px; padding: 10px;
+  background: rgba(9,12,18,0.9);
+}
+.timeline-track { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; margin-top: 8px; }
+.step {
+  border: 1px solid rgba(82,93,112,0.22); border-radius: 10px; padding: 7px 8px; text-align: left;
+  background: rgba(16,19,27,0.88); color: var(--text2); font-size: 11px; cursor: pointer;
+}
+.step.active { border-color: rgba(72,206,152,0.4); background: rgba(72,206,152,0.12); color: var(--text); }
+.panel { padding: 14px; display: grid; gap: 10px; min-height: 742px; }
+.panel h2 { margin: 0; font-size: 24px; letter-spacing: -0.03em; line-height: 1.1; }
+.panel p { margin: 0; color: var(--text2); font-size: 13px; line-height: 1.62; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag { font-family: "IBM Plex Mono", monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text2); border: 1px solid rgba(82,93,112,0.24); border-radius: 999px; padding: 4px 8px; background: rgba(16,19,28,0.85); }
+.block { border: 1px solid rgba(82,93,112,0.2); border-radius: 12px; background: rgba(9,12,18,0.92); padding: 10px; display: grid; gap: 7px; }
+.list { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; }
+.list li { color: var(--text2); font-size: 12px; line-height: 1.48; padding-left: 10px; position: relative; }
+.list li::before { content: ""; position: absolute; left: 0; top: 0.52em; width: 5px; height: 5px; border-radius: 50%; background: rgba(93,158,223,0.8); }
+.connection-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+.connection-cell { border: 1px solid rgba(82,93,112,0.2); border-radius: 10px; padding: 6px 7px; background: rgba(16,19,27,0.84); }
+.k { font-family: "IBM Plex Mono", monospace; font-size: 9px; color: var(--text3); letter-spacing: 0.1em; text-transform: uppercase; }
+.v { margin-top: 4px; color: var(--text2); font-size: 12px; line-height: 1.4; }
+.empty { color: var(--text3); font-size: 12px; }
+.blueprint {
+  margin-top: 4px; padding: 0 34px 70px;
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px;
+}
+.blueprint .card { padding: 14px; display: grid; gap: 8px; }
+.blueprint h3 { margin: 0; font-size: 20px; letter-spacing: -0.02em; }
+.blueprint p { margin: 0; color: var(--text2); font-size: 13px; line-height: 1.6; }
+.blueprint ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; }
+.blueprint li { color: var(--text2); font-size: 12px; line-height: 1.48; border: 1px solid rgba(82,93,112,0.2); border-radius: 10px; padding: 7px 8px; background: rgba(12,15,22,0.9); }
+pre {
+  margin: 0; padding: 10px; border: 1px solid rgba(82,93,112,0.24); border-radius: 10px;
+  background: rgba(7,10,15,0.95); color: #d3dced; font-size: 11px; line-height: 1.56; overflow: auto;
+  font-family: "IBM Plex Mono", monospace;
+}
+#fallback { display: none; position: absolute; inset: 0; align-items: center; justify-content: center; text-align: center; padding: 20px; background: rgba(8,10,15,0.96); color: var(--text2); font-size: 13px; line-height: 1.58; }
+@media (max-width: 1240px) {
+  .shell, .blueprint { grid-template-columns: 1fr; }
+  .timeline-track { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .canvas-wrap { min-height: 520px; }
+  .panel { min-height: auto; }
+}
+@media (max-width: 860px) {
+  .hero, .shell, .blueprint { padding-left: 20px; padding-right: 20px; }
+  .topbar { min-height: var(--nav-h); height: auto; padding: 10px 14px; flex-wrap: wrap; justify-content: center; }
+  .topbar-nav { width: 100%; justify-content: center; flex-wrap: wrap; row-gap: 8px; }
+  .page { padding-top: calc(var(--nav-h) + 34px); }
+  .timeline-track, .connection-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a class="topbar-brand" href="index.html"><span class="sigil">df</span><span>Digital Fabric <span style="color:var(--text3)">/ Siemens DISW</span></span></a>
+  <nav class="topbar-nav">
+        <a href="index.html#hero">Home</a>
+    <a href="index.html#mini-sites">Mini Sites</a>
+    <a href="index.html#catalog">References</a>
+    <a href="index.html#nx-mcp-story">NX MCP</a>
+    <a href="index.html#about">About</a>
+  </nav>
+</div>
+
+<main class="page">
+  <section class="hero">
+    <div class="eyebrow">Flagship Spatial Layer</div>
+    <h1>Agentic Digital Thread:<br>From Signal to Disposition</h1>
+    <p>This page applies a hybrid pattern: one premium 3D command center for orientation and progression, plus 2D precision panels for scenario depth, contracts, prompts, and approval gates.</p>
+    <div class="hero-actions">
+      <a class="btn primary" href="#thread">Start guided walkthrough</a>
+      <a class="btn" href="#thread">Explore architecture</a>
+      <a class="btn" href="#thread">Inspect prompts</a>
+    </div>
+  </section>
+
+  <section class="controls" id="thread">
+    <div class="row">
+      <span class="label">Mode</span>
+      <button class="pill active" data-mode="story">Story</button>
+      <button class="pill" data-mode="explore">Explore</button>
+      <button class="pill" data-mode="xray">X-ray</button>
+      <button class="pill" data-mode="prompt">Prompt</button>
+      <span class="label" style="margin-left:12px;">Role</span>
+      <select id="roleSel"><option value="exec">Exec</option><option value="consultant">Solutions Consultant</option><option value="architect">Architect</option><option value="developer">Developer</option></select>
+      <span class="label">Domain</span>
+      <select id="domainSel"><option value="quality">Quality</option><option value="change">Change</option><option value="manufacturing">Manufacturing</option><option value="service">Service</option></select>
+      <span class="label" style="margin-left:12px;">View</span>
+      <button class="pill active" data-view="scenario">Scenario</button>
+      <button class="pill" data-view="data">Data flow</button>
+      <button class="pill" data-view="arch">Architecture</button>
+    </div>
+    <div id="modeCopy">Story mode auto-glides through the closed loop while packets and highlights reveal progression.</div>
+    <div id="mobileNote">Mobile note: stage selection and precision panels are fully supported; desktop gives the smoothest free-camera fidelity.</div>
+  </section>
+
+  <section class="shell">
+    <article class="card scene">
+      <div class="scene-head"><div><div class="label">Spatial thread environment</div><div class="scene-title">Seven zones, one closed loop</div></div><div class="scene-note">Click platforms or route edges for details.</div></div>
+      <div class="canvas-wrap">
+        <canvas id="threadCanvas"></canvas>
+        <div class="scene-overlay">
+          <div class="overlay-row"><div class="overlay-chip" id="chipMode">Story mode</div><div class="overlay-chip" id="chipRole">Role: Exec</div></div>
+          <div class="overlay-row"><div class="overlay-chip" id="chipDomain">Domain: Quality</div><div class="overlay-chip" id="chipSel">Selection: Product Definition</div></div>
+        </div>
+        <div id="fallback">WebGL scene failed to initialize. Precision panel data and prompt structure remain available.</div>
+      </div>
+      <div class="timeline">
+        <div class="label">Thread timeline</div>
+        <div class="timeline-track" id="timeline"></div>
+      </div>
+    </article>
+
+    <aside class="card panel">
+      <div class="label" id="panelMode">Story mode</div>
+      <h2 id="panelTitle">Product Definition</h2>
+      <p id="panelSummary"></p>
+      <div class="tags" id="panelTags"></div>
+
+      <section class="block"><div class="label" id="primaryLabel">Scenario focus</div><ul class="list" id="primaryList"></ul></section>
+      <section class="block"><div class="label" id="secondaryLabel">Spot checks</div><ul class="list" id="secondaryList"></ul></section>
+
+      <section class="block">
+        <div class="label">Connection inspector</div>
+        <div class="empty" id="connEmpty">Select a route packet or edge to view transport, payloads, trigger, and evidence.</div>
+        <div class="connection-grid" id="connGrid" style="display:none"></div>
+      </section>
+
+      <section class="block"><div class="label">Prompt pane</div><div class="connection-grid" id="promptGrid"></div></section>
+    </aside>
+  </section>
+
+  <section class="blueprint">
+    <article class="card">
+      <h3>Stack recommendation applied</h3>
+      <p>Kept the existing site shell intact and added one flagship 3D layer. This static implementation uses Three.js now, and can migrate to React Three Fiber + Drei + Motion when the experience becomes productized.</p>
+      <ul>
+        <li>3D for orientation and wow.</li>
+        <li>2D panel for precision and depth.</li>
+        <li>Mode system: Story, Explore, X-ray, Prompt.</li>
+        <li>Model-driven rendering so scenarios can be added without scene rewrites.</li>
+      </ul>
+    </article>
+    <article class="card">
+      <h3>Canonical model contract</h3>
+<pre>type ThreadStage = {
+  id: string
+  title: string
+  kind: 'system' | 'agent' | 'human' | 'event' | 'artifact'
+  summary: string
+  systems: string[]
+  objects: string[]
+  inputs: string[]
+  outputs: string[]
+}
+
+type ThreadConnection = {
+  id: string
+  source: string
+  target: string
+  transport: 'api' | 'event' | 'workflow' | 'manual'
+  payloads: string[]
+  trigger: string
+  evidence: string[]
+}</pre>
+    </article>
+  </section>
+</main>
+
+<script type="module">
+import * as THREE from './vendor/three/three.module.js';
+import { OrbitControls } from './vendor/three/OrbitControls.js';
+const stages = [
+  { id:'product', title:'Product Definition', kind:'system', summary:'Teamcenter anchors released definition before scope decisions.', systems:['Teamcenter','NX','Polarion'], objects:['Revision','Process plan'], inputs:['Issue signal','Baseline'], outputs:['Impacted definitions'], agent:['Scope decomposition'], human:['Engineering gate'], fail:['Wrong revision context'], prompt:{ role:'Definition impact agent', goal:'Map affected definition scope', rules:'Facts before inference' } },
+  { id:'mfg', title:'Manufacturing Execution', kind:'system', summary:'Execution context maps issue spread by order, lot, and operation.', systems:['Opcenter','Tecnomatix'], objects:['Work order','Lot'], inputs:['Impacted definitions'], outputs:['Impacted orders'], agent:['Variance clustering'], human:['Mfg containment gate'], fail:['Stale execution snapshot'], prompt:{ role:'Execution investigation agent', goal:'Locate operational impact', rules:'Deterministic joins first' } },
+  { id:'signal', title:'Operational Signal', kind:'event', summary:'Telemetry and shop-floor observations become evidence packets.', systems:['Insights Hub','Event bus'], objects:['Anomaly event','Inspection record'], inputs:['Sensor trends','Operator note'], outputs:['Evidence packet'], agent:['Confidence calibration'], human:['Signal validation gate'], fail:['False positives'], prompt:{ role:'Signal triage agent', goal:'Normalize noisy input', rules:'Preserve provenance' } },
+  { id:'quality', title:'Quality Workflow', kind:'event', summary:'Workflow converts evidence into formal nonconformance and disposition paths.', systems:['Mendix','Case store'], objects:['NCR','Disposition option'], inputs:['Evidence packet','Order context'], outputs:['Disposition candidates'], agent:['Option generation'], human:['Quality gate'], fail:['Missing evidence at gate'], prompt:{ role:'Disposition support agent', goal:'Recommend next actions', rules:'Do not hide missing evidence' } },
+  { id:'orchestrate', title:'Agent Orchestration', kind:'agent', summary:'Agent decomposition, tool routing, provenance checks, confidence policy.', systems:['Tool router','Policy guardrails'], objects:['Tool plan','Evidence ledger'], inputs:['Case context','Role lens'], outputs:['Recommendation draft'], agent:['Tool selection'], human:['Policy approval gate'], fail:['Overconfident output'], prompt:{ role:'Orchestration agent', goal:'Coordinate cross-stack tools', rules:'No invention beyond evidence' } },
+  { id:'human', title:'Human Disposition', kind:'human', summary:'Accountable owners approve final disposition and release-impact decisions.', systems:['Mendix approvals','Change control'], objects:['Approval record','Disposition'], inputs:['Recommendation package'], outputs:['Approved disposition'], agent:['Briefing synthesis'], human:['Cross-functional approval'], fail:['Approval with incomplete evidence'], prompt:{ role:'Approval briefing agent', goal:'Prepare decision brief', rules:'Separate facts and inferences' } },
+  { id:'feedback', title:'Feedback Optimization', kind:'artifact', summary:'Outcomes tune process, policy, and prompt rules for the next cycle.', systems:['Teamcenter','Policy store'], objects:['Outcome metric','Policy update'], inputs:['Disposition outcome'], outputs:['Improved baseline'], agent:['Pattern detection'], human:['Platform owner gate'], fail:['Policy drift'], prompt:{ role:'Continuous improvement agent', goal:'Convert outcomes to controlled updates', rules:'Gate changes and keep rollback path' } }
+];
+
+const links = [
+  { id:'l1', source:'signal', target:'quality', transport:'event', payloads:['anomaly packet'], trigger:'threshold breach', evidence:['timestamp','confidence'] },
+  { id:'l2', source:'quality', target:'product', transport:'workflow', payloads:['impact ask'], trigger:'triage complete', evidence:['case state'] },
+  { id:'l3', source:'product', target:'mfg', transport:'api', payloads:['revision scope'], trigger:'scope locked', evidence:['baseline status'] },
+  { id:'l4', source:'mfg', target:'orchestrate', transport:'api', payloads:['order impact'], trigger:'containment analysis', evidence:['mapping quality'] },
+  { id:'l5', source:'product', target:'orchestrate', transport:'api', payloads:['definition context'], trigger:'tool plan needs definition', evidence:['schema check'] },
+  { id:'l6', source:'orchestrate', target:'human', transport:'manual', payloads:['decision brief'], trigger:'recommendation ready', evidence:['confidence + risk'] },
+  { id:'l7', source:'human', target:'feedback', transport:'workflow', payloads:['approved disposition'], trigger:'decision recorded', evidence:['approver signatures'] },
+  { id:'l8', source:'feedback', target:'product', transport:'workflow', payloads:['baseline update'], trigger:'post-action review', evidence:['outcome KPI'] },
+  { id:'l9', source:'feedback', target:'orchestrate', transport:'event', payloads:['policy tuning'], trigger:'optimization publish', evidence:['policy diff'] }
+];
+
+const positions = {
+  product:new THREE.Vector3(-6.1,0,-0.8),
+  mfg:new THREE.Vector3(-2.8,0,-4.8),
+  signal:new THREE.Vector3(3.1,0,-5),
+  quality:new THREE.Vector3(6.4,0,-0.6),
+  orchestrate:new THREE.Vector3(3.2,0,4.8),
+  human:new THREE.Vector3(-2.7,0,4.9),
+  feedback:new THREE.Vector3(0.2,0,0.8)
+};
+const kindColor = { system:0x5d9edf, event:0xedb050, agent:0x48ce98, human:0xdb7264, artifact:0x8579e5 };
+const linkColor = { api:0x5d9edf, event:0x48ce98, workflow:0x8579e5, manual:0xedb050 };
+const modeText = {
+  story:'Story mode auto-glides through the closed loop while packets and highlights reveal progression.',
+  explore:'Explore mode enables free orbit. Select any platform or route for deeper inspection.',
+  xray:'X-ray mode strips decorative mass and emphasizes contracts, integrations, and trust boundaries.',
+  prompt:'Prompt mode foregrounds role, goal, evidence requirements, and escalation constraints.'
+};
+
+const state = { mode:'story', view:'scenario', role:'exec', domain:'quality', stageId:'product', linkId:null, storyAt:0, lastStep:performance.now() };
+const refs = { renderer:null, scene:null, camera:null, controls:null, stageMap:new Map(), ringMap:new Map(), linkMap:new Map(), packets:[], ray:new THREE.Raycaster(), mouse:new THREE.Vector2(), camPos:new THREE.Vector3(0,7.8,13.8), look:new THREE.Vector3(0,0.3,0), lookNow:new THREE.Vector3(), hover:null, floor:null };
+
+const modeBtns = [...document.querySelectorAll('[data-mode]')];
+const viewBtns = [...document.querySelectorAll('[data-view]')];
+const timeline = document.getElementById('timeline');
+const modeCopy = document.getElementById('modeCopy');
+const roleSel = document.getElementById('roleSel');
+const domainSel = document.getElementById('domainSel');
+const chipMode = document.getElementById('chipMode');
+const chipRole = document.getElementById('chipRole');
+const chipDomain = document.getElementById('chipDomain');
+const chipSel = document.getElementById('chipSel');
+const panelMode = document.getElementById('panelMode');
+const panelTitle = document.getElementById('panelTitle');
+const panelSummary = document.getElementById('panelSummary');
+const panelTags = document.getElementById('panelTags');
+const primaryLabel = document.getElementById('primaryLabel');
+const secondaryLabel = document.getElementById('secondaryLabel');
+const primaryList = document.getElementById('primaryList');
+const secondaryList = document.getElementById('secondaryList');
+const connEmpty = document.getElementById('connEmpty');
+const connGrid = document.getElementById('connGrid');
+const promptGrid = document.getElementById('promptGrid');
+const fallback = document.getElementById('fallback');
+
+const roleName = { exec:'Exec', consultant:'Solutions Consultant', architect:'Architect', developer:'Developer' };
+const viewName = { scenario:'Scenario', data:'Data flow', arch:'Architecture' };
+
+const stageById = (id) => stages.find((s) => s.id === id);
+const linkById = (id) => links.find((l) => l.id === id);
+
+function setList(el, items) {
+  el.innerHTML = '';
+  items.forEach((t) => {
+    const li = document.createElement('li');
+    li.textContent = t;
+    el.appendChild(li);
+  });
+}
+
+function renderTimeline() {
+  timeline.innerHTML = '';
+  stages.forEach((stage, i) => {
+    const b = document.createElement('button');
+    b.className = `step${stage.id === state.stageId ? ' active' : ''}`;
+    b.textContent = `${String(i + 1).padStart(2,'0')} ${stage.title}`;
+    b.onclick = () => { state.storyAt = i; state.lastStep = performance.now(); selectStage(stage.id); };
+    timeline.appendChild(b);
+  });
+}
+
+function updateConnectionPanel() {
+  if (!state.linkId) {
+    connGrid.style.display = 'none';
+    connEmpty.style.display = 'block';
+    connGrid.innerHTML = '';
+    return;
+  }
+  const l = linkById(state.linkId);
+  const src = stageById(l.source)?.title || l.source;
+  const dst = stageById(l.target)?.title || l.target;
+  connEmpty.style.display = 'none';
+  connGrid.style.display = 'grid';
+  connGrid.innerHTML = [
+    ['Route', `${src} -> ${dst}`],
+    ['Transport', l.transport],
+    ['Trigger', l.trigger],
+    ['Payloads', l.payloads.join('; ')],
+    ['Evidence', l.evidence.join('; ')],
+    ['Why this edge', 'Defines contract, trigger semantics, and failure questions.']
+  ].map(([k,v]) => `<div class="connection-cell"><div class="k">${k}</div><div class="v">${v}</div></div>`).join('');
+}
+
+function updatePromptPanel(stage) {
+  const p = stage.prompt;
+  promptGrid.innerHTML = [
+    ['Role', p.role],
+    ['Goal', p.goal],
+    ['Rules', p.rules],
+    ['Escalation', stage.human[0]]
+  ].map(([k,v]) => `<div class="connection-cell"><div class="k">${k}</div><div class="v">${v}</div></div>`).join('');
+}
+function updatePanel() {
+  const s = stageById(state.stageId);
+  panelMode.textContent = `${viewName[state.view]} | ${state.mode.toUpperCase()} mode`;
+  panelTitle.textContent = s.title;
+  panelSummary.textContent = s.summary;
+  chipMode.textContent = `${state.mode[0].toUpperCase()}${state.mode.slice(1)} mode`;
+  chipRole.textContent = `Role: ${roleName[state.role]}`;
+  chipDomain.textContent = `Domain: ${state.domain[0].toUpperCase()}${state.domain.slice(1)}`;
+  chipSel.textContent = `Selection: ${s.title}`;
+  panelTags.innerHTML = '';
+  [s.kind, s.systems.join(' / '), `${links.filter((l) => l.source === s.id || l.target === s.id).length} linked routes`].forEach((t) => {
+    const span = document.createElement('span');
+    span.className = 'tag';
+    span.textContent = t;
+    panelTags.appendChild(span);
+  });
+
+  if (state.view === 'scenario') {
+    primaryLabel.textContent = 'Scenario focus';
+    secondaryLabel.textContent = 'Spot checks';
+    setList(primaryList, [`Systems in play: ${s.systems.join(', ')}`, `Objects: ${s.objects.join(', ')}`, `Role lens: ${roleName[state.role]} perspective`]);
+    setList(secondaryList, [
+      `System of record: ${s.systems[0]}`,
+      `Real object moving: ${s.objects[0]}`,
+      `Transition type: ${[...new Set(links.filter((l) => l.source === s.id || l.target === s.id).map((l) => l.transport))].join(', ')}`,
+      `Agent value: ${s.agent[0]}`,
+      `Human gate: ${s.human[0]}`,
+      `Likely failure: ${s.fail[0]}`
+    ]);
+  } else if (state.view === 'data') {
+    primaryLabel.textContent = 'Inputs and outputs';
+    secondaryLabel.textContent = 'Contracts and triggers';
+    setList(primaryList, [`Inputs: ${s.inputs.join('; ')}`, `Outputs: ${s.outputs.join('; ')}`, `Objects: ${s.objects.join('; ')}`]);
+    setList(secondaryList, links.filter((l) => l.source === s.id || l.target === s.id).map((l) => `${l.source === s.id ? 'Outbound' : 'Inbound'} ${l.transport}: ${l.trigger}`));
+  } else {
+    primaryLabel.textContent = 'Architecture view';
+    secondaryLabel.textContent = 'Approvals and failure boundaries';
+    setList(primaryList, [`Systems: ${s.systems.join('; ')}`, `Agent responsibility: ${s.agent.join('; ')}`]);
+    setList(secondaryList, [`Approvals: ${s.human.join('; ')}`, `Failure modes: ${s.fail.join('; ')}`]);
+  }
+
+  updatePromptPanel(s);
+  updateConnectionPanel();
+  renderTimeline();
+}
+
+function modeOffsets() {
+  return state.mode === 'story' ? [0.2,4.4,6.8] :
+    state.mode === 'xray' ? [0.3,7.2,10] :
+    state.mode === 'prompt' ? [-0.2,3.8,5.2] :
+    [0,7.8,13.8];
+}
+
+function setCameraTargets() {
+  if (state.mode === 'explore') {
+    refs.camPos.set(0,7.8,13.8);
+    refs.look.set(0,0.3,0);
+    return;
+  }
+  const p = positions[state.stageId];
+  const [x,y,z] = modeOffsets();
+  refs.camPos.copy(p).add(new THREE.Vector3(x,y,z));
+  refs.look.copy(p).add(new THREE.Vector3(0,0.45,0));
+}
+
+function applyVisualState() {
+  refs.stageMap.forEach((obj, id) => {
+    const active = id === state.stageId;
+    const hover = id === refs.hover;
+    obj.mesh.material.emissiveIntensity = active ? 0.42 : hover ? 0.16 : 0.06;
+    obj.mesh.scale.setScalar(active ? 1.08 : 1);
+    obj.mesh.material.wireframe = state.mode === 'xray';
+    obj.mesh.material.opacity = state.mode === 'xray' ? 0.34 : 0.96;
+    const ring = refs.ringMap.get(id);
+    ring.material.opacity = active ? 0.72 : 0.24;
+  });
+  refs.linkMap.forEach((obj, id) => {
+    const active = id === state.linkId;
+    obj.mesh.material.opacity = state.mode === 'xray' ? 0.9 : active ? 0.95 : 0.38;
+    obj.mesh.material.emissiveIntensity = active ? 0.55 : state.mode === 'xray' ? 0.22 : 0.08;
+  });
+  refs.packets.forEach((p) => { p.mesh.visible = state.mode !== 'prompt'; p.mesh.material.opacity = state.mode === 'xray' ? 0.9 : 0.78; });
+  refs.floor.visible = state.mode !== 'xray';
+}
+
+function selectStage(id) {
+  state.stageId = id;
+  state.linkId = null;
+  setCameraTargets();
+  applyVisualState();
+  updatePanel();
+}
+
+function selectLink(id) {
+  state.linkId = id;
+  updateConnectionPanel();
+  applyVisualState();
+}
+
+function onMode(mode) {
+  state.mode = mode;
+  state.lastStep = performance.now();
+  modeBtns.filter((b) => b.dataset.mode).forEach((b) => b.classList.toggle('active', b.dataset.mode === mode));
+  modeCopy.textContent = modeText[mode];
+  setCameraTargets();
+  applyVisualState();
+  updatePanel();
+}
+
+function onView(view) {
+  state.view = view;
+  viewBtns.filter((b) => b.dataset.view).forEach((b) => b.classList.toggle('active', b.dataset.view === view));
+  updatePanel();
+}
+
+function makeLabel(text, color) {
+  const c = document.createElement('canvas');
+  c.width = 420; c.height = 96;
+  const x = c.getContext('2d');
+  x.fillStyle = 'rgba(7,10,15,0.8)';
+  x.strokeStyle = 'rgba(82,93,112,0.64)';
+  x.lineWidth = 2;
+  x.beginPath(); x.roundRect(6, 6, c.width - 12, c.height - 12, 14); x.fill(); x.stroke();
+  x.font = '600 28px "IBM Plex Sans", sans-serif';
+  x.fillStyle = `#${color.toString(16).padStart(6,'0')}`;
+  x.textAlign = 'center'; x.textBaseline = 'middle';
+  x.fillText(text, c.width / 2, c.height / 2 + 2);
+  const t = new THREE.CanvasTexture(c);
+  const m = new THREE.SpriteMaterial({ map: t, transparent: true, depthWrite: false, depthTest: false });
+  const s = new THREE.Sprite(m);
+  s.scale.set(3, 0.7, 1);
+  return s;
+}
+
+function initScene() {
+  try {
+    const canvas = document.getElementById('threadCanvas');
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.Fog(0x070b11, 16, 34);
+    const camera = new THREE.PerspectiveCamera(44, canvas.clientWidth / canvas.clientHeight, 0.1, 120);
+    camera.position.set(0,7.8,13.8);
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true; controls.dampingFactor = 0.08; controls.minDistance = 6; controls.maxDistance = 22; controls.maxPolarAngle = Math.PI / 2.1; controls.target.set(0,0.35,0); controls.enabled = false;
+    scene.add(new THREE.AmbientLight(0xb6c2df, 0.54));
+    const key = new THREE.DirectionalLight(0xb9d0ff, 0.88); key.position.set(7,10,6); scene.add(key);
+    const fill = new THREE.DirectionalLight(0x49c48f, 0.34); fill.position.set(-8,7,-5); scene.add(fill);
+    const floor = new THREE.Mesh(new THREE.CircleGeometry(14,90), new THREE.MeshStandardMaterial({ color:0x0d121b, roughness:0.86, metalness:0.15, transparent:true, opacity:0.94 }));
+    floor.rotation.x = -Math.PI / 2; floor.position.y = -0.22; scene.add(floor);
+    const worldRing = new THREE.Mesh(new THREE.RingGeometry(10.7,11,120), new THREE.MeshBasicMaterial({ color:0x223349, opacity:0.4, transparent:true, side:THREE.DoubleSide }));
+    worldRing.rotation.x = -Math.PI / 2; worldRing.position.y = -0.21; scene.add(worldRing);
+    const starPos = [];
+    for (let i = 0; i < 260; i += 1) { const r = 14 + Math.random() * 10; const a = Math.random() * Math.PI * 2; const h = 3 + Math.random() * 8; starPos.push(Math.cos(a) * r, h, Math.sin(a) * r); }
+    const sg = new THREE.BufferGeometry(); sg.setAttribute('position', new THREE.Float32BufferAttribute(starPos, 3));
+    scene.add(new THREE.Points(sg, new THREE.PointsMaterial({ color:0x4f647f, size:0.07, transparent:true, opacity:0.64, sizeAttenuation:true })));
+
+    const stageGeo = new THREE.CylinderGeometry(1.12,1.34,0.42,56);
+    const ringGeo = new THREE.TorusGeometry(1.36,0.03,16,64);
+    stages.forEach((s) => {
+      const color = kindColor[s.kind] || 0x5d9edf;
+      const mat = new THREE.MeshStandardMaterial({ color, emissive:0x020a11, emissiveIntensity:0.12, roughness:0.32, metalness:0.45, transparent:true, opacity:0.96 });
+      const mesh = new THREE.Mesh(stageGeo, mat); mesh.position.copy(positions[s.id]); mesh.userData = { type:'stage', id:s.id }; scene.add(mesh);
+      const ring = new THREE.Mesh(ringGeo, new THREE.MeshBasicMaterial({ color:0x5d9edf, transparent:true, opacity:0.28 })); ring.rotation.x = Math.PI / 2; ring.position.copy(positions[s.id]); ring.position.y = 0.28; scene.add(ring);
+      const label = makeLabel(s.title, color); label.position.set(positions[s.id].x, positions[s.id].y + 0.86, positions[s.id].z); scene.add(label);
+      refs.stageMap.set(s.id, { mesh, label }); refs.ringMap.set(s.id, ring);
+    });
+
+    links.forEach((l) => {
+      const a = positions[l.source], b = positions[l.target];
+      const mid = a.clone().add(b).multiplyScalar(0.5); mid.y = 1.2 + a.distanceTo(b) * 0.04;
+      const curve = new THREE.QuadraticBezierCurve3(a.clone().add(new THREE.Vector3(0,0.25,0)), mid, b.clone().add(new THREE.Vector3(0,0.25,0)));
+      const color = linkColor[l.transport] || 0x5d9edf;
+      const tube = new THREE.Mesh(new THREE.TubeGeometry(curve, 80, 0.055, 10, false), new THREE.MeshStandardMaterial({ color, emissive:color, emissiveIntensity:0.1, transparent:true, opacity:0.36, roughness:0.4, metalness:0.2 }));
+      tube.userData = { type:'link', id:l.id }; scene.add(tube);
+      const packet = new THREE.Mesh(new THREE.SphereGeometry(0.12, 14, 14), new THREE.MeshBasicMaterial({ color, transparent:true, opacity:0.78 }));
+      packet.userData = { type:'link', id:l.id }; scene.add(packet);
+      refs.linkMap.set(l.id, { mesh:tube, curve }); refs.packets.push({ mesh:packet, curve, speed:0.05 + Math.random() * 0.04, off:Math.random() });
+    });
+
+    refs.renderer = renderer; refs.scene = scene; refs.camera = camera; refs.controls = controls; refs.floor = floor;
+    canvas.addEventListener('pointermove', onPointerMove);
+    canvas.addEventListener('click', onSceneClick);
+    window.addEventListener('resize', onResize);
+    setCameraTargets(); applyVisualState(); animate();
+  } catch (err) {
+    fallback.style.display = 'flex';
+    console.error(err);
+  }
+}
+
+function onResize() {
+  if (!refs.renderer) return;
+  const canvas = document.getElementById('threadCanvas');
+  refs.camera.aspect = canvas.clientWidth / canvas.clientHeight;
+  refs.camera.updateProjectionMatrix();
+  refs.renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
+}
+
+function onPointerMove(e) {
+  if (!refs.renderer) return;
+  const b = e.target.getBoundingClientRect();
+  refs.mouse.x = ((e.clientX - b.left) / b.width) * 2 - 1;
+  refs.mouse.y = -((e.clientY - b.top) / b.height) * 2 + 1;
+  refs.ray.setFromCamera(refs.mouse, refs.camera);
+  const hits = refs.ray.intersectObjects([...refs.stageMap.values()].map((x) => x.mesh), false);
+  const hover = hits[0]?.object?.userData?.id || null;
+  if (hover !== refs.hover) { refs.hover = hover; refs.renderer.domElement.style.cursor = hover ? 'pointer' : 'default'; applyVisualState(); }
+}
+
+function onSceneClick(e) {
+  if (!refs.renderer) return;
+  const b = e.target.getBoundingClientRect();
+  refs.mouse.x = ((e.clientX - b.left) / b.width) * 2 - 1;
+  refs.mouse.y = -((e.clientY - b.top) / b.height) * 2 + 1;
+  refs.ray.setFromCamera(refs.mouse, refs.camera);
+  const stageHit = refs.ray.intersectObjects([...refs.stageMap.values()].map((x) => x.mesh), false)[0];
+  if (stageHit?.object?.userData?.id) {
+    const id = stageHit.object.userData.id;
+    state.storyAt = Math.max(0, stages.findIndex((s) => s.id === id));
+    state.lastStep = performance.now();
+    selectStage(id);
+    return;
+  }
+  const linkHit = refs.ray.intersectObjects([...refs.linkMap.values()].map((x) => x.mesh).concat(refs.packets.map((p) => p.mesh)), false)[0];
+  if (linkHit?.object?.userData?.id) selectLink(linkHit.object.userData.id);
+}
+
+function animate(now = performance.now()) {
+  if (!refs.renderer) return;
+  requestAnimationFrame(animate);
+
+  if (state.mode === 'story' && now - state.lastStep > 7000) {
+    state.storyAt = (state.storyAt + 1) % stages.length;
+    state.lastStep = now;
+    selectStage(stages[state.storyAt].id);
+  }
+
+  refs.packets.forEach((p) => {
+    const t = (now * 0.00008 * p.speed * 60 + p.off) % 1;
+    p.mesh.position.copy(p.curve.getPoint(t));
+  });
+  refs.ringMap.forEach((ring, id) => {
+    const pulse = 0.5 + Math.sin(now * 0.003 + (id === state.stageId ? 0 : 1.2)) * 0.15;
+    ring.scale.setScalar(id === state.stageId ? 1 + pulse * 0.1 : 1);
+  });
+
+  refs.controls.enabled = state.mode === 'explore';
+  if (state.mode === 'explore') {
+    refs.controls.update();
+    refs.look.copy(refs.controls.target);
+  } else {
+    refs.camera.position.lerp(refs.camPos, 0.07);
+    refs.lookNow.lerp(refs.look, 0.1);
+    refs.camera.lookAt(refs.lookNow);
+  }
+  if (state.mode === 'prompt') refs.look.lerp(positions[state.stageId].clone().add(new THREE.Vector3(0,0.58,0)), 0.03);
+  refs.renderer.render(refs.scene, refs.camera);
+}
+
+modeBtns.filter((b) => b.dataset.mode).forEach((b) => b.onclick = () => onMode(b.dataset.mode));
+viewBtns.filter((b) => b.dataset.view).forEach((b) => b.onclick = () => onView(b.dataset.view));
+roleSel.onchange = () => { state.role = roleSel.value; updatePanel(); };
+domainSel.onchange = () => { state.domain = domainSel.value; updatePanel(); };
+
+renderTimeline();
+updatePanel();
+initScene();
+</script>
+</body>
+</html>
+
