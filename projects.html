@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Griffin Quinn — Projects</title>
+<meta name="description" content="A working portfolio from Griffin Quinn — presales and emerging tech at Siemens DISW. Mendix + Teamcenter enablement, agentic CAD with NX MCP, and anonymized customer wins.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23131720'/%3E%3Ccircle cx='16' cy='16' r='7' stroke='%2348ce98' stroke-width='1.4' fill='none'/%3E%3Ccircle cx='16' cy='8' r='2.4' fill='%238579e5'/%3E%3Ccircle cx='22.5' cy='21' r='2.4' fill='%235d9edf'/%3E%3Ccircle cx='9.5' cy='21' r='2.4' fill='%23edb050'/%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Griffin Quinn — Projects">
+<meta property="og:description" content="Mendix + Teamcenter enablement, agentic CAD with NX MCP, and anonymized customer wins from Siemens DISW presales & emerging tech.">
+<meta property="og:image" content="assets/nx-renders/ss-charlie-benchmark.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Griffin Quinn — Projects">
+<meta name="twitter:description" content="Mendix + Teamcenter enablement, agentic CAD with NX MCP, and anonymized customer wins.">
+<link rel="stylesheet" href="styles/fabric.css">
+<style>
+/* ═══ PROJECTS — layout ═══ */
+body { min-height: 100vh; overflow-x: hidden; }
+
+.cursor-light {
+  position: fixed; top: 0; left: 0;
+  width: 420px; height: 420px;
+  pointer-events: none; z-index: 20;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(72,206,152,0.20) 0%, rgba(93,158,223,0.13) 26%, rgba(133,121,229,0.08) 46%, rgba(13,16,22,0) 72%);
+  filter: blur(18px); opacity: 0.9;
+  mix-blend-mode: screen;
+  transform: translate3d(-50%, -50%, 0);
+  will-change: transform;
+}
+
+/* ── top bar ── */
+.topbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  height: 52px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px;
+  background: rgba(13,16,22,0.84);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  transition: background 0.3s;
+}
+.topbar-brand { display: flex; align-items: center; gap: 12px; }
+.topbar-brand .sigil {
+  width: 22px; height: 22px;
+  border: 1.5px solid var(--teal);
+  border-radius: 5px;
+  display: grid; place-items: center;
+  color: var(--teal);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.05em;
+}
+.topbar-brand span { font-size: 13px; font-weight: 500; color: var(--text); letter-spacing: 0.02em; }
+.topbar-brand .dim { color: var(--text3); font-weight: 400; }
+.topbar-nav { display: flex; gap: 28px; align-items: center; }
+.topbar-nav a {
+  font-size: 12px; color: var(--text2); font-weight: 400;
+  letter-spacing: 0.03em; transition: color 0.15s;
+}
+.topbar-nav a:hover { color: var(--text); }
+.topbar-nav a.home-link {
+  color: var(--text3);
+  display: inline-flex; align-items: center; gap: 6px;
+  padding-right: 20px; border-right: 1px solid var(--border);
+}
+.topbar-nav a.home-link:hover { color: var(--teal); }
+
+/* ── hero ── */
+.hero {
+  position: relative;
+  min-height: 78vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 130px 40px 70px;
+  overflow: hidden;
+}
+.hero-depth {
+  position: absolute; inset: 14% 8% auto; height: min(52vh, 460px);
+  border-radius: 36px;
+  background:
+    radial-gradient(circle at 30% 35%, rgba(72,206,152,0.12), transparent 38%),
+    radial-gradient(circle at 70% 30%, rgba(133,121,229,0.14), transparent 42%),
+    linear-gradient(135deg, rgba(19,23,32,0.55), rgba(27,31,42,0.18));
+  border: 1px solid rgba(82,93,112,0.18);
+  box-shadow: 0 24px 90px rgba(0,0,0,0.28);
+  opacity: 0.85; pointer-events: none;
+}
+.hero-content { position: relative; z-index: 1; max-width: 760px; }
+.hero-eyebrow {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px; font-weight: 500;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--teal); margin-bottom: 28px;
+  opacity: 0; animation: fade-in 0.6s var(--ease-out) 0.2s forwards;
+}
+.hero h1 {
+  font-size: clamp(34px, 5.6vw, 58px);
+  font-weight: 700; line-height: 1.08; letter-spacing: -0.025em;
+  color: var(--text); margin-bottom: 22px;
+  opacity: 0; animation: fade-in 0.7s var(--ease-out) 0.35s forwards;
+}
+.hero h1 em {
+  font-style: normal;
+  background: linear-gradient(135deg, var(--purple) 0%, var(--teal) 100%);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.hero-sub {
+  font-size: 16px; line-height: 1.75;
+  color: var(--text2); font-weight: 300;
+  max-width: 620px; margin: 0 auto 40px;
+  opacity: 0; animation: fade-in 0.7s var(--ease-out) 0.5s forwards;
+}
+.hero-signals {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px; max-width: 780px; margin: 0 auto;
+  opacity: 0; animation: fade-in 0.7s var(--ease-out) 0.66s forwards;
+}
+.hero-signal {
+  text-align: left; padding: 14px 16px; border-radius: 14px;
+  background: rgba(19,22,30,0.72);
+  border: 1px solid rgba(82,93,112,0.18);
+}
+.hero-signal .signal-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--text3); margin-bottom: 8px;
+}
+.hero-signal .signal-value { font-size: 17px; line-height: 1.1; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+.hero-signal .signal-copy { font-size: 11px; line-height: 1.5; color: var(--text2); }
+
+/* ── separator ── */
+.sep {
+  width: 100%; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border2) 20%, var(--border2) 80%, transparent);
+}
+
+/* ── sections ── */
+.section-wrap { padding: 72px 40px; max-width: 1120px; margin: 0 auto; }
+.section-intro { max-width: 720px; margin-bottom: 32px; }
+.section-intro .label-line {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; font-weight: 500;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--text3); margin-bottom: 14px;
+}
+.section-intro h2 { font-size: 28px; font-weight: 600; color: var(--text); line-height: 1.2; margin-bottom: 12px; }
+.section-intro p { font-size: 15px; color: var(--text2); line-height: 1.65; }
+
+.catalog-block {
+  padding: 24px;
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(19,22,30,0.96), rgba(16,18,25,0.96));
+  border: 1px solid var(--border);
+}
+.catalog-block.featured { border-color: rgba(72,206,152,0.22); box-shadow: inset 0 1px 0 rgba(72,206,152,0.10); }
+.catalog-block.frontier { border-color: rgba(133,121,229,0.24); box-shadow: inset 0 1px 0 rgba(133,121,229,0.10); }
+.catalog-block.impact { border-color: rgba(82,148,214,0.2); box-shadow: inset 0 1px 0 rgba(82,148,214,0.08); }
+
+.block-head {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: 18px; flex-wrap: wrap; margin-bottom: 22px;
+}
+.block-head .section-kicker {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--text3); margin-bottom: 8px;
+}
+.block-head h3 { font-size: 22px; line-height: 1.15; color: var(--text); }
+.block-head p { max-width: 560px; font-size: 13px; line-height: 1.6; color: var(--text2); margin-top: 6px; }
+.section-stamp {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--amber); padding: 6px 10px; border-radius: 999px;
+  border: 1px solid rgba(232,164,68,0.2); background: rgba(232,164,68,0.08);
+  white-space: nowrap;
+}
+.section-stamp.anon { color: var(--blue); border-color: #2a3d55; background: var(--blue-bg); }
+
+/* ── project cards ── */
+.proj-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.proj-grid.single { grid-template-columns: 1fr; }
+.proj-card {
+  display: grid; gap: 14px; padding: 24px;
+  border-radius: 16px; border: 1px solid var(--border2);
+  background:
+    radial-gradient(circle at top right, rgba(124,111,222,0.07), transparent 36%),
+    linear-gradient(180deg, rgba(26,30,40,0.98), rgba(19,22,30,0.98));
+  box-shadow: 0 22px 54px rgba(0,0,0,0.12);
+  overflow: hidden;
+}
+.proj-card > * { min-width: 0; }
+.proj-topline { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.proj-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3);
+}
+.proj-card h4 { font-size: 20px; line-height: 1.15; color: var(--text); }
+.proj-card .proj-desc { font-size: 14px; line-height: 1.7; color: var(--text2); }
+.proj-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 2px; }
+
+/* ── media frame + placeholder ── */
+.media-frame {
+  display: grid; gap: 10px; padding: 12px; border-radius: 16px;
+  border: 1px solid rgba(82,93,112,0.2);
+  background:
+    radial-gradient(circle at 20% 20%, rgba(61,191,138,0.1), transparent 30%),
+    linear-gradient(180deg, rgba(12,14,19,0.96), rgba(19,22,30,0.98));
+}
+.media-frame video, .media-frame img {
+  width: 100%; display: block; border-radius: 12px;
+  border: 1px solid rgba(82,93,112,0.18); background: #0b0d12;
+}
+.media-meta {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text3);
+}
+.media-meta strong { color: var(--text); font-weight: 500; }
+.media-placeholder {
+  aspect-ratio: 16 / 9; border-radius: 12px;
+  border: 1px dashed rgba(82,93,112,0.4);
+  background:
+    radial-gradient(circle at 30% 30%, rgba(72,206,152,0.06), transparent 40%),
+    linear-gradient(180deg, rgba(19,22,30,0.9), rgba(12,14,19,0.95));
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+  color: var(--text3);
+}
+.media-placeholder .ph-icon { color: var(--text3); opacity: 0.7; }
+.media-placeholder .ph-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+}
+
+/* ── stat cells inside a card ── */
+.proj-emphasis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.emphasis-cell { padding: 10px 12px; border-radius: 12px; background: rgba(13,15,20,0.52); border: 1px solid rgba(82,93,112,0.18); }
+.emphasis-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3); margin-bottom: 6px;
+}
+.emphasis-value { font-size: 13px; line-height: 1.45; color: var(--text); }
+
+/* ── status pill ── */
+.status-pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; font-weight: 500;
+  padding: 3px 8px; border-radius: 10px; letter-spacing: 0.04em;
+}
+.status-pill .dot { width: 6px; height: 6px; border-radius: 50%; }
+.status-pill.live .dot { background: var(--teal); }
+.status-pill.live { color: var(--teal); background: var(--teal-bg); border: 1px solid var(--teal-dim); }
+.status-pill.reusable .dot { background: var(--purple); }
+.status-pill.reusable { color: var(--purple); background: var(--purple-bg); border: 1px solid var(--purple-dim); }
+.status-pill.anon .dot { background: var(--blue); }
+.status-pill.anon { color: var(--blue); background: var(--blue-bg); border: 1px solid #2a3d55; }
+
+/* ── footer ── */
+.site-footer {
+  padding: 32px 40px; border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 12px;
+}
+.site-footer p { font-size: 11px; color: var(--text3); line-height: 1.5; }
+.site-footer .footer-links { display: flex; gap: 20px; }
+.site-footer .footer-links a { font-size: 11px; color: var(--text3); transition: color 0.15s; }
+.site-footer .footer-links a:hover { color: var(--text2); }
+
+/* ── reveal ── */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+.block-stack { display: grid; gap: 28px; }
+
+/* ── responsive ── */
+@media (max-width: 760px) {
+  .topbar { height: auto; min-height: 52px; padding: 10px 16px; flex-wrap: wrap; justify-content: center; }
+  .topbar-nav { width: 100%; justify-content: center; flex-wrap: wrap; row-gap: 8px; gap: 14px; }
+  .topbar-nav a.home-link { border-right: none; padding-right: 0; }
+  .hero { padding: 110px 22px 56px; min-height: 0; }
+  .section-wrap { padding: 52px 22px; }
+  .hero-signals, .proj-grid, .proj-emphasis { grid-template-columns: 1fr; }
+  .site-footer { padding: 24px 20px; }
+  .cursor-light { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor-light" id="cursorLight" aria-hidden="true"></div>
+
+<!-- ══════ TOP BAR ══════ -->
+<div class="topbar" id="topbar">
+  <div class="topbar-brand">
+    <div class="sigil">gq</div>
+    <span>Griffin Quinn <span class="dim">/ Projects</span></span>
+  </div>
+  <nav class="topbar-nav">
+    <a class="home-link" href="index.html">
+      <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M11 7H3M7 3L3 7l4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Digital Fabric
+    </a>
+    <a href="#enablement">Enablement</a>
+    <a href="#genai">GenAI</a>
+    <a href="#impact">Impact</a>
+  </nav>
+</div>
+
+<!-- ══════ HERO ══════ -->
+<section class="hero" id="top">
+  <div class="hero-depth" aria-hidden="true"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Presales &middot; Emerging Tech &middot; Siemens DISW</div>
+    <h1>Things I've actually<br><em>built and shipped</em></h1>
+    <p class="hero-sub">I spend my days connecting Mendix and the Siemens Xcelerator portfolio for customers — enablement they can reuse, demos that survive contact with real accounts, and lately a lot of agentic AI over PLM and CAD. This is a working sample of that, kept clear of anything confidential.</p>
+    <div class="hero-signals" aria-label="Highlights">
+      <div class="hero-signal">
+        <div class="signal-label">In Presales Since</div>
+        <div class="signal-value">2022</div>
+        <div class="signal-copy">Grew from the Genesis cohort into owning reusable Mendix + Teamcenter narrative for the wider team.</div>
+      </div>
+      <div class="hero-signal">
+        <div class="signal-label">Realize LIVE</div>
+        <div class="signal-value">Every year since '22</div>
+        <div class="signal-copy">Authored and delivered hands-on training sessions, most recently the Mendix-on-Edge storyline.</div>
+      </div>
+      <div class="hero-signal">
+        <div class="signal-label">Where I Am Now</div>
+        <div class="signal-value">Agentic + PLM</div>
+        <div class="signal-copy">Extending Model Context Protocol into NX and shaping how agents fit into manufacturing.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ══════ ENABLEMENT ══════ -->
+<section class="section-wrap" id="enablement">
+  <div class="section-intro reveal">
+    <div class="label-line">Reusable Assets &amp; Enablement</div>
+    <h2>The work other people pick up and run with</h2>
+    <p>The part of the job I care about most is building things that outlive the meeting they were made for — decks, walkthroughs, and training that colleagues and partners reach for on their own.</p>
+  </div>
+
+  <div class="catalog-block featured reveal">
+    <div class="block-head">
+      <div>
+        <div class="section-kicker">Enablement</div>
+        <h3>Built once, reused everywhere</h3>
+        <p>Owned narratives and hands-on material that have travelled across teams, partners, and verticals.</p>
+      </div>
+      <span class="status-pill reusable"><span class="dot"></span>reusable</span>
+    </div>
+
+    <div class="proj-grid">
+      <div class="proj-card reveal">
+        <div class="proj-topline">
+          <div class="proj-num">01 / Owned Narrative</div>
+        </div>
+        <h4>Mendix + Teamcenter — the deck I keep coming back to</h4>
+        <div class="proj-desc">It started as a way to explain how Mendix and Teamcenter genuinely fit together, and it grew into the story the wider team reaches for when they need to position low-code against the PLM backbone. I've reshaped it for partners, channel audiences, and specific verticals without ever losing the core through-line.</div>
+        <div class="proj-tags">
+          <span class="tag-pill teal">Mendix</span>
+          <span class="tag-pill purple">Teamcenter</span>
+          <span class="tag-pill amber">Challenger sale</span>
+        </div>
+      </div>
+
+      <div class="proj-card reveal">
+        <div class="proj-topline">
+          <div class="proj-num">02 / Hands-On Event</div>
+        </div>
+        <h4>Teamcenter Experience Day</h4>
+        <div class="proj-desc">A day where partners build a working Mendix–Teamcenter connector with their own hands instead of watching someone else drive. I co-ran it at APC for a room of fifty-plus, then kept sharpening the walkthrough release after release until the rough edges were gone.</div>
+        <div class="proj-tags">
+          <span class="tag-pill teal">Workshop</span>
+          <span class="tag-pill blue">Partner enablement</span>
+          <span class="tag-pill purple">Connector build</span>
+        </div>
+      </div>
+
+      <div class="proj-card reveal">
+        <div class="proj-topline">
+          <div class="proj-num">03 / Training Curriculum</div>
+        </div>
+        <h4>Realize LIVE — Mendix on the Edge</h4>
+        <div class="proj-desc">Training I authored for Realize LIVE that puts Mendix dashboards on top of Siemens Industrial Edge — real OPC UA, MQTT, and Node-RED feeds wired into low-code. It's the latest in a run of RL sessions I've delivered every year since 2022.</div>
+        <div class="proj-tags">
+          <span class="tag-pill teal">Industrial Edge</span>
+          <span class="tag-pill amber">IIoT</span>
+          <span class="tag-pill purple">Low-code</span>
+        </div>
+      </div>
+
+      <div class="proj-card reveal">
+        <div class="proj-topline">
+          <div class="proj-num">04 / GTM Library</div>
+        </div>
+        <h4>Positioning &amp; competitive material</h4>
+        <div class="proj-desc">The quieter assets that keep getting used: a Mendix-in-the-digital-enterprise challenger narrative, competitive positioning against other low-code platforms, and industry-specific cuts. Co-built with senior colleagues and reused across named accounts.</div>
+        <div class="proj-tags">
+          <span class="tag-pill blue">GTM</span>
+          <span class="tag-pill amber">Competitive</span>
+          <span class="tag-pill teal">Whitepaper</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ══════ GENAI ══════ -->
+<section class="section-wrap" id="genai">
+  <div class="section-intro reveal">
+    <div class="label-line">Frontier GenAI &amp; Agentic</div>
+    <h2>Where the agents stop talking and start building</h2>
+    <p>Most of my recent energy goes here: getting language models to do real engineering work through governed tools, and figuring out where that actually belongs in a manufacturing enterprise.</p>
+  </div>
+
+  <div class="catalog-block frontier reveal">
+    <div class="block-head">
+      <div>
+        <div class="section-kicker">Agentic Engineering</div>
+        <h3>Agents over CAD and PLM</h3>
+        <p>Self-directed engineering and a point of view to go with it.</p>
+      </div>
+      <span class="status-pill live"><span class="dot"></span>live demo</span>
+    </div>
+
+    <div class="block-stack">
+      <div class="proj-card reveal">
+        <div class="proj-topline">
+          <div class="proj-num">05 / Agentic CAD</div>
+          <span class="status-pill live"><span class="dot"></span>live capture</span>
+        </div>
+        <h4>NX MCP — driving Siemens NX with an agent</h4>
+        <div class="proj-desc">This is where it gets real. I extended the Model Context Protocol out to Siemens NX so an agent can drive actual geometry — parts, patterns, whole benchmark models — through a governed tool surface. The clip below is a live run against NX, not a mockup.</div>
+        <figure class="media-frame">
+          <video controls muted playsinline preload="metadata" poster="assets/nx-renders/ss-charlie-benchmark.png">
+            <source src="assets/projects/nx_mcp.mp4" type="video/mp4">
+            Your browser doesn't support embedded video. <a href="assets/projects/nx_mcp.mp4">Download the clip</a>.
+          </video>
+          <figcaption class="media-meta">
+            <span><strong>Capture:</strong> NX MCP live run</span>
+            <span><strong>Protocol:</strong> Model Context Protocol &rarr; NX</span>
+          </figcaption>
+        </figure>
+        <div class="proj-tags">
+          <span class="tag-pill purple">MCP</span>
+          <span class="tag-pill teal">Siemens NX</span>
+          <span class="tag-pill amber">Agentic</span>
+        </div>
+      </div>
+
+      <div class="proj-grid">
+        <div class="proj-card reveal">
+          <div class="proj-topline">
+            <div class="proj-num">06 / Point of View</div>
+          </div>
+          <h4>Agentic Enterprise Platform</h4>
+          <div class="proj-desc">A view on where agents actually belong in manufacturing — sitting between human intent and the enterprise systems, not replacing them. I've been shaping the field-ready narrative that ties agentic patterns to supply-chain and production reality.</div>
+          <div class="proj-emphasis">
+            <div class="emphasis-cell"><div class="emphasis-label">Focus</div><div class="emphasis-value">Agents between intent &amp; systems</div></div>
+            <div class="emphasis-cell"><div class="emphasis-label">Domain</div><div class="emphasis-value">Supply chain, production</div></div>
+            <div class="emphasis-cell"><div class="emphasis-label">Form</div><div class="emphasis-value">Field-readiness narrative</div></div>
+          </div>
+          <div class="proj-tags">
+            <span class="tag-pill teal">Strategy</span>
+            <span class="tag-pill purple">Agentic</span>
+          </div>
+        </div>
+
+        <div class="proj-card reveal">
+          <div class="proj-topline">
+            <div class="proj-num">07 / Research</div>
+          </div>
+          <h4>MCP research &amp; writing</h4>
+          <div class="proj-desc">The reading, prototyping, and writing behind all of the above — MCP internals, agent orchestration patterns, and how far you can push tool-calling before it starts to fray. Mostly self-directed, mostly nights and weekends.</div>
+          <figure class="media-frame">
+            <div class="media-placeholder">
+              <svg class="ph-icon" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 20h8M12 18v2"/><path d="M7 9l2 2-2 2M12 13h4"/></svg>
+              <div class="ph-label">Write-up coming</div>
+            </div>
+            <figcaption class="media-meta">
+              <span><strong>Format:</strong> Research notes</span>
+              <span>MCP &middot; orchestration</span>
+            </figcaption>
+          </figure>
+          <div class="proj-tags">
+            <span class="tag-pill blue">Research</span>
+            <span class="tag-pill amber">LLM tooling</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ══════ IMPACT ══════ -->
+<section class="section-wrap" id="impact">
+  <div class="section-intro reveal">
+    <div class="label-line">Customer Impact</div>
+    <h2>Wins I'm proud of, told without the names</h2>
+    <p>These are real pursuits and real outcomes. I've deliberately stripped out customer names, logos, figures, and footage — the point here is the shape of the work, not the account.</p>
+  </div>
+
+  <div class="catalog-block impact reveal">
+    <div class="block-head">
+      <div>
+        <div class="section-kicker">Customer Impact</div>
+        <h3>Anonymized case studies</h3>
+        <p>Grounded in work I actually did. Details held back on purpose.</p>
+      </div>
+      <span class="section-stamp anon">Anonymized</span>
+    </div>
+
+    <div class="proj-grid">
+      <div class="proj-card reveal">
+        <div class="proj-topline">
+          <div class="proj-num">08 / Competitive Win</div>
+          <span class="status-pill anon"><span class="dot"></span>anonymized</span>
+        </div>
+        <h4>Head-to-head POC win against an incumbent low-code platform</h4>
+        <div class="proj-desc">A competitive evaluation where we went in as the challenger. We won it on depth — a polished Teamcenter connector and an app that held up under the customer's own scenarios rather than a scripted happy path.</div>
+        <div class="proj-tags">
+          <span class="tag-pill teal">POC</span>
+          <span class="tag-pill amber">Competitive win</span>
+        </div>
+      </div>
+
+      <div class="proj-card reveal">
+        <div class="proj-topline">
+          <div class="proj-num">09 / Reused Demo</div>
+          <span class="status-pill anon"><span class="dot"></span>anonymized</span>
+        </div>
+        <h4>A supply-chain story that travelled further than expected</h4>
+        <div class="proj-desc">A supply-chain demo I built that took on a life of its own — a senior sales leader picked it up and turned it into a warm customer introduction inside a day. It's been reused across zones, with the specifics swapped out each time.</div>
+        <div class="proj-tags">
+          <span class="tag-pill purple">Supply chain</span>
+          <span class="tag-pill blue">Reusable demo</span>
+        </div>
+      </div>
+
+      <div class="proj-card reveal">
+        <div class="proj-topline">
+          <div class="proj-num">10 / Joint Pursuit</div>
+          <span class="status-pill anon"><span class="dot"></span>anonymized</span>
+        </div>
+        <h4>Joint win with Graph Studio over Teamcenter</h4>
+        <div class="proj-desc">A joint pursuit where graph-first reasoning over Teamcenter was the thing that set us apart. Anonymized here, but it's one of the outcomes I'm proudest of from the last year.</div>
+        <div class="proj-tags">
+          <span class="tag-pill teal">Graph Studio</span>
+          <span class="tag-pill purple">Teamcenter</span>
+        </div>
+      </div>
+
+      <div class="proj-card reveal">
+        <div class="proj-topline">
+          <div class="proj-num">11 / Enterprise Vertical</div>
+          <span class="status-pill anon"><span class="dot"></span>anonymized</span>
+        </div>
+        <h4>Manufacturing maintenance solution</h4>
+        <div class="proj-desc">Ongoing collaboration on an integrated maintenance solution for a large manufacturer — the kind of enterprise MES-and-maintenance work where the requirements are as much of the deliverable as the build.</div>
+        <div class="proj-tags">
+          <span class="tag-pill blue">Manufacturing</span>
+          <span class="tag-pill amber">Requirements</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ FOOTER ══════ -->
+<footer class="site-footer">
+  <p>Griffin Quinn &middot; Presales &amp; Emerging Tech &middot; Siemens DISW &middot; 2026</p>
+  <div class="footer-links">
+    <a href="index.html">Digital Fabric</a>
+    <a href="#enablement">Enablement</a>
+    <a href="#genai">GenAI</a>
+    <a href="#impact">Impact</a>
+    <a href="#top">Top</a>
+  </div>
+</footer>
+
+<!-- ══════ JS ══════ -->
+<script>
+/* ── scroll reveal ── */
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* ── mouse-follow lighting ── */
+const cursorLight = document.getElementById('cursorLight');
+let mx = window.innerWidth * 0.5, my = window.innerHeight * 0.35;
+let lx = mx, ly = my;
+window.addEventListener('pointermove', (e) => { mx = e.clientX; my = e.clientY; });
+function animate() {
+  lx += (mx - lx) * 0.11; ly += (my - ly) * 0.11;
+  cursorLight.style.transform = `translate3d(${lx}px, ${ly}px, 0) translate(-50%, -50%)`;
+  requestAnimationFrame(animate);
+}
+requestAnimationFrame(animate);
+
+/* ── topbar opacity on scroll ── */
+const tb = document.getElementById('topbar');
+window.addEventListener('scroll', () => {
+  tb.style.background = window.scrollY > 80 ? 'rgba(13,16,22,0.95)' : 'rgba(13,16,22,0.84)';
+});
+
+/* ── smooth scroll for anchor links ── */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  });
+});
+</script>
+</body>
+</html>
