@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Repair Plan Structuring Mockup - Inspector JTBD</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- SortableJS for drag-and-drop reordering -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Repair Plan Structuring</h1>
+            <p><strong>Inspector JTBD:</strong> "Making sense of what I see on the part and turning it into a repair plan I can stand behind and is both executable and defensible."</p>
+            <p class="instructional-text">Ensure operations follow a logical and supportive order:</p>
+        </header>
+
+        <main class="content-area">
+            <aside class="left-panel">
+                <div class="panel-header">
+                    <h2>Repair Operations Timeline/Flow</h2>
+                    <div class="filter-toggle">
+                        <label for="operation-filter-toggle">
+                            <input type="checkbox" id="operation-filter-toggle">
+                            <span id="toggle-label">Show All Operations</span>
+                        </label>
+                    </div>
+                </div>
+                <button id="add-operation-btn" class="add-operation-btn"><i class="fas fa-plus-circle"></i> Add New Operation</button>
+                <div id="operations-list" class="operations-list">
+                    <!-- Operations will be loaded here by JavaScript -->
+                </div>
+                <div class="footer-summary">
+                    <p id="operations-summary"></p>
+                </div>
+            </aside>
+
+            <section class="central-panel">
+                <div class="tabs">
+                    <button class="tab-button active" data-tab="work-instructions">Work Instructions</button>
+                    <button class="tab-button" data-tab="materials">Materials</button>
+                    <button class="tab-button" data-tab="tools">Tools</button>
+                    <button class="tab-button" data-tab="machines">Machines</button>
+                    <button class="tab-button" data-tab="files">Files</button>
+                    <button class="tab-button" data-tab="details">Details</button>
+                </div>
+                <div id="operation-details-content" class="operation-details-content">
+                    <!-- Operation details will be loaded here by JavaScript -->
+                    <div id="work-instructions-tab" class="tab-content active">
+                        <h3>Operation Details: <span id="current-op-title">None Selected</span></h3>
+                        <p class="driving-conditions-text"><i class="fas fa-info-circle"></i> <strong>Driven by Condition:</strong> <span id="op-driving-conditions">No conditions specified.</span></p>
+                        <p id="current-op-instructions">Detailed text instructions will appear here.</p>
+                        <p>This panel provides the "progressive disclosure" for each operation, showing materials, tools, skills, associated geometry, data collection, and rich media.</p>
+                    </div>
+                    <div id="materials-tab" class="tab-content">
+                        <h3>Materials for <span class="current-op-title-materials"></span></h3>
+                        <ul>
+                            <li>Material A: Qty 10g</li>
+                            <li>Material B: Qty 5ml</li>
+                        </ul>
+                    </div>
+                    <div id="tools-tab" class="tab-content">
+                        <h3>Tools for <span class="current-op-title-tools"></span></h3>
+                        <ul>
+                            <li>Tool 1: Torque Wrench</li>
+                            <li>Tool 2: Precision Calipers</li>
+                        </ul>
+                    </div>
+                    <div id="machines-tab" class="tab-content">
+                        <h3>Machines for <span class="current-op-title-machines"></span></h3>
+                        <ul>
+                            <li>Machine 1: CNC Mill</li>
+                            <li>Machine 2: Heat Treatment Oven</li>
+                        </ul>
+                    </div>
+                    <div id="files-tab" class="tab-content">
+                        <h3>Files for <span class="current-op-title-files"></span></h3>
+                        <ul>
+                            <li><a href="#">Drawing-OP20-RevA.pdf</a></li>
+                            <li><a href="#">Video-StressRelief.mp4</a></li>
+                        </ul>
+                    </div>
+                    <div id="details-tab" class="tab-content">
+                        <h3>Details for <span class="current-op-title-details"></span></h3>
+                        <p><strong>Predecessors:</strong> <span id="op-predecessors"></span></p>
+                        <p><strong>Successors:</strong> <span id="op-successors"></span></p>
+                        <p><strong>Original Source Procedure Sequence:</strong> <span id="op-original-sequence"></span></p>
+                        <p><strong>Constraint Level:</strong> <span id="op-constraint-level"></span></p>
+                        <p>This tab would also show required skills, qualifications, associated geometry (PMI), and required data collection inputs.</p>
+                    </div>
+                </div>
+            </section>
+
+            <aside class="right-panel">
+                <div class="panel-header">
+                    <h2>Repair Procedures: <span id="available-procedures-count">8 available</span></h2>
+                    <button id="clear-filter-btn" class="clear-filter-btn" disabled>Clear Filter</button>
+                </div>
+                <div id="repair-procedures-list" class="repair-procedures-list">
+                    <!-- Repair procedures will be loaded here by JavaScript -->
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

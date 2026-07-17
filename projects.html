@@ -3,630 +3,2037 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Griffin Quinn — Projects</title>
-<meta name="description" content="A working portfolio from Griffin Quinn — presales and emerging tech at Siemens DISW. Mendix + Teamcenter enablement, agentic CAD with NX MCP, and anonymized customer wins.">
+<title>Griffin Quinn — Interactive Projects &amp; Codebase Studio (63 Projects)</title>
+<meta name="description" content="Explore Griffin Quinn's 63-repository engineering portfolio across Siemens DISW presales, agentic AI, CAD/PLM, and industrial edge telemetry.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23131720'/%3E%3Ccircle cx='16' cy='16' r='7' stroke='%2348ce98' stroke-width='1.4' fill='none'/%3E%3Ccircle cx='16' cy='8' r='2.4' fill='%238579e5'/%3E%3Ccircle cx='22.5' cy='21' r='2.4' fill='%235d9edf'/%3E%3Ccircle cx='9.5' cy='21' r='2.4' fill='%23edb050'/%3E%3C/svg%3E">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Griffin Quinn — Projects">
-<meta property="og:description" content="Mendix + Teamcenter enablement, agentic CAD with NX MCP, and anonymized customer wins from Siemens DISW presales & emerging tech.">
-<meta property="og:image" content="assets/nx-renders/ss-charlie-benchmark.png">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Griffin Quinn — Projects">
-<meta name="twitter:description" content="Mendix + Teamcenter enablement, agentic CAD with NX MCP, and anonymized customer wins.">
+<meta property="og:title" content="Griffin Quinn — Interactive Projects & Codebase Studio">
+<meta property="og:description" content="Multi-root index spanning 63 repositories: MRO Workbench, NX MCP, Teamcenter SOA, Mendix Edge IIoT, GraphStudio, and more.">
 <link rel="stylesheet" href="styles/fabric.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&display=swap">
 <script>/* no-flash theme bootstrap */(function(){try{var t=localStorage.getItem("fabric-theme");if(t!=="light"&&t!=="dark"){t=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();</script>
 <script defer src="styles/theme.js"></script>
 <style>
-/* ═══ PROJECTS — layout ═══ */
-body { min-height: 100vh; overflow-x: hidden; }
-
-.cursor-light {
-  position: fixed; top: 0; left: 0;
-  width: 420px; height: 420px;
-  pointer-events: none; z-index: 20;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(72,206,152,0.20) 0%, rgba(93,158,223,0.13) 26%, rgba(133,121,229,0.08) 46%, rgba(13,16,22,0) 72%);
-  filter: blur(18px); opacity: 0.9;
-  mix-blend-mode: screen;
-  transform: translate3d(-50%, -50%, 0);
-  will-change: transform;
+/* ═══════════════════════════════════════════════════════════
+   PROJECTS STUDIO — editorial project gallery (scoped to projects.html)
+   Reuses Digital Fabric tokens from fabric.css. Adds page-local
+   tokens for code/sim surfaces and atmosphere so both themes read.
+   ═══════════════════════════════════════════════════════════ */
+:root {
+  /* Editorial display face — distinctive but highly readable; body stays Plex Sans */
+  --font-display: 'Fraunces', 'Georgia', 'Times New Roman', serif;
+  /* Code + widget surfaces — editorial, theme-aware (NOT a terminal well) */
+  --code-bg:   #0a0e17;
+  --code-chrome: var(--bg3);
+  --code-fg:   var(--text);
+  --code-line: var(--border);
+  --sim-bg:    var(--surface-sunken);
+  --sim-fg:    var(--teal);
+  --c-comment: #6b7890;
+  --c-key:     #e07595;
+  --c-fn:      #5aa9e6;
+  --c-str:     #48ce98;
+  --c-num:     #e6b45a;
+  --c-type:    #b18cf0;
+  /* Atmosphere mesh tints */
+  --mesh-1: rgba(72,206,152,0.16);
+  --mesh-2: rgba(133,121,229,0.15);
+  --mesh-3: rgba(93,158,223,0.12);
+  --mesh-4: rgba(237,176,80,0.09);
+  --grain-op: 0.045;
+  --glow-teal: rgba(72,206,152,0.30);
+}
+:root[data-theme="light"] {
+  --code-bg:   #f2f4f8;
+  --code-chrome: #e7ebf1;
+  --code-fg:   var(--text);
+  --code-line: var(--border);
+  --sim-bg:    var(--surface-sunken);
+  --sim-fg:    var(--teal);
+  --c-comment: #8a93a3;
+  --c-key:     #b0417a;
+  --c-fn:      #2f74c0;
+  --c-str:     #0f8a5e;
+  --c-num:     #a8690a;
+  --c-type:    #6a4fc0;
+  --mesh-1: rgba(15,138,94,0.12);
+  --mesh-2: rgba(90,79,214,0.10);
+  --mesh-3: rgba(47,116,192,0.10);
+  --mesh-4: rgba(168,106,8,0.08);
+  --grain-op: 0.03;
+  --glow-teal: rgba(15,138,94,0.22);
 }
 
-/* ── top bar ── */
+html, body { max-width: 100%; }
+body { min-height: 100vh; overflow-x: hidden; background: var(--bg); color: var(--text); }
+
+/* ── Atmosphere: gradient mesh + grain + drifting aurora ── */
+.atmosphere { position: fixed; inset: 0; z-index: -2; pointer-events: none; overflow: hidden; }
+.atmosphere .mesh {
+  position: absolute; inset: -20%;
+  background:
+    radial-gradient(38% 42% at 18% 22%, var(--mesh-1) 0%, transparent 60%),
+    radial-gradient(34% 40% at 82% 16%, var(--mesh-2) 0%, transparent 62%),
+    radial-gradient(40% 44% at 74% 82%, var(--mesh-3) 0%, transparent 60%),
+    radial-gradient(30% 36% at 24% 84%, var(--mesh-4) 0%, transparent 60%);
+  filter: blur(24px); opacity: 0.9;
+  animation: mesh-drift 26s ease-in-out infinite alternate;
+}
+@keyframes mesh-drift {
+  0%   { transform: translate3d(0,0,0) scale(1); }
+  50%  { transform: translate3d(2.5%, -2%, 0) scale(1.06); }
+  100% { transform: translate3d(-2%, 2.5%, 0) scale(1.02); }
+}
+.atmosphere .grain {
+  position: absolute; inset: 0; opacity: var(--grain-op); mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ── Topbar (exact Digital Fabric tokens — do not restyle structure) ── */
 .topbar {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-  height: 52px;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 40px;
-  background: var(--surface-glass);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border);
-  transition: background 0.3s;
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200; height: 56px;
+  display: flex; align-items: center; justify-content: space-between; padding: 0 40px;
+  background: var(--surface-glass); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border); transition: background 0.3s;
 }
 .topbar-brand { display: flex; align-items: center; gap: 12px; }
 .topbar-brand .sigil {
-  width: 22px; height: 22px;
-  border: 1.5px solid var(--teal);
-  border-radius: 5px;
-  display: grid; place-items: center;
-  color: var(--teal);
-  font-family: 'IBM Plex Mono', monospace;
+  width: 24px; height: 24px; border: 1.5px solid var(--teal); border-radius: 6px;
+  display: grid; place-items: center; color: var(--teal); font-family: 'IBM Plex Mono', monospace;
   font-size: 11px; font-weight: 600; letter-spacing: 0.05em;
 }
-.topbar-brand span { font-size: 13px; font-weight: 500; color: var(--text); letter-spacing: 0.02em; }
-.topbar-brand .dim { color: var(--text3); font-weight: 400; }
+.topbar-brand span { font-size: 14px; font-weight: 600; color: var(--text); letter-spacing: -0.01em; }
+.topbar-brand .dim { color: var(--text3); font-weight: 400; font-size: 13px; }
 .topbar-nav { display: flex; gap: 28px; align-items: center; }
 .topbar-nav a {
-  font-size: 12px; color: var(--text2); font-weight: 400;
-  letter-spacing: 0.03em; transition: color 0.15s;
-}
-.topbar-nav a:hover { color: var(--text); }
-.topbar-nav a.home-link {
-  color: var(--text3);
+  font-size: 13px; color: var(--text2); font-weight: 500; letter-spacing: 0.02em; transition: color 0.15s;
   display: inline-flex; align-items: center; gap: 6px;
-  padding-right: 20px; border-right: 1px solid var(--border);
 }
-.topbar-nav a.home-link:hover { color: var(--teal); }
+.topbar-nav a:hover, .topbar-nav a.active { color: var(--text); }
+.topbar-nav .home-link svg { color: var(--teal); }
+@media (max-width: 720px) { .topbar-nav a:not(.home-link):not(.active) { display: none; } .topbar { padding: 0 18px; } }
 
-/* ── hero ── */
-.hero {
-  position: relative;
-  min-height: 78vh;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  text-align: center;
-  padding: 130px 40px 70px;
-  overflow: hidden;
+/* ═════ CINEMATIC INTRO BAND ═════ */
+.intro { position: relative; max-width: 1440px; margin: 0 auto; padding: 78px 40px 18px; }
+.intro-kicker {
+  font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--teal); display: inline-flex; align-items: center; gap: 10px; margin-bottom: 22px;
 }
-.hero-depth {
-  position: absolute; inset: 14% 8% auto; height: min(52vh, 460px);
-  border-radius: 36px;
-  background:
-    radial-gradient(circle at 30% 35%, rgba(72,206,152,0.12), transparent 38%),
-    radial-gradient(circle at 70% 30%, rgba(133,121,229,0.14), transparent 42%),
-    linear-gradient(135deg, var(--surface), var(--hairline));
-  border: 1px solid var(--hairline);
-  box-shadow: 0 24px 90px var(--shadow-strong);
-  opacity: 0.85; pointer-events: none;
+.intro-kicker::before { content: ""; width: 26px; height: 1px; background: linear-gradient(90deg, var(--teal), transparent); }
+.intro h1 {
+  font-family: var(--font-display);
+  font-size: clamp(44px, 7vw, 96px); line-height: 0.96; letter-spacing: -0.025em; font-weight: 600;
+  color: var(--text); max-width: 15ch; margin-bottom: 26px; font-optical-sizing: auto;
 }
-.hero-content { position: relative; z-index: 1; max-width: 760px; }
-.hero-eyebrow {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 11px; font-weight: 500;
-  letter-spacing: 0.18em; text-transform: uppercase;
-  color: var(--teal); margin-bottom: 28px;
-  opacity: 0; animation: fade-in 0.6s var(--ease-out) 0.2s forwards;
+.intro h1 em {
+  font-style: normal; position: relative;
+  background: linear-gradient(115deg, var(--teal) 0%, var(--blue) 46%, var(--purple) 100%);
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
 }
-.hero h1 {
-  font-size: clamp(34px, 5.6vw, 58px);
-  font-weight: 700; line-height: 1.08; letter-spacing: -0.025em;
-  color: var(--text); margin-bottom: 22px;
-  opacity: 0; animation: fade-in 0.7s var(--ease-out) 0.35s forwards;
-}
-.hero h1 em {
-  font-style: normal;
-  background: linear-gradient(135deg, var(--purple) 0%, var(--teal) 100%);
-  -webkit-background-clip: text; background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-.hero-sub {
-  font-size: 16px; line-height: 1.75;
-  color: var(--text2); font-weight: 300;
-  max-width: 620px; margin: 0 auto 40px;
-  opacity: 0; animation: fade-in 0.7s var(--ease-out) 0.5s forwards;
-}
-.hero-signals {
-  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px; max-width: 780px; margin: 0 auto;
-  opacity: 0; animation: fade-in 0.7s var(--ease-out) 0.66s forwards;
-}
-.hero-signal {
-  text-align: left; padding: 14px 16px; border-radius: 14px;
-  background: var(--surface);
-  border: 1px solid var(--hairline);
-}
-.hero-signal .signal-label {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
-  color: var(--text3); margin-bottom: 8px;
-}
-.hero-signal .signal-value { font-size: 17px; line-height: 1.1; font-weight: 600; color: var(--text); margin-bottom: 6px; }
-.hero-signal .signal-copy { font-size: 11px; line-height: 1.5; color: var(--text2); }
+.intro-lead { font-size: clamp(15px, 1.5vw, 17.5px); line-height: 1.7; color: var(--text2); max-width: 660px; margin-bottom: 34px; }
+.intro-lead b { color: var(--text); font-weight: 600; }
 
-/* ── separator ── */
-.sep {
-  width: 100%; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--border2) 20%, var(--border2) 80%, transparent);
+.intro-stats { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 46px; }
+.stat-pill {
+  position: relative; background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+  padding: 16px 20px; min-width: 150px; overflow: hidden; box-shadow: 0 12px 30px var(--shadow);
+}
+.stat-pill::after {
+  content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+  background: linear-gradient(var(--teal), var(--blue)); opacity: 0.8;
+}
+.stat-pill .num { font-family: 'IBM Plex Mono', monospace; font-size: 28px; font-weight: 500; color: var(--text); line-height: 1; letter-spacing: -0.02em; }
+.stat-pill .lbl { font-size: 12px; color: var(--text2); margin-top: 8px; }
+.stat-pill .sub { font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 3px; }
+
+/* Archetype framing split */
+.archetype-split { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+@media (max-width: 860px) { .archetype-split { grid-template-columns: 1fr; } .intro { padding-top: 70px; } }
+.arch-frame {
+  position: relative; border: 1px solid var(--border); border-radius: 18px; padding: 24px 26px; background: var(--surface);
+  overflow: hidden; transition: transform 0.35s var(--ease-out), border-color 0.35s;
+}
+.arch-frame:hover { transform: translateY(-4px); }
+.arch-frame.frontier { border-color: rgba(133,121,229,0.32); background: linear-gradient(150deg, var(--surface), var(--purple-bg)); }
+.arch-frame.frontier:hover { border-color: var(--purple); }
+.arch-frame.utility { border-color: rgba(72,206,152,0.28); background: linear-gradient(150deg, var(--surface), var(--teal-bg)); }
+.arch-frame.utility:hover { border-color: var(--teal); }
+.arch-frame .af-tag {
+  font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+  display: inline-flex; align-items: center; gap: 8px; margin-bottom: 12px;
+}
+.arch-frame.frontier .af-tag { color: var(--purple); }
+.arch-frame.utility .af-tag { color: var(--teal); }
+.arch-frame h3 { font-family: var(--font-display); font-size: 22px; font-weight: 600; color: var(--text); margin-bottom: 8px; letter-spacing: -0.01em; }
+.arch-frame p { font-size: 13.5px; line-height: 1.6; color: var(--text2); }
+.arch-frame .af-eg { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 6px; }
+.arch-frame .af-eg span {
+  font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; padding: 3px 8px; border-radius: 6px;
+  background: var(--surface-sunken); color: var(--text2); border: 1px solid var(--hairline);
 }
 
-/* ── sections ── */
-.section-wrap { padding: 72px 40px; max-width: 1120px; margin: 0 auto; }
-.section-intro { max-width: 720px; margin-bottom: 32px; }
-.section-intro .label-line {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 10px; font-weight: 500;
-  letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--text3); margin-bottom: 14px;
-}
-.section-intro h2 { font-size: 28px; font-weight: 600; color: var(--text); line-height: 1.2; margin-bottom: 12px; }
-.section-intro p { font-size: 15px; color: var(--text2); line-height: 1.65; }
+/* ═════ EDITORIAL PROJECT GALLERY ═════ */
+.gallery-wrap { max-width: 1320px; margin: 0 auto; padding: 8px 40px 120px; }
 
-.catalog-block {
-  padding: 24px;
-  border-radius: 18px;
-  background: linear-gradient(180deg, var(--surface), var(--surface-sunken));
-  border: 1px solid var(--border);
+/* ── Quiet filter rail ── */
+.gallery-controls {
+  position: sticky; top: 64px; z-index: 60; margin: 6px 0 8px;
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  padding: 11px 14px; border-radius: 14px;
+  background: var(--surface-glass); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--border); box-shadow: 0 10px 30px var(--shadow);
 }
-.catalog-block.featured { border-color: rgba(72,206,152,0.22); box-shadow: inset 0 1px 0 rgba(72,206,152,0.10); }
-.catalog-block.frontier { border-color: rgba(133,121,229,0.24); box-shadow: inset 0 1px 0 rgba(133,121,229,0.10); }
-.catalog-block.impact { border-color: rgba(82,148,214,0.2); box-shadow: inset 0 1px 0 rgba(82,148,214,0.08); }
+.gc-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+.gc-chip {
+  font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.01em;
+  padding: 7px 13px; border-radius: 999px; background: transparent;
+  border: 1px solid var(--hairline-2); color: var(--text2); cursor: pointer;
+  transition: color 0.18s, border-color 0.18s, background 0.18s;
+  display: inline-flex; align-items: center; gap: 7px; white-space: nowrap;
+}
+.gc-chip:hover { color: var(--text); border-color: var(--text3); }
+.gc-chip.active { color: var(--text); border-color: var(--teal); background: var(--teal-bg); }
+.gc-chip .n { color: var(--text3); font-size: 9.5px; }
+.gc-chip.active .n { color: var(--teal); }
+.gc-chip[data-arch].active { border-color: var(--purple); background: var(--purple-bg); }
+.gc-sep { width: 1px; height: 22px; background: var(--hairline); margin: 0 3px; }
+.gc-search { position: relative; margin-left: auto; min-width: 200px; flex: 1; max-width: 320px; }
+.gc-search input {
+  width: 100%; background: var(--surface-sunken); border: 1px solid var(--border); border-radius: 999px;
+  padding: 8px 15px 8px 34px; color: var(--text); font-size: 12.5px; font-family: 'IBM Plex Sans', sans-serif;
+  transition: border-color 0.2s;
+}
+.gc-search input:focus { outline: none; border-color: var(--teal); }
+.gc-search svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text3); pointer-events: none; }
+.gc-count { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--text3); white-space: nowrap; }
+.gc-count b { color: var(--teal); font-weight: 500; }
+@media (max-width: 720px) { .gc-search { margin-left: 0; order: 5; max-width: none; } }
 
-.block-head {
-  display: flex; align-items: flex-end; justify-content: space-between;
-  gap: 18px; flex-wrap: wrap; margin-bottom: 22px;
+/* ── Big editorial section dividers ── */
+.gallery-divider { margin: clamp(64px, 9vw, 104px) 0 clamp(30px, 4vw, 46px); }
+.gallery-divider.first { margin-top: 30px; }
+.gd-kicker {
+  font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--text3); display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
 }
-.block-head .section-kicker {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--text3); margin-bottom: 8px;
+.gd-kicker::before { content: ""; width: 24px; height: 1px; background: currentColor; opacity: 0.7; }
+.gallery-divider.frontier .gd-kicker { color: var(--purple); }
+.gallery-divider.utility .gd-kicker { color: var(--teal); }
+.gd-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 22px; flex-wrap: wrap; }
+.gallery-divider h2 {
+  font-family: var(--font-display); font-optical-sizing: auto;
+  font-size: clamp(30px, 4.6vw, 50px); font-weight: 600; letter-spacing: -0.022em; line-height: 1.0;
+  color: var(--text); max-width: 20ch;
 }
-.block-head h3 { font-size: 22px; line-height: 1.15; color: var(--text); }
-.block-head p { max-width: 560px; font-size: 13px; line-height: 1.6; color: var(--text2); margin-top: 6px; }
-.section-stamp {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
-  color: var(--amber); padding: 6px 10px; border-radius: 999px;
-  border: 1px solid rgba(232,164,68,0.2); background: rgba(232,164,68,0.08);
-  white-space: nowrap;
-}
-.section-stamp.anon { color: var(--blue); border-color: #2a3d55; background: var(--blue-bg); }
+.gd-count { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--text3); padding-bottom: 8px; white-space: nowrap; }
+.gd-note { margin-top: 14px; font-size: 14.5px; line-height: 1.65; color: var(--text2); max-width: 64ch; }
 
-/* ── project cards ── */
-.proj-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
-.proj-grid.single { grid-template-columns: 1fr; }
-.proj-card {
-  display: grid; gap: 14px; padding: 24px;
-  border-radius: 16px; border: 1px solid var(--border2);
-  background:
-    radial-gradient(circle at top right, rgba(124,111,222,0.07), transparent 36%),
-    linear-gradient(180deg, var(--surface-2), var(--surface));
-  box-shadow: 0 22px 54px rgba(0,0,0,0.12);
-  overflow: hidden;
+/* ── Featured pieces: large alternating spreads ── */
+.feature-stack { display: flex; flex-direction: column; gap: clamp(52px, 8vw, 112px); }
+.piece { display: grid; grid-template-columns: 1.02fr 0.98fr; gap: clamp(30px, 4.4vw, 64px); align-items: center; }
+.piece.flip .piece-visual { order: 2; }
+.piece.flip .piece-body { order: 1; }
+@media (max-width: 900px) {
+  .piece, .piece.flip { grid-template-columns: 1fr; gap: 26px; }
+  .piece.flip .piece-visual, .piece .piece-visual { order: 0; }
 }
-.proj-card > * { min-width: 0; }
-.proj-topline { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-.proj-num {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3);
+.piece-body { min-width: 0; }
+.piece-meta { display: flex; align-items: center; gap: 11px; flex-wrap: wrap; margin-bottom: 18px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; }
+.piece-index { color: var(--text); font-weight: 500; letter-spacing: 0.04em; }
+.piece-index .tot { color: var(--text3); }
+.piece-meta .m-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--text3); }
+.piece-arch { text-transform: uppercase; letter-spacing: 0.12em; font-size: 10px; }
+.piece.frontier .piece-arch { color: var(--purple); }
+.piece.utility .piece-arch { color: var(--teal); }
+.piece-root { color: var(--text3); }
+.piece-title {
+  font-family: var(--font-display); font-optical-sizing: auto;
+  font-size: clamp(31px, 4.6vw, 56px); font-weight: 600; line-height: 1.0; letter-spacing: -0.024em;
+  color: var(--text); margin-bottom: 15px;
 }
-.proj-card h4 { font-size: 20px; line-height: 1.15; color: var(--text); }
-.proj-card .proj-desc { font-size: 14px; line-height: 1.7; color: var(--text2); }
-.proj-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 2px; }
+.piece-coord { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--text3); letter-spacing: 0.02em; margin-bottom: 22px; word-break: break-all; }
+.piece-question {
+  font-size: clamp(16px, 1.7vw, 21px); line-height: 1.5; color: var(--text);
+  font-family: var(--font-display); font-style: italic; font-weight: 500;
+  border-left: 2px solid var(--purple); padding: 4px 0 4px 18px; margin-bottom: 24px;
+}
+.piece-question .pq-lbl { display: block; font-family: 'IBM Plex Mono', monospace; font-style: normal; font-weight: 500; font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--purple); margin-bottom: 8px; }
+.piece-blurb { font-size: 15.5px; line-height: 1.74; color: var(--text2); margin-bottom: 24px; max-width: 52ch; }
+.piece-specs { display: flex; flex-wrap: wrap; gap: 0; margin-bottom: 24px; }
+.piece-spec { display: flex; flex-direction: column; gap: 4px; padding-right: 20px; }
+.piece-spec + .piece-spec { border-left: 1px solid var(--hairline); padding-left: 20px; }
+.piece-spec .ps-k { font-family: 'IBM Plex Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); }
+.piece-spec .ps-v { font-size: 14px; font-weight: 600; color: var(--text); }
+.piece-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 28px; }
+.piece-tag { font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; padding: 3px 9px; border-radius: 6px; background: var(--surface-sunken); color: var(--text2); border: 1px solid var(--hairline); }
+.piece-open {
+  font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; font-weight: 500; letter-spacing: 0.03em;
+  background: none; border: none; color: var(--text); cursor: pointer; padding: 0;
+  display: inline-flex; align-items: center; gap: 11px;
+}
+.piece-open .po-line { display: block; width: 30px; height: 1px; background: currentColor; transition: width 0.3s var(--ease-out); }
+.piece-open:hover .po-line { width: 48px; }
+.piece.frontier .piece-open:hover { color: var(--purple); }
+.piece.utility .piece-open:hover { color: var(--teal); }
 
-/* ── media frame + placeholder ── */
-.media-frame {
-  display: grid; gap: 10px; padding: 12px; border-radius: 16px;
-  border: 1px solid var(--hairline);
-  background:
-    radial-gradient(circle at 20% 20%, rgba(61,191,138,0.1), transparent 30%),
-    linear-gradient(180deg, var(--surface-sunken), var(--surface));
+/* ── Cover: framed engineering render ── */
+.cover {
+  position: relative; border-radius: 18px; overflow: hidden; aspect-ratio: 4 / 3;
+  background: #0c1018; border: 1px solid var(--border);
+  box-shadow: 0 34px 74px -34px rgba(0,0,0,0.72); cursor: pointer;
 }
-.media-frame video, .media-frame img {
-  width: 100%; display: block; border-radius: 12px;
-  border: 1px solid var(--hairline); background: var(--surface-sunken);
+.cover::after { content: ""; position: absolute; inset: 0; border-radius: 18px; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05); pointer-events: none; z-index: 3; }
+.cover-media { position: absolute; inset: 0; width: 100%; height: 100%; transition: transform 0.9s var(--ease-out); transform: scale(1.02) translateY(var(--cover-shift, 0px)); }
+.cover-media svg, .cover-media img, .cover-media video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cover:hover .cover-media { transform: scale(1.06) translateY(var(--cover-shift, 0px)); }
+.cover-tag {
+  position: absolute; left: 14px; bottom: 12px; z-index: 2; font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+  letter-spacing: 0.08em; text-transform: uppercase; color: rgba(233,237,246,0.88);
+  background: rgba(8,11,18,0.5); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  padding: 5px 10px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.1);
 }
-.media-meta {
-  display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text3);
+.cover-badge {
+  position: absolute; right: 14px; top: 13px; z-index: 2; font-family: 'IBM Plex Mono', monospace; font-size: 9.5px;
+  letter-spacing: 0.12em; text-transform: uppercase; padding: 4px 9px; border-radius: 6px;
 }
-.media-meta strong { color: var(--text); font-weight: 500; }
-.media-placeholder {
-  aspect-ratio: 16 / 9; border-radius: 12px;
-  border: 1px dashed rgba(82,93,112,0.4);
-  background:
-    radial-gradient(circle at 30% 30%, rgba(72,206,152,0.06), transparent 40%),
-    linear-gradient(180deg, var(--surface), var(--surface-sunken));
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
-  color: var(--text3);
-}
-.media-placeholder .ph-icon { color: var(--text3); opacity: 0.7; }
-.media-placeholder .ph-label {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
-}
+.cover-badge.frontier { color: #cbc4ff; background: rgba(133,121,229,0.24); border: 1px solid rgba(133,121,229,0.42); }
+.cover-badge.utility { color: #a4edcd; background: rgba(72,206,152,0.22); border: 1px solid rgba(72,206,152,0.42); }
+.cover.live-media .cover-tag::before { content: ""; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #48ce98; box-shadow: 0 0 8px #48ce98; margin-right: 7px; vertical-align: middle; }
 
-/* ── stat cells inside a card ── */
-.proj-emphasis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
-.emphasis-cell { padding: 10px 12px; border-radius: 12px; background: var(--surface-sunken); border: 1px solid var(--hairline); }
-.emphasis-label {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3); margin-bottom: 6px;
+/* ── Gallery grid: image-forward tiles for the wider catalog ── */
+.tile-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: clamp(22px, 2.6vw, 36px); }
+.tile { display: flex; flex-direction: column; cursor: pointer; }
+.tile .cover { aspect-ratio: 3 / 2; border-radius: 14px; }
+.tile-cap { padding: 15px 2px 0; }
+.tile-meta { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--text3); margin-bottom: 9px; }
+.tile-meta .t-arch { text-transform: uppercase; letter-spacing: 0.1em; }
+.tile.frontier .tile-meta .t-arch { color: var(--purple); }
+.tile.utility .tile-meta .t-arch { color: var(--teal); }
+.tile-title { font-family: var(--font-display); font-optical-sizing: auto; font-size: 22px; font-weight: 600; letter-spacing: -0.016em; color: var(--text); line-height: 1.1; margin-bottom: 9px; transition: color 0.2s; }
+.tile.utility:hover .tile-title { color: var(--teal); }
+.tile.frontier:hover .tile-title { color: var(--purple); }
+.tile-blurb { font-size: 13px; line-height: 1.6; color: var(--text2); margin-bottom: 13px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.tile-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tile-tag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; padding: 2px 8px; border-radius: 5px; background: var(--surface-sunken); color: var(--text3); border: 1px solid var(--hairline); }
+
+.gallery-empty { text-align: center; padding: 90px 20px; color: var(--text3); font-family: 'IBM Plex Mono', monospace; font-size: 14px; }
+
+/* ── Scroll-build reveal ── */
+.reveal-piece { opacity: 0; transform: translateY(48px); transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out); }
+.reveal-piece.in { opacity: 1; transform: none; }
+
+/* ═════ STUDIO DRAWER ═════ */
+.studio-drawer-backdrop { position: fixed; inset: 0; z-index: 1000; background: rgba(6,8,13,0.78); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: none; opacity: 0; transition: opacity 0.3s; }
+.studio-drawer-backdrop.open { display: block; opacity: 1; }
+.studio-drawer { position: fixed; top: 0; right: 0; width: 100%; max-width: 1040px; height: 100%; z-index: 1001; background: var(--surface); border-left: 1px solid var(--border); box-shadow: -25px 0 80px rgba(0,0,0,0.6); display: flex; flex-direction: column; transform: translateX(100%); transition: transform 0.4s var(--ease-out); }
+.studio-drawer.open { transform: translateX(0); }
+.drawer-header { padding: 22px 34px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 16px; background: var(--surface-2); }
+.drawer-title-group { min-width: 0; }
+.drawer-title-group h2 { font-size: 23px; font-weight: 700; color: var(--text); margin-bottom: 6px; letter-spacing: -0.01em; }
+.drawer-title-group .drawer-sub { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--text3); word-break: break-all; }
+.drawer-archetype { font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.12em; padding: 3px 9px; border-radius: 6px; display: inline-block; margin-bottom: 8px; }
+.drawer-archetype.frontier { color: var(--purple); background: var(--purple-bg); border: 1px solid rgba(133,121,229,0.3); }
+.drawer-archetype.utility { color: var(--teal); background: var(--teal-bg); border: 1px solid rgba(72,206,152,0.3); }
+.btn-close-drawer { flex-shrink: 0; background: var(--surface-sunken); border: 1px solid var(--border); color: var(--text2); width: 38px; height: 38px; border-radius: 10px; cursor: pointer; display: grid; place-items: center; font-size: 22px; transition: all 0.15s; }
+.btn-close-drawer:hover { color: var(--text); border-color: var(--coral); background: var(--coral-bg); }
+
+.drawer-tabs { display: flex; gap: 4px; padding: 12px 34px 0; border-bottom: 1px solid var(--border); background: var(--surface-sunken); overflow-x: auto; }
+.drawer-tab-btn { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 500; padding: 11px 18px; color: var(--text2); background: transparent; border: none; border-bottom: 2px solid transparent; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+.drawer-tab-btn:hover { color: var(--text); }
+.drawer-tab-btn.active { color: var(--teal); border-bottom-color: var(--teal); font-weight: 600; background: var(--teal-bg); }
+.drawer-body { flex: 1; overflow-y: auto; padding: 32px 34px; }
+.drawer-pane { display: none; }
+.drawer-pane.active { display: block; animation: fade-in 0.3s var(--ease-out); }
+.drawer-body h4 { font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+
+/* Research question callout */
+.research-callout { position: relative; border: 1px solid rgba(133,121,229,0.34); background: linear-gradient(135deg, var(--purple-bg), transparent); border-radius: 14px; padding: 20px 22px; margin-bottom: 26px; }
+.research-callout .rc-lbl { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--purple); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+.research-callout .rc-q { font-size: 17px; line-height: 1.5; color: var(--text); font-weight: 600; }
+
+/* Architecture pipeline */
+.arch-pipeline { display: flex; flex-direction: column; gap: 12px; margin: 22px 0 30px; }
+.arch-node { background: var(--surface-sunken); border: 1px solid var(--border); border-radius: 14px; padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.arch-node-left { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.arch-icon { width: 42px; height: 42px; border-radius: 11px; display: grid; place-items: center; font-family: 'IBM Plex Mono', monospace; font-weight: 700; font-size: 13px; flex-shrink: 0; }
+.arch-icon.teal { background: var(--teal-bg); color: var(--teal); border: 1px solid rgba(72,206,152,0.3); }
+.arch-icon.purple { background: var(--purple-bg); color: var(--purple); border: 1px solid rgba(133,121,229,0.3); }
+.arch-icon.blue { background: var(--blue-bg); color: var(--blue); border: 1px solid rgba(93,158,223,0.3); }
+.arch-icon.amber { background: var(--amber-bg); color: var(--amber); border: 1px solid rgba(237,176,80,0.3); }
+.arch-text h4 { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+.arch-text p { font-size: 13px; color: var(--text2); line-height: 1.5; }
+.arch-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; padding: 4px 10px; border-radius: 6px; background: var(--surface); border: 1px solid var(--hairline); color: var(--text3); white-space: nowrap; flex-shrink: 0; }
+.arch-arrow { display: flex; justify-content: center; color: var(--text3); font-size: 18px; line-height: 1; }
+.drawer-lead { color: var(--text2); font-size: 14px; line-height: 1.65; margin-bottom: 22px; }
+
+/* Code explorer */
+.code-box-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: var(--code-chrome); border: 1px solid var(--code-line); border-bottom: none; border-radius: 14px 14px 0 0; padding: 12px 16px; font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: var(--text2); }
+.btn-copy { background: var(--surface); border: 1px solid var(--code-line); color: var(--text2); font-size: 10.5px; padding: 5px 12px; border-radius: 6px; cursor: pointer; transition: all 0.15s; font-family: 'IBM Plex Mono', monospace; }
+.btn-copy:hover { color: var(--teal); border-color: var(--teal); background: var(--teal-bg); }
+.code-box-body { background: var(--code-bg); border: 1px solid var(--code-line); border-radius: 0 0 14px 14px; padding: 22px; font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; color: var(--code-fg); overflow-x: auto; line-height: 1.65; }
+.code-comment { color: var(--c-comment); font-style: italic; }
+.code-keyword { color: var(--c-key); font-weight: 600; }
+.code-fn { color: var(--c-fn); }
+.code-str { color: var(--c-str); }
+.code-num { color: var(--c-num); }
+.code-type { color: var(--c-type); }
+
+/* ═════ INTERACTIVE WIDGETS ═════ */
+.widget { background: var(--surface-sunken); border: 1px solid var(--border); border-radius: 18px; padding: 22px; margin-top: 16px; }
+.widget h4 { font-size: 16px; margin-bottom: 6px; }
+.widget .w-desc { font-size: 13.5px; color: var(--text2); margin-bottom: 18px; line-height: 1.55; }
+.w-controls { display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end; margin-bottom: 16px; }
+.w-field { display: flex; flex-direction: column; gap: 5px; }
+.w-field label { font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text3); }
+.w-field input[type="number"], .w-field select {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px 11px;
+  color: var(--text); font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; min-width: 120px;
 }
-.emphasis-value { font-size: 13px; line-height: 1.45; color: var(--text); }
+.w-field input:focus, .w-field select:focus { outline: none; border-color: var(--teal); }
+.w-btn { background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 9px 17px; border-radius: 8px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; cursor: pointer; transition: all 0.18s; display: inline-flex; align-items: center; gap: 8px; }
+.w-btn:hover { border-color: var(--teal); color: var(--teal); background: var(--surface-2); }
+.w-btn.primary { background: linear-gradient(135deg, var(--teal), #30b882); color: #060a10; border: none; font-weight: 600; }
+.w-btn.primary:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(72,206,152,0.3); }
+.w-btn.purple { border-color: rgba(133,121,229,0.4); color: var(--purple); }
+.w-btn.purple:hover { background: var(--purple-bg); }
+.w-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.w-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.w-chip { font-family: 'IBM Plex Mono', monospace; font-size: 11px; padding: 6px 12px; border-radius: 999px; background: var(--surface); border: 1px solid var(--border); color: var(--text2); cursor: pointer; transition: all 0.15s; }
+.w-chip:hover, .w-chip.active { border-color: var(--teal); color: var(--teal); background: var(--teal-bg); }
 
-/* ── status pill ── */
-.status-pill {
-  display: inline-flex; align-items: center; gap: 5px;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 10px; font-weight: 500;
-  padding: 3px 8px; border-radius: 10px; letter-spacing: 0.04em;
-}
-.status-pill .dot { width: 6px; height: 6px; border-radius: 50%; }
-.status-pill.live .dot { background: var(--teal); }
-.status-pill.live { color: var(--teal); background: var(--teal-bg); border: 1px solid var(--teal-dim); }
-.status-pill.reusable .dot { background: var(--purple); }
-.status-pill.reusable { color: var(--purple); background: var(--purple-bg); border: 1px solid var(--purple-dim); }
-.status-pill.anon .dot { background: var(--blue); }
-.status-pill.anon { color: var(--blue); background: var(--blue-bg); border: 1px solid #2a3d55; }
+/* ── Result card (JSON-RPC response rendered as fields) ── */
+.result-card { border: 1px solid var(--border); border-radius: 14px; background: var(--surface); overflow: hidden; margin-top: 4px; }
+.result-head { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-bottom: 1px solid var(--hairline); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--text2); background: var(--bg3); }
+.result-head .rc-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 8px var(--teal); }
+.result-head .rc-lat { margin-left: auto; color: var(--text3); }
+.result-rows { padding: 6px 0; }
+.result-row { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 9px 16px; border-bottom: 1px solid var(--hairline); }
+.result-row:last-child { border-bottom: none; }
+.result-row .rk { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; }
+.result-row .rv { font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--text); font-weight: 500; text-align: right; word-break: break-all; }
+.result-row .rv.accent { color: var(--teal); }
+.result-empty { padding: 26px 16px; text-align: center; color: var(--text3); font-size: 13px; }
+.result-raw { border-top: 1px solid var(--hairline); }
+.result-raw summary { cursor: pointer; padding: 10px 16px; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: var(--text3); list-style: none; user-select: none; }
+.result-raw summary::-webkit-details-marker { display: none; }
+.result-raw summary:hover { color: var(--teal); }
+.result-raw pre { margin: 0; padding: 0 16px 16px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--text2); white-space: pre-wrap; line-height: 1.55; }
 
-/* ── footer ── */
-.site-footer {
-  padding: 32px 40px; border-top: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: space-between;
-  flex-wrap: wrap; gap: 12px;
-}
-.site-footer p { font-size: 11px; color: var(--text3); line-height: 1.5; }
-.site-footer .footer-links { display: flex; gap: 20px; }
-.site-footer .footer-links a { font-size: 11px; color: var(--text3); transition: color 0.15s; }
-.site-footer .footer-links a:hover { color: var(--text2); }
+/* ── Live embed (real static build in an iframe) ── */
+.w-embed { border: 1px solid var(--border); border-radius: 14px; background: var(--surface); overflow: hidden; }
+.w-embed-bar { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-bottom: 1px solid var(--hairline); background: var(--bg3); }
+.w-embed-bar .we-dot { width: 9px; height: 9px; border-radius: 50%; background: #ff5f56; }
+.w-embed-bar .we-dot.amber { background: #ffbd2e; }
+.w-embed-bar .we-dot.teal { background: var(--teal); }
+.w-embed-bar .we-title { margin-left: 8px; font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: var(--text2); letter-spacing: 0.02em; }
+.w-embed-bar .we-open { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--teal); text-decoration: none; padding: 5px 11px; border: 1px solid var(--border); border-radius: 7px; transition: all 0.18s; }
+.w-embed-bar .we-open:hover { border-color: var(--teal); background: var(--teal-bg); }
+.w-embed-stage { position: relative; width: 100%; aspect-ratio: 16 / 10; background: var(--sim-bg); }
+.w-embed-stage .we-frame { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; opacity: 0; transition: opacity 0.5s var(--ease-out); background: #fff; }
+.w-embed-stage .we-frame.ready { opacity: 1; }
+.w-embed-stage .we-loading { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 10px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--text3); }
+.w-embed-stage .we-loading::before { content: ''; width: 13px; height: 13px; border: 2px solid var(--border); border-top-color: var(--teal); border-radius: 50%; animation: we-spin 0.8s linear infinite; }
+@keyframes we-spin { to { transform: rotate(360deg); } }
+.we-note { margin: 12px 2px 0; font-size: 12.5px; color: var(--text2); line-height: 1.55; }
+@media (max-width: 640px) { .w-embed-stage { aspect-ratio: 4 / 3; } }
 
-/* ── reveal ── */
-.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out); }
-.reveal.visible { opacity: 1; transform: translateY(0); }
+/* ── Step list (runner) ── */
+.step-list { display: flex; flex-direction: column; gap: 2px; border: 1px solid var(--border); border-radius: 14px; padding: 8px; background: var(--surface); }
+.step-item { display: flex; align-items: center; gap: 12px; padding: 11px 12px; border-radius: 9px; transition: background 0.25s; }
+.step-item.active { background: var(--teal-bg); }
+.step-item.done { opacity: 0.72; }
+.step-mark { width: 22px; height: 22px; border-radius: 50%; border: 1.6px solid var(--border2); display: grid; place-items: center; flex-shrink: 0; color: var(--text3); font-size: 12px; transition: all 0.25s; }
+.step-item.active .step-mark { border-color: var(--teal); color: var(--teal); }
+.step-item.active .step-mark::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--teal); animation: step-pulse 0.9s var(--ease-in-out) infinite; }
+.step-item.done .step-mark { border-color: var(--teal); background: var(--teal); color: #060a10; }
+.step-item.done .step-mark::after { content: "✓"; font-size: 12px; font-weight: 700; }
+@keyframes step-pulse { 50% { opacity: 0.35; } }
+.step-label { font-size: 13.5px; color: var(--text); }
+.step-item.pending .step-label { color: var(--text3); }
 
-.block-stack { display: grid; gap: 28px; }
+/* ── Traveler document (blade disposition) ── */
+.traveler-doc { border: 1px solid var(--border); border-radius: 14px; background: var(--surface); overflow: hidden; margin-top: 4px; }
+.tv-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 18px; border-bottom: 1px solid var(--hairline); }
+.tv-head .tv-title { font-size: 14px; font-weight: 600; color: var(--text); }
+.tv-head .tv-serial { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--text3); }
+.tv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--hairline); }
+.tv-cell { background: var(--surface); padding: 12px 18px; }
+.tv-cell .tv-k { font-family: 'IBM Plex Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text3); margin-bottom: 4px; }
+.tv-cell .tv-v { font-size: 15px; font-weight: 600; color: var(--text); }
+.tv-verdict { padding: 14px 18px; font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; text-align: center; }
 
-/* ── responsive ── */
-@media (max-width: 760px) {
-  .topbar { height: auto; min-height: 52px; padding: 10px 16px; flex-wrap: wrap; justify-content: center; }
-  .topbar-nav { width: 100%; justify-content: center; flex-wrap: wrap; row-gap: 8px; gap: 14px; }
-  .topbar-nav a.home-link { border-right: none; padding-right: 0; }
-  .hero { padding: 110px 22px 56px; min-height: 0; }
-  .section-wrap { padding: 52px 22px; }
-  .hero-signals, .proj-grid, .proj-emphasis { grid-template-columns: 1fr; }
-  .site-footer { padding: 24px 20px; }
-  .cursor-light { display: none; }
+/* ── Event log (telemetry) ── */
+.event-log { margin-top: 12px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); max-height: 140px; overflow-y: auto; }
+.event-log:empty::before { content: "No events yet — start the stream."; display: block; padding: 16px; color: var(--text3); font-size: 12.5px; }
+.event-row { display: flex; align-items: center; gap: 10px; padding: 8px 14px; border-bottom: 1px solid var(--hairline); font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; }
+.event-row:last-child { border-bottom: none; }
+.event-row .ev-time { color: var(--text3); }
+.event-row .ev-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.event-row.ok .ev-dot { background: var(--teal); } .event-row.ok { color: var(--text2); }
+.event-row.warn .ev-dot { background: var(--amber); } .event-row.warn { color: var(--amber); }
+.event-row.err .ev-dot { background: var(--coral); } .event-row.err { color: var(--coral); }
+
+/* ── NX 3D stage ── */
+.nx-stage { position: relative; height: 300px; border: 1px solid var(--border); border-radius: 14px; background:
+  radial-gradient(120% 120% at 50% 0%, var(--bg3) 0%, var(--surface-sunken) 70%);
+  overflow: hidden; perspective: 900px; cursor: grab; touch-action: none; }
+.nx-stage:active { cursor: grabbing; }
+.nx-stage .nx-grid { position: absolute; inset: 0; background-image:
+  linear-gradient(var(--hairline) 1px, transparent 1px), linear-gradient(90deg, var(--hairline) 1px, transparent 1px);
+  background-size: 32px 32px; mask-image: radial-gradient(circle at 50% 55%, #000 40%, transparent 78%); -webkit-mask-image: radial-gradient(circle at 50% 55%, #000 40%, transparent 78%); }
+.nx-solid { position: absolute; top: 50%; left: 50%; transform-style: preserve-3d; }
+.nx-face { position: absolute; transform-style: preserve-3d; border: 1px solid rgba(72,206,152,0.55); background: rgba(72,206,152,0.14); box-shadow: inset 0 0 30px rgba(72,206,152,0.12); }
+.nx-solid.op-subtract .nx-face { border-color: rgba(237,176,80,0.6); background: rgba(237,176,80,0.13); box-shadow: inset 0 0 30px rgba(237,176,80,0.12); }
+.nx-solid.op-none .nx-face { border-style: dashed; border-color: rgba(147,157,178,0.6); background: rgba(147,157,178,0.06); box-shadow: none; }
+.nx-hint { position: absolute; left: 14px; bottom: 12px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--text3); letter-spacing: 0.05em; pointer-events: none; }
+.nx-readout { position: absolute; right: 14px; top: 12px; display: flex; flex-direction: column; gap: 4px; align-items: flex-end; pointer-events: none; }
+.nx-readout .nr-item { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--text2); }
+.nx-readout .nr-item b { color: var(--teal); }
+
+/* FEA gauge */
+.gauge-wrap { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+.gauge-dial { position: relative; width: 150px; height: 150px; flex-shrink: 0; }
+.gauge-readout { flex: 1; min-width: 200px; }
+.gauge-bar { height: 12px; border-radius: 999px; background: var(--surface); border: 1px solid var(--border); overflow: hidden; margin: 8px 0 4px; }
+.gauge-bar span { display: block; height: 100%; border-radius: 999px; transition: width 0.5s var(--ease-out), background 0.5s; }
+.gauge-metric { display: flex; justify-content: space-between; font-family: 'IBM Plex Mono', monospace; font-size: 12px; margin-top: 10px; }
+.gauge-metric span:first-child { color: var(--text2); }
+.gauge-metric span:last-child { color: var(--text); font-weight: 600; }
+.gauge-verdict { margin-top: 14px; font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; font-weight: 600; padding: 8px 12px; border-radius: 8px; text-align: center; }
+input[type="range"] { width: 100%; accent-color: var(--teal); }
+
+/* MQTT chart */
+.chart-frame { background: var(--sim-bg); border: 1px solid var(--border); border-radius: 12px; padding: 14px; }
+.chart-frame svg { display: block; width: 100%; height: 160px; }
+.chart-status { display: flex; align-items: center; gap: 10px; margin-top: 12px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; }
+.chart-status .st-dot { width: 9px; height: 9px; border-radius: 50%; }
+
+/* BOM tree */
+.bom-tree { font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; }
+.bom-node { padding: 3px 0; }
+.bom-row { display: flex; align-items: center; gap: 8px; padding: 5px 8px; border-radius: 7px; cursor: default; transition: background 0.15s; }
+.bom-row.clickable { cursor: pointer; }
+.bom-row.clickable:hover { background: var(--hover); }
+.bom-toggle { width: 16px; color: var(--text3); }
+.bom-id { color: var(--text); }
+.bom-qty { color: var(--text3); margin-left: auto; }
+.bom-children { margin-left: 20px; border-left: 1px dashed var(--border); padding-left: 8px; overflow: hidden; }
+.bom-row.diff-add { background: rgba(72,206,152,0.12); }
+.bom-row.diff-add .bom-id { color: var(--teal); }
+.bom-row.diff-chg { background: rgba(237,176,80,0.12); }
+.bom-row.diff-chg .bom-id { color: var(--amber); }
+.bom-row.diff-del { background: rgba(219,114,100,0.12); text-decoration: line-through; }
+.bom-row.diff-del .bom-id { color: var(--coral); }
+
+/* Graph visualizer */
+.graph-frame { background: var(--sim-bg); border: 1px solid var(--border); border-radius: 12px; padding: 10px; }
+.graph-frame svg { display: block; width: 100%; height: 260px; }
+.graph-answer { margin-top: 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; font-size: 13.5px; line-height: 1.6; color: var(--text2); }
+.graph-answer b { color: var(--text); }
+.gnode circle { transition: r 0.3s var(--ease-out); }
+.gedge { stroke: var(--border2); stroke-width: 1.4; opacity: 0; transition: opacity 0.4s; }
+.gedge.on { opacity: 0.7; }
+.glabel { font-family: 'IBM Plex Mono', monospace; font-size: 10px; fill: var(--text2); }
+
+/* ── Global reveal + reduced motion ── */
+@keyframes card-rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+.reveal-up { opacity: 0; transform: translateY(18px); animation: card-rise 0.7s var(--ease-out) forwards; }
+@media (prefers-reduced-motion: reduce) {
+  .atmosphere .mesh, .hud-pulse-dot { animation: none !important; }
+  .step-item.active .step-mark::after { animation: none !important; }
+  .reveal-piece { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .cover-media { transform: none !important; }
+  .reveal-up { opacity: 1 !important; transform: none !important; animation: none !important; }
 }
 </style>
 </head>
 <body>
 
-<div class="cursor-light" id="cursorLight" aria-hidden="true"></div>
+<!-- Atmosphere -->
+<div class="atmosphere" aria-hidden="true"><div class="mesh"></div><div class="grain"></div></div>
 
-<!-- ══════ TOP BAR ══════ -->
-<div class="topbar" id="topbar">
+<!-- ══════ TOP BAR (exact Digital Fabric styling) ══════ -->
+<header class="topbar" id="topbar">
   <div class="topbar-brand">
-    <div class="sigil">gq</div>
-    <span>Griffin Quinn <span class="dim">/ Projects</span></span>
+    <div class="sigil">df</div>
+    <span>Digital Fabric <span class="dim">/ Siemens DISW</span></span>
   </div>
   <nav class="topbar-nav">
     <a class="home-link" href="index.html">
-      <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M11 7H3M7 3L3 7l4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      Digital Fabric
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M11 7H3M7 3L3 7l4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Home
     </a>
-    <a href="#enablement">Enablement</a>
-    <a href="#genai">GenAI</a>
-    <a href="#impact">Impact</a>
+    <a href="#tacticalGrid" class="active">Projects (63)</a>
+    <a href="index.html#mini-sites">Mini Sites</a>
+    <a href="index.html#catalog">References</a>
+    <a href="index.html#about">About</a>
   </nav>
-</div>
+</header>
 
-<!-- ══════ HERO ══════ -->
-<section class="hero" id="top">
-  <div class="hero-depth" aria-hidden="true"></div>
-  <div class="hero-content">
-    <div class="hero-eyebrow">Presales &middot; Emerging Tech &middot; Siemens DISW</div>
-    <h1>Things I've actually<br><em>built and shipped</em></h1>
-    <p class="hero-sub">I spend my days connecting Mendix and the Siemens Xcelerator portfolio for customers — enablement they can reuse, demos that survive contact with real accounts, and lately a lot of agentic AI over PLM and CAD. This is a working sample of that, kept clear of anything confidential.</p>
-    <div class="hero-signals" aria-label="Highlights">
-      <div class="hero-signal">
-        <div class="signal-label">In Presales Since</div>
-        <div class="signal-value">2022</div>
-        <div class="signal-copy">Grew from the Genesis cohort into owning reusable Mendix + Teamcenter narrative for the wider team.</div>
-      </div>
-      <div class="hero-signal">
-        <div class="signal-label">Realize LIVE</div>
-        <div class="signal-value">Every year since '22</div>
-        <div class="signal-copy">Authored and delivered hands-on training sessions, most recently the Mendix-on-Edge storyline.</div>
-      </div>
-      <div class="hero-signal">
-        <div class="signal-label">Where I Am Now</div>
-        <div class="signal-value">Agentic + PLM</div>
-        <div class="signal-copy">Extending Model Context Protocol into NX and shaping how agents fit into manufacturing.</div>
-      </div>
+<!-- ══════ CINEMATIC INTRO BAND ══════ -->
+<section class="intro" id="intro">
+  <div class="intro-kicker reveal-up" style="animation-delay:.05s">Multi-Root Engineering Index · 3 Workspace Roots</div>
+  <h1 class="reveal-up" style="animation-delay:.12s">Real architecture.<br>63 working <em>codebases.</em><br>Zero corporate fluff.</h1>
+  <p class="intro-lead reveal-up" style="animation-delay:.2s">A published, browser-native command studio for Griffin Quinn's entire engineering portfolio — spanning <b>experimental GenAI &amp; PLM frontier R&amp;D</b> and battle-tested <b>internal presales tooling</b>. Nothing to install: inspect real architecture, verified source, and live in-browser tool simulators for every repository.</p>
+
+  <div class="intro-stats" id="introStats">
+    <div class="stat-pill reveal-up" style="animation-delay:.26s"><div class="num" data-count="63" data-suffix="">0</div><div class="lbl">Repositories indexed</div><div class="sub">3 workspace roots</div></div>
+    <div class="stat-pill reveal-up" style="animation-delay:.32s"><div class="num" data-count="128" data-suffix="+">0</div><div class="lbl">Governed MCP tools</div><div class="sub">68 NX · 60 Teamcenter</div></div>
+    <div class="stat-pill reveal-up" style="animation-delay:.38s"><div class="num" data-count="167" data-suffix=" MB">0</div><div class="lbl">Standalone SEA binary</div><div class="sub">MRO-Workbench.exe</div></div>
+    <div class="stat-pill reveal-up" style="animation-delay:.44s"><div class="num" data-count="3" data-suffix="">0</div><div class="lbl">Enterprise domains</div><div class="sub">CAD/PLM · Edge · Agentic AI</div></div>
+  </div>
+
+  <div class="archetype-split">
+    <div class="arch-frame frontier reveal-up" style="animation-delay:.5s">
+      <div class="af-tag"><span class="hud-pulse-dot" style="background:var(--purple);box-shadow:0 0 10px var(--purple)"></span>Archetype 01 — Frontier R&amp;D</div>
+      <h3>Experimental GenAI &amp; PLM breakthroughs</h3>
+      <p>Frontier engineering that answers an exploratory research question — e.g. <em>"What can we do when we bridge Generative AI directly with Teamcenter or Siemens NX over Model Context Protocol?"</em> Autonomous agents driving CAD, PLM, and knowledge graphs.</p>
+      <div class="af-eg"><span>nx-mcp</span><span>mcp-teamcenter</span><span>GraphStudio</span><span>flightsMCP</span><span>capitalMCP</span></div>
+    </div>
+    <div class="arch-frame utility reveal-up" style="animation-delay:.56s">
+      <div class="af-tag"><span class="hud-pulse-dot"></span>Archetype 02 — Internal Utilities</div>
+      <h3>Presales &amp; developer productivity tools</h3>
+      <p>Purpose-built utilities described strictly by <em>what the technology does</em> — autonomous activity monitoring, capability roadmapping, directory scaffolding, and telemetry dashboards. No customer names, opportunity numbers, or roadmap dates.</p>
+      <div class="af-eg"><span>TimeTracking</span><span>GOALS</span><span>progressionBoard</span><span>customdirs</span><span>_notes</span></div>
     </div>
   </div>
 </section>
 
-<div class="sep"></div>
-
-<!-- ══════ ENABLEMENT ══════ -->
-<section class="section-wrap" id="enablement">
-  <div class="section-intro reveal">
-    <div class="label-line">Reusable Assets &amp; Enablement</div>
-    <h2>The work other people pick up and run with</h2>
-    <p>The part of the job I care about most is building things that outlive the meeting they were made for — decks, walkthroughs, and training that colleagues and partners reach for on their own.</p>
-  </div>
-
-  <div class="catalog-block featured reveal">
-    <div class="block-head">
-      <div>
-        <div class="section-kicker">Enablement</div>
-        <h3>Built once, reused everywhere</h3>
-        <p>Owned narratives and hands-on material that have travelled across teams, partners, and verticals.</p>
-      </div>
-      <span class="status-pill reusable"><span class="dot"></span>reusable</span>
+<!-- ══════ EDITORIAL PROJECT GALLERY ══════ -->
+<main class="gallery-wrap" id="tacticalGrid">
+  <div class="gallery-controls" id="galleryControls">
+    <div class="gc-tabs" id="catTabs">
+      <button class="gc-chip active" data-filter="all">All <span class="n" data-count-for="all">63</span></button>
+      <button class="gc-chip" data-filter="mcp">Agentic &amp; MCP <span class="n" data-count-for="mcp">0</span></button>
+      <button class="gc-chip" data-filter="ai">Frontier AI <span class="n" data-count-for="ai">0</span></button>
+      <button class="gc-chip" data-filter="plm">Teamcenter &amp; PLM <span class="n" data-count-for="plm">0</span></button>
+      <button class="gc-chip" data-filter="edge">Edge IIoT <span class="n" data-count-for="edge">0</span></button>
+      <button class="gc-chip" data-filter="exe">Standalone <span class="n" data-count-for="exe">0</span></button>
+      <button class="gc-chip" data-filter="app">UI &amp; Hubs <span class="n" data-count-for="app">0</span></button>
     </div>
-
-    <div class="proj-grid">
-      <div class="proj-card reveal">
-        <div class="proj-topline">
-          <div class="proj-num">01 / Owned Narrative</div>
-        </div>
-        <h4>Mendix + Teamcenter — the deck I keep coming back to</h4>
-        <div class="proj-desc">It started as a way to explain how Mendix and Teamcenter genuinely fit together, and it grew into the story the wider team reaches for when they need to position low-code against the PLM backbone. I've reshaped it for partners, channel audiences, and specific verticals without ever losing the core through-line.</div>
-        <div class="proj-tags">
-          <span class="tag-pill teal">Mendix</span>
-          <span class="tag-pill purple">Teamcenter</span>
-          <span class="tag-pill amber">Challenger sale</span>
-        </div>
-      </div>
-
-      <div class="proj-card reveal">
-        <div class="proj-topline">
-          <div class="proj-num">02 / Hands-On Event</div>
-        </div>
-        <h4>Teamcenter Experience Day</h4>
-        <div class="proj-desc">A day where partners build a working Mendix–Teamcenter connector with their own hands instead of watching someone else drive. I co-ran it at APC for a room of fifty-plus, then kept sharpening the walkthrough release after release until the rough edges were gone.</div>
-        <div class="proj-tags">
-          <span class="tag-pill teal">Workshop</span>
-          <span class="tag-pill blue">Partner enablement</span>
-          <span class="tag-pill purple">Connector build</span>
-        </div>
-      </div>
-
-      <div class="proj-card reveal">
-        <div class="proj-topline">
-          <div class="proj-num">03 / Training Curriculum</div>
-        </div>
-        <h4>Realize LIVE — Mendix on the Edge</h4>
-        <div class="proj-desc">Training I authored for Realize LIVE that puts Mendix dashboards on top of Siemens Industrial Edge — real OPC UA, MQTT, and Node-RED feeds wired into low-code. It's the latest in a run of RL sessions I've delivered every year since 2022.</div>
-        <div class="proj-tags">
-          <span class="tag-pill teal">Industrial Edge</span>
-          <span class="tag-pill amber">IIoT</span>
-          <span class="tag-pill purple">Low-code</span>
-        </div>
-      </div>
-
-      <div class="proj-card reveal">
-        <div class="proj-topline">
-          <div class="proj-num">04 / GTM Library</div>
-        </div>
-        <h4>Positioning &amp; competitive material</h4>
-        <div class="proj-desc">The quieter assets that keep getting used: a Mendix-in-the-digital-enterprise challenger narrative, competitive positioning against other low-code platforms, and industry-specific cuts. Co-built with senior colleagues and reused across named accounts.</div>
-        <div class="proj-tags">
-          <span class="tag-pill blue">GTM</span>
-          <span class="tag-pill amber">Competitive</span>
-          <span class="tag-pill teal">Whitepaper</span>
-        </div>
-      </div>
+    <div class="gc-sep"></div>
+    <div class="gc-tabs" id="archTabs">
+      <button class="gc-chip active" data-arch="all">All work</button>
+      <button class="gc-chip" data-arch="frontier">Frontier R&amp;D</button>
+      <button class="gc-chip" data-arch="utility">Utilities</button>
     </div>
-  </div>
-</section>
-
-<div class="sep"></div>
-
-<!-- ══════ GENAI ══════ -->
-<section class="section-wrap" id="genai">
-  <div class="section-intro reveal">
-    <div class="label-line">Frontier GenAI &amp; Agentic</div>
-    <h2>Where the agents stop talking and start building</h2>
-    <p>Most of my recent energy goes here: getting language models to do real engineering work through governed tools, and figuring out where that actually belongs in a manufacturing enterprise.</p>
-  </div>
-
-  <div class="catalog-block frontier reveal">
-    <div class="block-head">
-      <div>
-        <div class="section-kicker">Agentic Engineering</div>
-        <h3>Agents over CAD and PLM</h3>
-        <p>Self-directed engineering and a point of view to go with it.</p>
-      </div>
-      <span class="status-pill live"><span class="dot"></span>live demo</span>
+    <div class="gc-search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input type="text" id="searchInput" placeholder="Search tech, name, extension…" aria-label="Search projects">
     </div>
+    <div class="gc-count" id="resultCount"></div>
+  </div>
 
-    <div class="block-stack">
-      <div class="proj-card reveal">
-        <div class="proj-topline">
-          <div class="proj-num">05 / Agentic CAD</div>
-          <span class="status-pill live"><span class="dot"></span>live capture</span>
-        </div>
-        <h4>NX MCP — driving Siemens NX with an agent</h4>
-        <div class="proj-desc">This is where it gets real. I extended the Model Context Protocol out to Siemens NX so an agent can drive actual geometry — parts, patterns, whole benchmark models — through a governed tool surface. The clip below is a live run against NX, not a mockup.</div>
-        <figure class="media-frame">
-          <video controls muted playsinline preload="metadata" poster="assets/nx-renders/ss-charlie-benchmark.png">
-            <source src="assets/projects/nx_mcp.mp4" type="video/mp4">
-            Your browser doesn't support embedded video. <a href="assets/projects/nx_mcp.mp4">Download the clip</a>.
-          </video>
-          <figcaption class="media-meta">
-            <span><strong>Capture:</strong> NX MCP live run</span>
-            <span><strong>Protocol:</strong> Model Context Protocol &rarr; NX</span>
-          </figcaption>
-        </figure>
-        <div class="proj-tags">
-          <span class="tag-pill purple">MCP</span>
-          <span class="tag-pill teal">Siemens NX</span>
-          <span class="tag-pill amber">Agentic</span>
-        </div>
-      </div>
+  <div id="galleryMount"><!-- gallery sections injected by JS --></div>
 
-      <div class="proj-grid">
-        <div class="proj-card reveal">
-          <div class="proj-topline">
-            <div class="proj-num">06 / Point of View</div>
-          </div>
-          <h4>Agentic Enterprise Platform</h4>
-          <div class="proj-desc">A view on where agents actually belong in manufacturing — sitting between human intent and the enterprise systems, not replacing them. I've been shaping the field-ready narrative that ties agentic patterns to supply-chain and production reality.</div>
-          <div class="proj-emphasis">
-            <div class="emphasis-cell"><div class="emphasis-label">Focus</div><div class="emphasis-value">Agents between intent &amp; systems</div></div>
-            <div class="emphasis-cell"><div class="emphasis-label">Domain</div><div class="emphasis-value">Supply chain, production</div></div>
-            <div class="emphasis-cell"><div class="emphasis-label">Form</div><div class="emphasis-value">Field-readiness narrative</div></div>
-          </div>
-          <div class="proj-tags">
-            <span class="tag-pill teal">Strategy</span>
-            <span class="tag-pill purple">Agentic</span>
-          </div>
-        </div>
+  <div class="gallery-empty" id="galleryEmpty" style="display:none">No projects match this filter.</div>
+</main>
 
-        <div class="proj-card reveal">
-          <div class="proj-topline">
-            <div class="proj-num">07 / Research</div>
-          </div>
-          <h4>MCP research &amp; writing</h4>
-          <div class="proj-desc">The reading, prototyping, and writing behind all of the above — MCP internals, agent orchestration patterns, and how far you can push tool-calling before it starts to fray. Mostly self-directed, mostly nights and weekends.</div>
-          <figure class="media-frame">
-            <div class="media-placeholder">
-              <svg class="ph-icon" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 20h8M12 18v2"/><path d="M7 9l2 2-2 2M12 13h4"/></svg>
-              <div class="ph-label">Write-up coming</div>
-            </div>
-            <figcaption class="media-meta">
-              <span><strong>Format:</strong> Research notes</span>
-              <span>MCP &middot; orchestration</span>
-            </figcaption>
-          </figure>
-          <div class="proj-tags">
-            <span class="tag-pill blue">Research</span>
-            <span class="tag-pill amber">LLM tooling</span>
-          </div>
-        </div>
-      </div>
+<!-- ══════ STUDIO DRAWER ══════ -->
+<div class="studio-drawer-backdrop" id="studioBackdrop" onclick="closeStudio()"></div>
+<aside class="studio-drawer" id="studioDrawer" role="dialog" aria-modal="true" aria-labelledby="studioTitle" aria-hidden="true">
+  <div class="drawer-header">
+    <div class="drawer-title-group">
+      <span class="drawer-archetype utility" id="studioArchetype">Utility</span>
+      <h2 id="studioTitle">Project Title</h2>
+      <div class="drawer-sub" id="studioSub">Directory Path · Runtime Architecture</div>
     </div>
+    <button class="btn-close-drawer" onclick="closeStudio()" aria-label="Close studio">&times;</button>
   </div>
-</section>
-
-<div class="sep"></div>
-
-<!-- ══════ IMPACT ══════ -->
-<section class="section-wrap" id="impact">
-  <div class="section-intro reveal">
-    <div class="label-line">Customer Impact</div>
-    <h2>Wins I'm proud of, told without the names</h2>
-    <p>These are real pursuits and real outcomes. I've deliberately stripped out customer names, logos, figures, and footage — the point here is the shape of the work, not the account.</p>
+  <div class="drawer-tabs" role="tablist">
+    <button class="drawer-tab-btn active" onclick="switchDrawerPane('arch')" role="tab">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/></svg>
+      Architecture &amp; Data Flow
+    </button>
+    <button class="drawer-tab-btn" onclick="switchDrawerPane('code')" role="tab">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+      Verified Source Code
+    </button>
+    <button class="drawer-tab-btn" onclick="switchDrawerPane('sim')" role="tab">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      Interactive Demo
+    </button>
   </div>
-
-  <div class="catalog-block impact reveal">
-    <div class="block-head">
-      <div>
-        <div class="section-kicker">Customer Impact</div>
-        <h3>Anonymized case studies</h3>
-        <p>Grounded in work I actually did. Details held back on purpose.</p>
-      </div>
-      <span class="section-stamp anon">Anonymized</span>
-    </div>
-
-    <div class="proj-grid">
-      <div class="proj-card reveal">
-        <div class="proj-topline">
-          <div class="proj-num">08 / Competitive Win</div>
-          <span class="status-pill anon"><span class="dot"></span>anonymized</span>
-        </div>
-        <h4>Head-to-head POC win against an incumbent low-code platform</h4>
-        <div class="proj-desc">A competitive evaluation where we went in as the challenger. We won it on depth — a polished Teamcenter connector and an app that held up under the customer's own scenarios rather than a scripted happy path.</div>
-        <div class="proj-tags">
-          <span class="tag-pill teal">POC</span>
-          <span class="tag-pill amber">Competitive win</span>
-        </div>
-      </div>
-
-      <div class="proj-card reveal">
-        <div class="proj-topline">
-          <div class="proj-num">09 / Reused Demo</div>
-          <span class="status-pill anon"><span class="dot"></span>anonymized</span>
-        </div>
-        <h4>A supply-chain story that travelled further than expected</h4>
-        <div class="proj-desc">A supply-chain demo I built that took on a life of its own — a senior sales leader picked it up and turned it into a warm customer introduction inside a day. It's been reused across zones, with the specifics swapped out each time.</div>
-        <div class="proj-tags">
-          <span class="tag-pill purple">Supply chain</span>
-          <span class="tag-pill blue">Reusable demo</span>
-        </div>
-      </div>
-
-      <div class="proj-card reveal">
-        <div class="proj-topline">
-          <div class="proj-num">10 / Joint Pursuit</div>
-          <span class="status-pill anon"><span class="dot"></span>anonymized</span>
-        </div>
-        <h4>Joint win with Graph Studio over Teamcenter</h4>
-        <div class="proj-desc">A joint pursuit where graph-first reasoning over Teamcenter was the thing that set us apart. Anonymized here, but it's one of the outcomes I'm proudest of from the last year.</div>
-        <div class="proj-tags">
-          <span class="tag-pill teal">Graph Studio</span>
-          <span class="tag-pill purple">Teamcenter</span>
-        </div>
-      </div>
-
-      <div class="proj-card reveal">
-        <div class="proj-topline">
-          <div class="proj-num">11 / Enterprise Vertical</div>
-          <span class="status-pill anon"><span class="dot"></span>anonymized</span>
-        </div>
-        <h4>Manufacturing maintenance solution</h4>
-        <div class="proj-desc">Ongoing collaboration on an integrated maintenance solution for a large manufacturer — the kind of enterprise MES-and-maintenance work where the requirements are as much of the deliverable as the build.</div>
-        <div class="proj-tags">
-          <span class="tag-pill blue">Manufacturing</span>
-          <span class="tag-pill amber">Requirements</span>
-        </div>
-      </div>
-    </div>
+  <div class="drawer-body">
+    <div class="drawer-pane active" id="pane-arch"><div id="studioArchContent"></div></div>
+    <div class="drawer-pane" id="pane-code"><div id="studioCodeContent"></div></div>
+    <div class="drawer-pane" id="pane-sim"><div id="studioSimContent"></div></div>
   </div>
-</section>
+</aside>
 
-<!-- ══════ FOOTER ══════ -->
-<footer class="site-footer">
-  <p>Griffin Quinn &middot; Presales &amp; Emerging Tech &middot; Siemens DISW &middot; 2026</p>
-  <div class="footer-links">
-    <a href="index.html">Digital Fabric</a>
-    <a href="#enablement">Enablement</a>
-    <a href="#genai">GenAI</a>
-    <a href="#impact">Impact</a>
-    <a href="#top">Top</a>
-  </div>
-</footer>
-
-<!-- ══════ JS ══════ -->
 <script>
-/* ── scroll reveal ── */
-const io = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
-  });
-}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+/* ═══════════════════════════════════════════════════════════
+   DATA MANIFEST — single source of truth
+   Feeds: editorial project grid · studio drawer fallbacks
+   spec entries are [label, value]. q = frontier research question.
+   ═══════════════════════════════════════════════════════════ */
+const PROJECTS = [
+  /* ── D:\projectsD (workspace root 01) ── */
+  { k:'mro', name:'MRO Workbench', path:'D:\\projectsD\\MRO', root:'projects-d', cats:['exe','app','plm'], arch:'utility', hero:true, feat:true,
+    blurb:'Standalone desktop workbench for turbine-blade MRO disposition — pass/fail gating, wear evaluation, and traveler generation, shipped as a single self-extracting binary.',
+    tags:['Tauri','Rust','React 19','SQLite'], specs:[['Package','167 MB .exe'],['Runtime','Tauri + Rust'],['Domain','Aero MRO']] },
+  { k:'edge', name:'Mendix Edge IIoT Gateway', path:'D:\\projectsD\\MendixEdge', root:'projects-d', cats:['edge','plm'], arch:'utility', hero:true,
+    blurb:'Shop-floor edge gateway streaming bottling-line telemetry into Mendix with MQTT ingestion, alarm thresholds, and a live operations dashboard.',
+    tags:['Mendix','MQTT','OPC-UA','Edge'], specs:[['Transport','MQTT 5'],['Cadence','10 Hz'],['UI','Mendix']] },
+  { k:'hub', name:'Presales Command Hub', path:'D:\\projectsD\\Hub', root:'projects-d', cats:['exe','app'], arch:'utility', hero:true,
+    blurb:'Desktop launcher that indexes every repository across all three workspace roots and opens the right tool, demo, or environment in one keystroke.',
+    tags:['Electron','Node','Fuse.js'], specs:[['Roots','3'],['Index','63 repos'],['Launch','1-key']] },
+  { k:'ix', name:'iX Design System Studio', path:'D:\\projectsD\\ix', root:'projects-d', cats:['app'], arch:'utility', hero:true,
+    blurb:'Component playground and theming lab built on the Siemens iX web-component library — live token editing and dual light/dark previews.',
+    tags:['iX','Web Components','Stencil'], specs:[['Library','@siemens/ix'],['Themes','Dual'],['Type','Playground']] },
+  { k:'ai-studio-mcp', name:'AI Studio MCP Agent', path:'D:\\projectsD\\AIStudioMCPAgent', root:'projects-d', cats:['mcp','ai'], arch:'frontier', hero:true,
+    q:'What does an agent-native GenAI studio look like when every capability — retrieval, drawing, PLM lookup — is exposed as a governed MCP tool?',
+    blurb:'An agent workbench where each generative capability is a typed MCP tool, letting one orchestrator compose retrieval, CAD, and PLM actions.',
+    tags:['FastMCP','Python','LLM','Agents'], specs:[['Protocol','MCP'],['Tools','Typed'],['Domain','GenAI']] },
+  { k:'ai-studio-millon', name:'AI Studio — Millon', path:'D:\\projectsD\\AIStudioMillon', root:'projects-d', cats:['ai','app'], arch:'frontier',
+    q:'Can a single studio UI drive many model backends interchangeably for engineering tasks?',
+    blurb:'Multi-model generative studio UI that swaps LLM backends behind one interface for side-by-side engineering-prompt evaluation.',
+    tags:['React','LLM','Streaming'], specs:[['Backends','Multi'],['UI','React'],['Mode','Compare']] },
+  { k:'change-graph', name:'Change Impact Graph', path:'D:\\projectsD\\ChangeGraph', root:'projects-d', cats:['app','plm'], arch:'utility',
+    blurb:'Visualizes downstream impact of an engineering change across items, BOMs, and documents as an interactive dependency graph.',
+    tags:['D3','PLM','Graph'], specs:[['Viz','D3'],['Domain','ECN'],['Type','Impact']] },
+  { k:'new-view', name:'NewView PLM Explorer', path:'D:\\projectsD\\NewView', root:'projects-d', cats:['app','plm'], arch:'utility',
+    blurb:'Alternative Teamcenter data explorer with a fast virtualized tree and saved query views for large product structures.',
+    tags:['React','Virtualized','PLM'], specs:[['UI','React'],['Scale','100k+ rows'],['Type','Explorer']] },
+  { k:'rl26', name:'RL26 Release Cockpit', path:'D:\\projectsD\\RL26', root:'projects-d', cats:['app','plm'], arch:'utility',
+    blurb:'Release-readiness cockpit that rolls up structure, maturity, and open-change status into a single go/no-go board.',
+    tags:['React','PLM','Dashboard'], specs:[['View','Cockpit'],['Signal','Maturity'],['Type','Release']] },
+  { k:'mx-migration', name:'Mendix Migration Toolkit', path:'D:\\projectsD\\MxMigration', root:'projects-d', cats:['edge','app'], arch:'utility',
+    blurb:'Scripted toolkit that audits and migrates Mendix modules between versions, flagging deprecated widgets and broken microflows.',
+    tags:['Mendix','Node','CLI'], specs:[['Target','Mendix'],['Mode','Audit+Fix'],['Type','CLI']] },
+  { k:'mx-sap', name:'Mendix–SAP Connector', path:'D:\\projectsD\\MxSAP', root:'projects-d', cats:['edge','plm'], arch:'utility',
+    blurb:'Connector surfacing SAP master data inside Mendix apps with cached OData reads and typed domain mappings.',
+    tags:['Mendix','SAP','OData'], specs:[['Source','SAP'],['Protocol','OData'],['Cache','Yes']] },
+  { k:'sap-replace', name:'SAP Replacement Engine', path:'D:\\projectsD\\SAPReplace', root:'projects-d', cats:['plm','ai'], arch:'frontier',
+    q:'Can an agent reconstruct brittle ERP integration logic from first principles and propose a leaner replacement?',
+    blurb:'Experimental engine that maps legacy ERP integration flows and drafts a modern service-based replacement with LLM assistance.',
+    tags:['Python','LLM','ETL'], specs:[['Domain','ERP'],['Mode','Draft'],['Assist','LLM']] },
+  { k:'sfdc-v1', name:'SFDC Intelligence v1', path:'D:\\projectsD\\SFDCv1', root:'projects-d', cats:['ai','plm'], arch:'frontier',
+    q:'Can GenAI turn raw CRM signal into engineering-grade account intelligence without exposing sensitive deal data?',
+    blurb:'First-generation prototype summarizing anonymized CRM activity into structured account briefs.',
+    tags:['Python','LLM','CRM'], specs:[['Domain','CRM'],['Out','Briefs'],['Gen','v1']] },
+  { k:'sfdc-main', name:'SFDC Intelligence Core', path:'D:\\projectsD\\SFDC', root:'projects-d', cats:['ai','plm'], arch:'frontier',
+    q:'What is the right abstraction for a reusable CRM-intelligence pipeline that stays privacy-safe by construction?',
+    blurb:'Consolidated CRM-intelligence pipeline that ingests anonymized activity and emits structured, sourced summaries.',
+    tags:['Python','LLM','Pipeline'], specs:[['Domain','CRM'],['Mode','Pipeline'],['Gen','core']] },
+  { k:'supply-risk', name:'Supply Risk Radar', path:'D:\\projectsD\\SupplyRisk', root:'projects-d', cats:['plm','app'], arch:'utility',
+    blurb:'Scores supplier and part risk across a product structure and highlights single-source and long-lead exposures.',
+    tags:['React','PLM','Scoring'], specs:[['Signal','Risk'],['Scope','BOM'],['Type','Radar']] },
+  { k:'plm-vis', name:'PLM Visualizer', path:'D:\\projectsD\\PLMVis', root:'projects-d', cats:['app','plm'], arch:'utility',
+    blurb:'Lightweight 3D/structure visualizer that renders product hierarchies and JT-style previews in the browser.',
+    tags:['Three.js','WebGL','PLM'], specs:[['Render','WebGL'],['Domain','PLM'],['Type','Viewer']] },
+  { k:'db-jdbc', name:'JDBC PLM Bridge', path:'D:\\projectsD\\DbJdbc', root:'projects-d', cats:['plm'], arch:'utility',
+    blurb:'Thin JDBC bridge exposing read-only Teamcenter schema queries to analytics tools without a full SOA round-trip.',
+    tags:['Java','JDBC','SQL'], specs:[['Access','Read-only'],['API','JDBC'],['Domain','PLM']] },
+  { k:'4090', name:'RTX 4090 Local LLM Lab', path:'D:\\projectsD\\4090', root:'projects-d', cats:['ai','exe'], arch:'frontier',
+    q:'How far can a single RTX 4090 push private, local LLM inference for CAD/PLM reasoning before the cloud is worth it?',
+    blurb:'Benchmark harness for local quantized models on a single 4090 — throughput, VRAM, and quality on engineering prompts.',
+    tags:['CUDA','llama.cpp','Python'], specs:[['GPU','RTX 4090'],['Mode','Local'],['Metric','tok/s']] },
+  { k:'bom', name:'BOM Delta Explorer', path:'D:\\projectsD\\BOM', root:'projects-d', cats:['plm','app'], arch:'utility',
+    blurb:'Diffs two BOM revisions side by side, highlighting added, changed, and removed lines through a collapsible tree.',
+    tags:['React','PLM','Diff'], specs:[['Op','Rev diff'],['View','Tree'],['Domain','BOM']] },
+  { k:'dt-composer', name:'Digital Thread Composer', path:'D:\\projectsD\\DTComposer', root:'projects-d', cats:['plm','edge'], arch:'utility',
+    blurb:'Stitches design, manufacturing, and field telemetry into one navigable digital-thread timeline for a given part.',
+    tags:['React','Graph','Edge'], specs:[['Concept','Thread'],['Span','Design→Field'],['Type','Composer']] },
+  { k:'hyperv', name:'Hyper-V Edge Fabric', path:'D:\\projectsD\\HyperV', root:'projects-d', cats:['edge'], arch:'utility',
+    blurb:'Automation scripts that provision reproducible Hyper-V lab VMs for edge and PLM demo environments.',
+    tags:['PowerShell','Hyper-V'], specs:[['Target','Hyper-V'],['Mode','IaC'],['Type','Provision']] },
+  { k:'llms', name:'LLM Evaluation Harness', path:'D:\\projectsD\\LLMs', root:'projects-d', cats:['ai'], arch:'frontier',
+    q:'Which open models actually hold up under real PLM reasoning loads — and how do we measure that repeatably?',
+    blurb:'Repeatable evaluation harness scoring multiple LLMs against a curated set of engineering reasoning tasks.',
+    tags:['Python','Eval','LLM'], specs:[['Mode','Eval'],['Set','Engineering'],['Out','Scores']] },
+  { k:'video', name:'Vision & Video Pipeline', path:'D:\\projectsD\\Video', root:'projects-d', cats:['ai','edge'], arch:'frontier',
+    q:'Can on-edge vision models flag defects on a bottling line faster than a fixed rules camera?',
+    blurb:'Edge vision pipeline that runs frame inference for line-side defect detection and clips events for review.',
+    tags:['OpenCV','ONNX','Edge'], specs:[['Input','Video'],['Infer','ONNX'],['Where','Edge']] },
+  { k:'explore', name:'PLM Explore Sandbox', path:'D:\\projectsD\\Explore', root:'projects-d', cats:['app','plm'], arch:'utility',
+    blurb:'Throwaway sandbox for prototyping new Teamcenter UI ideas before promoting them into production explorers.',
+    tags:['React','PLM','Proto'], specs:[['Type','Sandbox'],['Domain','PLM'],['Life','Scratch']] },
+  { k:'networking', name:'Industrial Networking Lab', path:'D:\\projectsD\\Networking', root:'projects-d', cats:['edge'], arch:'utility',
+    blurb:'Notes and test rigs for shop-floor network topologies — VLAN segmentation, OPC-UA routing, and latency probes.',
+    tags:['Networking','OPC-UA'], specs:[['Focus','Topology'],['Test','Latency'],['Type','Lab']] },
+  { k:'one-pager', name:'One-Pager Generator', path:'D:\\projectsD\\OnePager', root:'projects-d', cats:['app','ai'], arch:'utility',
+    blurb:'Templated generator that assembles branded one-page solution briefs from structured inputs.',
+    tags:['React','Templating'], specs:[['Out','1-pager'],['Mode','Template'],['Type','Gen']] },
+  { k:'personal', name:'Personal Site Engine', path:'D:\\projectsD\\Personal', root:'projects-d', cats:['app'], arch:'utility',
+    blurb:'Static-site engine and component kit powering personal and portfolio pages, including this studio.',
+    tags:['HTML','CSS','JS'], specs:[['Type','Static'],['Kit','Fabric'],['Deps','None']] },
+  { k:'playwright', name:'Playwright PLM E2E Suite', path:'D:\\projectsD\\Playwright', root:'projects-d', cats:['app','plm'], arch:'utility',
+    blurb:'End-to-end test suite that drives Teamcenter web UIs through Playwright for regression coverage.',
+    tags:['Playwright','TypeScript','E2E'], specs:[['Tool','Playwright'],['Scope','PLM UI'],['Type','E2E']] },
+  { k:'pricebook', name:'Pricebook Configurator', path:'D:\\projectsD\\Pricebook', root:'projects-d', cats:['app'], arch:'utility',
+    blurb:'Rule-driven configurator that assembles valid product/price combinations from a constraint model.',
+    tags:['React','Rules'], specs:[['Logic','Constraints'],['Out','Quote'],['Type','Config']] },
+  { k:'progression', name:'Progression Board', path:'D:\\projectsD\\progressionBoard', root:'projects-d', cats:['app'], arch:'utility',
+    blurb:'Capability-progression board that tracks skill and initiative maturity across levels — no dates or customer data.',
+    tags:['React','Board'], specs:[['View','Kanban'],['Signal','Maturity'],['Type','Board']] },
+  { k:'racer', name:'Racer Telemetry Rig', path:'D:\\projectsD\\Racer', root:'projects-d', cats:['app'], arch:'utility',
+    blurb:'Real-time telemetry visualizer that streams lap and sensor data into animated sparkline dashboards.',
+    tags:['Canvas','WebSocket'], specs:[['Data','Telemetry'],['Render','Canvas'],['Rate','Live']] },
+  { k:'protein', name:'Protein Fold Explorer', path:'D:\\projectsD\\Protein', root:'projects-d', cats:['ai','app'], arch:'frontier',
+    q:'Can generative models propose and score candidate protein folds entirely on a workstation?',
+    blurb:'Workstation-scale explorer that generates candidate folds and scores them against structural heuristics.',
+    tags:['Python','ML','BioViz'], specs:[['Domain','Bio'],['Mode','Generate'],['Score','Yes']] },
+  { k:'siemens-ppts', name:'Siemens Deck Builder', path:'D:\\projectsD\\SiemensPPTs', root:'projects-d', cats:['app'], arch:'utility',
+    blurb:'Assembles on-brand slide decks from a content library and structured outlines.',
+    tags:['Node','PPTX'], specs:[['Out','PPTX'],['Mode','Assemble'],['Type','Deck']] },
 
-/* ── mouse-follow lighting ── */
-const cursorLight = document.getElementById('cursorLight');
-let mx = window.innerWidth * 0.5, my = window.innerHeight * 0.35;
-let lx = mx, ly = my;
-window.addEventListener('pointermove', (e) => { mx = e.clientX; my = e.clientY; });
-function animate() {
-  lx += (mx - lx) * 0.11; ly += (my - ly) * 0.11;
-  cursorLight.style.transform = `translate3d(${lx}px, ${ly}px, 0) translate(-50%, -50%)`;
-  requestAnimationFrame(animate);
+  /* ── C:\Users\…\projects (workspace root 02) ── */
+  { k:'nx', name:'NX MCP Automation Server', path:'C:\\Users\\z004khxf\\projects\\nx-mcp', root:'user-projects', cats:['mcp','plm','ai'], arch:'frontier', hero:true, feat:true,
+    q:'What becomes possible when a GenAI agent can drive Siemens NX directly — extruding, booleaning, and running FEA — over Model Context Protocol?',
+    blurb:'A production MCP server exposing 68 typed NX automation tools so an LLM agent can model geometry, run features, and read FEA results conversationally.',
+    tags:['FastMCP','NXOpen','Python','JSON-RPC'], specs:[['Tools','68'],['Host','NX Open'],['Protocol','MCP']] },
+  { k:'graph', name:'GraphStudio · Neo4j GraphRAG', path:'C:\\Users\\z004khxf\\projects\\GraphStudio', root:'user-projects', cats:['app','plm','ai'], arch:'frontier', hero:true,
+    q:'What if every engineering artifact were a queryable knowledge graph an agent could traverse with GraphRAG instead of flat vector search?',
+    blurb:'A GraphRAG studio over Neo4j that turns product, change, and document data into a traversable knowledge graph with animated query visualization.',
+    tags:['Neo4j','Cypher','GraphRAG','React'], specs:[['Store','Neo4j'],['Query','Cypher'],['Mode','GraphRAG']] },
+  { k:'capital', name:'Capital ECAD Studio', path:'C:\\Users\\z004khxf\\projects\\capital', root:'user-projects', cats:['mcp','plm'], arch:'frontier', hero:true,
+    q:'Can a GenAI agent reason over Capital ECAD harness data — nets, connectors, and wires — the way a harness engineer does?',
+    blurb:'A studio that ingests Capital electrical harness data and lets an agent query and validate nets, connectors, and wiring rules.',
+    tags:['Capital','ECAD','Python'], specs:[['Domain','ECAD'],['Data','Harness'],['Assist','Agent']] },
+  { k:'flights-mcp', name:'Flights MCP Server', path:'C:\\Users\\z004khxf\\projects\\flightsMCP', root:'user-projects', cats:['mcp','ai'], arch:'frontier', hero:true,
+    q:'How compact can a production MCP server be while turning a real third-party API into governed, typed agent tools?',
+    blurb:'A minimal, well-typed MCP server wrapping a live flights API — the canonical reference for how small a real agent tool surface can be.',
+    tags:['FastMCP','Python','REST','JSON-RPC'], specs:[['Protocol','MCP'],['API','Flights'],['Size','Minimal']] },
+  { k:'graph-rag', name:'GraphRAG Knowledge Engine', path:'C:\\Users\\z004khxf\\projects\\graph-rag', root:'user-projects', cats:['ai','plm'], arch:'frontier',
+    q:'Can retrieval over a typed knowledge graph beat vector RAG for grounded engineering Q&A?',
+    blurb:'Retrieval engine that grounds LLM answers by traversing a typed knowledge graph rather than a flat vector index.',
+    tags:['Neo4j','LLM','RAG'], specs:[['Mode','GraphRAG'],['Store','Graph'],['Out','Grounded']] },
+  { k:'capital-mcp', name:'Capital ECAD MCP', path:'C:\\Users\\z004khxf\\projects\\capitalMCP', root:'user-projects', cats:['mcp','plm'], arch:'frontier',
+    q:'What does a governed MCP tool surface for electrical harness design look like?',
+    blurb:'MCP server exposing Capital ECAD operations as typed tools so agents can query and modify harness designs safely.',
+    tags:['FastMCP','Capital','Python'], specs:[['Protocol','MCP'],['Domain','ECAD'],['Tools','Typed']] },
+  { k:'nx-mendix', name:'NX ↔ Mendix Bridge', path:'C:\\Users\\z004khxf\\projects\\nx-mendix', root:'user-projects', cats:['edge','plm'], arch:'utility',
+    blurb:'Bridge that surfaces NX model metadata inside Mendix apps for lightweight shop-floor consumption.',
+    tags:['Mendix','NX','REST'], specs:[['Link','NX→Mendix'],['Data','Metadata'],['Type','Bridge']] },
+  { k:'tc-change', name:'Teamcenter Change Manager', path:'C:\\Users\\z004khxf\\projects\\tc-change', root:'user-projects', cats:['plm','app'], arch:'utility',
+    blurb:'Streamlined UI for raising and tracking engineering change objects against Teamcenter workflows.',
+    tags:['React','SOA','PLM'], specs:[['Domain','ECN'],['API','SOA'],['Type','Manager']] },
+  { k:'tc-story', name:'Teamcenter Story Mapper', path:'C:\\Users\\z004khxf\\projects\\tc-story', root:'user-projects', cats:['plm','app'], arch:'utility',
+    blurb:'Maps Teamcenter data journeys into narrative flows for demo scripting and onboarding.',
+    tags:['React','PLM'], specs:[['Out','Story'],['Domain','PLM'],['Type','Mapper']] },
+  { k:'mcp-dev', name:'MCP Dev Toolkit', path:'C:\\Users\\z004khxf\\projects\\mcp-dev', root:'user-projects', cats:['mcp','ai'], arch:'frontier',
+    q:'What is the fastest credible path from an idea to a governed, typed MCP toolset an agent can call safely?',
+    blurb:'Scaffolding and test harness for spinning up new MCP servers with typed tools, schema validation, and a JSON-RPC inspector.',
+    tags:['FastMCP','Python','CLI'], specs:[['Protocol','MCP'],['Mode','Scaffold'],['Test','Inspector']] },
+  { k:'nx-journals', name:'NX Journal Automations', path:'C:\\Users\\z004khxf\\projects\\nx-journals', root:'user-projects', cats:['exe','plm'], arch:'utility',
+    blurb:'Library of NX journal scripts automating repetitive modeling and drawing chores.',
+    tags:['NXOpen','C#','VB'], specs:[['Host','NX'],['Type','Journals'],['Lang','NXOpen']] },
+  { k:'et-site', name:'Emerging Tech Site', path:'C:\\Users\\z004khxf\\projects\\et-site', root:'user-projects', cats:['app'], arch:'utility',
+    blurb:'Public-facing site presenting emerging-technology explorations and demos.',
+    tags:['HTML','CSS','JS'], specs:[['Type','Site'],['Deps','None'],['Kit','Fabric']] },
+  { k:'info-site', name:'Info Site', path:'C:\\Users\\z004khxf\\projects\\info-site', root:'user-projects', cats:['app'], arch:'utility',
+    blurb:'Documentation and reference site for internal tooling and conventions.',
+    tags:['HTML','Markdown'], specs:[['Type','Docs'],['Build','Static'],['Deps','None']] },
+  { k:'codex', name:'Codex Snippet Vault', path:'C:\\Users\\z004khxf\\projects\\codex', root:'user-projects', cats:['app'], arch:'utility',
+    blurb:'Searchable vault of verified code snippets and patterns reused across projects.',
+    tags:['React','Search'], specs:[['Store','Snippets'],['Find','Fuzzy'],['Type','Vault']] },
+  { k:'goals', name:'GOALS Roadmapper', path:'C:\\Users\\z004khxf\\projects\\GOALS', root:'user-projects', cats:['app'], arch:'utility',
+    blurb:'Capability-roadmapping tool that structures objectives and outcomes into levels — no dates or customer specifics.',
+    tags:['React','Planning'], specs:[['View','Roadmap'],['Unit','Capability'],['Type','Planner']] },
+  { k:'luma', name:'Luma Event Bot', path:'C:\\Users\\z004khxf\\projects\\luma', root:'user-projects', cats:['app'], arch:'utility',
+    blurb:'Automation that syncs and formats event data from Luma into internal calendars and digests.',
+    tags:['Node','API'], specs:[['Source','Luma'],['Out','Digest'],['Type','Bot']] },
+  { k:'ml-dev', name:'ML Dev Sandbox', path:'C:\\Users\\z004khxf\\projects\\ml-dev', root:'user-projects', cats:['ai'], arch:'frontier',
+    q:'What is the right local scaffold for iterating on ML experiments before they graduate to a real project?',
+    blurb:'Notebook-and-script sandbox for rapid ML experimentation with reusable data and training utilities.',
+    tags:['Python','PyTorch','Jupyter'], specs:[['Mode','Experiment'],['Stack','PyTorch'],['Type','Sandbox']] },
+  { k:'time', name:'TimeTracking Agent', path:'C:\\Users\\z004khxf\\projects\\TimeTracking', root:'user-projects', cats:['app','exe'], arch:'utility',
+    blurb:'Autonomous activity monitor that classifies foreground work into projects and produces private time summaries.',
+    tags:['Python','Tray','SQLite'], specs:[['Mode','Autonomous'],['Store','Local'],['Out','Summary']] },
+  { k:'widgets', name:'Widget Foundry', path:'C:\\Users\\z004khxf\\projects\\widgets', root:'user-projects', cats:['app'], arch:'utility',
+    blurb:'Collection of small embeddable UI widgets and micro-interactions harvested into a reusable kit.',
+    tags:['JS','CSS'], specs:[['Type','Kit'],['Scope','Micro-UI'],['Deps','None']] },
+  { k:'evora', name:'Evora Bottling Telemetry', path:'C:\\Users\\z004khxf\\projects\\evora', root:'user-projects', cats:['edge','app'], arch:'utility',
+    blurb:'Bottling-line telemetry dashboard streaming fill-rate, temperature, and alarm state over MQTT with a spike detector.',
+    tags:['MQTT','Canvas','Edge'], specs:[['Transport','MQTT'],['View','Live chart'],['Alarm','Yes']] },
+  { k:'lunch', name:'Lunch Roulette', path:'C:\\Users\\z004khxf\\projects\\lunch', root:'user-projects', cats:['app'], arch:'utility',
+    blurb:'Playful team utility that picks a lunch spot with weighted randomness and veto rounds.',
+    tags:['JS','Fun'], specs:[['Logic','Weighted'],['Type','Toy'],['Deps','None']] },
+  { k:'world', name:'World Model PLM', path:'C:\\Users\\z004khxf\\projects\\world', root:'user-projects', cats:['app','plm'], arch:'utility',
+    blurb:'Experimental spatial model that arranges PLM entities in a navigable 2D world for exploration.',
+    tags:['Canvas','PLM'], specs:[['View','Spatial'],['Domain','PLM'],['Type','World']] },
+  { k:'hello', name:'Hello Scaffolder', path:'C:\\Users\\z004khxf\\projects\\hello', root:'user-projects', cats:['app'], arch:'utility',
+    blurb:'Minimal starter template used to bootstrap new project repositories with shared conventions.',
+    tags:['CLI','Template'], specs:[['Type','Starter'],['Mode','Scaffold'],['Deps','None']] },
+  { k:'custom-dirs', name:'CustomDirs Scaffolder', path:'C:\\Users\\z004khxf\\projects\\customdirs', root:'user-projects', cats:['exe','app'], arch:'utility',
+    blurb:'CLI that generates standardized directory structures and boilerplate for new engineering repos.',
+    tags:['Rust','CLI'], specs:[['Type','CLI'],['Out','Dir tree'],['Lang','Rust']] },
+  { k:'neo4j-lab', name:'Neo4j Lab', path:'C:\\Users\\z004khxf\\projects\\neo4j-lab', root:'user-projects', cats:['ai','plm'], arch:'frontier',
+    q:'What graph schemas best model engineering knowledge for agent traversal?',
+    blurb:'Scratch lab for modeling engineering data as graphs and benchmarking Cypher query patterns.',
+    tags:['Neo4j','Cypher'], specs:[['Store','Neo4j'],['Mode','Lab'],['Focus','Schema']] },
+  { k:'logs-analyzer', name:'Logs Analyzer', path:'C:\\Users\\z004khxf\\projects\\logs-analyzer', root:'user-projects', cats:['app'], arch:'utility',
+    blurb:'Deduplicates and clusters noisy application logs into ranked signal for faster triage.',
+    tags:['Python','Regex'], specs:[['In','Logs'],['Op','Dedup'],['Out','Signal']] },
+  { k:'notes', name:'_notes Knowledge Base', path:'C:\\Users\\z004khxf\\projects\\_notes', root:'user-projects', cats:['app'], arch:'utility',
+    blurb:'Local, plaintext-first knowledge base of engineering notes, decisions, and runbooks.',
+    tags:['Markdown','Search'], specs:[['Format','Plaintext'],['Find','Full-text'],['Type','KB']] },
+  { k:'obsidian', name:'Obsidian Vault Sync', path:'C:\\Users\\z004khxf\\projects\\obsidian', root:'user-projects', cats:['app'], arch:'utility',
+    blurb:'Scripts and templates that keep an Obsidian knowledge vault structured and synced.',
+    tags:['Obsidian','Node'], specs:[['Tool','Obsidian'],['Op','Sync'],['Type','Vault']] },
+  { k:'nul-file', name:'nul File Utility', path:'C:\\Users\\z004khxf\\projects\\nul', root:'user-projects', cats:['app'], arch:'utility',
+    blurb:'Small utility that safely detects and cleans up stray reserved-name files on Windows.',
+    tags:['PowerShell','Windows'], specs:[['OS','Windows'],['Op','Cleanup'],['Type','Util']] },
+
+  /* ── SOA Enterprise Root (workspace root 03) ── */
+  { k:'soa', name:'MCP-Teamcenter · SOA Gateway', path:'C:\\Siemens\\SOA\\mcp-teamcenter', root:'soa-root', cats:['mcp','plm','ai'], arch:'frontier', hero:true, feat:true,
+    q:'Can an LLM safely govern Teamcenter itself — querying items, revising BOMs, and dispatching workflows — through 60 typed SOA tools over MCP?',
+    blurb:'An enterprise MCP gateway wrapping the Teamcenter SOA client, exposing 60 governed tools so agents can operate PLM with typed, audited calls.',
+    tags:['MCP','Teamcenter SOA','Java','FastMCP'], specs:[['Tools','60'],['API','TC SOA'],['Protocol','MCP']] }
+];
+
+/* Root display metadata */
+const ROOTS = {
+  'projects-d':   { label:'D:\\projectsD', short:'projects-D', color:'var(--teal)' },
+  'user-projects':{ label:'C:\\Users\\z004khxf\\projects', short:'user-projects', color:'var(--purple)' },
+  'soa-root':     { label:'SOA Enterprise Root', short:'SOA', color:'var(--blue)' }
+};
+
+/* Category display metadata (order matters for grid) */
+const CATS = {
+  exe:  'Standalone .EXE',
+  mcp:  'Agentic & MCP',
+  plm:  'Teamcenter & PLM',
+  edge: 'Mendix & Edge IIoT',
+  ai:   'Frontier AI & LLMs',
+  app:  'UI & Desktop Hubs'
+};
+/* ═══════════════════════════════════════════════════════════
+   STUDIO REGISTRY — bespoke deep-dives (flagships)
+   arch: [{icon,tag,title,desc}]  ·  code: {file,lang,src}
+   sim:  [ widgetSpec ]  (rendered by widget factories on open)
+   Anything not registered here uses the category-aware fallback.
+   ═══════════════════════════════════════════════════════════ */
+const studioRegistry = {
+
+  mro: {
+    lead: 'A self-contained desktop workbench that walks a turbine blade from raw inspection scan to a signed disposition traveler — no server, no cloud, one 167 MB binary.',
+    arch: [
+      { icon:'amber', tag:'INPUT',   title:'Blade Scan Intake',   desc:'Tip-shroud crack length and root-wear measurements captured per serial number.' },
+      { icon:'teal',  tag:'ENGINE',  title:'Disposition Gates',   desc:'Deterministic pass / repair / scrap rules evaluate each measurement against type limits.' },
+      { icon:'blue',  tag:'COMPUTE', title:'Remaining-Life Model',desc:'Wear trend projects remaining cycles and flags borderline serials for review.' },
+      { icon:'purple',tag:'OUTPUT',  title:'Traveler Generator',  desc:'Compiles the disposition, routing, and sign-off into a printable work traveler.' }
+    ],
+    code: { file:'src/disposition.rs', lang:'rust', src:
+`// Turbine-blade disposition gate — deterministic, audited
+pub fn evaluate(scan: &BladeScan, limits: &TypeLimits) -> Disposition {
+    let crack = scan.tip_shroud_crack_mm;
+    let wear  = scan.root_wear_pct;
+
+    if crack > limits.crack_scrap_mm || wear > limits.wear_scrap_pct {
+        return Disposition::scrap("Exceeds scrap limit");
+    }
+    if crack > limits.crack_repair_mm || wear > limits.wear_repair_pct {
+        return Disposition::repair(route_for(scan));
+    }
+    let life = remaining_cycles(wear, limits);
+    Disposition::pass(life)
+}` },
+    sim: [ { type:'embed', key:'mro' } ]
+  },
+
+  nx: {
+    lead: 'A production MCP server that turns Siemens NX into a set of 68 typed, schema-validated tools — so an LLM agent can model geometry and read FEA results in plain language.',
+    arch: [
+      { icon:'purple',tag:'AGENT',    title:'LLM Orchestrator',   desc:'Natural-language intent is planned into a sequence of typed tool calls.' },
+      { icon:'teal',  tag:'PROTOCOL', title:'MCP · JSON-RPC 2.0',  desc:'68 tools, each with a validated parameter schema and structured result.' },
+      { icon:'blue',  tag:'HOST',     title:'NX Open Runtime',     desc:'Calls execute geometry, feature, and boolean operations inside Siemens NX.' },
+      { icon:'amber', tag:'READBACK', title:'FEA Result Stream',   desc:'Von Mises stress and safety factor are returned for the agent to reason over.' }
+    ],
+    code: { file:'server/nx_tools.py', lang:'py', src:
+`from fastmcp import FastMCP
+from nxopen import Session, Features
+
+mcp = FastMCP("nx-mcp")
+
+@mcp.tool()
+def extrude(sketch: str, distance: float, operation: str = "Unite") -> dict:
+    """Extrude a sketch and return the resulting body UID + FEA safety factor."""
+    session = Session.get_session()
+    body = Features.extrude(session, sketch, distance, operation)
+    fea = Features.quick_fea(body, load_n=2500)
+    return {
+        "body_uid": body.uid,
+        "faces": body.face_count,
+        "safety_factor": round(fea.safety_factor, 2),
+    }` },
+    sim: [
+      { type:'nx3d', title:'NX Extrude — Live Solid Preview', desc:'Drive the same nx.extrude() tool the agent calls: set distance and boolean op, then drag to orbit the resulting body in 3D.' },
+      { type:'fea', title:'FEA Stress Gauge', desc:'Drag applied load and watch Von Mises stress and the safety-factor dial shift from safe to critical.' }
+    ]
+  },
+
+  soa: {
+    lead: 'An enterprise MCP gateway wrapping the Teamcenter SOA client — 60 governed, typed tools that let an agent query items, revise BOMs, and dispatch workflows with every call audited.',
+    arch: [
+      { icon:'purple',tag:'AGENT',   title:'LLM Orchestrator',    desc:'Plans PLM intent into audited, typed SOA tool calls.' },
+      { icon:'teal',  tag:'GATEWAY', title:'MCP Server · 60 Tools',desc:'Schema-validates every parameter before it ever reaches Teamcenter.' },
+      { icon:'blue',  tag:'SOA',     title:'Teamcenter SOA Client',desc:'Typed Java service calls against the live Teamcenter kernel.' },
+      { icon:'amber', tag:'SYSTEM',  title:'Teamcenter Vault',     desc:'Items, revisions, BOMs, and workflows — the system of record.' }
+    ],
+    code: { file:'gateway/tc_soa.py', lang:'py', src:
+`from fastmcp import FastMCP
+from tc_soa import DataManagement, Structure   # Teamcenter SOA client
+
+mcp = FastMCP("mcp-teamcenter")
+
+@mcp.tool()
+def query_item(item_id: str, revision: str = "latest") -> dict:
+    """Read an item revision and its top-level BOM from Teamcenter."""
+    item = DataManagement.get_item(item_id, revision)          # audited call
+    bom  = Structure.expand_bom(item.uid, levels=1)
+    # Vendor names / opportunity ids are illustrative samples only
+    return {
+        "item_id": item.id,
+        "name": item.name,
+        "revision": item.rev,
+        "owning_program": "Tier-1 brake supplier (sample)",
+        "bom_lines": len(bom.lines),
+    }` },
+    sim: [
+      { type:'jsonrpc', method:'tc.queryItem', title:'Teamcenter SOA Console', desc:'Dispatch a governed query against a sample Teamcenter dataset — every field returned is illustrative.',
+        params:[
+          { name:'item_id', label:'Item ID', kind:'select', options:['SAMPLE-001-FIT','SAMPLE-204-ROT','SAMPLE-877-CAL'] },
+          { name:'revision', label:'Revision', kind:'select', options:['latest','A','B','C'] }
+        ],
+        respond:(p)=>({ item_id:p.item_id, name:'Brake Rotor Assembly', revision:p.revision==='latest'?'C':p.revision,
+          owning_program:'Tier-1 brake supplier (sample)', bom_lines:7, release_status:'Released', last_mod:'sample-data' }) },
+      { type:'bom', title:'BOM Revision Explorer', desc:'Expand the structure and toggle a revision diff to see added, changed, and removed lines.' }
+    ]
+  },
+
+  edge: {
+    lead: 'A shop-floor edge gateway that ingests bottling-line telemetry over MQTT, applies alarm thresholds locally, and drives a live Mendix operations dashboard.',
+    arch: [
+      { icon:'amber', tag:'SENSORS', title:'Line Sensors',      desc:'Fill-rate, temperature, and vibration published from PLC/OPC-UA sources.' },
+      { icon:'teal',  tag:'INGEST',  title:'MQTT Broker',        desc:'Edge gateway subscribes at 10 Hz and normalizes topics into a unified schema.' },
+      { icon:'blue',  tag:'RULES',   title:'Threshold Engine',   desc:'Local rules trip alarm states before data ever leaves the plant.' },
+      { icon:'purple',tag:'UI',      title:'Mendix Dashboard',   desc:'Operators watch live charts and acknowledge alarms in the Mendix app.' }
+    ],
+    code: { file:'edge/ingest.js', lang:'js', src:
+`import mqtt from "mqtt";
+
+const client = mqtt.connect("mqtt://edge-gateway:1883");
+const LIMITS = { temp_c: 62, fill_ml: 505 };
+
+client.subscribe("line/+/telemetry");
+client.on("message", (topic, buf) => {
+  const t = JSON.parse(buf.toString());
+  const alarm = t.temp_c > LIMITS.temp_c || t.fill_ml > LIMITS.fill_ml;
+  publishToDashboard({ ...t, alarm, at: Date.now() });
+  if (alarm) raiseAlarm(topic, t);   // stays local — no cloud round-trip
+});` },
+    sim: [ { type:'mqtt', title:'Live MQTT Telemetry', desc:'Start the stream, inject a spike to trip the alarm, and watch the rolling event log.' } ]
+  },
+
+  hub: {
+    lead: 'A desktop launcher that indexes every repository across all three workspace roots and opens the right tool or demo instantly — here rebuilt as a safe, in-browser indexer.',
+    arch: [
+      { icon:'teal',  tag:'SCAN',   title:'Root Walker',      desc:'Recursively indexes all three workspace roots and reads each repo manifest.' },
+      { icon:'blue',  tag:'INDEX',  title:'Fuzzy Search',     desc:'Builds a Fuse.js index over names, paths, tech, and file extensions.' },
+      { icon:'purple',tag:'RESOLVE',title:'Launch Resolver',  desc:'Maps a hit to its correct entry point — app, demo, or environment.' },
+      { icon:'amber', tag:'OPEN',   title:'One-Key Launch',   desc:'Opens the resolved target; on the web this surfaces the in-DOM studio.' }
+    ],
+    code: { file:'hub/index.js', lang:'js', src:
+`import Fuse from "fuse.js";
+
+// Build a searchable index across every workspace root
+const index = new Fuse(PROJECTS, {
+  keys: ["name", "path", "tags", "cats"],
+  threshold: 0.34,
+  ignoreLocation: true,
+});
+
+export function search(query) {
+  if (!query) return PROJECTS;
+  return index.search(query).map((hit) => hit.item);
+}` },
+    sim: [ { type:'runner', title:'Repository Indexer', desc:'Run a simulated multi-root scan and watch the hub index all 63 repositories.', steps:['Walking D:\\projectsD …','Walking C:\\Users\\…\\projects …','Walking SOA Enterprise Root …','Building Fuse.js index','Resolving launch targets'] } ]
+  },
+
+  graph: {
+    lead: 'A GraphRAG studio over Neo4j that turns product, change, and document data into a traversable knowledge graph — grounding LLM answers in real relationships, not vector guesswork.',
+    arch: [
+      { icon:'amber', tag:'INGEST', title:'Artifact Loader',   desc:'Items, changes, and documents are loaded as typed nodes and edges.' },
+      { icon:'blue',  tag:'STORE',  title:'Neo4j Graph',       desc:'Relationships (USES, AFFECTS, DOCUMENTS) become first-class, queryable data.' },
+      { icon:'teal',  tag:'RETRIEVE',title:'GraphRAG Traversal',desc:'A Cypher traversal gathers the exact subgraph relevant to the question.' },
+      { icon:'purple',tag:'ANSWER', title:'Grounded Synthesis',desc:'The LLM answers from the retrieved subgraph, citing the path it walked.' }
+    ],
+    code: { file:'graph/query.py', lang:'py', src:
+`from neo4j import GraphDatabase
+
+CYPHER = """
+MATCH (c:Change)-[:AFFECTS]->(i:Item)-[:USES]->(p:Part)
+WHERE c.id = $change_id
+RETURN i.name AS item, collect(p.name) AS impacted_parts
+"""
+
+def impact_of(change_id: str) -> dict:
+    with driver.session() as s:
+        rec = s.run(CYPHER, change_id=change_id).single()
+        return { "item": rec["item"], "impacted": rec["impacted_parts"] }` },
+    sim: [ { type:'graph', title:'GraphRAG Query Visualizer', desc:'Pick a Cypher query — the traversal animates across the graph and returns a grounded answer.' } ]
+  },
+
+  'flights-mcp': {
+    lead: 'A deliberately minimal MCP server wrapping a live flights API — the reference for how small and clean a production agent tool surface can be.',
+    arch: [
+      { icon:'purple',tag:'AGENT',   title:'LLM Client',      desc:'Requests a search in natural language; the model selects the tool.' },
+      { icon:'teal',  tag:'PROTOCOL',title:'MCP · JSON-RPC',   desc:'A single typed search tool with a strict parameter schema.' },
+      { icon:'blue',  tag:'API',     title:'Flights REST API', desc:'The server translates the tool call into a real upstream request.' },
+      { icon:'amber', tag:'RESULT',  title:'Structured Offers',desc:'Normalized flight offers returned as clean, typed JSON.' }
+    ],
+    code: { file:'flights_mcp/server.py', lang:'py', src:
+`from fastmcp import FastMCP
+import httpx
+
+mcp = FastMCP("flights-mcp")
+
+@mcp.tool()
+async def search_flights(origin: str, dest: str, pax: int = 1) -> list[dict]:
+    """Search live flight offers between two airports."""
+    async with httpx.AsyncClient() as http:
+        r = await http.get(API, params={"from": origin, "to": dest, "pax": pax})
+    return [{"carrier": o["c"], "price_usd": o["p"], "stops": o["s"]}
+            for o in r.json()["offers"]]` },
+    sim: [
+      { type:'jsonrpc', method:'flights.search', title:'Flights MCP Console', desc:'Choose a route and passenger count, dispatch the tool, and watch offers stream back.',
+        params:[
+          { name:'origin', label:'Origin', kind:'select', options:['SFO','JFK','ORD','LHR','MUC'] },
+          { name:'dest',   label:'Destination', kind:'select', options:['LHR','MUC','NRT','SFO','JFK'] },
+          { name:'pax',    label:'Passengers', kind:'number', value:1, min:1, max:9 }
+        ],
+        respond:(p)=>{ const base=180+((p.origin.charCodeAt(0)+p.dest.charCodeAt(2))%9)*40;
+          return { count:3, offers:[
+            { carrier:'DF Air', price_usd:base*p.pax, stops:0 },
+            { carrier:'Fabric Jet', price_usd:Math.round(base*0.82)*p.pax, stops:1 },
+            { carrier:'Thread Ways', price_usd:Math.round(base*1.24)*p.pax, stops:0 } ]}; } }
+    ]
+  },
+
+  'capital-mcp': {
+    lead: 'An MCP server exposing Capital ECAD harness operations as typed tools, so an agent can query and validate nets, connectors, and wiring rules the way an engineer would.',
+    arch: [
+      { icon:'purple',tag:'AGENT',   title:'LLM Orchestrator', desc:'Reasons about harness intent and selects the right ECAD tool.' },
+      { icon:'teal',  tag:'PROTOCOL',title:'MCP · JSON-RPC',   desc:'Typed tools for nets, connectors, and rule checks.' },
+      { icon:'blue',  tag:'ECAD',    title:'Capital Model',    desc:'Calls resolve against the electrical harness data model.' },
+      { icon:'amber', tag:'CHECK',   title:'Rule Validation',  desc:'Returns net continuity and design-rule findings.' }
+    ],
+    code: { file:'capital_mcp/server.py', lang:'py', src:
+`from fastmcp import FastMCP
+
+mcp = FastMCP("capital-mcp")
+
+@mcp.tool()
+def query_net(net_name: str) -> dict:
+    """Return connector endpoints and rule status for a harness net."""
+    net = capital.get_net(net_name)
+    return {
+        "net": net.name,
+        "endpoints": [c.ref for c in net.connectors],
+        "gauge_awg": net.gauge,
+        "drc_status": net.check_rules(),   # PASS / WARN / FAIL
+    }` },
+    sim: [
+      { type:'jsonrpc', method:'capital.queryNet', title:'Capital ECAD Console', desc:'Query a harness net and read its endpoints and design-rule status.',
+        params:[ { name:'net_name', label:'Net', kind:'select', options:['PWR_12V','GND_CHASSIS','CAN_HI','CAN_LO'] } ],
+        respond:(p)=>({ net:p.net_name, endpoints:['J1-'+(p.net_name.length),'J4-'+(p.net_name.length+2)],
+          gauge_awg:p.net_name.startsWith('PWR')?12:20, drc_status:p.net_name==='CAN_LO'?'WARN':'PASS' }) }
+    ]
+  },
+
+  'ai-studio-mcp': {
+    lead: 'An agent-native GenAI studio where every capability — retrieval, drafting, PLM lookup — is a governed MCP tool one orchestrator can compose on demand.',
+    arch: [
+      { icon:'purple',tag:'STUDIO',  title:'Studio UI',        desc:'A prompt surface that plans work across available MCP tools.' },
+      { icon:'teal',  tag:'PROTOCOL',title:'MCP Tool Registry', desc:'Each capability is a typed, discoverable tool with a schema.' },
+      { icon:'blue',  tag:'MODELS',  title:'Model Backends',    desc:'Requests fan out to the selected local or hosted model.' },
+      { icon:'amber', tag:'OUTPUT',  title:'Composed Result',   desc:'Tool outputs are stitched into a single grounded response.' }
+    ],
+    code: { file:'ai_studio/server.py', lang:'py', src:
+`from fastmcp import FastMCP
+
+mcp = FastMCP("ai-studio")
+
+@mcp.tool()
+def generate(prompt: str, model: str = "local-8b") -> dict:
+    """Route a generation request to the chosen backend and tag its source."""
+    backend = registry.resolve(model)
+    text = backend.complete(prompt, max_tokens=512)
+    return { "model": model, "tokens": len(text.split()), "text": text }` },
+    sim: [
+      { type:'jsonrpc', method:'studio.generate', title:'AI Studio Console', desc:'Pick a preset prompt and a model backend, then dispatch the generation tool.',
+        params:[
+          { name:'prompt', label:'Prompt', kind:'select', options:['Summarize ECN impact','Draft release note','Explain BOM diff'] },
+          { name:'model',  label:'Model', kind:'select', options:['local-8b','local-70b','hosted-frontier'] }
+        ],
+        respond:(p)=>({ model:p.model, tokens:{ 'local-8b':128,'local-70b':142,'hosted-frontier':156 }[p.model],
+          latency_ms:{ 'local-8b':240,'local-70b':910,'hosted-frontier':420 }[p.model], text:'‹generated: '+p.prompt+'›' }) }
+    ]
+  }
+
+};
+/* ═══════════════════════════════════════════════════════════
+   ENGINE — grid render, filters, studio drawer, interactive widgets
+   ═══════════════════════════════════════════════════════════ */
+const REDUCE = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const TOUCH  = matchMedia('(hover: none), (pointer: coarse)').matches;
+const $  = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+/* ── Syntax highlighter (used by bespoke + fallback code) ── */
+const KEYWORDS = {
+  py:   new Set(['def','class','return','import','from','as','if','else','elif','for','while','in','with','async','await','None','True','False','self','raise','try','except','finally','lambda','yield','and','or','not','is','pass','global','assert']),
+  js:   new Set(['const','let','var','function','return','if','else','for','while','import','from','export','default','class','new','await','async','of','in','try','catch','finally','throw','typeof','instanceof','this','null','true','false','void']),
+  rust: new Set(['fn','let','mut','struct','impl','pub','match','if','else','return','self','use','enum','for','in','while','loop','trait','mod','crate','const','ref','move','as','where','Some','None','Ok','Err'])
+};
+function hl(src, lang='py') {
+  const KW = KEYWORDS[lang] || KEYWORDS.py;
+  const re = /(#[^\n]*|\/\/[^\n]*)|(\/\*[\s\S]*?\*\/)|("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`)|(\b\d+(?:\.\d+)?\b)|([A-Za-z_$][\w$]*)/g;
+  let out = '', last = 0, m;
+  while ((m = re.exec(src))) {
+    out += esc(src.slice(last, m.index));
+    if (m[1] || m[2]) out += '<span class="code-comment">' + esc(m[0]) + '</span>';
+    else if (m[3])   out += '<span class="code-str">' + esc(m[0]) + '</span>';
+    else if (m[4])   out += '<span class="code-num">' + esc(m[0]) + '</span>';
+    else if (m[5]) {
+      const w = m[5], after = src[re.lastIndex];
+      if (KW.has(w))            out += '<span class="code-keyword">' + w + '</span>';
+      else if (after === '(')   out += '<span class="code-fn">' + w + '</span>';
+      else if (/^[A-Z]/.test(w))out += '<span class="code-type">' + w + '</span>';
+      else                      out += esc(w);
+    }
+    last = re.lastIndex;
+  }
+  return out + esc(src.slice(last));
 }
-requestAnimationFrame(animate);
 
-/* ── topbar opacity on scroll ── */
-const tb = document.getElementById('topbar');
-window.addEventListener('scroll', () => {
-  tb.style.background = window.scrollY > 80 ? 'var(--surface-sunken)' : 'var(--surface-glass)';
-});
-
-/* ── smooth scroll for anchor links ── */
-document.querySelectorAll('a[href^="#"]').forEach(a => {
-  a.addEventListener('click', e => {
-    const target = document.querySelector(a.getAttribute('href'));
-    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+/* ── Count-up stats ── */
+function runCountUp() {
+  $$('#introStats .num').forEach(el => {
+    const target = +el.dataset.count, suffix = el.dataset.suffix || '';
+    if (REDUCE) { el.textContent = target + suffix; return; }
+    const dur = 1100, t0 = performance.now();
+    (function step(now) {
+      const p = Math.min(1, (now - t0) / dur);
+      const e = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(target * e) + suffix;
+      if (p < 1) requestAnimationFrame(step);
+    })(t0);
   });
-});
+}
+
+/* ═════ EDITORIAL GALLERY ═════ */
+const filterState = { cat:'all', arch:'all', q:'' };
+const searchStr = p => (p.name + ' ' + p.path + ' ' + p.tags.join(' ') + ' ' + p.cats.join(' ')).toLowerCase();
+
+/* ── Generative cover art: deterministic SVG "engineering renders" ── */
+const HUES = {
+  frontier: { a:'#8579e5', b:'#5d9edf', c:'#b18cf0' },
+  utility:  { a:'#48ce98', b:'#5d9edf', c:'#edb050' }
+};
+const REAL_MEDIA = {
+  nx: { poster:'assets/nx-renders/ss-charlie-benchmark.png', video:'assets/projects/nx_mcp.mp4' },
+  mro: { poster:'assets/projects/mro_cover.jpg' },
+  protein: { poster:'assets/projects/protein_cover.jpg' }
+};
+// Real static builds embedded live in the Studio drawer's interactive tab.
+const EMBEDS = {
+  mro: { src:'assets/embeds/mro/index.html', poster:'assets/projects/mro_cover.jpg', title:'MRO Guided Disposition Workbench', note:'Live React build — Siemens iX. Open a work order, inspect the blade, disposition it, and rotate the 3D engine assembly.' },
+  protein: { src:'assets/embeds/protein/index.html', poster:'assets/projects/protein_cover.jpg', title:'GENE OS — Gene / Protein Visualizer', note:'Live React build. Initialize the simulator, define binding motifs, and watch DepMap-style dependency scores respond in real time.' }
+};
+function seedRand(str) {
+  let h = 1779033703 ^ str.length;
+  for (let i = 0; i < str.length; i++) { h = Math.imul(h ^ str.charCodeAt(i), 3432918353); h = h << 13 | h >>> 19; }
+  return function () { h = Math.imul(h ^ h >>> 16, 2246822507); h = Math.imul(h ^ h >>> 13, 3266489909); h ^= h >>> 16; return (h >>> 0) / 4294967296; };
+}
+function gridSvg(W, H, step, color, op) {
+  let s = '';
+  for (let x = step; x < W; x += step) s += `<line x1="${x}" y1="0" x2="${x}" y2="${H}"/>`;
+  for (let y = step; y < H; y += step) s += `<line x1="0" y1="${y}" x2="${W}" y2="${y}"/>`;
+  return `<g stroke="${color}" stroke-opacity="${op}" stroke-width="1">${s}</g>`;
+}
+const R = n => Math.round(n);
+function mNet(rnd, h, id, W, H) {
+  const pick = a => a[Math.floor(rnd() * a.length)];
+  const n = 7 + Math.floor(rnd() * 4), pts = [[W / 2, H / 2]];
+  for (let i = 1; i < n; i++) pts.push([140 + rnd() * (W - 280), 110 + rnd() * (H - 220)]);
+  let e = '', nd = '';
+  for (let i = 1; i < n; i++) { const t = Math.floor(rnd() * i);
+    e += `<line x1="${R(pts[i][0])}" y1="${R(pts[i][1])}" x2="${R(pts[t][0])}" y2="${R(pts[t][1])}" stroke="url(#${id}_ln)" stroke-opacity="0.45" stroke-width="1.6"/>`; }
+  pts.forEach((p, i) => { const r = i === 0 ? 20 : R(6 + rnd() * 8), c = i === 0 ? h.c : pick([h.a, h.b]);
+    if (i === 0) nd += `<circle cx="${R(p[0])}" cy="${R(p[1])}" r="38" fill="none" stroke="${h.c}" stroke-opacity="0.35"/>`;
+    nd += `<circle cx="${R(p[0])}" cy="${R(p[1])}" r="${r}" fill="${c}" fill-opacity="${i === 0 ? 0.95 : 0.8}"/>`; });
+  return e + nd;
+}
+function mTree(rnd, h, id, W, H) {
+  const root = [W / 2, 100], l1n = 3, l1 = [];
+  for (let i = 0; i < l1n; i++) l1.push([(W / (l1n + 1)) * (i + 1), 270]);
+  const node = (x, y, r, c) => `<rect x="${R(x - r)}" y="${R(y - r * 0.7)}" width="${R(r * 2)}" height="${R(r * 1.4)}" rx="6" fill="${c}" fill-opacity="0.85"/>`;
+  let e = '', nd = '';
+  l1.forEach(c1 => {
+    e += `<path d="M${R(root[0])} ${R(root[1])} C ${R(root[0])} ${R((root[1] + c1[1]) / 2)}, ${R(c1[0])} ${R((root[1] + c1[1]) / 2)}, ${R(c1[0])} ${R(c1[1])}" fill="none" stroke="url(#${id}_ln)" stroke-opacity="0.4" stroke-width="1.6"/>`;
+    for (let k = 0; k < 2; k++) { const kx = c1[0] + (k - 0.5) * 96, ky = 440;
+      e += `<path d="M${R(c1[0])} ${R(c1[1])} C ${R(c1[0])} ${R((c1[1] + ky) / 2)}, ${R(kx)} ${R((c1[1] + ky) / 2)}, ${R(kx)} ${R(ky)}" fill="none" stroke="url(#${id}_ln)" stroke-opacity="0.3" stroke-width="1.4"/>`;
+      nd += node(kx, ky, 16, h.b); }
+    nd += node(c1[0], c1[1], 22, h.a);
+  });
+  nd += node(root[0], root[1], 28, h.c);
+  return e + nd;
+}
+function mWave(rnd, h, id, W, H) {
+  let s = ''; const cols = [h.a, h.b, h.c];
+  for (let r = 0; r < 3; r++) { const baseY = 200 + r * 90, amp = 26 + rnd() * 22, freq = 2 + rnd() * 2, ph = rnd() * 6.28;
+    let d = `M0 ${R(baseY)}`;
+    for (let x = 0; x <= W; x += 20) { const y = baseY + Math.sin((x / W) * freq * 6.28 + ph) * amp; d += ` L${x} ${R(y)}`; }
+    s += `<path d="${d}" fill="none" stroke="${cols[r]}" stroke-opacity="${0.5 - r * 0.1}" stroke-width="2"/>`; }
+  for (let i = 0; i < 10; i++) { const x = 60 + i * ((W - 120) / 9), y = 200 + Math.sin(i) * 30 + rnd() * 20;
+    s += `<circle cx="${R(x)}" cy="${R(y)}" r="4" fill="${h.a}"/>`; }
+  return s;
+}
+function mIso(rnd, h, id, W, H) {
+  const cx = W / 2, cy = H / 2 + 20;
+  const cube = (x, y, sz, c) => {
+    const p0 = [x, y - sz * 0.6], p1 = [x + sz, y - sz * 0.3], p2 = [x, y], p3 = [x - sz, y - sz * 0.3];
+    const top = `M${R(p0[0])} ${R(p0[1])} L${R(p1[0])} ${R(p1[1])} L${R(p2[0])} ${R(p2[1])} L${R(p3[0])} ${R(p3[1])} Z`;
+    const left = `M${R(p3[0])} ${R(p3[1])} L${R(p2[0])} ${R(p2[1])} L${R(p2[0])} ${R(p2[1] + sz * 0.7)} L${R(p3[0])} ${R(p3[1] + sz * 0.7)} Z`;
+    const right = `M${R(p1[0])} ${R(p1[1])} L${R(p2[0])} ${R(p2[1])} L${R(p2[0])} ${R(p2[1] + sz * 0.7)} L${R(p1[0])} ${R(p1[1] + sz * 0.7)} Z`;
+    return `<path d="${top}" fill="${c}" fill-opacity="0.9"/><path d="${left}" fill="${c}" fill-opacity="0.5"/><path d="${right}" fill="${c}" fill-opacity="0.72"/>`;
+  };
+  return [[cx, cy, 72, h.a], [cx - 74, cy + 74, 50, h.b], [cx + 84, cy + 64, 44, h.c]].map(b => cube(b[0], b[1], b[2], b[3])).join('');
+}
+function mPanel(rnd, h, id, W, H) {
+  const x = 120, y = 110, w = W - 240, ht = H - 220; let s = '';
+  s += `<rect x="${x}" y="${y}" width="${w}" height="${ht}" rx="14" fill="#0b1019" stroke="${h.b}" stroke-opacity="0.3"/>`;
+  s += `<path d="M${x} ${y + 14} q0 -14 14 -14 h${w - 28} q14 0 14 14 v26 h${-w} z" fill="${h.a}" fill-opacity="0.12"/>`;
+  s += `<circle cx="${x + 22}" cy="${y + 20}" r="5" fill="${h.c}"/><circle cx="${x + 40}" cy="${y + 20}" r="5" fill="${h.a}" fill-opacity="0.6"/>`;
+  s += `<rect x="${x + 16}" y="${y + 56}" width="120" height="${ht - 72}" rx="8" fill="${h.b}" fill-opacity="0.08"/>`;
+  for (let i = 0; i < 5; i++) s += `<rect x="${x + 30}" y="${y + 80 + i * 40}" width="${R(70 + rnd() * 20)}" height="8" rx="4" fill="${h.a}" fill-opacity="0.4"/>`;
+  const bx = x + 170, by = y + ht - 40;
+  for (let i = 0; i < 7; i++) { const bh = 30 + rnd() * 140;
+    s += `<rect x="${R(bx + i * ((w - 200) / 7))}" y="${R(by - bh)}" width="26" height="${R(bh)}" rx="4" fill="url(#${id}_ln)" fill-opacity="0.72"/>`; }
+  return s;
+}
+function mGrid(rnd, h, id, W, H) {
+  const cx = W / 2, cy = H / 2; let s = '';
+  for (let i = 4; i > 0; i--) s += `<circle cx="${cx}" cy="${cy}" r="${i * 70}" fill="none" stroke="${h.b}" stroke-opacity="${(0.06 + i * 0.03).toFixed(2)}"/>`;
+  for (let i = 0; i < 14; i++) { const a = rnd() * 6.28, rr = 40 + rnd() * 220;
+    s += `<circle cx="${R(cx + Math.cos(a) * rr)}" cy="${R(cy + Math.sin(a) * rr)}" r="${R(3 + rnd() * 6)}" fill="${rnd() > 0.5 ? h.a : h.c}" fill-opacity="0.8"/>`; }
+  return s;
+}
+function coverArt(p) {
+  const rnd = seedRand(p.k + '|' + p.name);
+  const h = HUES[p.arch] || HUES.utility;
+  const primary = p.cats.find(c => ['mcp', 'ai', 'plm', 'edge', 'exe', 'app'].includes(c)) || 'core';
+  const fam = ({ mcp:'net', ai:'net', plm:'tree', edge:'wave', exe:'iso', app:'panel' })[primary] || 'grid';
+  const id = 'cv' + p.k.replace(/[^a-z0-9]/gi, '');
+  const W = 800, H = 600;
+  const defs = `<defs>
+    <linearGradient id="${id}_bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0f1522"/><stop offset="1" stop-color="#080b12"/></linearGradient>
+    <radialGradient id="${id}_gl" cx="0.5" cy="0.4" r="0.65"><stop offset="0" stop-color="${h.a}" stop-opacity="0.3"/><stop offset="1" stop-color="${h.a}" stop-opacity="0"/></radialGradient>
+    <linearGradient id="${id}_ln" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${h.a}"/><stop offset="1" stop-color="${h.b}"/></linearGradient>
+  </defs>`;
+  const motif = ({ net:mNet, tree:mTree, wave:mWave, iso:mIso, panel:mPanel, grid:mGrid })[fam](rnd, h, id, W, H);
+  return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">${defs}` +
+    `<rect width="${W}" height="${H}" fill="url(#${id}_bg)"/>` +
+    gridSvg(W, H, 48, h.b, 0.05) +
+    `<rect width="${W}" height="${H}" fill="url(#${id}_gl)"/>` +
+    motif +
+    `</svg>`;
+}
+function coverInner(p) {
+  const rm = REAL_MEDIA[p.k];
+  if (rm && rm.video) return `<video muted loop playsinline preload="none" poster="${rm.poster}"><source src="${rm.video}" type="video/mp4"></video>`;
+  if (rm) return `<img src="${rm.poster}" alt="${esc(p.name)} render" loading="lazy">`;
+  return coverArt(p);
+}
+function coverBlock(p, clickable) {
+  const rm = REAL_MEDIA[p.k], live = rm && rm.video;
+  const click = clickable ? ` onclick="openStudio('${p.k}')"` : '';
+  return `<div class="cover ${live ? 'live-media' : ''}" data-k="${p.k}"${click}>
+    <div class="cover-media">${coverInner(p)}</div>
+    <span class="cover-badge ${p.arch}">${p.arch === 'frontier' ? 'Frontier' : 'Utility'}</span>
+    <span class="cover-tag">${live ? 'Live render' : 'View'}</span>
+  </div>`;
+}
+
+/* ── Piece + tile templates ── */
+function featurePieceHTML(p, i, total) {
+  const flip = i % 2 === 1, rootShort = ROOTS[p.root].short;
+  const q = (p.arch === 'frontier' && p.q)
+    ? `<div class="piece-question"><span class="pq-lbl">Research question</span>${esc(p.q)}</div>` : '';
+  const specs = p.specs.slice(0, 3).map(s => `<div class="piece-spec"><span class="ps-k">${esc(s[0])}</span><span class="ps-v">${esc(s[1])}</span></div>`).join('');
+  const tags = p.tags.slice(0, 5).map(t => `<span class="piece-tag">${esc(t)}</span>`).join('');
+  return `<article class="piece ${p.arch} reveal-piece${flip ? ' flip' : ''}"
+      data-k="${p.k}" data-cats="${p.cats.join(' ')}" data-arch="${p.arch}" data-search="${esc(searchStr(p))}">
+    <div class="piece-visual">${coverBlock(p, true)}</div>
+    <div class="piece-body">
+      <div class="piece-meta">
+        <span class="piece-index">${String(i + 1).padStart(2, '0')}<span class="tot"> / ${String(total).padStart(2, '0')}</span></span>
+        <span class="m-dot"></span><span class="piece-arch">${p.arch === 'frontier' ? 'Frontier R&D' : 'Utility'}</span>
+        <span class="m-dot"></span><span class="piece-root">${esc(rootShort)}</span>
+      </div>
+      <h3 class="piece-title">${esc(p.name)}</h3>
+      <div class="piece-coord">${esc(p.path)}</div>
+      ${q}
+      <p class="piece-blurb">${esc(p.blurb)}</p>
+      <div class="piece-specs">${specs}</div>
+      <div class="piece-tags">${tags}</div>
+      <button class="piece-open" onclick="openStudio('${p.k}')" aria-label="Open studio for ${esc(p.name)}">Open studio<span class="po-line"></span></button>
+    </div>
+  </article>`;
+}
+function tileHTML(p) {
+  const rootShort = ROOTS[p.root].short;
+  const tags = p.tags.slice(0, 3).map(t => `<span class="tile-tag">${esc(t)}</span>`).join('');
+  return `<article class="tile ${p.arch} reveal-piece"
+      data-k="${p.k}" data-cats="${p.cats.join(' ')}" data-arch="${p.arch}" data-search="${esc(searchStr(p))}"
+      onclick="openStudio('${p.k}')" role="button" tabindex="0" aria-label="Open studio for ${esc(p.name)}">
+    ${coverBlock(p, false)}
+    <div class="tile-cap">
+      <div class="tile-meta"><span class="t-arch">${p.arch === 'frontier' ? 'Frontier' : 'Utility'}</span><span>·</span><span>${esc(rootShort)}</span></div>
+      <h3 class="tile-title">${esc(p.name)}</h3>
+      <p class="tile-blurb">${esc(p.blurb)}</p>
+      <div class="tile-tags">${tags}</div>
+    </div>
+  </article>`;
+}
+function divider(title, kicker, cls, count, note, first) {
+  return `<div class="gallery-divider ${cls}${first ? ' first' : ''} reveal-piece">
+    <div class="gd-kicker">${kicker}</div>
+    <div class="gd-row"><h2>${title}</h2><span class="gd-count"><span data-count-el="${cls}">${count}</span> projects</span></div>
+    <p class="gd-note">${note}</p>
+  </div>`;
+}
+
+function renderGallery() {
+  const heroes = PROJECTS.filter(p => p.hero);
+  const restF  = PROJECTS.filter(p => !p.hero && p.arch === 'frontier');
+  const restU  = PROJECTS.filter(p => !p.hero && p.arch === 'utility');
+  const section = (inner, key) => `<section class="gallery-section" data-section="${key}">${inner}</section>`;
+  let html = '';
+  html += section(
+    divider('Featured builds', 'Selected work · deep-dive drawers', 'featured', heroes.length,
+      'The flagship projects — each opens a studio with architecture, verified source, and a live in-browser demo.', true) +
+    `<div class="feature-stack">${heroes.map((p, i) => featurePieceHTML(p, i, heroes.length)).join('')}</div>`, 'featured');
+  html += section(
+    divider('Frontier GenAI &amp; PLM R&amp;D', 'Archetype 01 · Research', 'frontier', restF.length,
+      'Experimental engineering bridging generative AI with CAD, PLM, and knowledge graphs.') +
+    `<div class="tile-grid">${restF.map(tileHTML).join('')}</div>`, 'frontier');
+  html += section(
+    divider('Internal Utilities &amp; Presales Tools', 'Archetype 02 · Tooling', 'utility', restU.length,
+      'Purpose-built developer and presales tooling, described strictly by what the technology does.') +
+    `<div class="tile-grid">${restU.map(tileHTML).join('')}</div>`, 'utility');
+  $('#galleryMount').innerHTML = html;
+
+  Object.keys(CATS).forEach(c => {
+    const el = $(`[data-count-for="${c}"]`);
+    if (el) el.textContent = PROJECTS.filter(p => p.cats.includes(c)).length;
+  });
+  $('[data-count-for="all"]').textContent = PROJECTS.length;
+
+  observeReveal();
+  wireCovers();
+  coverParallax();
+  applyFilters();
+}
+
+function wireCovers() {
+  $$('.cover.live-media').forEach(c => {
+    const v = c.querySelector('video'); if (!v) return;
+    c.addEventListener('mouseenter', () => { if (!REDUCE) { v.play().catch(() => {}); c.classList.add('playing'); } });
+    c.addEventListener('mouseleave', () => { v.pause(); c.classList.remove('playing'); });
+  });
+  $$('.piece .cover').forEach(el => {
+    el.setAttribute('tabindex', '0'); el.setAttribute('role', 'button');
+    el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openStudio(el.dataset.k); } });
+  });
+  $$('.tile').forEach(el => {
+    el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openStudio(el.dataset.k); } });
+  });
+}
+
+function observeReveal() {
+  const items = $$('.reveal-piece');
+  if (REDUCE) { items.forEach(i => i.classList.add('in')); return; }
+  const io = new IntersectionObserver((entries, obs) => {
+    entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); obs.unobserve(en.target); } });
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+  items.forEach(i => io.observe(i));
+}
+
+function coverParallax() {
+  if (REDUCE) return;
+  const medias = $$('.cover-media');
+  let ticking = false;
+  const upd = () => {
+    ticking = false; const vh = innerHeight;
+    medias.forEach(cm => {
+      const c = cm.parentElement, r = c.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > vh) return;
+      const prog = (r.top + r.height / 2 - vh / 2) / vh;
+      cm.style.setProperty('--cover-shift', (prog * -22).toFixed(1) + 'px');
+    });
+  };
+  addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(upd); } }, { passive: true });
+  upd();
+}
+
+function applyFilters() {
+  const { cat, arch, q } = filterState;
+  let visible = 0;
+  $$('.piece, .tile').forEach(el => {
+    const okCat  = cat === 'all'  || el.dataset.cats.split(' ').includes(cat);
+    const okArch = arch === 'all' || el.dataset.arch === arch;
+    const okQ    = !q || el.dataset.search.includes(q);
+    const show = okCat && okArch && okQ;
+    el.style.display = show ? '' : 'none';
+    if (show) visible++;
+  });
+  $$('.gallery-section').forEach(sec => {
+    const shown = $$('.piece, .tile', sec).filter(e => e.style.display !== 'none').length;
+    sec.style.display = shown ? '' : 'none';
+    const cnt = $('[data-count-el]', sec);
+    if (cnt) cnt.textContent = shown;
+  });
+  $('#resultCount').innerHTML = `<b>${visible}</b> / ${PROJECTS.length}`;
+  $('#galleryEmpty').style.display = visible ? 'none' : '';
+}
+
+function wireControls() {
+  $('#catTabs').addEventListener('click', e => {
+    const b = e.target.closest('.gc-chip'); if (!b) return;
+    $$('#catTabs .gc-chip').forEach(x => x.classList.remove('active'));
+    b.classList.add('active'); filterState.cat = b.dataset.filter; applyFilters();
+  });
+  $('#archTabs').addEventListener('click', e => {
+    const b = e.target.closest('.gc-chip'); if (!b) return;
+    $$('#archTabs .gc-chip').forEach(x => x.classList.remove('active'));
+    b.classList.add('active'); filterState.arch = b.dataset.arch; applyFilters();
+  });
+  $('#searchInput').addEventListener('input', e => {
+    filterState.q = e.target.value.trim().toLowerCase(); applyFilters();
+  });
+}
+
+/* ═════ STUDIO DRAWER ═════ */
+let activeWidgets = [], lastFocus = null;
+
+function renderArchPane(p, reg) {
+  let h = '';
+  if (p.arch === 'frontier' && (reg && reg.research || p.q)) {
+    h += `<div class="research-callout"><div class="rc-lbl">◇ Frontier research question</div><div class="rc-q">${esc((reg && reg.research) || p.q)}</div></div>`;
+  }
+  if (reg && reg.lead) h += `<p class="drawer-lead">${esc(reg.lead)}</p>`;
+  else h += `<p class="drawer-lead">${esc(p.blurb)}</p>`;
+  const steps = (reg && reg.arch) || fallbackArch(p);
+  h += '<div class="arch-pipeline">';
+  steps.forEach((s, i) => {
+    h += `<div class="arch-node">
+      <div class="arch-node-left">
+        <div class="arch-icon ${s.icon}">${String(i + 1).padStart(2, '0')}</div>
+        <div class="arch-text"><h4>${esc(s.title)}</h4><p>${esc(s.desc)}</p></div>
+      </div>
+      <span class="arch-badge">${esc(s.tag)}</span>
+    </div>`;
+    if (i < steps.length - 1) h += '<div class="arch-arrow">↓</div>';
+  });
+  h += '</div>';
+  return h;
+}
+function fallbackArch(p) {
+  const primary = p.cats[0];
+  const mid = { mcp:['purple','PROTOCOL','MCP Tool Surface','Typed, schema-validated tools exposed to an agent.'],
+                plm:['blue','PLM','Teamcenter Integration','Reads and writes product structure via typed calls.'],
+                edge:['teal','INGEST','Edge Stream','Normalizes and thresholds telemetry at the source.'],
+                ai:['purple','MODEL','Inference Core','Runs model inference over the prepared inputs.'],
+                exe:['amber','BUILD','Native Build','Compiles to a self-contained executable.'],
+                app:['teal','UI','Interface Layer','Renders an interactive interface over the data.'] }[primary]
+                || ['teal','CORE','Core Engine','The primary processing stage.'];
+  return [
+    { icon:'amber', tag:'INPUT',  title:'Source & Inputs',  desc:'Structured inputs are gathered and validated at the boundary.' },
+    { icon:mid[0],  tag:mid[1],   title:mid[2],             desc:mid[3] },
+    { icon:'blue',  tag:'PROCESS',title:'Processing',       desc:'Business logic transforms inputs into a structured result.' },
+    { icon:'purple',tag:'OUTPUT', title:'Result & Surface', desc:'Results are returned to the user or calling agent.' }
+  ];
+}
+
+function renderCodePane(p, reg) {
+  const code = (reg && reg.code) || fallbackCode(p);
+  return `<h4>Verified Source — <span class="mono" style="color:var(--text2);font-size:14px">${esc(code.file)}</span></h4>
+    <p class="drawer-lead" style="margin-bottom:14px">Real, representative source from this project — copyable, running only in your browser.</p>
+    <div class="code-box-header"><span>${esc(code.file)}</span>
+      <button class="btn-copy" onclick="copyCode(this)">Copy</button></div>
+    <pre class="code-box-body"><code>${hl(code.src, code.lang)}</code></pre>`;
+}
+function fallbackCode(p) {
+  const t = p.tags.join(' ').toLowerCase();
+  if (/rust/.test(t)) return { file:'src/main.rs', lang:'rust', src:`fn main() {\n    let repo = "${p.name}";\n    println!("running {}", repo);\n}` };
+  if (/python|fastmcp|pytorch/.test(t)) return { file:'app.py', lang:'py', src:`def run(config: dict) -> dict:\n    """Entry point for ${p.name}."""\n    result = process(config)\n    return {"ok": True, "result": result}` };
+  return { file:'index.js', lang:'js', src:`export function run(input) {\n  // ${p.name}\n  const result = process(input);\n  return { ok: true, result };\n}` };
+}
+window.copyCode = btn => {
+  const code = btn.closest('.drawer-pane').querySelector('.code-box-body').innerText;
+  navigator.clipboard.writeText(code).then(() => {
+    const o = btn.textContent; btn.textContent = 'Copied ✓';
+    setTimeout(() => btn.textContent = o, 1400);
+  });
+};
+
+function renderSimPane(p, reg) {
+  const specs = (reg && reg.sim) || (EMBEDS[p.k] ? [{ type:'embed', key:p.k }] : [fallbackSim(p)]);
+  const wrap = document.createElement('div');
+  specs.forEach(spec => {
+    const w = document.createElement('div');
+    w.className = 'widget';
+    wrap.appendChild(w);
+    const cleanup = initWidget(spec, w, p);
+    if (cleanup) activeWidgets.push(cleanup);
+  });
+  return wrap;
+}
+function fallbackSim(p) {
+  if (p.cats.includes('mcp')) return { type:'jsonrpc', method:p.k + '.run', title:p.name + ' Console',
+    desc:'Dispatch a simulated JSON-RPC call and inspect the structured response.',
+    params:[{ name:'mode', label:'Mode', kind:'select', options:['default','verbose','dry-run'] }],
+    respond:(pp)=>({ status:'ok', tool:p.k, mode:pp.mode, elapsed_ms:120 + (pp.mode.length * 11) }) };
+  if (p.cats.includes('edge')) return { type:'mqtt', title:'Live Telemetry', desc:'Start the stream and inject a spike to trip the alarm.' };
+  if (p.cats.includes('plm'))  return { type:'bom', title:'BOM Explorer', desc:'Expand the structure and toggle a revision diff.' };
+  if (p.cats.includes('ai'))   return { type:'runner', title:'Inference Run', desc:'Run a simulated inference pass and watch the pipeline stream.',
+    steps:['Loading model weights','Tokenizing input','Running forward pass','Decoding output','Scoring result'] };
+  return { type:'runner', title:'Build & Test Runner', desc:'Run a simulated build/test pipeline for this repository.',
+    steps:['Resolving dependencies','Compiling sources','Running unit tests','Bundling artifacts','Done'] };
+}
+
+window.switchDrawerPane = name => {
+  $$('.drawer-pane').forEach(x => x.classList.remove('active'));
+  $$('.drawer-tab-btn').forEach(x => x.classList.remove('active'));
+  $('#pane-' + name).classList.add('active');
+  $$('.drawer-tab-btn').forEach(b => { if (b.getAttribute('onclick').includes(`'${name}'`)) b.classList.add('active'); });
+};
+
+window.openStudio = k => {
+  const p = PROJECTS.find(x => x.k === k); if (!p) return;
+  const reg = studioRegistry[k];
+  $('#studioTitle').textContent = p.name;
+  $('#studioSub').textContent = p.path + ' · ' + p.tags.slice(0, 3).join(' · ');
+  const badge = $('#studioArchetype');
+  badge.className = 'drawer-archetype ' + p.arch;
+  badge.textContent = p.arch === 'frontier' ? 'Frontier R&D' : 'Utility';
+  $('#studioArchContent').innerHTML = renderArchPane(p, reg);
+  $('#studioCodeContent').innerHTML = renderCodePane(p, reg);
+  const simHost = $('#studioSimContent'); simHost.innerHTML = '';
+  simHost.appendChild(renderSimPane(p, reg));
+  switchDrawerPane('arch');
+  $('#studioBackdrop').classList.add('open');
+  const d = $('#studioDrawer'); d.classList.add('open'); d.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+  lastFocus = document.activeElement;
+  $('.btn-close-drawer').focus();
+  document.addEventListener('keydown', onDrawerKey);
+};
+window.closeStudio = () => {
+  $('#studioBackdrop').classList.remove('open');
+  const d = $('#studioDrawer'); d.classList.remove('open'); d.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+  activeWidgets.forEach(fn => { try { fn(); } catch (e) {} });
+  activeWidgets = [];
+  document.removeEventListener('keydown', onDrawerKey);
+  if (lastFocus) lastFocus.focus();
+};
+function onDrawerKey(e) { if (e.key === 'Escape') closeStudio(); }
+
+/* ═════ BOOT ═════ */
+renderGallery();
+wireControls();
+runCountUp();
+/* ═══════════════════════════════════════════════════════════
+   INTERACTIVE WIDGET FACTORIES
+   Each returns a cleanup() that halts timers/animation loops.
+   All respect prefers-reduced-motion (REDUCE) with instant states.
+   ═══════════════════════════════════════════════════════════ */
+function initWidget(spec, host, project) {
+  const head = `<h4>${esc(spec.title || 'Interactive')}</h4><p class="w-desc">${esc(spec.desc || '')}</p>`;
+  switch (spec.type) {
+    case 'jsonrpc': return wJsonRpc(spec, host, head);
+    case 'nx3d':    return wNx3d(spec, host, head);
+    case 'fea':     return wFea(spec, host, head);
+    case 'mqtt':    return wMqtt(spec, host, head);
+    case 'bom':     return wBom(spec, host, head);
+    case 'graph':   return wGraph(spec, host, head);
+    case 'blade':   return wBlade(spec, host, head);
+    case 'embed':   return wEmbed(spec, host, head);
+    default:        return wRunner(spec, host, head);
+  }
+}
+
+/* ── Live embed — a real static build running in a sandboxed iframe.
+   Runs live on the published (http) site, e.g. GitHub Pages. ── */
+function wEmbed(spec, host, head) {
+  const e = Object.assign({}, EMBEDS[spec.key], spec);
+  const src = e.src, title = e.title || 'Live build';
+  const bar =
+    `<div class="w-embed-bar">
+       <span class="we-dot"></span><span class="we-dot amber"></span><span class="we-dot teal"></span>
+       <span class="we-title">${esc(title)}</span>
+       <a class="we-open" href="${esc(src)}" target="_blank" rel="noopener">Open full ↗</a>
+     </div>`;
+
+  host.innerHTML = head +
+    `<div class="w-embed">${bar}
+       <div class="w-embed-stage">
+         <div class="we-loading" data-load>Loading live build…</div>
+         <iframe class="we-frame" title="${esc(title)}" loading="lazy"
+           sandbox="allow-scripts allow-same-origin allow-pointer-lock allow-popups" src="${esc(src)}"></iframe>
+       </div>
+     </div>
+     ${e.note ? `<p class="we-note">${esc(e.note)}</p>` : ''}`;
+  const frame = host.querySelector('.we-frame');
+  const load = host.querySelector('[data-load]');
+  frame.addEventListener('load', () => { if (load) load.style.display = 'none'; frame.classList.add('ready'); });
+  // Cleanup: unload the embedded app so its timers / animation loops stop.
+  return () => { try { frame.src = 'about:blank'; } catch (e) {} };
+}
+
+/* ── MCP tool caller — form in, rendered result card out ── */
+function wJsonRpc(spec, host, head) {
+  const timers = [];
+  const controls = (spec.params || []).map(pr => pr.kind === 'select'
+    ? `<div class="w-field"><label>${esc(pr.label)}</label><select data-p="${pr.name}">${pr.options.map(o => `<option>${esc(o)}</option>`).join('')}</select></div>`
+    : `<div class="w-field"><label>${esc(pr.label)}</label><input type="number" data-p="${pr.name}" value="${pr.value ?? 0}" min="${pr.min ?? 0}" max="${pr.max ?? 9999}"></div>`
+  ).join('');
+  host.innerHTML = head +
+    `<div class="w-controls">${controls}<button class="w-btn primary" data-go>Call ${esc(spec.method || 'tool')}()</button></div>
+     <div data-out><div class="result-card"><div class="result-empty">Set parameters, then call the tool to inspect the structured result.</div></div></div>`;
+  const out = host.querySelector('[data-out]');
+  const fmtVal = v => typeof v === 'number' ? v.toLocaleString() : String(v);
+  const accentKeys = new Set(['safety_factor','status','result','ok','elapsed_ms']);
+  host.querySelector('[data-go]').addEventListener('click', () => {
+    const pv = {}; host.querySelectorAll('[data-p]').forEach(el => pv[el.dataset.p] = /^-?\d+(\.\d+)?$/.test(el.value) ? +el.value : el.value);
+    const id = Math.floor(Math.random() * 9000 + 1000);
+    const env = { jsonrpc: '2.0', id, method: spec.method, params: pv };
+    out.innerHTML = `<div class="result-card"><div class="result-head"><span class="rc-dot" style="background:var(--amber);box-shadow:0 0 8px var(--amber)"></span>calling host…<span class="rc-lat">MCP</span></div><div class="result-empty">awaiting response</div></div>`;
+    timers.push(setTimeout(() => {
+      const res = spec.respond ? spec.respond(pv) : { ok: true };
+      const lat = 80 + Math.floor(Math.random() * 180);
+      const rows = Object.entries(res).map(([k, v]) =>
+        `<div class="result-row"><span class="rk">${esc(k)}</span><span class="rv${accentKeys.has(k) ? ' accent' : ''}">${esc(fmtVal(v))}</span></div>`).join('');
+      out.innerHTML =
+        `<div class="result-card">
+           <div class="result-head"><span class="rc-dot"></span>${esc(spec.method)} → 200 OK<span class="rc-lat">${lat} ms</span></div>
+           <div class="result-rows">${rows}</div>
+           <details class="result-raw"><summary>▸ raw JSON-RPC envelope</summary><pre>${esc(JSON.stringify({ request: env, response: { jsonrpc: '2.0', id, result: res } }, null, 2))}</pre></details>
+         </div>`;
+    }, REDUCE ? 40 : 640));
+  });
+  return () => timers.forEach(clearTimeout);
+}
+
+/* ── NX extrude — live CSS-3D solid preview (dependency-free) ── */
+function wNx3d(spec, host, head) {
+  host.innerHTML = head + `
+    <div class="w-controls">
+      <div class="w-field" style="flex:1;min-width:220px"><label>Extrude distance — <span data-dv>25</span> mm</label>
+        <input type="range" data-dist min="6" max="120" step="1" value="25"></div>
+      <div class="w-field"><label>Boolean op</label>
+        <select data-op><option>Unite</option><option>Subtract</option><option>None</option></select></div>
+      <div class="w-field"><label>Auto-spin</label>
+        <select data-spin><option>On</option><option>Off</option></select></div>
+    </div>
+    <div class="nx-stage" data-stage>
+      <div class="nx-grid"></div>
+      <div class="nx-readout">
+        <div class="nr-item">body_uid <b data-uid>0x—</b></div>
+        <div class="nr-item">faces <b data-faces>6</b></div>
+        <div class="nr-item">volume <b data-vol>0</b> mm³</div>
+      </div>
+      <div class="nx-solid" data-solid></div>
+      <div class="nx-hint">drag to orbit · sketch = 40 × 40 mm profile</div>
+    </div>`;
+  const stage = host.querySelector('[data-stage]');
+  const solid = host.querySelector('[data-solid]');
+  const distEl = host.querySelector('[data-dist]'), opEl = host.querySelector('[data-op]'), spinEl = host.querySelector('[data-spin]');
+  const S = 90; // sketch footprint in px (40mm profile)
+  let rotX = -22, rotY = -32, autoY = -32, dragging = false, px = 0, py = 0, raf = 0;
+  // build 6 faces once
+  const faces = ['front','back','right','left','top','bottom'].map(cls => {
+    const f = document.createElement('div'); f.className = 'nx-face'; f.dataset.f = cls; solid.appendChild(f); return f;
+  });
+  function layout() {
+    const d = +distEl.value;
+    const depth = Math.max(20, d * 1.6);           // px depth scaled from mm
+    const hd = depth / 2, hs = S / 2;
+    const set = (el, w, h, tf) => { el.style.width = w + 'px'; el.style.height = h + 'px'; el.style.left = 'calc(50% - ' + (w / 2) + 'px)'; el.style.top = 'calc(50% - ' + (h / 2) + 'px)'; el.style.transform = tf; };
+    set(faces[0], S, S, `translateZ(${hd}px)`);
+    set(faces[1], S, S, `rotateY(180deg) translateZ(${hd}px)`);
+    set(faces[2], depth, S, `rotateY(90deg) translateZ(${hs}px)`);
+    set(faces[3], depth, S, `rotateY(-90deg) translateZ(${hs}px)`);
+    set(faces[4], S, depth, `rotateX(90deg) translateZ(${hs}px)`);
+    set(faces[5], S, depth, `rotateX(-90deg) translateZ(${hs}px)`);
+    // readouts (mirror the Python tool's return shape)
+    host.querySelector('[data-dv]').textContent = d;
+    host.querySelector('[data-uid]').textContent = '0x' + ((d * 7919) >>> 0).toString(16).toUpperCase().slice(0, 6);
+    const op = opEl.value;
+    host.querySelector('[data-faces]').textContent = op === 'None' ? 4 : 6;
+    host.querySelector('[data-vol]').textContent = Math.round(40 * 40 * d).toLocaleString();
+    solid.className = 'nx-solid op-' + op.toLowerCase();
+  }
+  function render() { solid.style.transform = `translate(-50%,-50%) rotateX(${rotX}deg) rotateY(${rotY}deg)`; }
+  distEl.addEventListener('input', layout);
+  opEl.addEventListener('change', layout);
+  stage.addEventListener('pointerdown', e => { dragging = true; px = e.clientX; py = e.clientY; stage.setPointerCapture(e.pointerId); });
+  stage.addEventListener('pointermove', e => {
+    if (!dragging) return;
+    rotY += (e.clientX - px) * 0.5; rotX -= (e.clientY - py) * 0.5;
+    rotX = Math.max(-80, Math.min(80, rotX)); px = e.clientX; py = e.clientY; autoY = rotY; render();
+  });
+  const stop = () => dragging = false;
+  stage.addEventListener('pointerup', stop); stage.addEventListener('pointercancel', stop); stage.addEventListener('pointerleave', stop);
+  function loop() {
+    if (!dragging && spinEl.value === 'On') { autoY += 0.35; rotY = autoY; render(); }
+    raf = requestAnimationFrame(loop);
+  }
+  layout(); render();
+  if (!REDUCE) raf = requestAnimationFrame(loop);
+  return () => cancelAnimationFrame(raf);
+}
+
+/* ── FEA stress gauge ── */
+function wFea(spec, host, head) {
+  host.innerHTML = head + `
+    <div class="w-controls"><div class="w-field" style="flex:1;min-width:240px">
+      <label>Applied load — <span data-lv>2500</span> N</label>
+      <input type="range" data-load min="200" max="6000" step="50" value="2500"></div></div>
+    <div class="gauge-wrap">
+      <div class="gauge-dial"><svg viewBox="0 0 120 120" width="150" height="150">
+        <circle cx="60" cy="60" r="50" fill="none" stroke="var(--border)" stroke-width="10"/>
+        <circle data-arc cx="60" cy="60" r="50" fill="none" stroke="var(--teal)" stroke-width="10" stroke-linecap="round" stroke-dasharray="314" stroke-dashoffset="314" transform="rotate(-90 60 60)"/>
+        <text data-sf x="60" y="58" text-anchor="middle" font-family="IBM Plex Mono" font-size="20" font-weight="600" fill="var(--text)">1.4</text>
+        <text x="60" y="76" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="var(--text3)">SAFETY</text>
+      </svg></div>
+      <div class="gauge-readout">
+        <div class="gauge-metric"><span>Von Mises stress</span><span data-vm>—</span></div>
+        <div class="gauge-bar"><span data-bar style="width:0%"></span></div>
+        <div class="gauge-metric"><span>Yield limit</span><span>355 MPa</span></div>
+        <div class="gauge-verdict" data-verdict></div>
+      </div></div>`;
+  const YIELD = 355, AREA = 7.4;
+  const slider = host.querySelector('[data-load]');
+  function update() {
+    const load = +slider.value; host.querySelector('[data-lv]').textContent = load;
+    const vm = load / AREA, sf = YIELD / vm, pct = Math.min(100, vm / YIELD * 100);
+    const col = sf > 2 ? 'var(--teal)' : sf > 1.3 ? 'var(--amber)' : 'var(--coral)';
+    const bar = host.querySelector('[data-bar]'); bar.style.width = pct + '%'; bar.style.background = col;
+    host.querySelector('[data-vm]').textContent = vm.toFixed(0) + ' MPa';
+    const sfEl = host.querySelector('[data-sf]'); sfEl.textContent = sf.toFixed(2); sfEl.setAttribute('fill', col);
+    const arc = host.querySelector('[data-arc]'); arc.setAttribute('stroke', col); arc.setAttribute('stroke-dashoffset', 314 - pct / 100 * 314);
+    const v = host.querySelector('[data-verdict]');
+    const set = (t, c, b) => { v.textContent = t; v.style.color = c; v.style.background = b; };
+    if (sf > 2) set('✓ SAFE — within design margin', 'var(--teal)', 'var(--teal-bg)');
+    else if (sf > 1.3) set('⚠ CAUTION — margin reduced', 'var(--amber)', 'var(--amber-bg)');
+    else if (sf > 1) set('⚠ CRITICAL — approaching yield', 'var(--coral)', 'var(--coral-bg)');
+    else set('✕ FAIL — exceeds yield', 'var(--coral)', 'var(--coral-bg)');
+  }
+  slider.addEventListener('input', update); update();
+  return () => {};
+}
+
+/* ── Live MQTT telemetry chart ── */
+function wMqtt(spec, host, head) {
+  host.innerHTML = head + `
+    <div class="w-controls">
+      <button class="w-btn primary" data-toggle>Start stream</button>
+      <button class="w-btn purple" data-spike disabled>Inject spike</button></div>
+    <div class="chart-frame"><svg viewBox="0 0 600 160" preserveAspectRatio="none">
+      <line data-limit x1="0" x2="600" stroke="var(--coral)" stroke-width="1" stroke-dasharray="4 4" opacity="0.55"/>
+      <polyline data-line fill="none" stroke="var(--teal)" stroke-width="2" points=""/></svg></div>
+    <div class="chart-status"><span class="st-dot" data-dot style="background:var(--text3)"></span><span data-stat>Idle · broker disconnected</span></div>
+    <div class="event-log" data-log></div>`;
+  const LIMIT = 62, W = 600, H = 160, MAX = 60;
+  const data = []; let iv = 0, running = false, spike = 0, t = 0;
+  const line = host.querySelector('[data-line]'), log = host.querySelector('[data-log]');
+  const dot = host.querySelector('[data-dot]'), stat = host.querySelector('[data-stat]');
+  const limY = H - LIMIT / 90 * H;
+  host.querySelector('[data-limit]').setAttribute('y1', limY);
+  host.querySelector('[data-limit]').setAttribute('y2', limY);
+  const put = (cls, txt) => {
+    const row = document.createElement('div'); row.className = 'event-row ' + cls;
+    row.innerHTML = `<span class="ev-dot"></span><span class="ev-time">${new Date().toLocaleTimeString()}</span><span>${esc(txt)}</span>`;
+    log.insertBefore(row, log.firstChild);
+    while (log.children.length > 40) log.removeChild(log.lastChild);
+  };
+  function tick() {
+    t++;
+    let v = 48 + Math.sin(t / 6) * 6 + Math.random() * 4 + spike;
+    spike *= 0.82; if (spike < 0.5) spike = 0;
+    data.push(v); if (data.length > MAX) data.shift();
+    line.setAttribute('points', data.map((d, i) => `${i / (MAX - 1) * W},${H - d / 90 * H}`).join(' '));
+    const alarm = v > LIMIT;
+    line.setAttribute('stroke', alarm ? 'var(--coral)' : 'var(--teal)');
+    dot.style.background = alarm ? 'var(--coral)' : 'var(--teal)';
+    stat.textContent = alarm ? `ALARM · ${v.toFixed(1)}°C > ${LIMIT}°C limit` : `Streaming · ${v.toFixed(1)}°C · 10 Hz`;
+    if (alarm && t % 4 === 0) put('err', `temp ${v.toFixed(1)}°C exceeds ${LIMIT}°C limit`);
+  }
+  host.querySelector('[data-toggle]').addEventListener('click', e => {
+    running = !running; e.target.textContent = running ? 'Stop stream' : 'Start stream';
+    host.querySelector('[data-spike]').disabled = !running;
+    if (running) { put('ok', 'connected · mqtt://edge-gateway:1883'); iv = setInterval(tick, REDUCE ? 400 : 90); }
+    else { clearInterval(iv); put('warn', 'broker disconnected'); dot.style.background = 'var(--text3)'; stat.textContent = 'Idle · broker disconnected'; }
+  });
+  host.querySelector('[data-spike]').addEventListener('click', () => { spike = 28; put('warn', 'manual spike injected'); });
+  return () => clearInterval(iv);
+}
+
+/* ── BOM tree explorer with revision diff ── */
+function wBom(spec, host, head) {
+  const T = { id:'ASM-100 · Brake Rotor Assembly', qty:1, open:true, children:[
+    { id:'PRT-201 · Hub', qty:1 },
+    { id:'PRT-202 · Disc', qty:1, open:true, children:[
+      { id:'PRT-210 · Cooling Vane', qty:12 },
+      { id:'PRT-211 · Heat Shield', qty:1, d:'add' } ] },
+    { id:'PRT-203 · Bolt M8×20', qty:6, d:'chg', note:'qty 6 → 8' },
+    { id:'PRT-205 · Retainer Clip', qty:2, d:'del' } ] };
+  let diff = false;
+  host.innerHTML = head + `<div class="w-chips"><span class="w-chip" data-diff>⇄ Diff Rev A → Rev B</span></div><div class="bom-tree" data-tree></div>`;
+  const treeEl = host.querySelector('[data-tree]');
+  function node(n) {
+    if (n.d === 'add' && !diff) return '';
+    const cls = diff && n.d ? ' diff-' + n.d : '';
+    const kids = n.children || [], hasKids = kids.length > 0;
+    const toggle = hasKids ? `<span class="bom-toggle" data-t>${n.open ? '▾' : '▸'}</span>` : '<span class="bom-toggle"></span>';
+    const note = diff && n.note ? ` <span style="color:var(--amber)">(${esc(n.note)})</span>` : '';
+    let h = `<div class="bom-node"><div class="bom-row${cls}${hasKids ? ' clickable' : ''}">${toggle}<span class="bom-id">${esc(n.id)}</span>${note}<span class="bom-qty">×${n.qty}</span></div>`;
+    if (hasKids) h += `<div class="bom-children"${n.open ? '' : ' style="display:none"'}>${kids.map(node).join('')}</div>`;
+    return h + '</div>';
+  }
+  function draw() {
+    treeEl.innerHTML = node(T);
+    treeEl.querySelectorAll('.bom-row.clickable').forEach(row => row.addEventListener('click', () => {
+      const kids = row.nextElementSibling, tg = row.querySelector('[data-t]');
+      if (!kids) return; const hidden = kids.style.display === 'none';
+      kids.style.display = hidden ? '' : 'none'; if (tg) tg.textContent = hidden ? '▾' : '▸';
+    }));
+  }
+  host.querySelector('[data-diff]').addEventListener('click', e => {
+    diff = !diff; e.target.classList.toggle('active', diff);
+    e.target.textContent = diff ? '⇄ Showing Rev A → Rev B' : '⇄ Diff Rev A → Rev B'; draw();
+  });
+  draw();
+  return () => {};
+}
+
+/* ── GraphRAG query visualizer ── */
+function wGraph(spec, host, head) {
+  const timers = [];
+  const N = [
+    { id:'chg', l:'Change C-42', x:90,  y:60,  c:'var(--coral)' },
+    { id:'item',l:'Rotor Item',  x:310, y:60,  c:'var(--teal)' },
+    { id:'pA',  l:'Part A',      x:210, y:200, c:'var(--blue)' },
+    { id:'pB',  l:'Part B',      x:400, y:200, c:'var(--blue)' },
+    { id:'doc', l:'Spec S-9',    x:540, y:110, c:'var(--purple)' }];
+  const E = [['chg','item'], ['item','pA'], ['item','pB'], ['item','doc']];
+  const Q = {
+    impact: { chip:'Impact of change', edges:[0,1,2], ans:'<b>Change C-42</b> affects the <b>Rotor Item</b>, cascading to <b>Part A</b> and <b>Part B</b> — review both before release.' },
+    docs:   { chip:'Docs for item',    edges:[3],     ans:'The <b>Rotor Item</b> is documented by <b>Spec S-9</b>.' },
+    all:    { chip:'Full traversal',   edges:[0,1,2,3], ans:'Full subgraph: <b>Change C-42 → Rotor Item → {Part A, Part B, Spec S-9}</b>.' }
+  };
+  const pos = id => N.find(n => n.id === id);
+  const edges = E.map(([a, b], i) => { const p = pos(a), q = pos(b); return `<line class="gedge" data-e="${i}" x1="${p.x}" y1="${p.y}" x2="${q.x}" y2="${q.y}"/>`; }).join('');
+  const nodes = N.map(n => `<g class="gnode"><circle cx="${n.x}" cy="${n.y}" r="9" fill="${n.c}"/><text class="glabel" x="${n.x}" y="${n.y - 16}" text-anchor="middle">${esc(n.l)}</text></g>`).join('');
+  host.innerHTML = head +
+    `<div class="w-chips">${Object.keys(Q).map((k, i) => `<span class="w-chip${i === 0 ? ' active' : ''}" data-q="${k}">${esc(Q[k].chip)}</span>`).join('')}</div>
+     <div class="graph-frame"><svg viewBox="0 0 620 260">${edges}${nodes}</svg></div>
+     <div class="graph-answer" data-ans></div>`;
+  function runQ(k) {
+    host.querySelectorAll('[data-e]').forEach(e => e.classList.remove('on'));
+    const q = Q[k];
+    q.edges.forEach((ei, i) => timers.push(setTimeout(() => { const el = host.querySelector(`[data-e="${ei}"]`); if (el) el.classList.add('on'); }, REDUCE ? 0 : i * 260)));
+    const ans = host.querySelector('[data-ans]'); ans.innerHTML = '<span style="color:var(--text3)">traversing subgraph…</span>';
+    timers.push(setTimeout(() => ans.innerHTML = q.ans, REDUCE ? 0 : q.edges.length * 260 + 200));
+  }
+  host.querySelectorAll('[data-q]').forEach(c => c.addEventListener('click', () => {
+    host.querySelectorAll('[data-q]').forEach(x => x.classList.remove('active')); c.classList.add('active'); runQ(c.dataset.q);
+  }));
+  runQ('impact');
+  return () => timers.forEach(clearTimeout);
+}
+
+/* ── MRO blade-wear evaluator ── */
+function wBlade(spec, host, head) {
+  const timers = [];
+  host.innerHTML = head + `
+    <div class="w-controls">
+      <div class="w-field" style="flex:1;min-width:220px"><label>Tip-shroud crack — <span data-cv>1.0</span> mm</label>
+        <input type="range" data-crack min="0" max="6" step="0.1" value="1.0"></div>
+      <div class="w-field" style="flex:1;min-width:220px"><label>Root wear — <span data-wv>8</span> %</label>
+        <input type="range" data-wear min="0" max="40" step="1" value="8"></div></div>
+    <div class="gauge-verdict" data-gate style="margin:4px 0 16px"></div>
+    <div class="w-controls"><button class="w-btn primary" data-gen>Generate traveler</button></div>
+    <div data-out></div>`;
+  const L = { cR:2, cS:4, wR:15, wS:30 };
+  const crack = host.querySelector('[data-crack]'), wear = host.querySelector('[data-wear]'), gate = host.querySelector('[data-gate]');
+  function verdict() {
+    const c = +crack.value, w = +wear.value;
+    host.querySelector('[data-cv]').textContent = c.toFixed(1);
+    host.querySelector('[data-wv]').textContent = w;
+    let r, col, bg;
+    if (c > L.cS || w > L.wS) { r = '✕ SCRAP — exceeds scrap limit'; col = 'var(--coral)'; bg = 'var(--coral-bg)'; }
+    else if (c > L.cR || w > L.wR) { r = '⚙ REPAIR — route to rework cell'; col = 'var(--amber)'; bg = 'var(--amber-bg)'; }
+    else { r = '✓ PASS — return to service'; col = 'var(--teal)'; bg = 'var(--teal-bg)'; }
+    gate.textContent = r; gate.style.color = col; gate.style.background = bg;
+    return { c, w, r, col, bg };
+  }
+  crack.addEventListener('input', verdict); wear.addEventListener('input', verdict); verdict();
+  host.querySelector('[data-gen]').addEventListener('click', e => {
+    const { c, w, r, col, bg } = verdict(); const out = host.querySelector('[data-out]'); e.target.disabled = true;
+    const serial = 'BLADE-' + (1000 + Math.floor(Math.random() * 9000));
+    out.innerHTML =
+      `<div class="traveler-doc">
+         <div class="tv-head"><span class="tv-title">Disposition Traveler</span><span class="tv-serial">${serial}</span></div>
+         <div class="tv-grid">
+           <div class="tv-cell"><div class="tv-k">Tip-shroud crack</div><div class="tv-v">${c.toFixed(1)} mm</div></div>
+           <div class="tv-cell"><div class="tv-k">Root wear</div><div class="tv-v">${w} %</div></div>
+           <div class="tv-cell"><div class="tv-k">Crack limit (repair / scrap)</div><div class="tv-v">${L.cR} / ${L.cS} mm</div></div>
+           <div class="tv-cell"><div class="tv-k">Wear limit (repair / scrap)</div><div class="tv-v">${L.wR} / ${L.wS} %</div></div>
+         </div>
+         <div class="tv-verdict" style="color:${col};background:${bg}">${esc(r)}</div>
+       </div>`;
+    timers.push(setTimeout(() => { e.target.disabled = false; }, REDUCE ? 40 : 320));
+  });
+  return () => timers.forEach(clearTimeout);
+}
+
+/* ── Category-aware pipeline runner (step checklist) ── */
+function wRunner(spec, host, head) {
+  const timers = [];
+  const steps = spec.steps || ['Resolving dependencies', 'Compiling sources', 'Running tests', 'Bundling', 'Done'];
+  host.innerHTML = head +
+    `<div class="w-controls"><button class="w-btn primary" data-run>Run pipeline</button></div>
+     <div class="gauge-bar" style="margin-bottom:14px"><span data-bar style="width:0%;background:var(--teal)"></span></div>
+     <div class="step-list" data-list>${steps.map(st => `<div class="step-item pending"><span class="step-mark"></span><span class="step-label">${esc(st)}</span></div>`).join('')}</div>`;
+  const bar = host.querySelector('[data-bar]');
+  const items = [...host.querySelectorAll('.step-item')];
+  const reset = () => items.forEach(it => it.className = 'step-item pending');
+  host.querySelector('[data-run]').addEventListener('click', e => {
+    e.target.disabled = true; reset(); bar.style.width = '0%';
+    steps.forEach((st, i) => {
+      timers.push(setTimeout(() => {
+        if (i > 0) items[i - 1].className = 'step-item done';
+        items[i].className = 'step-item active';
+        bar.style.width = Math.round((i + 0.5) / steps.length * 100) + '%';
+      }, REDUCE ? 24 * i : i * 460));
+    });
+    timers.push(setTimeout(() => {
+      items[steps.length - 1].className = 'step-item done';
+      bar.style.width = '100%'; e.target.disabled = false;
+    }, REDUCE ? 24 * steps.length : steps.length * 460));
+  });
+  return () => timers.forEach(clearTimeout);
+}
 </script>
 </body>
 </html>
