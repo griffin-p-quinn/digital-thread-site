@@ -1,0 +1,1 @@
+function n(n){return n.search(/[HhmsaSZ]/)}function t(t,r="yyyy/LL/dd"){const o=n(t);if(-1===o)return t;let s=o;for(;s>0&&" \t'T".includes(t[s-1]);)s--;const u=t.slice(0,s).trimEnd();return""===u?r:u}function r(t,r="HH:mm:ss"){const o=n(t);return-1===o?r:t.slice(o)}export{r as a,t as g}

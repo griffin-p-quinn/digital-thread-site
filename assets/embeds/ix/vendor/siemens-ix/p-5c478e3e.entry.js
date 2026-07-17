@@ -1,0 +1,1 @@
+import{r as t,h as s,H as l}from"./p-Ca5WUunf.js";const n=class{constructor(s){t(this,s)}contentVisible=!1;render(){return s(l,{key:"d1b72dd5673729ccf22fba396a0f9b903098ba82"},this.contentVisible?s("slot",null):null)}};n.style=":host{display:block}";export{n as ix_flip_tile_content}

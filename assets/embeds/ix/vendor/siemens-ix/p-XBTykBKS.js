@@ -1,0 +1,1 @@
+function n(n){return n&&"getAssociatedFormElement"in n&&"function"==typeof n.getAssociatedFormElement&&"getNativeInputElement"in n&&"function"==typeof n.getNativeInputElement}function t(t){return n(t)&&"openPicker"in t&&"function"==typeof t.openPicker}export{t as a,n as i}

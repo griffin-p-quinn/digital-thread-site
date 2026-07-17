@@ -1,0 +1,1 @@
+import{r,h as e,H as o}from"./p-Ca5WUunf.js";const a=class{constructor(e){r(this,e)}render(){return e(o,{key:"2353ffd7afdc669190af6a4ee6f405c38ac117de"})}};a.style=":host{display:block;position:relative;width:100%;border-bottom:0.0625rem solid var(--theme-color-x-weak-bdr);margin:0.25rem 0px}";export{a as ix_divider}

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#0a0d0f">
+  <title>NewView — JT assembly viewer</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="viewer-shell" aria-label="Interactive JT assembly viewer">
+    <header class="toolbar">
+      <div class="identity" aria-label="NewView">
+        <span class="identity__mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" role="img">
+            <path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z" />
+          </svg>
+        </span>
+        <span class="identity__copy">
+          <strong>NewView</strong>
+          <small>JT assembly viewer</small>
+        </span>
+      </div>
+
+      <div class="tool-group" role="group" aria-label="Camera and render controls">
+        <button class="tool" id="fit-view" type="button" aria-label="Fit assembly to view" title="Fit assembly to view">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5" /></svg>
+          <span>Fit</span>
+        </button>
+        <button class="tool" id="front-view" type="button" aria-label="Show front view" title="Front view">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="4.5" width="15" height="15" rx="1" /><path d="M8 8h8v8H8z" /></svg>
+          <span>Front</span>
+        </button>
+        <button class="tool is-active" id="iso-view" type="button" aria-label="Show isometric view" title="Isometric view">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z" /><path d="m4.2 7.5 7.8 4.4 7.8-4.4M12 12v9" /></svg>
+          <span>Iso</span>
+        </button>
+        <button class="tool" id="edge-view" type="button" aria-pressed="false" aria-label="Toggle wireframe edges" title="Toggle wireframe edges">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z" /><path d="M4.2 7.5 12 12l7.8-4.5M12 12v9" /></svg>
+          <span>Wireframe</span>
+        </button>
+      </div>
+    </header>
+
+    <section class="stage" aria-label="3D viewport">
+      <div id="viewer-host" class="viewer-host"></div>
+
+      <div class="loading-panel" id="loading-panel" role="status" aria-live="polite">
+        <span class="loading-panel__spinner" aria-hidden="true"></span>
+        <span id="loading-label">Initializing JT reader</span>
+      </div>
+
+      <aside class="model-card" aria-label="Loaded model details">
+        <span class="model-card__eyebrow"><i aria-hidden="true"></i> live geometry</span>
+        <strong>Configuration enclosure</strong>
+        <span>JT · 23.9 KB</span>
+      </aside>
+
+      <div class="status-strip">
+        <span class="status-strip__state" id="status-state" data-state="loading">Loading</span>
+        <span class="status-strip__message" id="status-message">Reading bundled model…</span>
+      </div>
+    </section>
+  </main>
+
+  <script src="lib/plmvisweb.min.js"></script>
+  <script src="lib/JTReader.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

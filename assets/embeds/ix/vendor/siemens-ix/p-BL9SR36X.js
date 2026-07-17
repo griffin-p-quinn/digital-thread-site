@@ -1,0 +1,1 @@
+import{s as o}from"./p-CWlPNXA-.js";async function t(t){const i=document.createElement("ix-application-switch-modal");i.config=t;const n=(await o({content:i,size:"840",closeOnBackdropClick:!0})).htmlElement.querySelector("ix-application-switch-modal");return o=>{n?n.config=o:console.warn("ix-application-switch-modal element not found!")}}export{t as s}

@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en" data-ix-theme="classic" data-ix-color-schema="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark light" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAzMiAzMic+PHJlY3Qgd2lkdGg9JzMyJyBoZWlnaHQ9JzMyJyBmaWxsPScjMDBjZmMxJy8+PHBhdGggZD0nTTggMjRWOGwxNiAxNlY4JyBmaWxsPSdub25lJyBzdHJva2U9JyMwNzEwMTMnIHN0cm9rZS13aWR0aD0nMycvPjwvc3ZnPg=="
+    />
+    <meta
+      name="description"
+      content="Nexus is an intelligent industrial platform for connecting factory data, operational context, and action."
+    />
+    <title>Nexus — Intelligent Industrial Platform</title>
+    <link rel="stylesheet" href="./vendor/siemens-ix/siemens-ix.css" />
+    <link rel="stylesheet" href="./vendor/siemens-ix/theme/classic-light.css" />
+    <link rel="stylesheet" href="./vendor/siemens-ix/theme/classic-dark.css" />
+    <link rel="stylesheet" href="./studio.css" />
+  </head>
+  <body>
+    <ix-application id="nexus-app" theme="classic" color-schema="dark">
+      <ix-application-header
+        slot="application-header"
+        name="Nexus"
+        name-suffix="Industrial intelligence"
+        aria-label-app-switch-icon-button="Open applications"
+        aria-label-more-menu-icon-button="More actions"
+      >
+        <ix-pill slot="secondary" variant="info" outline>Industrial edge</ix-pill>
+        <div class="schema-control">
+          <span id="schema-label">Dark</span>
+          <ix-toggle id="schema-toggle" hide-text aria-label="Use light color schema"></ix-toggle>
+        </div>
+        <ix-button id="header-capabilities" variant="tertiary" icon="arrow-right">Capabilities</ix-button>
+      </ix-application-header>
+
+      <ix-menu
+        id="nexus-menu"
+        slot="menu"
+        application-name="Nexus"
+        application-description="Intelligent industrial platform"
+      >
+        <ix-menu-item data-target="overview" home active label="Overview" icon="home"></ix-menu-item>
+        <ix-menu-item data-target="capabilities" label="Capabilities" icon="apps"></ix-menu-item>
+        <ix-menu-item data-target="workflows" label="Workflows" icon="layers"></ix-menu-item>
+        <ix-menu-item data-target="principles" label="Platform" icon="network-device"></ix-menu-item>
+        <ix-menu-item data-target="overview" slot="bottom" label="Nexus" icon="plant"></ix-menu-item>
+      </ix-menu>
+
+      <main id="nexus-page" class="nexus-page">
+        <section id="overview" class="hero" aria-labelledby="hero-title">
+          <div class="hero-grid">
+            <div class="hero-copy">
+              <p class="eyebrow">NEXUS / INTELLIGENT INDUSTRIAL PLATFORM</p>
+              <h1 id="hero-title">Intelligence for the <em>industrial edge.</em></h1>
+              <p class="hero-lede">
+                Unify factory data, anticipate maintenance windows, and optimize production in
+                real time with intelligence grounded in the shop floor.
+              </p>
+              <div class="hero-actions">
+                <ix-button id="run-signal" variant="primary" icon="play">Run sample signal</ix-button>
+                <ix-button id="explore-capabilities" variant="secondary">Explore capabilities</ix-button>
+              </div>
+              <dl class="scope-line" aria-label="Platform scope">
+                <div><dt>From</dt><dd>Edge ingestion</dd></div>
+                <div><dt>Through</dt><dd>Operational context</dd></div>
+                <div><dt>To</dt><dd>Actionable insight</dd></div>
+              </dl>
+            </div>
+
+            <div class="signal-board" aria-label="Illustrative Nexus signal path">
+              <div class="board-header">
+                <div>
+                  <span class="board-kicker">ILLUSTRATIVE SIGNAL PATH</span>
+                  <strong>Machine condition → operator action</strong>
+                </div>
+                <ix-pill id="signal-status" variant="neutral" outline>Ready</ix-pill>
+              </div>
+
+              <div id="pipeline" class="pipeline">
+                <span class="route-line" aria-hidden="true"></span>
+                <span class="signal-pulse" aria-hidden="true"></span>
+
+                <button class="signal-node is-active" type="button" data-stage="0" aria-pressed="true">
+                  <span class="node-index">01</span>
+                  <span class="node-icon" aria-hidden="true">EDG</span>
+                  <span class="node-label">Edge intake</span>
+                  <strong>Machine signal</strong>
+                </button>
+                <button class="signal-node" type="button" data-stage="1" aria-pressed="false">
+                  <span class="node-index">02</span>
+                  <span class="node-icon" aria-hidden="true">CTX</span>
+                  <span class="node-label">Unify</span>
+                  <strong>Factory context</strong>
+                </button>
+                <button class="signal-node" type="button" data-stage="2" aria-pressed="false">
+                  <span class="node-index">03</span>
+                  <span class="node-icon" aria-hidden="true">AI</span>
+                  <span class="node-label">Understand</span>
+                  <strong>Pattern insight</strong>
+                </button>
+                <button class="signal-node" type="button" data-stage="3" aria-pressed="false">
+                  <span class="node-index">04</span>
+                  <span class="node-icon" aria-hidden="true">ACT</span>
+                  <span class="node-label">Respond</span>
+                  <strong>Operator action</strong>
+                </button>
+              </div>
+
+              <div class="signal-detail">
+                <div class="detail-copy">
+                  <span id="detail-step">01 / EDGE INTAKE</span>
+                  <strong id="detail-title">Capture a condition signal</strong>
+                  <p id="detail-description">A shop-floor source enters the platform through an edge connection.</p>
+                </div>
+                <div class="trace" aria-hidden="true">
+                  <svg viewBox="0 0 260 64" preserveAspectRatio="none">
+                    <path class="trace-grid" d="M0 16H260M0 32H260M0 48H260" />
+                    <path
+                      id="trace-path"
+                      class="trace-path"
+                      d="M0 41 L18 39 L36 42 L54 37 L72 40 L90 35 L108 38 L126 31 L144 34 L162 25 L180 29 L198 20 L216 22 L234 14 L260 17"
+                    />
+                  </svg>
+                  <span id="trace-label">Condition signal received</span>
+                </div>
+              </div>
+              <p class="demo-note">Local interface demo · illustrative values · no live factory data</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="capabilities" class="section capabilities" aria-labelledby="capabilities-title">
+          <header class="section-heading">
+            <p class="eyebrow">CONNECTED BY DESIGN</p>
+            <h2 id="capabilities-title">One platform across the operation.</h2>
+            <p>From edge ingestion to enterprise dashboards, Nexus connects the layers between a signal and a decision.</p>
+          </header>
+
+          <div class="capability-grid">
+            <ix-card class="capability-card" variant="outline" passive>
+              <article><span class="cap-code">EDGE</span><h3>Edge intelligence</h3><p>Bring model inference close to the machines and systems producing the data.</p></article>
+            </ix-card>
+            <ix-card class="capability-card" variant="outline" passive>
+              <article><span class="cap-code">LIVE</span><h3>Real-time dashboards</h3><p>Turn production, throughput, and quality signals into a shared operating picture.</p></article>
+            </ix-card>
+            <ix-card class="capability-card" variant="outline" passive>
+              <article><span class="cap-code">AHEAD</span><h3>Predictive alarms</h3><p>Surface changes in equipment condition early enough for a team to respond.</p></article>
+            </ix-card>
+            <ix-card class="capability-card" variant="outline" passive>
+              <article><span class="cap-code">YIELD</span><h3>Yield optimization</h3><p>Relate process conditions to output so teams can tune production with context.</p></article>
+            </ix-card>
+            <ix-card class="capability-card" variant="outline" passive>
+              <article><span class="cap-code">TRUST</span><h3>Secure by design</h3><p>Keep industrial data flows controlled across edge and enterprise boundaries.</p></article>
+            </ix-card>
+            <ix-card class="capability-card" variant="outline" passive>
+              <article><span class="cap-code">ACT</span><h3>Unified alerts</h3><p>Bring sensor anomalies, control events, and operational context into one feed.</p></article>
+            </ix-card>
+          </div>
+        </section>
+
+        <section id="workflows" class="section workflows" aria-labelledby="workflows-title">
+          <div class="workflow-copy">
+            <p class="eyebrow">PURPOSE-BUILT WORKFLOWS</p>
+            <h2 id="workflows-title">See the operation as a connected system.</h2>
+            <p>
+              Nexus links signals to the work industrial teams already do: maintain equipment,
+              protect quality, and optimize how production runs.
+            </p>
+            <div class="workflow-rail" aria-hidden="true">
+              <span>INGEST</span><i></i><span>CONTEXTUALIZE</span><i></i><span>DECIDE</span>
+            </div>
+          </div>
+
+          <ix-card class="workflow-card" variant="filled" passive>
+            <div class="workflow-panel">
+              <ix-tabs id="workflow-tabs" active-tab-key="maintenance" layout="stretched">
+                <ix-tab-item tab-key="maintenance" label="Maintenance" icon="cogwheel"></ix-tab-item>
+                <ix-tab-item tab-key="quality" label="Quality" icon="eye"></ix-tab-item>
+                <ix-tab-item tab-key="energy" label="Energy" icon="analyze"></ix-tab-item>
+              </ix-tabs>
+              <div class="workflow-body">
+                <p id="workflow-overline">PREDICTIVE MAINTENANCE</p>
+                <h3 id="workflow-heading">Plan around equipment condition.</h3>
+                <p id="workflow-description">
+                  Connect machine signals with operating context so a developing issue becomes a maintenance decision.
+                </p>
+                <ul id="workflow-points">
+                  <li>Watch condition signals at the edge</li>
+                  <li>Relate changes to the operating state</li>
+                  <li>Route an actionable alert to the team</li>
+                </ul>
+              </div>
+            </div>
+          </ix-card>
+        </section>
+
+        <section id="principles" class="section principles" aria-labelledby="principles-title">
+          <div class="principles-mark" aria-hidden="true"><span>N</span><i></i></div>
+          <div>
+            <p class="eyebrow">THE NEXUS THESIS</p>
+            <h2 id="principles-title">Factory intelligence works when context travels with the signal.</h2>
+          </div>
+          <p>
+            The platform concept joins shop-floor ingestion, operational understanding, and enterprise visibility in one coherent industrial interface—implemented with the Siemens iX design system.
+          </p>
+        </section>
+
+        <footer class="footer">
+          <strong>NEXUS</strong>
+          <span>Intelligent Industrial Platform</span>
+          <span>Built with Siemens iX</span>
+        </footer>
+      </main>
+    </ix-application>
+
+    <script type="module" src="./studio.js"></script>
+  </body>
+</html>

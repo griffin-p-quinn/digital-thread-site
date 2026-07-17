@@ -7,8 +7,44 @@
     <title>MRO Guided Disposition Workbench</title>
     <script type="module" crossorigin src="./assets/index-u56X1xpX.js"></script>
     <link rel="stylesheet" crossorigin href="./assets/index-B-uLfjV9.css">
+    <link rel="stylesheet" href="./mobile-fix.css">
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      /* Keep the sanitized public work-order route and its displayed identifier
+         aligned. The upstream fixture retained an older sample number in one
+         display field after the public-safe data replacement. */
+      (() => {
+        const root = document.getElementById('root');
+        const routeId = 'WO-SAMPLE-001';
+        const staleDisplayId = 'WO-SAMPLE-005';
+        let queued = false;
+
+        const reconcile = () => {
+          queued = false;
+          const route = decodeURIComponent(`${location.pathname}${location.hash}`);
+          if (!route.includes(`/work-order/${routeId}/`)) return;
+          const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+          let node;
+          while ((node = walker.nextNode())) {
+            if (node.nodeValue.includes(staleDisplayId)) {
+              node.nodeValue = node.nodeValue.replaceAll(staleDisplayId, routeId);
+            }
+          }
+        };
+
+        const queue = () => {
+          if (queued) return;
+          queued = true;
+          requestAnimationFrame(reconcile);
+        };
+
+        new MutationObserver(queue).observe(root, { childList: true, subtree: true, characterData: true });
+        addEventListener('popstate', queue);
+        addEventListener('hashchange', queue);
+        queue();
+      })();
+    </script>
   </body>
 </html>

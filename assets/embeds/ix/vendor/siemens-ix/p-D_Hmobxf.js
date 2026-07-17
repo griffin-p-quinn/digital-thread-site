@@ -1,0 +1,1 @@
+const d={sm:"(max-width: 48em)",md:"(min-width: 48.0625em) and (max-width: 80em)",lg:"(min-width: 80.0625em)"},m=m=>!("undefined"==typeof window||!window.matchMedia)&&window.matchMedia(d[m]).matches,w=()=>"undefined"!=typeof window&&window.matchMedia?m("lg")?"lg":m("md")?"md":m("sm")?"sm":"lg":"lg";export{w as g,m}

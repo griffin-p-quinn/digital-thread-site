@@ -1,0 +1,6 @@
+This static embed includes locally vendored runtime assets from:
+
+- @siemens/ix 5.0.0
+- @siemens/ix-icons 3.4.0
+
+The corresponding license texts are included beside this notice.

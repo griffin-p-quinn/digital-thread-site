@@ -1,0 +1,1 @@
+function n(n){let t,r,i=new Promise((n=>t=n));const e=i=>{void 0!==i&&(r=e.current=i,n?.(i),t?.(i))};return e.current=r,e.waitForCurrent=async()=>(await i,r),e}function t(n){return"function"==typeof n&&"current"in n&&"waitForCurrent"in n}export{t as i,n as m}

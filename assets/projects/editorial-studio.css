@@ -1,0 +1,911 @@
+/*
+ * Editorial Studio shell
+ *
+ * A deliberately quiet frame around the project's own visual language.
+ * This layer only changes the shared drawer, evidence pages and generic
+ * workbench chrome; it does not restyle project-specific applications.
+ */
+
+.studio-drawer {
+  --folio-accent: var(--eg-signal, #ff623f);
+  --folio-rule: color-mix(in srgb, var(--text) 16%, transparent);
+  --folio-rule-strong: color-mix(in srgb, var(--text) 27%, transparent);
+  --folio-paper: color-mix(in srgb, var(--surface) 96%, var(--bg) 4%);
+  top: 16px;
+  right: 16px;
+  width: min(1180px, calc(100vw - 48px));
+  max-width: none;
+  height: calc(100dvh - 32px);
+  border: 0;
+  border-top: 3px solid var(--folio-accent);
+  border-radius: 2px;
+  background: var(--folio-paper);
+  box-shadow:
+    -36px 0 90px rgba(0, 0, 0, .34),
+    0 24px 70px rgba(0, 0, 0, .22);
+  transition: transform .52s cubic-bezier(.22, 1, .36, 1), visibility 0s linear .52s;
+}
+
+.studio-drawer:has(.drawer-archetype.frontier) { --folio-accent: var(--eg-signal, #ff623f); }
+.studio-drawer.open { transition-delay: 0s; }
+
+.studio-drawer-backdrop {
+  background:
+    linear-gradient(90deg, rgba(3, 7, 12, .9), rgba(3, 7, 12, .66) 42%, rgba(3, 7, 12, .78));
+  backdrop-filter: blur(8px) saturate(.72);
+  -webkit-backdrop-filter: blur(8px) saturate(.72);
+}
+
+/* Title-led masthead — hierarchy instead of a row of badges. */
+.drawer-header {
+  position: relative;
+  min-height: 156px;
+  padding: 32px clamp(28px, 4.2vw, 58px) 29px;
+  align-items: flex-start;
+  background: transparent;
+  border: 0;
+}
+
+.drawer-header::after {
+  content: "";
+  position: absolute;
+  right: clamp(28px, 4.2vw, 58px);
+  bottom: 0;
+  left: clamp(28px, 4.2vw, 58px);
+  height: 1px;
+  background: var(--folio-rule-strong);
+}
+
+.drawer-title-group {
+  display: grid;
+  min-width: 0;
+  max-width: min(850px, calc(100% - 92px));
+}
+
+.drawer-title-group h2 {
+  order: 2;
+  max-width: 20ch;
+  margin: 7px 0 8px;
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: clamp(32px, 4vw, 51px);
+  font-weight: 500;
+  line-height: .99;
+  letter-spacing: -.035em;
+  text-wrap: balance;
+}
+
+.drawer-title-group .drawer-sub {
+  order: 3;
+  color: var(--text2);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: .025em;
+  word-break: normal;
+  overflow-wrap: anywhere;
+}
+
+.drawer-archetype {
+  order: 1;
+  display: inline-flex;
+  align-items: center;
+  width: max-content;
+  margin: 0;
+  padding: 0;
+  border: 0 !important;
+  border-radius: 0;
+  background: transparent !important;
+  color: var(--folio-accent) !important;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: .065em;
+  text-transform: uppercase;
+}
+
+.drawer-archetype::before {
+  content: "";
+  width: 30px;
+  height: 1px;
+  margin-right: 10px;
+  background: currentColor;
+}
+
+.btn-close-drawer {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  width: auto;
+  height: 42px;
+  margin-top: 2px;
+  padding: 0 4px 0 12px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--text2);
+  font-size: 0;
+  transition: color .2s ease;
+}
+
+.btn-close-drawer::before {
+  content: "Close";
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.btn-close-drawer::after {
+  content: "×";
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border: 1px solid var(--folio-rule-strong);
+  border-radius: 50%;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 22px;
+  font-weight: 300;
+  line-height: 1;
+  transition: transform .2s ease, border-color .2s ease, color .2s ease;
+}
+
+.btn-close-drawer:hover {
+  border-color: transparent;
+  background: transparent;
+  color: var(--text);
+}
+
+.btn-close-drawer:hover::after {
+  border-color: var(--folio-accent);
+  color: var(--folio-accent);
+  transform: rotate(8deg);
+}
+
+/* A compact numbered contents rail, not another pill/button group. */
+.drawer-tabs {
+  counter-reset: folio-tab;
+  flex: 0 0 auto;
+  gap: 0;
+  padding: 0 clamp(28px, 4.2vw, 58px);
+  border: 0;
+  border-bottom: 1px solid var(--folio-rule);
+  background: transparent;
+  scrollbar-color: var(--folio-rule-strong) transparent;
+  scrollbar-width: thin;
+}
+
+.drawer-tab-btn {
+  counter-increment: folio-tab;
+  position: relative;
+  gap: 8px;
+  margin-right: clamp(24px, 3vw, 46px);
+  padding: 15px 0 17px;
+  border: 0;
+  background: transparent !important;
+  color: var(--text2);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0;
+  transition: color .2s ease;
+}
+
+.drawer-tab-btn svg { display: none; }
+
+.drawer-tab-btn::before {
+  content: "0" counter(folio-tab);
+  color: var(--text3);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: .05em;
+}
+
+.drawer-tab-btn::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 3px;
+  background: var(--folio-accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .25s cubic-bezier(.22, 1, .36, 1);
+}
+
+.drawer-tab-btn:hover { color: var(--text); }
+.drawer-tab-btn.active {
+  border: 0;
+  color: var(--text);
+  font-weight: 650;
+}
+.drawer-tab-btn.active::before { color: var(--folio-accent); }
+.drawer-tab-btn.active::after { transform: scaleX(1); }
+
+.drawer-body {
+  min-width: 0;
+  padding: clamp(34px, 4.5vw, 58px) clamp(28px, 4.2vw, 58px) 76px;
+  overflow-x: hidden;
+  scrollbar-color: var(--folio-rule-strong) transparent;
+  scrollbar-width: thin;
+}
+
+.drawer-pane,
+.drawer-pane > div { min-width: 0; }
+
+.drawer-pane.active { animation: editorial-pane-in .42s cubic-bezier(.22, 1, .36, 1); }
+
+#pane-arch > div,
+#pane-code > div { max-width: 920px; }
+
+@keyframes editorial-pane-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Brief as a folio page: a thesis, a ruled fact strip and source notes. */
+.proof-brief { gap: 0; }
+
+.research-callout {
+  max-width: 880px;
+  margin: 2px 0 50px;
+  padding: 5px 0 6px 28px;
+  border: 0;
+  border-left: 3px solid var(--folio-accent);
+  border-radius: 0;
+  background: transparent;
+}
+
+.research-callout .rc-lbl {
+  margin-bottom: 11px;
+  color: var(--folio-accent);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .055em;
+}
+
+.research-callout .rc-q {
+  max-width: 36ch;
+  font-family: var(--font-display);
+  font-size: clamp(22px, 2.5vw, 31px);
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: -.016em;
+  text-wrap: pretty;
+}
+
+.proof-purpose {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  gap: 28px;
+  padding: 7px 0 42px;
+  border: 0;
+  border-bottom: 1px solid var(--folio-rule-strong);
+  border-radius: 0;
+  background: transparent;
+  overflow: visible;
+}
+
+.proof-purpose::after { display: none; }
+
+.proof-artifacts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(12px, 2vw, 24px);
+  margin: 0 0 34px;
+  padding-top: 34px;
+}
+
+.proof-artifact {
+  min-width: 0;
+  margin: 0;
+}
+
+.proof-artifact img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border: 1px solid var(--folio-rule-strong);
+  background: var(--surface-sunken);
+}
+
+.proof-artifact figcaption {
+  display: grid;
+  grid-template-columns: minmax(0, .7fr) minmax(0, 1.3fr);
+  gap: 16px;
+  padding: 12px 0 0;
+  border-top: 1px solid var(--folio-rule-strong);
+}
+
+.proof-artifact figcaption b {
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.proof-artifact figcaption span {
+  color: var(--text2);
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+/* Connector traces read as labeled system boundaries, not compressed pills. */
+.flow-canvas {
+  gap: 30px;
+  padding: 24px 18px;
+  border-radius: 0;
+  background: var(--surface-sunken);
+}
+
+.flow-node {
+  min-height: 94px;
+  padding: 15px 16px 16px;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.flow-node .fn-tag,
+.flow-node .fn-title,
+.flow-node .fn-meta {
+  display: block;
+}
+
+.flow-node .fn-title {
+  margin-top: 10px;
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.flow-node .fn-meta {
+  margin-top: 7px;
+  line-height: 1.4;
+}
+
+.flow-node:not(:last-child)::after {
+  width: 30px;
+}
+
+.flow-detail {
+  border-radius: 0;
+}
+
+.proof-kicker,
+.proof-section-label {
+  margin: 0;
+  color: var(--folio-accent);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: .055em;
+  text-transform: uppercase;
+}
+
+.proof-purpose p {
+  max-width: 48ch;
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: clamp(21px, 2.65vw, 30px);
+  font-weight: 400;
+  line-height: 1.42;
+  letter-spacing: -.014em;
+  text-wrap: pretty;
+}
+
+.proof-facts {
+  margin: 0 0 22px;
+  border-block: 1px solid var(--folio-rule-strong);
+}
+
+.proof-fact { padding: 20px 24px 22px 0; }
+.proof-fact + .proof-fact {
+  padding-left: 24px;
+  border-left-color: var(--folio-rule);
+}
+
+.proof-fact span,
+.evidence-ledger__truth span {
+  color: var(--text3);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .045em;
+}
+
+.proof-fact strong {
+  margin-top: 8px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 550;
+  line-height: 1.45;
+}
+
+.proof-evidence {
+  padding: 26px 0 10px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.proof-evidence .proof-section-label,
+.evidence-ledger > .proof-section-label { margin-bottom: 12px; }
+
+.proof-file-list { gap: 0; }
+
+.proof-file,
+.evidence-ledger .proof-file {
+  grid-template-columns: minmax(150px, .8fr) minmax(0, 1.7fr);
+  gap: 24px;
+  padding: 14px 0 15px;
+  border: 0;
+  border-top: 1px solid var(--folio-rule);
+  border-radius: 0;
+  background: transparent;
+}
+
+.proof-file:last-child { border-bottom: 1px solid var(--folio-rule); }
+
+.proof-file code {
+  color: var(--blue);
+  font-size: 10.5px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.proof-file span {
+  color: var(--text2);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.proof-boundary {
+  display: block;
+  margin-top: 25px;
+  padding: 5px 0 6px 18px;
+  border: 0;
+  border-left: 2px solid color-mix(in srgb, var(--amber) 70%, var(--folio-rule));
+  border-radius: 0;
+  background: transparent;
+}
+
+.proof-boundary i { display: none; }
+.proof-boundary strong {
+  margin-bottom: 5px;
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 650;
+}
+.proof-boundary p {
+  max-width: 72ch;
+  color: var(--text2);
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.evidence-ledger { gap: 0; }
+.evidence-ledger > .proof-kicker { margin-bottom: 14px; }
+.evidence-ledger__intro {
+  max-width: 64ch;
+  margin: 0 0 35px;
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: clamp(19px, 2.1vw, 25px);
+  line-height: 1.45;
+}
+
+.evidence-ledger__truth {
+  gap: 0;
+  margin-top: 12px;
+  border-top: 1px solid var(--folio-rule-strong);
+  border-bottom: 1px solid var(--folio-rule-strong);
+}
+
+.evidence-ledger__truth article {
+  padding: 18px 20px 20px 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.evidence-ledger__truth article:nth-child(even) {
+  padding-left: 20px;
+  border-left: 1px solid var(--folio-rule);
+}
+
+.evidence-ledger__truth b {
+  margin-top: 7px;
+  font-size: 14px;
+  font-weight: 550;
+}
+
+/*
+ * Demonstration stage. The neutral outer frame recedes so the actual project
+ * UI — including real iframe builds such as JT viewers — remains the subject.
+ */
+#studioSimContent,
+#studioSimContent > [data-project] { width: 100%; min-width: 0; }
+
+.widget {
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.widget::before { display: none; }
+
+.widget > .w-eyebrow {
+  gap: 10px;
+  margin: 0 0 12px;
+  color: var(--folio-accent);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .015em;
+  text-transform: none;
+}
+
+.widget > .w-eyebrow::before { width: 30px; }
+
+.widget > h4 {
+  max-width: 25ch;
+  margin: 0 0 8px;
+  font-family: var(--font-display);
+  font-size: clamp(27px, 3vw, 38px);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -.025em;
+  text-wrap: balance;
+}
+
+.widget > .w-desc {
+  max-width: 72ch;
+  margin: 0 0 14px;
+  color: var(--text2);
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.widget > .w-provenance {
+  display: flex;
+  width: fit-content;
+  margin: 0 0 30px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--text3);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 11px;
+  line-height: 1.5;
+  letter-spacing: .015em;
+}
+
+.widget > .w-provenance::before {
+  width: 7px;
+  height: 7px;
+  background: var(--folio-accent);
+  box-shadow: none;
+}
+
+/* Less generic shared controls; project-specific classes remain untouched. */
+.widget .w-field label {
+  color: var(--text2);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .02em;
+  text-transform: none;
+}
+
+.widget .w-field input[type="number"],
+.widget .w-field input[type="text"],
+.widget .w-field input[type="search"],
+.widget .w-field select,
+.widget .w-btn {
+  border-radius: 2px;
+  font-family: 'IBM Plex Sans', sans-serif;
+}
+
+.widget .w-btn { font-size: 12px; font-weight: 600; }
+.widget .w-btn.primary { background: var(--folio-accent); box-shadow: none; }
+.widget .w-btn.primary:hover { box-shadow: none; }
+
+.widget .w-chips {
+  gap: 18px;
+  border-bottom: 1px solid var(--folio-rule);
+}
+
+.widget .w-chip {
+  margin-bottom: -1px;
+  padding: 7px 0 9px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 12px;
+}
+
+.widget .w-chip:hover,
+.widget .w-chip.active {
+  border-bottom-color: var(--folio-accent);
+  background: transparent;
+  color: var(--folio-accent);
+}
+
+.widget .sim-modes {
+  gap: 16px;
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid var(--folio-rule);
+  border-radius: 0;
+  background: transparent;
+}
+
+.widget .sim-mode {
+  margin-bottom: -1px;
+  padding: 8px 0 10px;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 11px;
+}
+
+.widget .sim-mode.active {
+  border-bottom-color: var(--folio-accent);
+  background: transparent;
+  box-shadow: none;
+}
+
+.widget .sim-stage,
+.widget .sim-side,
+.widget .result-card,
+.widget .step-list,
+.widget .traveler-doc,
+.widget .graph-frame,
+.widget .graph-answer {
+  border-radius: 2px;
+  box-shadow: none;
+}
+
+/* Real builds get a useful viewport, especially future JT/static viewers. */
+.widget .w-embed {
+  margin-top: 4px;
+  border: 1px solid var(--folio-rule-strong);
+  border-radius: 2px;
+  background: var(--surface);
+  box-shadow: 0 24px 54px rgba(0, 0, 0, .16);
+}
+
+/* An original build does not need three layers of explanatory chrome. */
+.widget:has(.w-embed) > .w-eyebrow,
+.widget:has(.w-embed) > h4,
+.widget:has(.w-embed) > .w-desc,
+.widget:has(.w-embed) > .w-provenance {
+  display: none;
+}
+
+.drawer-body:has(#pane-sim.active .w-embed) {
+  padding-top: 24px;
+}
+
+.widget:has(.w-embed) .w-embed {
+  margin-top: 0;
+}
+
+.widget .w-embed-bar {
+  min-width: 0;
+  padding: 11px 14px;
+  border-bottom-color: var(--folio-rule-strong);
+  background: color-mix(in srgb, var(--surface-sunken) 74%, var(--surface));
+}
+
+.widget .w-embed-bar .we-dot { display: none; }
+.widget .w-embed-bar .we-title {
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  color: var(--text2);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 550;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.widget .w-embed-bar .we-title::before {
+  content: "Live artifact";
+  margin-right: 12px;
+  color: var(--folio-accent);
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+.widget .w-embed-bar .we-open {
+  flex: 0 0 auto;
+  padding: 3px 0;
+  border: 0;
+  border-bottom: 1px solid currentColor;
+  border-radius: 0;
+  background: transparent;
+  color: var(--folio-accent);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.widget .w-embed-bar .we-open:hover { background: transparent; }
+.widget .w-embed-stage {
+  height: clamp(500px, 64vh, 730px);
+  min-height: 0;
+  aspect-ratio: auto;
+}
+
+.widget .we-note {
+  max-width: 76ch;
+  margin: 15px 0 0;
+  padding-left: 16px;
+  border-left: 2px solid var(--folio-rule-strong);
+  color: var(--text2);
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+/* Keyboard clarity across the shared shell. */
+.studio-drawer :where(button, a, input, select, textarea, iframe, [tabindex]):focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--folio-accent) 72%, white 28%);
+  outline-offset: 3px;
+}
+
+@media (max-width: 900px) {
+  .studio-drawer {
+    top: 0;
+    right: 0;
+    width: 100vw;
+    height: 100dvh;
+    border-radius: 0;
+  }
+
+  .drawer-header { min-height: 138px; }
+  .drawer-title-group h2 { font-size: clamp(30px, 7vw, 43px); }
+}
+
+@media (max-width: 620px) {
+  .drawer-header {
+    min-height: 119px;
+    padding: 19px 16px 18px;
+  }
+
+  .drawer-header::after { right: 16px; left: 16px; }
+  .drawer-title-group { max-width: calc(100% - 46px); }
+  .drawer-title-group h2 {
+    margin: 5px 0 5px;
+    font-size: clamp(25px, 8.6vw, 34px);
+    line-height: 1.02;
+  }
+  .drawer-title-group .drawer-sub { font-size: 10.5px; }
+  .drawer-archetype { font-size: 9.5px; }
+  .drawer-archetype::before { width: 20px; margin-right: 7px; }
+
+  .btn-close-drawer {
+    width: 38px;
+    height: 38px;
+    padding: 0;
+  }
+  .btn-close-drawer::before { display: none; }
+  .btn-close-drawer::after { width: 34px; height: 34px; }
+
+  .drawer-tabs {
+    padding: 0 16px;
+    overscroll-behavior-inline: contain;
+  }
+  .drawer-tab-btn {
+    flex: 0 0 auto;
+    margin-right: 22px;
+    padding: 13px 0 14px;
+    font-size: 0;
+  }
+  .drawer-tab-btn::before {
+    color: var(--text2);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 550;
+    letter-spacing: 0;
+  }
+  .drawer-tab-btn:nth-child(1)::before { content: "01 Brief"; }
+  .drawer-tab-btn:nth-child(2)::before { content: "02 Evidence"; }
+  .drawer-tab-btn:nth-child(3)::before { content: "03 Demo"; }
+  .drawer-tab-btn.active::before {
+    color: var(--text);
+    font-weight: 650;
+  }
+
+  .drawer-body { padding: 29px 16px 54px; }
+  .drawer-body:has(#pane-sim.active .w-embed) { padding-top: 14px; }
+
+  .research-callout {
+    margin-bottom: 38px;
+    padding-left: 18px;
+  }
+  .research-callout .rc-q { font-size: 22px; }
+
+  .proof-purpose {
+    grid-template-columns: 1fr;
+    gap: 13px;
+    padding-bottom: 30px;
+  }
+  .proof-purpose p { font-size: 21px; }
+
+  .proof-artifacts {
+    grid-template-columns: 1fr;
+    padding-top: 26px;
+  }
+
+  .proof-artifact figcaption {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .proof-fact { padding: 16px 0 17px; }
+  .proof-fact + .proof-fact {
+    padding-left: 0;
+    border-top-color: var(--folio-rule);
+  }
+
+  .proof-file,
+  .evidence-ledger .proof-file {
+    grid-template-columns: 1fr;
+    gap: 5px;
+    padding: 13px 0 14px;
+  }
+
+  .evidence-ledger__truth { grid-template-columns: 1fr; }
+  .evidence-ledger__truth article,
+  .evidence-ledger__truth article:nth-child(even) {
+    padding: 15px 0 17px;
+    border-left: 0;
+  }
+  .evidence-ledger__truth article + article { border-top: 1px solid var(--folio-rule); }
+
+  .widget > h4 { font-size: 28px; }
+  .widget > .w-provenance { margin-bottom: 24px; }
+  .widget .w-embed-bar { gap: 10px; }
+  .widget .w-embed-bar .we-title::before { display: none; }
+  .widget .w-embed-stage { height: clamp(450px, 66dvh, 590px); }
+  .widget .we-gate-card { width: calc(100% - 24px); padding: 16px 12px; }
+  .widget .we-gate .we-poster {
+    object-fit: contain;
+    background: #10151d;
+  }
+}
+
+@media (max-width: 360px) {
+  .drawer-title-group h2 { font-size: 25px; }
+  .drawer-tab-btn { margin-right: 22px; }
+  .drawer-body { padding-inline: 13px; }
+  .widget > h4 { font-size: 25px; }
+  .widget .w-embed-bar { padding-inline: 10px; }
+  .widget .w-embed-bar .we-title { font-size: 11px; }
+  .widget .w-embed-bar .we-open { font-size: 10px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drawer-pane.active { animation: none !important; }
+  .btn-close-drawer::after,
+  .drawer-tab-btn::after { transition: none !important; }
+}

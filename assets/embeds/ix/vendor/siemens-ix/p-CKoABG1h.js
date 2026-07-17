@@ -1,0 +1,1 @@
+const e=(e,t,a)=>(e.addEventListener(t,a),()=>{e.removeEventListener(t,a)}),t=t=>{const a=t.map((({callback:t,element:a,eventType:n})=>e(a,n,t)));return()=>a.forEach((e=>e()))};export{e as a,t as b}

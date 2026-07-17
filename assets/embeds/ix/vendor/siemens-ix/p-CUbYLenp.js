@@ -1,0 +1,1 @@
+let t=0;const s=s=>class extends s{$internal_id=++t;getHostElementId(){return this.hostElement?""!==this.hostElement.id?this.hostElement.id:`ix-component-${this.hostElement.tagName.toLowerCase()}-${this.$internal_id}`:`ix-component-${this.$internal_id}`}};export{s as C}

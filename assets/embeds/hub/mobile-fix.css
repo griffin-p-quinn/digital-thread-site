@@ -1,0 +1,14 @@
+@media (max-width: 600px) {
+  html, body, #root { min-width: 0; width: 100%; }
+  #root > div { min-width: 0; }
+  #root .w-64 { display: none !important; }
+  #root .flex-1 { min-width: 0; }
+  #root .p-6 { padding: .7rem !important; }
+  #root .p-4 { padding: .65rem !important; }
+  #root .grid-cols-2,
+  #root .grid-cols-3 { grid-template-columns: minmax(0, 1fr) !important; }
+  #root .max-w-\[220px\],
+  #root .max-w-\[240px\] { max-width: 100% !important; }
+  #root .flex.items-center.justify-between { align-items: flex-start; gap: .55rem; flex-wrap: wrap; }
+  #root h1, #root h2 { overflow-wrap: anywhere; }
+}

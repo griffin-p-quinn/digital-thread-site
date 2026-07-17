@@ -1,0 +1,1 @@
+import{h as p}from"./p-Ca5WUunf.js";import{B as t}from"./p-DzWThpzp.js";function o(o){return p(t,{...o,type:"button"})}export{o as B}

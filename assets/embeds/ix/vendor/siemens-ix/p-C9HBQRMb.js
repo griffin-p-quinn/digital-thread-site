@@ -1,0 +1,1 @@
+class t{token;category;hasCategory(){return void 0!==this.category}constructor(t,a){this.token=t,this.category=a}}var a;!function(t){t.EQUAL="Equal",t.NOT_EQUAL="Not equal"}(a||(a={}));export{t as I,a as L}

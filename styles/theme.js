@@ -39,7 +39,9 @@
   });
 
   function mount() {
-    if (!document.body.contains(btn)) document.body.appendChild(btn);
+    if (document.body.contains(btn)) return;
+    var target = document.querySelector('[data-theme-mount]');
+    (target || document.body).appendChild(btn);
   }
   if (document.body) mount();
   else document.addEventListener('DOMContentLoaded', mount);

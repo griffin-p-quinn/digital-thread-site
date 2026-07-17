@@ -1,0 +1,1 @@
+import{r as s}from"./p-Ca5WUunf.js";const t=t=>class extends t{constructor(t){super(),s(this,t)}tabKey};export{t as B}

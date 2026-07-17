@@ -1,0 +1,1 @@
+function t(t,e,n){const o=document.createElement("ix-tree-item");return o.hasChildren=t.hasChildren,o.context=e,o.text=t.data.name,o.disabled=t.disabled||!1,n((t=>{o.text=t.data.name,o.disabled=t.disabled||!1})),o}const e={force:!1};export{e as d,t as r}

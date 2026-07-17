@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Diagram Editor</title>
+    <script type="module" crossorigin src="./assets/index-DIsVEadB.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-y5GWwmlV.css">
+    <link rel="stylesheet" href="./mobile-fix.css">
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      // The source build exposes tooltip text visually. Mirror it into the
+      // accessible name so its compact icon controls work for assistive tech.
+      const nameControls = () => document.querySelectorAll('[data-tooltip]').forEach(control => {
+        if (!control.getAttribute('aria-label')) control.setAttribute('aria-label', control.dataset.tooltip);
+        if (!control.getAttribute('title')) control.setAttribute('title', control.dataset.tooltip);
+      }) || undefined;
+      const nameCompactControls = () => {
+        nameControls();
+        document.querySelectorAll('button').forEach(control => {
+          if (control.querySelector('.badge--harness') && !control.getAttribute('aria-label')) {
+            control.setAttribute('aria-label', 'Toggle developer tools');
+            control.setAttribute('title', 'Toggle developer tools');
+          }
+        });
+      };
+      new MutationObserver(nameCompactControls).observe(document.getElementById('root'), { childList: true, subtree: true });
+      nameCompactControls();
+    </script>
+  </body>
+</html>

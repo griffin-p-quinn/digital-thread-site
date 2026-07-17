@@ -1,0 +1,24 @@
+@media (max-width: 600px) {
+  html, body, #root { min-width: 0; width: 100%; max-width: 100%; overflow-x: hidden; }
+  ix-content { padding: 6px !important; }
+  main.content { padding-inline: 0 !important; }
+  ix-content-header > ix-button { width: calc(100% - 48px) !important; max-width: calc(100% - 48px) !important; }
+  .mro-page { min-width: 0; width: 100%; max-width: 100%; padding: 10px !important; }
+  .mro-page *, .mro-page *::before, .mro-page *::after { min-width: 0; max-width: 100%; }
+  .mro-grid,
+  .mro-grid--kpi,
+  .wq-hero { grid-template-columns: minmax(0, 1fr) !important; }
+  .mro-row,
+  .wq-hero-actions,
+  .wq-item { flex-wrap: wrap !important; }
+  .wq-hero { padding: 16px !important; }
+  .wq-hero-title { font-size: clamp(1.8rem, 11vw, 2.7rem) !important; line-height: 1 !important; }
+  .wq-item-main,
+  .wq-item-meta { width: 100%; }
+  .tb-bar { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 12px 14px !important; height: auto !important; align-items: start !important; }
+  .tb-field { width: auto !important; display: flex !important; flex-direction: column !important; align-items: flex-start !important; gap: 2px !important; }
+  .tb-label,
+  .tb-value { width: auto !important; max-width: 100% !important; white-space: normal !important; overflow-wrap: anywhere; }
+  .tb-more-icon { display: none !important; }
+  ix-button, button, input, select, textarea { max-width: 100%; }
+}
