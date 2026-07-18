@@ -107,7 +107,7 @@
         <section class="wb-panel"><div class="wb-panel-head"><span>01</span><b>Planner</b><small>intent → typed calls</small></div><div data-agent-plan class="wb-plan-empty">Submit the request to reveal the governed plan.</div></section>
         <section class="wb-panel"><div class="wb-panel-head"><span>02</span><b>Tool trace</b><small>schemas + results</small></div><div data-agent-calls class="wb-call-stack"></div></section>
       </div>
-      <section class="wb-answer" data-agent-answer aria-live="polite"><span class="wb-answer-kicker">Composed answer</span><p>Evidence-backed output will appear after the permitted calls complete.</p></section>`);
+      <section class="wb-answer" data-agent-answer aria-live="polite"><span class="wb-answer-kicker">Composed answer</span><p>The answer will appear after the permitted calls complete.</p></section>`);
 
     const tools = [
       { permission: 'retrieve', name: 'catalog.search_released', label: 'Retrieve released item', schema: { query: 'string', status: 'RELEASED', limit: 'integer ≤ 10' }, result: { item_id: 'ASM-204', revision: 'C', name: 'Rotor Assembly', confidence: 0.98 }, citation: '[1]' },

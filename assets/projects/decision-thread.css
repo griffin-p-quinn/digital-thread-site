@@ -1,0 +1,733 @@
+/*
+ * THE DECISION THREAD
+ *
+ * One motion signature for the opening and selected work. Every rule below
+ * defaults to a complete, readable state; hidden/reveal states only exist
+ * while the controller has positively added `.decision-motion` to <html>.
+ */
+
+:root {
+  --decision-signal: var(--eg-signal, #ff623f);
+  --decision-ink: var(--eg-ink, #f1f0e9);
+  --decision-paper: var(--eg-paper, #0b0c0c);
+  --decision-rule: var(--eg-rule, rgba(241, 240, 233, .18));
+  --decision-rule-strong: var(--eg-rule-strong, rgba(241, 240, 233, .42));
+  --decision-ease: cubic-bezier(.22, 1, .36, 1);
+  --decision-ease-soft: cubic-bezier(.16, 1, .3, 1);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   HERO SIGNAL PATH
+   ───────────────────────────────────────────────────────────── */
+
+.intro-artifacts[data-decision-thread] {
+  position: relative;
+  overflow: visible;
+}
+
+.decision-thread {
+  position: absolute;
+  inset: 0;
+  /* The authored path deliberately crosses the three artifact surfaces. */
+  z-index: 5;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.decision-thread__base,
+.decision-thread__live {
+  fill: none;
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: square;
+  stroke-linejoin: round;
+}
+
+.decision-thread__base {
+  stroke: var(--decision-rule-strong);
+  stroke-width: 1;
+  opacity: .58;
+}
+
+.decision-thread__live {
+  stroke: var(--decision-signal);
+  stroke-width: 1.5;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+.decision-thread__node {
+  fill: var(--decision-paper);
+  stroke: var(--decision-signal);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.decision-thread__packet {
+  fill: var(--decision-signal);
+  stroke: var(--decision-paper);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+  opacity: 0;
+  filter: drop-shadow(0 0 5px color-mix(in srgb, var(--decision-signal) 55%, transparent));
+}
+
+/* The path and nodes are complete without JS. Once enhancement is active,
+   the controller owns path progress and activates nodes as the packet lands. */
+.decision-motion .decision-thread__live {
+  stroke-dashoffset: 1;
+}
+
+.decision-motion .decision-thread__node {
+  opacity: .2;
+  transform: scale(.66);
+  transition:
+    opacity 180ms ease,
+    transform 300ms var(--decision-ease);
+}
+
+.decision-motion .decision-thread__node.is-reached {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.decision-motion.decision-hero-started .decision-thread__packet {
+  opacity: 1;
+  transition: opacity 140ms ease;
+}
+
+.decision-motion.decision-hero-complete .decision-thread__packet {
+  opacity: 0;
+  transition-delay: 100ms;
+  transition-duration: 260ms;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   HERO COMMISSIONING — copy, then artifacts in reading order
+   ───────────────────────────────────────────────────────────── */
+
+.decision-motion .intro :is(.intro-kicker, h1, .intro-side) {
+  opacity: 0;
+  clip-path: inset(0 0 18% 0);
+  transform: translate3d(0, 18px, 0);
+}
+
+.decision-motion .intro .intro-kicker {
+  transition:
+    opacity 420ms var(--decision-ease) 30ms,
+    clip-path 520ms var(--decision-ease) 30ms,
+    transform 520ms var(--decision-ease) 30ms;
+}
+
+.decision-motion .intro h1 {
+  transition:
+    opacity 500ms var(--decision-ease) 90ms,
+    clip-path 650ms var(--decision-ease) 90ms,
+    transform 650ms var(--decision-ease) 90ms;
+}
+
+.decision-motion .intro .intro-side {
+  transition:
+    opacity 460ms var(--decision-ease) 185ms,
+    clip-path 570ms var(--decision-ease) 185ms,
+    transform 570ms var(--decision-ease) 185ms;
+}
+
+.decision-motion.decision-hero-started .intro :is(.intro-kicker, h1, .intro-side) {
+  opacity: 1;
+  clip-path: inset(0 0 0 0);
+  transform: translate3d(0, 0, 0);
+}
+
+.decision-motion .intro-artifact {
+  opacity: 0;
+  clip-path: inset(0 0 13% 0);
+  transform: translate3d(0, 16px, 0);
+  transition:
+    opacity 430ms var(--decision-ease),
+    clip-path 560ms var(--decision-ease),
+    transform 560ms var(--decision-ease),
+    border-color 180ms ease;
+}
+
+.decision-motion .intro-artifact[data-thread-node="0"] {
+  transform: translate3d(-14px, 12px, 0);
+  transition-delay: 280ms, 280ms, 280ms, 0ms;
+}
+
+.decision-motion .intro-artifact[data-thread-node="1"] {
+  transform: translate3d(0, 18px, 0);
+  transition-delay: 465ms, 465ms, 465ms, 0ms;
+}
+
+.decision-motion .intro-artifact[data-thread-node="2"] {
+  transform: translate3d(14px, 12px, 0);
+  transition-delay: 650ms, 650ms, 650ms, 0ms;
+}
+
+.decision-motion.decision-hero-started .intro-artifact[data-thread-node] {
+  opacity: 1;
+  clip-path: inset(0 0 0 0);
+  transform: translate3d(0, 0, 0);
+}
+
+/* Once the commissioning pass is complete, direct interaction changes only
+   the border. The project windows do not become floating cards. */
+.decision-motion.decision-hero-complete .intro-artifact[data-thread-node],
+.decision-motion.decision-hero-complete .intro-artifact[data-thread-node]:hover,
+.decision-motion.decision-hero-complete .intro-artifact[data-thread-node]:focus-visible {
+  transform: none;
+  transition:
+    border-color 180ms ease,
+    box-shadow 260ms var(--decision-ease);
+}
+
+.decision-motion.decision-hero-complete .intro-artifact[data-thread-node]:hover,
+.decision-motion.decision-hero-complete .intro-artifact[data-thread-node]:focus-visible {
+  border-color: var(--decision-signal);
+  box-shadow: 0 25px 58px rgba(0, 0, 0, .25);
+}
+
+/* Keep the opening Maia plate legible in both portfolio themes. This is
+   intentionally scoped to the hero artifact; the selected-work case-study
+   diagram retains its own editorial treatment. */
+.intro-artifact--maia > .maia-schematic {
+  display: grid !important;
+  grid-template-rows: auto minmax(0, 1fr) auto auto !important;
+  align-items: stretch !important;
+  justify-content: stretch !important;
+  gap: 0 !important;
+  min-height: 0;
+  padding: clamp(20px, 2.4vw, 34px) !important;
+  border-top: 0 !important;
+  color: #f2f0e8 !important;
+  background:
+    linear-gradient(rgba(255, 98, 63, .08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 98, 63, .08) 1px, transparent 1px),
+    #111312 !important;
+  background-size: 42px 42px !important;
+}
+
+.intro-artifact--maia > .maia-schematic .maia-schematic__bar,
+.intro-artifact--maia > .maia-schematic .maia-schematic__flow b:not(:nth-of-type(2)) {
+  color: #f2f0e8 !important;
+  border-color: rgba(242, 240, 232, .36) !important;
+}
+
+.intro-artifact--maia > .maia-schematic :is(
+  .maia-schematic__bar i,
+  .maia-schematic__flow i
+) {
+  color: #ff7c5e !important;
+}
+
+.intro-artifact--maia > .maia-schematic .maia-schematic__tools i {
+  color: rgba(242, 240, 232, .78) !important;
+  border-color: rgba(242, 240, 232, .24) !important;
+}
+
+.intro-artifact--maia > .maia-schematic .maia-schematic__facts {
+  color: rgba(242, 240, 232, .82) !important;
+}
+
+.intro-artifact--maia > .maia-schematic .maia-schematic__flow {
+  grid-template-columns:
+    minmax(118px, 1fr)
+    minmax(54px, 68px)
+    minmax(118px, 1fr)
+    minmax(54px, 68px)
+    minmax(118px, 1fr) !important;
+  gap: clamp(8px, 1vw, 14px) !important;
+  min-width: 0;
+  padding: clamp(24px, 3.2vw, 46px) 0 !important;
+}
+
+.intro-artifact--maia > .maia-schematic .maia-schematic__flow b {
+  min-width: 0;
+  min-height: 78px;
+  padding: 12px 9px;
+  font-size: clamp(13px, 1.1vw, 17px);
+  line-height: 1.18;
+  overflow-wrap: normal;
+}
+
+.intro-artifact--maia > .maia-schematic .maia-schematic__flow i {
+  min-width: 0;
+  font-size: 7px;
+  line-height: 1.4;
+  letter-spacing: .075em;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.intro-artifact--maia > .maia-schematic .maia-schematic__flow b:nth-of-type(3) {
+  font-size: 0;
+}
+
+.intro-artifact--maia > .maia-schematic .maia-schematic__flow b:nth-of-type(3)::after {
+  content: "62 local tools";
+  font-size: clamp(13px, 1.1vw, 17px);
+}
+
+.intro-artifact--maia > .maia-schematic .maia-schematic__tools {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.intro-artifact--maia > .maia-schematic .maia-schematic__tools i {
+  min-width: 0;
+  padding-inline: 5px;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.intro-artifact--maia > .maia-schematic .maia-schematic__facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  line-height: 1.35;
+}
+
+.intro-artifact--maia > .maia-schematic .maia-schematic__facts b:first-child {
+  display: none;
+}
+
+.intro-artifact--maia > .maia-schematic .maia-schematic__facts b:last-child {
+  text-align: right;
+}
+
+/* The desktop DTC capture intentionally overlaps the plate's right edge.
+   Reserve that occlusion zone so no Maia label sits underneath it. */
+@media (min-width: 901px) {
+  .intro-artifact--maia > .maia-schematic {
+    padding-right: clamp(132px, 10vw, 170px) !important;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   SELECTED WORK — rail / waypoint, artifact, proof
+   ───────────────────────────────────────────────────────────── */
+
+[data-selected-thread] {
+  --decision-rail-gutter: clamp(34px, 3.2vw, 52px);
+  --decision-selected-progress: 1;
+  position: relative;
+  padding-left: var(--decision-rail-gutter);
+}
+
+[data-selected-thread]::before,
+[data-selected-thread]::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 6px;
+  z-index: 0;
+  width: 1px;
+  pointer-events: none;
+}
+
+[data-selected-thread]::before {
+  background: var(--decision-rule);
+}
+
+[data-selected-thread]::after {
+  background: var(--decision-signal);
+  transform: scaleY(var(--decision-selected-progress));
+  transform-origin: top;
+  transition: transform 100ms linear;
+}
+
+[data-selected-thread] > .piece {
+  position: relative;
+}
+
+/* A branch and square registration point make every selected project a
+   functional checkpoint on the thread, not a decorative numbered card. */
+[data-selected-thread] > .piece::before,
+[data-selected-thread] > .piece::after {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  pointer-events: none;
+}
+
+[data-selected-thread] > .piece::before {
+  top: 20px;
+  right: calc(100% + 1px);
+  width: calc(var(--decision-rail-gutter) - 7px);
+  height: 1px;
+  background: var(--decision-signal);
+  transform-origin: left;
+}
+
+[data-selected-thread] > .piece::after {
+  top: 16px;
+  right: calc(100% + var(--decision-rail-gutter) - 12px);
+  width: 9px;
+  height: 9px;
+  background: var(--decision-paper);
+  border: 1px solid var(--decision-signal);
+  box-shadow: 0 0 0 3px var(--decision-paper);
+}
+
+/* System diagrams are legitimate selected-work artifacts. The earlier
+   editorial overlay hid SVG covers; this final layer restores them here. */
+[data-selected-thread] > .piece .piece-visual:has(.cover[data-media-kind="diagram"]) {
+  display: block;
+}
+
+.decision-motion [data-selected-thread] > .decision-piece::before {
+  transform: scaleX(0);
+  transition: transform 260ms var(--decision-ease);
+}
+
+.decision-motion [data-selected-thread] > .decision-piece::after {
+  opacity: 0;
+  transform: scale(.55);
+  transition:
+    opacity 160ms ease 160ms,
+    transform 280ms var(--decision-ease) 160ms;
+}
+
+.decision-motion [data-selected-thread] > .decision-piece .piece-visual {
+  opacity: 0;
+  clip-path: inset(0 0 14% 0);
+  transform: translate3d(0, 20px, 0);
+  transition:
+    opacity 500ms var(--decision-ease) 235ms,
+    clip-path 690ms var(--decision-ease) 235ms,
+    transform 690ms var(--decision-ease) 235ms;
+}
+
+.decision-motion [data-selected-thread] > .decision-piece .piece-body {
+  opacity: 0;
+  clip-path: inset(0 0 9% 0);
+  transform: translate3d(0, 14px, 0);
+  transition:
+    opacity 440ms var(--decision-ease) 380ms,
+    clip-path 580ms var(--decision-ease) 380ms,
+    transform 580ms var(--decision-ease) 380ms;
+}
+
+.decision-motion [data-selected-thread] > .decision-piece.is-decision-commissioned::before {
+  transform: scaleX(1);
+}
+
+.decision-motion [data-selected-thread] > .decision-piece.is-decision-commissioned::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.decision-motion [data-selected-thread] > .decision-piece.is-decision-commissioned :is(.piece-visual, .piece-body) {
+  opacity: 1;
+  clip-path: inset(0 0 0 0);
+  transform: translate3d(0, 0, 0);
+}
+
+/* Explicitly opt the rest of the catalog out of reveal choreography. */
+.decision-motion :is(#explorations, #archive) .reveal-piece,
+.decision-motion :is(#explorations, #archive) :is(.tile, .archive-row, .gallery-divider) {
+  opacity: 1 !important;
+  clip-path: none !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   OPTICAL DEPTH — only inside real captures and system diagrams
+   ───────────────────────────────────────────────────────────── */
+
+.decision-depth {
+  --decision-depth-y: 0px;
+}
+
+.decision-motion .decision-depth .cover-media,
+.decision-motion .intro-artifact.decision-depth > img,
+.decision-motion .intro-artifact.decision-depth > .maia-schematic {
+  transform: translate3d(0, var(--decision-depth-y), 0) scale(1.018);
+  transform-origin: 50% 50%;
+  transition: transform 120ms linear;
+}
+
+.decision-motion .decision-depth.is-decision-depth-active .cover-media,
+.decision-motion .intro-artifact.decision-depth.is-decision-depth-active > img,
+.decision-motion .intro-artifact.decision-depth.is-decision-depth-active > .maia-schematic {
+  will-change: transform;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   DRAWER HANDOFF — the thread terminates in the project dossier
+   ───────────────────────────────────────────────────────────── */
+
+.decision-motion .studio-drawer {
+  border-top-color: transparent;
+}
+
+.decision-motion .studio-drawer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 8;
+  height: 3px;
+  background: var(--folio-accent, var(--decision-signal));
+  pointer-events: none;
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.decision-motion body.studio-open .studio-drawer.open::before {
+  animation: decision-drawer-handoff 520ms var(--decision-ease) 90ms both;
+}
+
+@keyframes decision-drawer-handoff {
+  to { transform: scaleX(1); }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   TABLET / MOBILE TRANSFORMATION
+   ───────────────────────────────────────────────────────────── */
+
+@media (max-width: 1024px) {
+  [data-selected-thread] {
+    --decision-rail-gutter: 38px;
+  }
+}
+
+@media (max-width: 720px) {
+  .intro-artifact--maia > .maia-schematic .maia-schematic__flow {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 8px !important;
+    padding: 22px 0 !important;
+  }
+
+  .intro-artifact--maia > .maia-schematic .maia-schematic__flow b {
+    min-height: 56px;
+  }
+
+  .intro-artifact--maia > .maia-schematic .maia-schematic__flow i {
+    width: auto;
+    min-height: 18px;
+    display: grid;
+    place-items: center;
+  }
+
+  .intro-artifact--maia > .maia-schematic .maia-schematic__flow i::after {
+    content: " ↓";
+    font-size: 12px;
+  }
+
+  .intro-artifact--maia > .maia-schematic .maia-schematic__tools {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .intro-artifact--maia > .maia-schematic .maia-schematic__facts {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 5px;
+  }
+
+  .intro-artifact--maia > .maia-schematic .maia-schematic__facts b:last-child {
+    text-align: left;
+  }
+}
+
+@media (max-width: 620px) {
+  /* The desktop spline becomes one vertical engineering rail. */
+  .decision-thread {
+    display: none;
+  }
+
+  .intro-artifacts[data-decision-thread] {
+    padding-left: 30px;
+  }
+
+  .intro-artifacts[data-decision-thread]::before,
+  .intro-artifacts[data-decision-thread]::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 9px;
+    z-index: 0;
+    width: 1px;
+    pointer-events: none;
+  }
+
+  .intro-artifacts[data-decision-thread]::before {
+    background: var(--decision-rule-strong);
+  }
+
+  .intro-artifacts[data-decision-thread]::after {
+    background: var(--decision-signal);
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+
+  .decision-motion .intro-artifacts[data-decision-thread]::after {
+    transform: scaleY(0);
+    transition: transform 1120ms var(--decision-ease-soft) 80ms;
+  }
+
+  .decision-motion.decision-hero-started .intro-artifacts[data-decision-thread]::after {
+    transform: scaleY(1);
+  }
+
+  .intro-artifact[data-thread-node] {
+    overflow: visible;
+  }
+
+  .intro-artifact[data-thread-node] > :is(img, .maia-schematic, span:last-child) {
+    position: relative;
+    z-index: 1;
+  }
+
+  .intro-artifact[data-thread-node]::before,
+  .intro-artifact[data-thread-node]::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .intro-artifact[data-thread-node]::before {
+    right: 100%;
+    width: 21px;
+    height: 1px;
+    background: var(--decision-signal);
+    transform-origin: left;
+  }
+
+  .intro-artifact[data-thread-node]::after {
+    right: calc(100% + 17px);
+    width: 8px;
+    height: 8px;
+    margin-top: -4px;
+    background: var(--decision-paper);
+    border: 1px solid var(--decision-signal);
+  }
+
+  .decision-motion .intro-artifact[data-thread-node]::before {
+    transform: scaleX(0);
+  }
+
+  .decision-motion .intro-artifact[data-thread-node]::after {
+    opacity: 0;
+    transform: scale(.6);
+  }
+
+  .decision-motion.decision-hero-started .intro-artifact[data-thread-node]::before {
+    transform: scaleX(1);
+    transition: transform 240ms var(--decision-ease);
+  }
+
+  .decision-motion.decision-hero-started .intro-artifact[data-thread-node]::after {
+    opacity: 1;
+    transform: scale(1);
+    transition:
+      opacity 160ms ease,
+      transform 260ms var(--decision-ease);
+  }
+
+  .decision-motion.decision-hero-started .intro-artifact[data-thread-node="0"]::before,
+  .decision-motion.decision-hero-started .intro-artifact[data-thread-node="0"]::after {
+    transition-delay: 280ms;
+  }
+
+  .decision-motion.decision-hero-started .intro-artifact[data-thread-node="1"]::before,
+  .decision-motion.decision-hero-started .intro-artifact[data-thread-node="1"]::after {
+    transition-delay: 465ms;
+  }
+
+  .decision-motion.decision-hero-started .intro-artifact[data-thread-node="2"]::before,
+  .decision-motion.decision-hero-started .intro-artifact[data-thread-node="2"]::after {
+    transition-delay: 650ms;
+  }
+
+  [data-selected-thread] {
+    --decision-rail-gutter: 28px;
+    padding-left: var(--decision-rail-gutter);
+  }
+
+  [data-selected-thread]::before,
+  [data-selected-thread]::after {
+    left: 5px;
+  }
+
+  [data-selected-thread] > .piece::before {
+    top: 16px;
+    width: calc(var(--decision-rail-gutter) - 6px);
+  }
+
+  [data-selected-thread] > .piece::after {
+    top: 12px;
+    right: calc(100% + var(--decision-rail-gutter) - 11px);
+  }
+
+  /* Mobile gets no scroll-linked optical movement. */
+  .decision-motion .decision-depth .cover-media,
+  .decision-motion .intro-artifact.decision-depth > img,
+  .decision-motion .intro-artifact.decision-depth > .maia-schematic {
+    transform: none !important;
+    transition: none !important;
+    will-change: auto !important;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   TRUE STATIC MODE
+   ───────────────────────────────────────────────────────────── */
+
+.decision-motion--reduced .decision-thread__live,
+.decision-motion--static .decision-thread__live {
+  stroke-dashoffset: 0 !important;
+}
+
+.decision-motion--reduced .decision-thread__packet,
+.decision-motion--static .decision-thread__packet {
+  display: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .decision-thread__live {
+    stroke-dashoffset: 0 !important;
+  }
+
+  .decision-thread__node,
+  .intro :is(.intro-kicker, h1, .intro-side),
+  .intro-artifact,
+  [data-selected-thread] > .piece::before,
+  [data-selected-thread] > .piece::after,
+  [data-selected-thread] > .piece :is(.piece-visual, .piece-body),
+  .decision-depth .cover-media,
+  .intro-artifact.decision-depth > img,
+  .intro-artifact.decision-depth > .maia-schematic {
+    opacity: 1 !important;
+    clip-path: none !important;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+    will-change: auto !important;
+  }
+
+  .decision-thread__packet {
+    display: none !important;
+  }
+
+  [data-selected-thread]::after,
+  .intro-artifacts[data-decision-thread]::after {
+    transform: scaleY(1) !important;
+    transition: none !important;
+  }
+
+  .studio-drawer::before {
+    transform: scaleX(1) !important;
+    animation: none !important;
+  }
+}

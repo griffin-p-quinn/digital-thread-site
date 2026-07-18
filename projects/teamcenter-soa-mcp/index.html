@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MCP–Teamcenter SOA Gateway — Griffin Quinn</title>
+  <meta name="description" content="How Griffin Quinn built a FastMCP gateway over Teamcenter SOA with authenticated sessions, 77 registered tools, local and Eureka modes, and runtime write gates.">
+  <link rel="canonical" href="https://griffin-p-quinn.github.io/digital-thread-site/projects/teamcenter-soa-mcp/">
+  <meta name="theme-color" content="#f2ede3">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230b0c0b'/%3E%3Cpath d='M7 8h18v16H7z' fill='none' stroke='%23ff6542'/%3E%3C/svg%3E">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Griffin Quinn — Applied AI &amp; Industrial Systems">
+  <meta property="og:title" content="MCP–Teamcenter SOA Gateway — Griffin Quinn">
+  <meta property="og:description" content="Seventy-seven registered Teamcenter SOA tools behind explicit read, edit, and full-write authority gates.">
+  <meta property="og:url" content="https://griffin-p-quinn.github.io/digital-thread-site/projects/teamcenter-soa-mcp/">
+  <meta property="og:image" content="https://griffin-p-quinn.github.io/digital-thread-site/assets/projects/social/teamcenter-soa-mcp.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Session and write-gate architecture for Griffin Quinn's MCP–Teamcenter SOA Gateway.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="MCP–Teamcenter SOA Gateway — Griffin Quinn">
+  <meta name="twitter:description" content="A FastMCP gateway with authenticated Teamcenter sessions, 77 tools, and explicit read, edit, and full-write gates.">
+  <meta name="twitter:image" content="https://griffin-p-quinn.github.io/digital-thread-site/assets/projects/social/teamcenter-soa-mcp.png">
+  <meta name="twitter:image:alt" content="Session and write-gate architecture for Griffin Quinn's MCP–Teamcenter SOA Gateway.">
+  <link rel="stylesheet" href="../../assets/projects/case-study.css">
+  <script defer src="../../assets/projects/case-study.js"></script>
+</head>
+<body data-project="teamcenter-soa-mcp">
+  <a class="skip-link" href="#main-content">Skip to case study</a>
+  <header class="site-header">
+    <a class="identity" href="../../projects.html" aria-label="Griffin Quinn — all projects">
+      <strong>Griffin Quinn</strong>
+      <span>Applied AI &amp; Industrial Systems</span>
+    </a>
+    <div class="header-actions" aria-label="Page utilities">
+      <button type="button" class="utility-button" data-theme-toggle aria-pressed="false">Theme</button>
+      <button type="button" class="utility-button" data-copy-link>Copy link</button>
+      <span class="copy-status" data-copy-status role="status" aria-live="polite"></span>
+    </div>
+  </header>
+
+  <main id="main-content" class="case-main">
+    <article>
+      <header class="case-hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Case study · PLM integration &amp; MCP</p>
+          <h1>MCP–Teamcenter SOA Gateway</h1>
+          <p class="case-deck">A FastMCP gateway over real Teamcenter SOA sessions, with 77 registered tools and runtime gates that separate read, edit, and full-write authority.</p>
+          <div class="case-actions">
+            <a class="case-action primary" href="../../projects.html">Browse all projects</a>
+            <a class="text-link" href="#proof">Inspect the source record</a>
+          </div>
+        </div>
+        <aside class="case-index" aria-label="Case-study index">
+          <span class="case-number">Case 04 / 08</span>
+          <dl>
+            <div><dt>Domain</dt><dd>PLM integration</dd></div>
+            <div><dt>Focus</dt><dd>Governed Teamcenter access</dd></div>
+            <div><dt>Form</dt><dd>FastMCP SOA gateway</dd></div>
+          </dl>
+        </aside>
+      </header>
+
+      <dl class="evidence-strip" aria-label="Project facts">
+        <div><dt>Registered tools</dt><dd>77</dd></div>
+        <div><dt>Connection modes</dt><dd>Local + Eureka</dd></div>
+        <div><dt>Authority</dt><dd>Read · edit · full write</dd></div>
+        <div><dt>Integration</dt><dd>FastMCP over Teamcenter SOA</dd></div>
+      </dl>
+
+      <div class="story-grid">
+        <nav class="case-nav" aria-label="Case-study sections">
+          <strong>Case file</strong>
+          <ol>
+            <li><a href="#problem">Problem</a></li>
+            <li><a href="#contribution">My contribution</a></li>
+            <li><a href="#proof">Proof</a></li>
+            <li><a href="#result">Result</a></li>
+          </ol>
+        </nav>
+        <div class="story-content">
+        <section class="story-section" id="problem" data-case-section data-reveal aria-labelledby="problem-title">
+          <div><span class="section-kicker">01 · Governed access</span><h2 id="problem-title">Problem</h2></div>
+          <div class="story-copy">
+            <p class="lead">An agent can only be useful in PLM if it works through real sessions and real operations.</p>
+            <p>Reading product data, editing objects, and performing broad writes are materially different authorities; flattening them into one tool permission would make the integration hard to audit and harder to trust. The project tests whether an LLM can operate Teamcenter through SOA while those levels remain explicit at runtime.</p>
+          </div>
+        </section>
+
+        <section class="story-section" id="contribution" data-case-section data-reveal aria-labelledby="contribution-title">
+          <div><span class="section-kicker">02 · Gateway design</span><h2 id="contribution-title">My contribution</h2></div>
+          <div class="story-copy">
+            <p class="lead">I built the Python/FastMCP gateway around authenticated Teamcenter sessions.</p>
+            <p>I registered the 77-tool surface and supported both local and Eureka-discovered connection modes. I added resources and prompts around the tool layer and enforced separate read, edit, and full-write gates at runtime.</p>
+          </div>
+        </section>
+
+          <figure class="architecture" data-reveal>
+            <div class="architecture-head">
+              <div><span class="section-kicker">System map</span><h2>Architecture</h2></div>
+              <div class="architecture-copy"><p>The policy boundary sits between the authenticated MCP session and every Teamcenter SOA operation.</p></div>
+            </div>
+            <div class="architecture-diagram">
+            <svg viewBox="0 0 920 420" role="img" aria-labelledby="soa-architecture-title soa-architecture-desc">
+              <title id="soa-architecture-title">MCP–Teamcenter SOA gateway architecture</title>
+              <desc id="soa-architecture-desc">An MCP client opens an authenticated gateway session. Runtime policy selects read, edit, or full-write authority before a registered tool can call Teamcenter SOA through either local or Eureka connection mode.</desc>
+              <rect width="920" height="420" rx="18" fill="#12110f"/>
+              <g fill="none" stroke="#ddd2c4" stroke-width="2">
+                <path d="M176 210H278"/><path d="M502 210H604"/><path d="M754 210H840"/>
+                <path d="M390 128V78"/><path d="M390 292V342"/>
+              </g>
+              <g fill="#e9662c"><circle cx="227" cy="210" r="5"/><circle cx="553" cy="210" r="5"/><circle cx="797" cy="210" r="5"/></g>
+              <g fill="#201f1b" stroke="#746d64" stroke-width="1.5">
+                <rect x="36" y="148" width="140" height="124" rx="10"/>
+                <rect x="278" y="112" width="224" height="196" rx="10" stroke="#e9662c"/>
+                <rect x="604" y="112" width="150" height="196" rx="10"/>
+                <rect x="840" y="148" width="44" height="124" rx="10"/>
+                <rect x="314" y="40" width="152" height="38" rx="19"/><rect x="314" y="342" width="152" height="38" rx="19"/>
+              </g>
+              <g fill="#f6efe5" font-family="ui-monospace, SFMono-Regular, Consolas, monospace" text-anchor="middle">
+                <text x="106" y="194" font-size="15">MCP CLIENT</text><text x="106" y="220" fill="#aaa196" font-size="11">AGENT / HOST</text><text x="106" y="244" fill="#aaa196" font-size="10">TYPED CALL</text>
+                <text x="390" y="154" font-size="16">FASTMCP GATEWAY</text><text x="390" y="181" fill="#e9662c" font-size="12">AUTHENTICATED SESSION</text><text x="390" y="214" font-size="13">READ</text><text x="390" y="239" font-size="13">EDIT</text><text x="390" y="264" font-size="13">FULL WRITE</text><text x="390" y="288" fill="#aaa196" font-size="10">RUNTIME POLICY</text>
+                <text x="679" y="174" font-size="15">77 REGISTERED</text><text x="679" y="198" font-size="15">SOA TOOLS</text><text x="679" y="232" fill="#aaa196" font-size="10">RESOURCES · PROMPTS</text><text x="679" y="254" fill="#aaa196" font-size="10">STRUCTURED RESULTS</text>
+                <text x="862" y="184" font-size="12" transform="rotate(90 862 210)">TEAMCENTER SOA</text>
+                <text x="390" y="64" font-size="11">LOCAL MODE</text><text x="390" y="366" font-size="11">EUREKA MODE</text>
+              </g>
+            </svg>
+            </div>
+            <figcaption><span class="figure-label">Governed path</span><span>Connection mode and session context stay separate from the runtime authority assigned to a tool call.</span></figcaption>
+          </figure>
+
+        <section class="story-section" id="proof" data-case-section data-reveal aria-labelledby="proof-title">
+          <div><span class="section-kicker">03 · Source record</span><h2 id="proof-title">Proof</h2></div>
+          <div class="story-copy">
+          <ul class="proof-list">
+            <li><strong><code>README.md</code></strong> defines session handling, local and Eureka modes, resources, prompts, and the write-gate model.</li>
+            <li><strong><code>app/main.py</code></strong> contains 77 registered MCP tool decorators and the real tool names.</li>
+            <li><strong>Sanitized session preview</strong> demonstrates search, object loading, BOM expansion, and gate enforcement without connecting the public portfolio to Teamcenter or exposing credentials.</li>
+          </ul>
+          <dl class="project-facts">
+            <div><dt>Session</dt><dd>Authenticated Teamcenter SOA context</dd></div>
+            <div><dt>Read path</dt><dd>Search, load objects, and expand a BOM window</dd></div>
+            <div><dt>Mutation path</dt><dd>Unavailable until the corresponding runtime gate is enabled</dd></div>
+          </dl>
+          </div>
+        </section>
+
+        <section class="story-section" id="result" data-case-section data-reveal aria-labelledby="result-title">
+          <div><span class="section-kicker">04 · Outcome</span><h2 id="result-title">Result</h2></div>
+          <div class="story-copy"><p class="lead">The gateway makes Teamcenter operations agent-addressable without hiding the enterprise session.</p><p>It does not collapse all access into a single permission. The result is a broad MCP surface whose authority can be inspected and constrained at the point of use.</p></div>
+        </section>
+        </div>
+      </div>
+
+      <nav class="related-nav" aria-label="Related case studies">
+        <div><span class="section-kicker">Related work</span><h2>Continue through the systems</h2></div>
+        <div class="related-links">
+        <a href="../teamcenter-change-dashboard/">Teamcenter Change Dashboard</a>
+        <a href="../maia-local-mcp/">Maia Local MCP Toolkit</a>
+        </div>
+      </nav>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <p><strong>Griffin Quinn</strong> · Personal portfolio of applied AI and industrial-system work.</p>
+    <p>This is an independent, unofficial presentation of personal project work, not a Siemens website. Views are my own. Product names and marks belong to their respective owners.</p>
+  </footer>
+</body>
+</html>

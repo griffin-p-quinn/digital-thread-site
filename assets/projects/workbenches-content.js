@@ -86,7 +86,7 @@
       button.disabled = true; status(host, 'busy', 'Linking claims to sanitized sources'); $('[data-brief-state]', host).textContent = 'synthesizing';
       $('[data-brief-output]', host).innerHTML = '<div class="cw-empty">Building evidence ledger…</div>';
       wait(timers, () => {
-        $('[data-brief-state]', host).textContent = core ? '3 claims · 3 sources' : 'evidence-backed';
+        $('[data-brief-state]', host).textContent = core ? '3 claims · 3 sources' : 'source-linked';
         $('[data-brief-output]', host).innerHTML = `<div class="kicker">Illustrative sourced brief</div><h5>Technical evaluation is becoming more concrete</h5><p><b>Evidence:</b> architecture boundaries were reviewed and the sample read path completed. <b>Inference:</b> evaluation depth appears to be increasing. <b>Open question:</b> deployment ownership is not yet established.</p><div class="cw-source-row">${briefEvents.map(x => `<button class="cw-source" data-source="${x.id}">${x.id} · ${x.confidence}%</button>`).join('')}</div>${core ? `<div class="cw-ledger">${briefEvents.map((x, i) => `<div class="cw-ledger-row"><b>${x.id}</b><span>${i < 2 ? 'observation' : 'open question'}</span><span>${x.confidence}%</span></div>`).join('')}</div>` : ''}`;
         $$('[data-source]', host).forEach(b => b.addEventListener('click', () => { active = b.dataset.source; $$('[data-source]', host).forEach(x => x.classList.toggle('active', x === b)); const event = $(`[data-event="${active}"]`, host); if (event) { $$('[data-event]', host).forEach(x => x.classList.toggle('active', x === event)); event.focus(); } }));
         status(host, 'ok', 'Brief complete · every claim remains source-linked'); button.disabled = false;

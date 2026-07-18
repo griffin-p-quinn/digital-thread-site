@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Video Analyzer Studio — Griffin Quinn</title>
+  <meta name="description" content="A packaged desktop app by Griffin Quinn that sends a local video to Gemini, builds a structured scene report, and retains run history in SQLite.">
+  <meta name="author" content="Griffin Quinn">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <link rel="canonical" href="https://griffin-p-quinn.github.io/digital-thread-site/projects/video-analyzer-studio/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Griffin Quinn — Digital Fabric">
+  <meta property="og:title" content="Video Analyzer Studio — Griffin Quinn">
+  <meta property="og:description" content="A packaged desktop app that sends local video to Gemini, builds a structured scene report, and retains prior runs in SQLite.">
+  <meta property="og:url" content="https://griffin-p-quinn.github.io/digital-thread-site/projects/video-analyzer-studio/">
+  <meta property="og:image" content="https://griffin-p-quinn.github.io/digital-thread-site/assets/projects/social/video-analyzer-studio.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Video Analyzer Studio case study by Griffin Quinn">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Video Analyzer Studio — Griffin Quinn">
+  <meta name="twitter:description" content="Local video analysis with Gemini, structured scene reports, and SQLite run history.">
+  <meta name="twitter:image" content="https://griffin-p-quinn.github.io/digital-thread-site/assets/projects/social/video-analyzer-studio.png">
+  <meta name="twitter:image:alt" content="Video Analyzer Studio case study by Griffin Quinn">
+  <meta name="theme-color" content="#0b0c0b">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230b0c0b'/%3E%3Cpath d='M7 8h18v16H7z' fill='none' stroke='%23ff6542'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../../assets/projects/case-study.css">
+  <script>try{var t=localStorage.getItem('fabric-theme');document.documentElement.dataset.theme=t==='light'||t==='dark'?t:(matchMedia('(prefers-color-scheme:light)').matches?'light':'dark')}catch(e){document.documentElement.dataset.theme='dark'}</script>
+  <script defer src="../../assets/projects/case-study.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to case study</a>
+  <header class="site-header">
+    <a class="identity" href="../../projects.html" aria-label="Griffin Quinn — return to selected work">
+      <span><strong>Griffin Quinn</strong><span>Applied AI &amp; industrial systems</span></span>
+    </a>
+    <div class="header-actions" aria-label="Page utilities">
+      <button class="utility-button" type="button" data-copy-link>Copy link</button>
+      <span class="copy-status" data-copy-status role="status" aria-live="polite"></span>
+      <button class="utility-button" type="button" data-theme-toggle aria-pressed="false">Theme</button>
+    </div>
+  </header>
+
+  <main class="case-main" id="main-content">
+    <article>
+      <header class="case-hero" aria-labelledby="case-title">
+        <div class="hero-copy">
+          <p class="eyebrow">Digital Fabric · Selected work</p>
+          <h1 id="case-title">Video Analyzer Studio</h1>
+          <p class="case-deck">Sends a local video to Gemini, turns the response into a structured scene report, and keeps prior runs in SQLite.</p>
+          <div class="case-actions">
+            <a class="case-action primary" href="#proof">Inspect the evidence</a>
+            <a class="case-action" href="../../projects.html">All selected work</a>
+          </div>
+        </div>
+        <aside class="case-index" aria-label="Project snapshot">
+          <span class="case-number">Case 08 / 08</span>
+          <dl>
+            <div><dt>Role</dt><dd>Desktop product implementation</dd></div>
+            <div><dt>Surface</dt><dd>Packaged local workspace</dd></div>
+            <div><dt>Provider</dt><dd>Gemini analysis</dd></div>
+            <div><dt>Output</dt><dd>Scene report + SQLite history</dd></div>
+          </dl>
+        </aside>
+      </header>
+
+      <dl class="evidence-strip" aria-label="Build facts">
+        <div><dt>Input</dt><dd>Locally selected video</dd></div>
+        <div><dt>Request</dt><dd>General analysis prompt</dd></div>
+        <div><dt>Output</dt><dd>Structured scene report</dd></div>
+        <div><dt>State</dt><dd>Retained session history</dd></div>
+      </dl>
+
+      <figure class="media-figure" data-reveal>
+        <div class="media-frame">
+          <img src="../../assets/projects/video_analyzer_cover.png" width="1600" height="1000" alt="Video Analyzer Studio desktop workspace with video selection, Gemini analysis controls, a structured scene report, and SQLite run history">
+        </div>
+        <figcaption><span class="figure-label">Desktop workspace</span><span>The application keeps the selected input, provider context, report, and prior runs in one local working surface.</span></figcaption>
+      </figure>
+
+      <div class="story-grid">
+        <nav class="case-nav" aria-label="Case study sections">
+          <strong>Case notes</strong>
+          <ol>
+            <li><a href="#problem">Problem</a></li>
+            <li><a href="#contribution">My contribution</a></li>
+            <li><a href="#proof">Proof</a></li>
+            <li><a href="#result">Result</a></li>
+          </ol>
+        </nav>
+
+        <div class="story-content">
+          <section class="story-section" id="problem" data-case-section data-reveal>
+            <div><span class="section-kicker">01 · Problem</span><h2>A one-off model response is hard to revisit</h2></div>
+            <div class="story-copy">
+              <p class="lead">General video analysis becomes difficult to compare when the input, provider, report, and prior runs are scattered across uploads and chat sessions.</p>
+              <p>The project asks how a local tool can make that work reproducible without pretending to be a full video production suite. Its job is narrower: organize a request and retain its structured evidence.</p>
+            </div>
+          </section>
+
+          <section class="story-section" id="contribution" data-case-section data-reveal>
+            <div><span class="section-kicker">02 · My contribution</span><h2>Built a durable workspace around the model call</h2></div>
+            <div class="story-copy">
+              <p class="lead">I packaged the analysis flow as a desktop workspace instead of leaving it as a disposable prompt-and-response exchange.</p>
+              <ul class="contribution-list">
+                <li><strong>Kept input selection local.</strong> The user chooses a video from the desktop workflow and sees its working context.</li>
+                <li><strong>Made the Gemini call explicit.</strong> The analysis request is sent to Gemini through the configured desktop workflow rather than hiding the model path.</li>
+                <li><strong>Retained structured output.</strong> Scene reports and run history remain available for inspection after an individual request completes.</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="story-section" id="proof" data-case-section data-reveal>
+            <div><span class="section-kicker">03 · Proof</span><h2>The project record defines the whole run loop</h2></div>
+            <div class="story-copy">
+              <p class="lead">The source record and desktop capture document local selection, provider analysis, structured scene reporting, and retained history as one packaged workflow.</p>
+              <ul class="proof-list">
+                <li><strong>Packaged surface:</strong> the project is recorded as a desktop application, not a web-only concept.</li>
+                <li><strong>Structured result:</strong> the primary output is a scene report rather than an unorganized chat transcript.</li>
+                <li><strong>Persistent working state:</strong> run history is part of the workspace and remains visible beside the current report.</li>
+                <li><strong>Source definition:</strong> the project README documents upload, provider analysis, report structure, and history.</li>
+              </ul>
+              <p class="boundary-note"><strong>Portfolio boundary:</strong> this public case does not upload a video or call a live model provider. The interactive portfolio preview is a deterministic reconstruction of the documented workflow.</p>
+            </div>
+          </section>
+
+          <section class="story-section" id="result" data-case-section data-reveal>
+            <div><span class="section-kicker">04 · Result</span><h2>Analysis becomes a session that can be inspected</h2></div>
+            <div class="story-copy">
+              <p class="lead">The result is a repeatable local analysis loop: choose a video, choose the configured provider path, request a report, and retain the outcome with its history.</p>
+              <p>No claim is made about model accuracy or time saved. The demonstrated consequence is organizational: each run has an inspectable place and a structured record.</p>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <section class="architecture" aria-labelledby="architecture-title" data-reveal>
+        <div class="architecture-head">
+          <div><span class="section-kicker">Run model</span><h2 id="architecture-title">A report with context and memory</h2></div>
+          <div class="architecture-copy"><p>The tool’s architecture is deliberately small. The product value sits in preserving the relationship between a local input, the configured request path, and the retained output.</p></div>
+        </div>
+        <figure>
+          <div class="architecture-diagram">
+            <div class="architecture-flow" role="img" aria-label="A local video and analysis request flow to Gemini, which returns a structured scene report that is retained in local SQLite history">
+              <div class="flow-node"><small>Input</small><strong>Local video selection</strong><span>Choose the file and establish the working context</span></div>
+              <div class="flow-node"><small>Request</small><strong>Gemini analysis</strong><span>General video-analysis request through the configured model path</span></div>
+              <div class="flow-node"><small>Output</small><strong>Structured scene report</strong><span>Organized findings rather than a transient response</span></div>
+              <div class="flow-node"><small>Memory</small><strong>SQLite run history</strong><span>Retain prior sessions for inspection and comparison</span></div>
+            </div>
+          </div>
+          <figcaption><span class="figure-label">Application architecture</span><span>Conceptual flow derived from the documented desktop application; credentials and provider calls are outside the public portfolio.</span></figcaption>
+        </figure>
+      </section>
+
+      <nav class="related-nav" aria-label="Continue exploring">
+        <div><span class="section-kicker">Continue</span><h2>More selected work</h2></div>
+        <div class="related-links">
+          <a href="../maia-local-mcp/">Maia Local MCP Toolkit</a>
+          <a href="../dtc-production-copilot/">DTC Production Co-Pilot</a>
+          <a href="../../projects.html">Return to the portfolio</a>
+        </div>
+      </nav>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div><strong>Griffin Quinn</strong><span>Digital Fabric · Personal portfolio</span></div>
+    <p>Digital Fabric is a personal portfolio by Griffin Quinn, not an official Siemens, Google, or Gemini site. Views are my own. Demos use sanitized, fictionalized, or browser-safe sample data where noted. Product names and marks belong to their respective owners.</p>
+  </footer>
+</body>
+</html>

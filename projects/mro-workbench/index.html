@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MRO Workbench — Griffin Quinn</title>
+  <meta name="description" content="A guided MRO workbench by Griffin Quinn that keeps inspection evidence, JT context, repair planning, and disposition in one work-order flow.">
+  <meta name="author" content="Griffin Quinn">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <link rel="canonical" href="https://griffin-p-quinn.github.io/digital-thread-site/projects/mro-workbench/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Griffin Quinn — Digital Fabric">
+  <meta property="og:title" content="MRO Workbench — Griffin Quinn">
+  <meta property="og:description" content="Inspection evidence, asset context, repair planning, and disposition carried through one guided MRO work order.">
+  <meta property="og:url" content="https://griffin-p-quinn.github.io/digital-thread-site/projects/mro-workbench/">
+  <meta property="og:image" content="https://griffin-p-quinn.github.io/digital-thread-site/assets/projects/social/mro-workbench.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="MRO Workbench case study by Griffin Quinn">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="MRO Workbench — Griffin Quinn">
+  <meta name="twitter:description" content="A Siemens iX and React prototype for a guided inspection-to-disposition workflow with JT context.">
+  <meta name="twitter:image" content="https://griffin-p-quinn.github.io/digital-thread-site/assets/projects/social/mro-workbench.png">
+  <meta name="twitter:image:alt" content="MRO Workbench case study by Griffin Quinn">
+  <meta name="theme-color" content="#0b0c0b">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230b0c0b'/%3E%3Cpath d='M7 8h18v16H7z' fill='none' stroke='%23ff6542'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../../assets/projects/case-study.css">
+  <script>try{var t=localStorage.getItem('fabric-theme');document.documentElement.dataset.theme=t==='light'||t==='dark'?t:(matchMedia('(prefers-color-scheme:light)').matches?'light':'dark')}catch(e){document.documentElement.dataset.theme='dark'}</script>
+  <script defer src="../../assets/projects/case-study.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to case study</a>
+  <header class="site-header">
+    <a class="identity" href="../../projects.html" aria-label="Griffin Quinn — return to selected work">
+      <span><strong>Griffin Quinn</strong><span>Applied AI &amp; industrial systems</span></span>
+    </a>
+    <div class="header-actions" aria-label="Page utilities">
+      <button class="utility-button" type="button" data-copy-link>Copy link</button>
+      <span class="copy-status" data-copy-status role="status" aria-live="polite"></span>
+      <button class="utility-button" type="button" data-theme-toggle aria-pressed="false">Theme</button>
+    </div>
+  </header>
+
+  <main class="case-main" id="main-content">
+    <article>
+      <header class="case-hero" aria-labelledby="case-title">
+        <div class="hero-copy">
+          <p class="eyebrow">Digital Fabric · Selected work</p>
+          <h1 id="case-title">MRO Workbench</h1>
+          <p class="case-deck">Keeps inspection evidence, JT context, repair planning, and disposition inside one guided work-order flow.</p>
+          <div class="case-actions">
+            <a class="case-action primary" href="../../assets/embeds/mro/index.html">Open browser-safe build <span aria-hidden="true">↗</span></a>
+            <a class="case-action" href="../../projects.html">All selected work</a>
+          </div>
+        </div>
+        <aside class="case-index" aria-label="Project snapshot">
+          <span class="case-number">Case 07 / 08</span>
+          <dl>
+            <div><dt>Role</dt><dd>Workflow and frontend implementation</dd></div>
+            <div><dt>Surface</dt><dd>Guided maintenance workbench</dd></div>
+            <div><dt>Stack</dt><dd>React 19 · Siemens iX · Zustand</dd></div>
+            <div><dt>Context</dt><dd>Work order + JT assembly</dd></div>
+          </dl>
+        </aside>
+      </header>
+
+      <dl class="evidence-strip" aria-label="Build facts">
+        <div><dt>Entry point</dt><dd>Sample maintenance work order</dd></div>
+        <div><dt>Evidence</dt><dd>Inspection + damage assessment</dd></div>
+        <div><dt>Product context</dt><dd>Asset, service BOM, JT</dd></div>
+        <div><dt>Decision</dt><dd>Guided disposition</dd></div>
+      </dl>
+
+      <figure class="media-figure" data-reveal>
+        <div class="media-frame">
+          <img src="../../assets/projects/mro_cover.jpg" width="2560" height="1920" alt="MRO Disposition Workbench dashboard with a resumable turbine-blade inspection, work-order queue, due dates, and priority states">
+        </div>
+        <figcaption><span class="figure-label">Working interface</span><span>The deployed artifact is the real React presentation layer running against a browser-safe sample work order and local geometry.</span></figcaption>
+      </figure>
+
+      <div class="story-grid">
+        <nav class="case-nav" aria-label="Case study sections">
+          <strong>Case notes</strong>
+          <ol>
+            <li><a href="#problem">Problem</a></li>
+            <li><a href="#contribution">My contribution</a></li>
+            <li><a href="#proof">Proof</a></li>
+            <li><a href="#result">Result</a></li>
+          </ol>
+        </nav>
+
+        <div class="story-content">
+          <section class="story-section" id="problem" data-case-section data-reveal>
+            <div><span class="section-kicker">01 · Problem</span><h2>A work order loses meaning when its evidence is scattered</h2></div>
+            <div class="story-copy">
+              <p class="lead">Inspection findings, the affected assembly, service structure, repair planning, and final disposition belong to one maintenance decision.</p>
+              <p>The prototype explores how to keep those elements in a coherent operator flow. The goal is not another dashboard; it is continuity from the work order through the evidence and into the decision.</p>
+            </div>
+          </section>
+
+          <section class="story-section" id="contribution" data-case-section data-reveal>
+            <div><span class="section-kicker">02 · My contribution</span><h2>Turned the maintenance record into a guided workspace</h2></div>
+            <div class="story-copy">
+              <p class="lead">I designed and implemented a React workbench that carries a sample order through inspection review, damage assessment, repair planning, and disposition.</p>
+              <ul class="contribution-list">
+                <li><strong>Structured the workflow.</strong> The interface preserves progress across the order instead of presenting unrelated maintenance modules.</li>
+                <li><strong>Kept product context close.</strong> Asset and service-BOM information sit alongside JT assembly context and the inspection evidence.</li>
+                <li><strong>Used an industrial component system.</strong> Siemens iX provides the application shell and controls; Zustand maintains the work-order state across the flow.</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="story-section" id="proof" data-case-section data-reveal>
+            <div><span class="section-kicker">03 · Proof</span><h2>The workflow runs as a real static build</h2></div>
+            <div class="story-copy">
+              <p class="lead">The linked case artifact is the packaged React interface, not a recreated portfolio mockup.</p>
+              <ul class="proof-list">
+                <li><strong>Guided order:</strong> open the sample work order, review its asset and service BOM, and resume the recorded damage assessment.</li>
+                <li><strong>Disposition path:</strong> carry findings forward into the repair and disposition step.</li>
+                <li><strong>Runtime evidence:</strong> the project package confirms React 19, Vite, Siemens iX, and Zustand.</li>
+                <li><strong>3D context:</strong> a bundled JT engine-assembly fixture supplies browser-safe product context.</li>
+              </ul>
+              <p class="boundary-note"><strong>Public-demo boundary:</strong> the build uses a sample work order, bundled inspection imagery, and local geometry. It does not connect to a production maintenance system.</p>
+            </div>
+          </section>
+
+          <section class="story-section" id="result" data-case-section data-reveal>
+            <div><span class="section-kicker">04 · Result</span><h2>A complete decision path, not a collection of screens</h2></div>
+            <div class="story-copy">
+              <p class="lead">The resulting prototype makes the work order the spine of the experience: evidence, assembly context, assessment, plan, and disposition remain visibly connected.</p>
+              <p>No operational improvement metric is asserted. What the working build demonstrates is a coherent interaction model for carrying maintenance evidence into a disposition decision.</p>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <section class="architecture" aria-labelledby="architecture-title" data-reveal>
+        <div class="architecture-head">
+          <div><span class="section-kicker">Workflow view</span><h2 id="architecture-title">Evidence travels with the order</h2></div>
+          <div class="architecture-copy"><p>Each stage adds context without discarding the prior decision record. The browser build keeps that logic local and deterministic.</p></div>
+        </div>
+        <figure>
+          <div class="architecture-diagram">
+            <div class="architecture-flow" role="img" aria-label="A maintenance work order flows through asset and JT context, inspection and damage assessment, and repair planning to a final disposition">
+              <div class="flow-node"><small>Record</small><strong>Maintenance work order</strong><span>Scope, status, task history, current step</span></div>
+              <div class="flow-node"><small>Context</small><strong>Asset + BOM + JT</strong><span>Service structure and assembly orientation</span></div>
+              <div class="flow-node"><small>Evidence</small><strong>Inspection + assessment</strong><span>Findings and damage state carried forward</span></div>
+              <div class="flow-node"><small>Decision</small><strong>Repair plan + disposition</strong><span>Guided resolution inside the same order</span></div>
+            </div>
+          </div>
+          <figcaption><span class="figure-label">Workflow architecture</span><span>Conceptual sequence represented by the working React prototype and its browser-safe fixtures.</span></figcaption>
+        </figure>
+      </section>
+
+      <nav class="related-nav" aria-label="Continue exploring">
+        <div><span class="section-kicker">Continue</span><h2>More selected work</h2></div>
+        <div class="related-links">
+          <a href="../mendix-widget-foundry/">Mendix Widget Foundry</a>
+          <a href="../dtc-production-copilot/">DTC Production Co-Pilot</a>
+          <a href="../../projects.html">Return to the portfolio</a>
+        </div>
+      </nav>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div><strong>Griffin Quinn</strong><span>Digital Fabric · Personal portfolio</span></div>
+    <p>Digital Fabric is a personal portfolio by Griffin Quinn, not an official Siemens site. Views are my own. Demos use sanitized, fictionalized, or browser-safe sample data where noted. Product names and marks belong to their respective owners.</p>
+  </footer>
+</body>
+</html>

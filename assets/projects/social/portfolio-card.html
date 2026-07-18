@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Griffin Quinn portfolio social card</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { width: 1200px; height: 630px; margin: 0; overflow: hidden; }
+    body {
+      position: relative;
+      color: #171714;
+      background: #f1eee6;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    .rule { position: absolute; top: 61px; right: 54px; left: 54px; height: 1px; background: rgba(23,23,20,.32); }
+    .mast {
+      position: absolute; top: 23px; right: 54px; left: 54px;
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    }
+    .mast span:last-child { color: #cf3e20; }
+    .mark { display: inline-grid; width: 28px; height: 28px; margin-right: 12px; place-items: center; border: 1px solid #171714; font-size: 8px; }
+    .copy { position: absolute; top: 106px; left: 54px; z-index: 5; width: 600px; }
+    .kicker { display: flex; align-items: center; gap: 12px; color: #cf3e20; font-size: 10px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+    .kicker::before { content: ''; width: 54px; height: 2px; background: #cf3e20; }
+    h1 { width: 610px; margin: 28px 0 0; font-family: 'Arial Narrow', Arial, sans-serif; font-size: 79px; line-height: .86; letter-spacing: -.065em; }
+    .sub { width: 450px; margin-top: 26px; color: #5f605a; font-size: 16px; line-height: 1.5; }
+    .artifact { position: absolute; overflow: hidden; border: 1px solid rgba(23,23,20,.54); background: #111312; box-shadow: 0 18px 42px rgba(0,0,0,.18); }
+    .artifact img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .artifact.dtc { z-index: 1; top: 126px; right: 58px; width: 520px; height: 292px; }
+    .artifact.nx { z-index: 2; right: 357px; bottom: 40px; width: 322px; height: 206px; }
+    .artifact.widget { z-index: 3; right: 54px; bottom: 34px; width: 368px; height: 214px; }
+    .artifact::after { content: attr(data-label); position: absolute; right: 0; bottom: 0; left: 0; padding: 9px 12px; color: #f1eee6; background: rgba(17,19,18,.92); font-size: 9px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    svg { position: absolute; inset: 0; z-index: 4; width: 100%; height: 100%; pointer-events: none; }
+    path { fill: none; stroke: #cf3e20; stroke-width: 2; }
+    circle { fill: #f1eee6; stroke: #cf3e20; stroke-width: 2; }
+  </style>
+</head>
+<body>
+  <div class="mast"><span><i class="mark">GQ</i>Griffin Quinn / Applied AI &amp; industrial systems</span><span>Selected work · 2025–26</span></div>
+  <div class="rule"></div>
+  <div class="copy">
+    <div class="kicker">Digital Fabric</div>
+    <h1>Tools between a machine and a decision.</h1>
+    <p class="sub">MCP servers, local desktop tools, and applied-AI applications for PLM, CAD, manufacturing, and engineering workflows.</p>
+  </div>
+  <div class="artifact dtc" data-label="DTC Production Co-Pilot"><img src="../dtc_composer_cover.png" alt=""></div>
+  <div class="artifact nx" data-label="NX MCP Automation"><img src="../../nx-renders/ss-charlie-benchmark.png" alt=""></div>
+  <div class="artifact widget" data-label="Mendix Widget Foundry"><img src="../widget_forge_agent_cover.png" alt=""></div>
+  <svg viewBox="0 0 1200 630" aria-hidden="true">
+    <path d="M52 495 C180 495 240 568 360 568 S570 480 682 480 S860 536 1148 536" />
+    <circle cx="52" cy="495" r="5"/><circle cx="360" cy="568" r="5"/><circle cx="682" cy="480" r="5"/><circle cx="1148" cy="536" r="5"/>
+  </svg>
+</body>
+</html>

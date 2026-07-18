@@ -7,12 +7,14 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
+    "portfolio:generate": "node scripts/generate-static-portfolio.mjs",
+    "portfolio:check": "node scripts/generate-static-portfolio.mjs --check",
     "zip": "powershell -c \"Compress-Archive -Path dist/* -DestinationPath ags-graph-experience.zip -Force\""
   },
   "dependencies": {
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-router-dom": "^7.6.1"
+    "react-router-dom": "^7.18.1"
   },
   "devDependencies": {
     "@types/react": "^19.1.0",

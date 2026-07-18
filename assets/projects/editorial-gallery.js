@@ -1,295 +1,366 @@
 /*
- * Semantic decoration and editorial motion for the project index.
+ * Decision Thread motion controller.
  *
- * Project data, filtering, drawer behavior, and interaction recipes remain
- * owned by projects.html. This module distinguishes verified media from
- * generated cover art, adds folio numbers, and progressively enhances the
- * page with restrained, artifact-led motion.
+ * The HTML and CSS remain a complete, visible portfolio without JavaScript.
+ * This module adds one progressive-enhancement sequence to the opening and
+ * selected work only. Explorations and the archive are deliberately static.
  */
-(function editorialGallery() {
+(function decisionThreadController() {
   'use strict';
 
   const root = document.documentElement;
   const mount = document.getElementById('galleryMount');
-  if (!mount) return;
-
+  const hero = document.querySelector('.intro');
+  const heroArtifactsHost = document.querySelector('[data-decision-thread]');
+  const heroArtifacts = [...document.querySelectorAll('.intro-artifact[data-thread-node]')];
+  const threadPath = document.getElementById('decisionThreadPath');
+  const threadPacket = document.getElementById('decisionThreadPacket');
+  const threadNodes = [...document.querySelectorAll('.decision-thread__node')];
+  const selectedStack = document.querySelector('[data-selected-thread]');
+  const selectedPieces = selectedStack
+    ? [...selectedStack.querySelectorAll(':scope > .piece')]
+    : [];
   const reduceQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const canObserve = 'IntersectionObserver' in window;
-  const decorated = new WeakSet();
-  const depthItems = new Set();
-  const activeDepthItems = new Set();
-  const heroAnimations = new Set();
-  let revealObserver = null;
-  let depthObserver = null;
-  let framePending = false;
+  const supportsEnhancement = Boolean(
+    hero &&
+    selectedStack &&
+    threadPath &&
+    threadPacket &&
+    'IntersectionObserver' in window &&
+    'requestAnimationFrame' in window &&
+    typeof threadPath.getTotalLength === 'function'
+  );
 
-  root.classList.add('editorial-motion');
-  root.classList.toggle('editorial-motion-reduced', reduceQuery.matches);
+  const state = {
+    reduced: reduceQuery.matches,
+    hasPlayedHero: false,
+    heroRunning: false,
+    heroStart: 0,
+    heroDuration: 1120,
+    pathLength: 0,
+    frame: 0,
+    metricsDirty: true,
+    activeDepth: new Set(),
+    depthTargets: [],
+    observer: null,
+    resizeObserver: null
+  };
 
-  /* The original headline uses hard line breaks. Two become ordinary word
-     spaces at wide sizes; the middle break remains the intentional hinge. */
-  const headline = document.querySelector('.intro h1');
-  if (headline && !headline.dataset.editorialHeadline) {
-    const breaks = [...headline.querySelectorAll('br')];
-    breaks.forEach((lineBreak, index) => {
-      if (index !== 1) lineBreak.replaceWith(document.createTextNode(' '));
-      else {
-        lineBreak.classList.add('editorial-break');
-        lineBreak.after(document.createTextNode(' '));
-      }
-    });
-    headline.dataset.editorialHeadline = 'true';
+  /* The old overlay used these classes. Removing them ensures there is only
+     one reveal/parallax system even during a bfcache or hot-reload restore. */
+  root.classList.remove(
+    'editorial-motion',
+    'editorial-motion-ready',
+    'editorial-motion-settled',
+    'editorial-motion-reduced'
+  );
+
+  function clamp(value, min, max) {
+    return Math.min(max, Math.max(min, value));
   }
 
-  function reveal(element) {
-    element.classList.add('is-inview');
+  function easeInOutCubic(value) {
+    return value < 0.5
+      ? 4 * value * value * value
+      : 1 - Math.pow(-2 * value + 2, 3) / 2;
   }
 
-  function ensureObservers() {
-    if (reduceQuery.matches || !canObserve) return;
+  function mediaKindFor(cover) {
+    if (!cover) return 'text';
+    if (cover.dataset.mediaKind) return cover.dataset.mediaKind;
+    if (cover.querySelector('img, video')) return 'capture';
+    if (cover.querySelector('svg')) return 'diagram';
+    return 'text';
+  }
 
-    if (!revealObserver) {
-      revealObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          reveal(entry.target);
-          observer.unobserve(entry.target);
-        });
-      }, {
-        threshold: 0.09,
-        rootMargin: '0px 0px -9% 0px'
+  function decoratePortfolio() {
+    if (mount) {
+      [...mount.querySelectorAll('article[data-k]')].forEach((article, index) => {
+        const cover = article.querySelector('.cover');
+        const kind = mediaKindFor(cover);
+        const hasVisual = kind === 'capture' || kind === 'diagram';
+
+        article.dataset.media = hasVisual ? 'real' : 'abstract';
+        article.dataset.folio = String(index + 1).padStart(2, '0');
+
+        if (cover && hasVisual) {
+          cover.dataset.evidence = kind === 'capture'
+            ? 'repository-media'
+            : 'system-diagram';
+        }
       });
     }
 
-    if (!depthObserver) {
-      depthObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          entry.target.classList.toggle('is-depth-active', entry.isIntersecting);
-          if (entry.isIntersecting) activeDepthItems.add(entry.target);
-          else activeDepthItems.delete(entry.target);
-        });
-        queueDepthUpdate();
-      }, {
-        rootMargin: '22% 0px 22% 0px',
-        threshold: 0
-      });
-    }
-  }
+    selectedPieces.forEach((piece, index) => {
+      piece.classList.add('decision-piece');
+      piece.style.setProperty('--decision-piece-order', String(index));
+      piece.dataset.decisionObserve = 'reveal';
 
-  function observeReveal(element) {
-    if (reduceQuery.matches || !canObserve) {
-      reveal(element);
-      return;
-    }
-    ensureObservers();
-    revealObserver.observe(element);
-  }
-
-  function observeDepth(element, range) {
-    if (decorated.has(element)) return;
-    decorated.add(element);
-    element.classList.add('motion-depth');
-    element.dataset.depthRange = String(range);
-    depthItems.add(element);
-
-    if (reduceQuery.matches || !canObserve) {
-      element.style.setProperty('--eg-parallax-y', '0px');
-      return;
-    }
-
-    ensureObservers();
-    depthObserver.observe(element);
-  }
-
-  function decorateHero() {
-    const artifacts = [...document.querySelectorAll('.intro-artifact')];
-    artifacts.forEach((artifact, index) => {
-      if (!artifact.dataset.motionOrder) artifact.dataset.motionOrder = String(index);
-      artifact.style.setProperty('--eg-motion-order', String(index));
-      observeDepth(artifact, index === 0 ? 10 : 7);
-    });
-  }
-
-  function decorateGallery() {
-    const projects = [...mount.querySelectorAll('article[data-k]')];
-
-    projects.forEach((project, index) => {
-      const media = project.querySelector('.cover-media');
-      const hasRepositoryMedia = Boolean(media && media.querySelector('img, video'));
-
-      project.dataset.media = hasRepositoryMedia ? 'real' : 'abstract';
-      project.dataset.folio = String(index + 1).padStart(2, '0');
-
-      if (!hasRepositoryMedia) return;
-
-      const visual = project.querySelector('.cover');
-      if (visual) {
-        visual.dataset.evidence = 'repository-media';
-        observeDepth(visual, project.classList.contains('piece') ? 9 : 7);
-      }
-
-      if (!project.classList.contains('motion-artifact')) {
-        project.classList.add('motion-artifact');
-        const stagger = (index % 3) * 55;
-        project.style.setProperty('--eg-motion-order', String(index % 3));
-        project.style.setProperty('--eg-artifact-delay', `${stagger}ms`);
-        project.style.setProperty('--eg-copy-delay', `${90 + stagger}ms`);
-        observeReveal(project);
+      const cover = piece.querySelector('.cover');
+      const kind = mediaKindFor(cover);
+      if (cover && (kind === 'capture' || kind === 'diagram')) {
+        cover.classList.add('decision-depth');
+        cover.dataset.decisionObserve = 'depth';
+        cover.dataset.decisionDepth = '6';
+        state.depthTargets.push(cover);
       }
     });
 
-    [...mount.querySelectorAll('.gallery-divider')].forEach((divider, index) => {
-      if (divider.classList.contains('motion-chapter')) return;
-      divider.classList.add('motion-chapter');
-      divider.style.setProperty('--eg-motion-order', String(index));
-      observeReveal(divider);
+    heroArtifacts.forEach((artifact) => {
+      if (!artifact.querySelector('img, .maia-schematic')) return;
+      artifact.classList.add('decision-depth');
+      artifact.dataset.decisionObserve = 'depth';
+      artifact.dataset.decisionDepth = '4';
+      state.depthTargets.push(artifact);
     });
+  }
 
-    document.body.classList.add('editorial-gallery-ready');
-    queueDepthUpdate();
+  function commissionPiece(piece) {
+    if (!piece || piece.classList.contains('is-decision-commissioned')) return;
+    piece.classList.add('is-decision-commissioned');
+  }
+
+  function commissionEverything() {
+    selectedPieces.forEach(commissionPiece);
+    if (selectedStack) {
+      selectedStack.style.setProperty('--decision-selected-progress', '1');
+    }
+  }
+
+  function setThreadProgress(progress) {
+    const normalized = clamp(progress, 0, 1);
+    threadPath.style.strokeDasharray = '1';
+    threadPath.style.strokeDashoffset = String(1 - normalized);
+
+    if (!state.pathLength) state.pathLength = threadPath.getTotalLength();
+    const point = threadPath.getPointAtLength(state.pathLength * normalized);
+    threadPacket.setAttribute('cx', point.x.toFixed(2));
+    threadPacket.setAttribute('cy', point.y.toFixed(2));
+
+    const lastNode = Math.max(1, threadNodes.length - 1);
+    threadNodes.forEach((node, index) => {
+      node.classList.toggle('is-reached', normalized >= index / lastNode - 0.012);
+    });
+  }
+
+  function resetDepth() {
+    state.activeDepth.clear();
+    state.depthTargets.forEach((target) => {
+      target.classList.remove('is-decision-depth-active');
+      target.style.setProperty('--decision-depth-y', '0px');
+    });
+  }
+
+  function makeStatic(reduced) {
+    state.reduced = reduced;
+    state.heroRunning = false;
+    root.classList.remove('decision-motion', 'decision-hero-started');
+    root.classList.add(reduced ? 'decision-motion--reduced' : 'decision-motion--static');
+    root.classList.add('decision-hero-complete');
+    commissionEverything();
+    setThreadProgress(1);
+    resetDepth();
+  }
+
+  function updateSelectedProgress() {
+    if (!selectedStack || state.reduced) return;
+    const rect = selectedStack.getBoundingClientRect();
+    const viewport = window.innerHeight || 1;
+    const start = viewport * 0.76;
+    const travel = Math.max(1, rect.height + viewport * 0.48);
+    const progress = clamp((start - rect.top) / travel, 0, 1);
+    selectedStack.style.setProperty(
+      '--decision-selected-progress',
+      progress.toFixed(4)
+    );
+  }
+
+  function depthRangeFor(target) {
+    if (window.innerWidth <= 620) return 0;
+    const requested = Number(target.dataset.decisionDepth) || 6;
+    if (window.innerWidth <= 1024) return Math.min(3, requested);
+    return Math.min(6, requested);
   }
 
   function updateDepth() {
-    framePending = false;
+    if (state.reduced) return;
+    const viewport = window.innerHeight || 1;
+    const writes = [];
 
-    if (reduceQuery.matches) {
-      depthItems.forEach((item) => item.style.setProperty('--eg-parallax-y', '0px'));
-      return;
-    }
-
-    const viewportHeight = window.innerHeight || 1;
-    const reads = [];
-
-    activeDepthItems.forEach((item) => {
-      if (!item.isConnected) {
-        activeDepthItems.delete(item);
-        depthItems.delete(item);
+    state.activeDepth.forEach((target) => {
+      if (!target.isConnected) {
+        state.activeDepth.delete(target);
         return;
       }
-      const rect = item.getBoundingClientRect();
-      const denominator = (viewportHeight + rect.height) / 2;
-      const progress = Math.max(-1, Math.min(1,
-        (rect.top + rect.height / 2 - viewportHeight / 2) / denominator
-      ));
-      const mobileFactor = window.innerWidth <= 620 ? 0.55 : 1;
-      const range = (Number(item.dataset.depthRange) || 7) * mobileFactor;
-      reads.push([item, progress * -range]);
+
+      const range = depthRangeFor(target);
+      if (!range) {
+        writes.push([target, 0]);
+        return;
+      }
+
+      const rect = target.getBoundingClientRect();
+      const center = rect.top + rect.height / 2;
+      const denominator = viewport / 2 + rect.height / 2;
+      const progress = clamp((viewport / 2 - center) / denominator, -1, 1);
+      writes.push([target, progress * range]);
     });
 
-    reads.forEach(([item, offset]) => {
-      item.style.setProperty('--eg-parallax-y', `${offset.toFixed(2)}px`);
+    writes.forEach(([target, offset]) => {
+      target.style.setProperty('--decision-depth-y', `${offset.toFixed(2)}px`);
     });
   }
 
-  function queueDepthUpdate() {
-    if (framePending) return;
-    framePending = true;
-    window.requestAnimationFrame(updateDepth);
+  function updateHero(now) {
+    if (!state.heroRunning || state.reduced) return;
+    const raw = clamp((now - state.heroStart) / state.heroDuration, 0, 1);
+    const eased = easeInOutCubic(raw);
+    setThreadProgress(eased);
+
+    if (raw >= 1) {
+      state.heroRunning = false;
+      root.classList.add('decision-hero-complete');
+    }
   }
 
-  function settleHero() {
-    root.classList.add('editorial-motion-ready');
+  function frame(now) {
+    state.frame = 0;
 
-    if (reduceQuery.matches || typeof Element.prototype.animate !== 'function') {
-      root.classList.add('editorial-motion-settled');
-      return;
+    if (state.metricsDirty) {
+      state.metricsDirty = false;
+      updateSelectedProgress();
+      updateDepth();
     }
 
-    const play = (element, keyframes, options) => {
-      if (!element) return;
-      const animation = element.animate(keyframes, {
-        fill: 'both',
-        easing: 'cubic-bezier(.22, 1, .36, 1)',
-        ...options
-      });
-      heroAnimations.add(animation);
-      animation.finished.then(() => {
-        animation.cancel();
-        heroAnimations.delete(animation);
-      }).catch(() => heroAnimations.delete(animation));
-    };
-
-    const copy = [
-      [document.querySelector('.intro-kicker'), 40, 14],
-      [document.querySelector('.intro h1'), 115, 22],
-      [document.querySelector('.intro-lead'), 240, 16]
-    ];
-    copy.forEach(([element, delay, distance]) => play(element, [
-      { opacity: 0, clipPath: 'inset(0 0 18% 0)', transform: `translate3d(0, ${distance}px, 0)` },
-      { opacity: 1, clipPath: 'inset(0 0 0 0)', transform: 'translate3d(0, 0, 0)' }
-    ], { duration: 780, delay }));
-
-    const profiles = [
-      { x: 18, y: 34, scale: .982 },
-      { x: -20, y: -12, scale: .982 },
-      { x: 18, y: 24, scale: .984 }
-    ];
-    [...document.querySelectorAll('.intro-artifact')].forEach((artifact, index) => {
-      const profile = profiles[index] || { x: 0, y: 22, scale: .985 };
-      const x = window.innerWidth <= 620 ? 0 : profile.x;
-      const y = window.innerWidth <= 620 ? 20 : profile.y;
-      play(artifact, [
-        {
-          opacity: 0,
-          clipPath: 'inset(0 0 12% 0)',
-          transform: `translate3d(${x}px, ${y}px, 0) scale(${profile.scale})`
-        },
-        {
-          opacity: 1,
-          clipPath: 'inset(0 0 0 0)',
-          transform: 'translate3d(0, 0, 0) scale(1)'
-        }
-      ], { duration: 940, delay: 260 + index * 105 });
-    });
-
-    window.setTimeout(() => root.classList.add('editorial-motion-settled'), 1450);
+    updateHero(now);
+    if (state.heroRunning) queueFrame();
   }
 
-  function queueHeroSettle() {
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', settleHero, { once: true });
-    } else {
-      settleHero();
-    }
+  function queueFrame() {
+    if (state.frame) return;
+    state.frame = window.requestAnimationFrame(frame);
+  }
+
+  function invalidateMetrics() {
+    state.metricsDirty = true;
+    queueFrame();
+  }
+
+  function startHero() {
+    state.hasPlayedHero = true;
+    state.heroRunning = true;
+    state.heroStart = performance.now() + 80;
+    state.pathLength = threadPath.getTotalLength();
+
+    root.classList.remove(
+      'decision-motion--static',
+      'decision-motion--reduced',
+      'decision-hero-complete'
+    );
+    root.classList.add('decision-motion');
+    setThreadProgress(0);
+
+    /* Establish the progressive-enhancement start styles before changing to
+       the commissioned state. This is a single, intentional layout read. */
+    void hero.offsetWidth;
+    root.classList.add('decision-hero-started');
+    invalidateMetrics();
+  }
+
+  function resumeAfterReducedMotion() {
+    state.reduced = false;
+    root.classList.remove('decision-motion--reduced', 'decision-motion--static');
+    root.classList.add(
+      'decision-motion',
+      'decision-hero-started',
+      'decision-hero-complete'
+    );
+    commissionEverything();
+    setThreadProgress(1);
+    invalidateMetrics();
   }
 
   function handleMotionPreference(event) {
-    root.classList.toggle('editorial-motion-reduced', event.matches);
-
     if (event.matches) {
-      heroAnimations.forEach((animation) => animation.cancel());
-      heroAnimations.clear();
-      root.classList.add('editorial-motion-ready');
-      root.classList.add('editorial-motion-settled');
-      mount.querySelectorAll('.motion-chapter, .motion-artifact').forEach(reveal);
-      activeDepthItems.clear();
-      depthItems.forEach((item) => {
-        item.classList.remove('is-depth-active');
-        item.style.setProperty('--eg-parallax-y', '0px');
-      });
+      makeStatic(true);
       return;
     }
 
-    ensureObservers();
-    depthItems.forEach((item) => depthObserver.observe(item));
-    queueDepthUpdate();
+    if (state.hasPlayedHero) resumeAfterReducedMotion();
+    else startHero();
   }
 
-  decorateHero();
-  decorateGallery();
-  queueHeroSettle();
+  function handleIntersections(entries) {
+    entries.forEach((entry) => {
+      const role = entry.target.dataset.decisionObserve;
 
-  const observer = new MutationObserver((records) => {
-    if (records.some((record) => record.addedNodes.length)) decorateGallery();
+      if (role === 'reveal') {
+        if (entry.isIntersecting || state.reduced) {
+          commissionPiece(entry.target);
+          state.observer.unobserve(entry.target);
+        }
+        return;
+      }
+
+      if (role === 'depth') {
+        entry.target.classList.toggle(
+          'is-decision-depth-active',
+          entry.isIntersecting && !state.reduced
+        );
+        if (entry.isIntersecting && !state.reduced) {
+          state.activeDepth.add(entry.target);
+        } else {
+          state.activeDepth.delete(entry.target);
+          entry.target.style.setProperty('--decision-depth-y', '0px');
+        }
+        invalidateMetrics();
+      }
+    });
+  }
+
+  function setupObservers() {
+    state.observer = new IntersectionObserver(handleIntersections, {
+      rootMargin: '18% 0px 18% 0px',
+      threshold: [0, 0.12]
+    });
+
+    selectedPieces.forEach((piece) => state.observer.observe(piece));
+    state.depthTargets.forEach((target) => state.observer.observe(target));
+
+    if ('ResizeObserver' in window) {
+      state.resizeObserver = new ResizeObserver(invalidateMetrics);
+      state.resizeObserver.observe(selectedStack);
+      if (heroArtifactsHost) state.resizeObserver.observe(heroArtifactsHost);
+    }
+  }
+
+  decoratePortfolio();
+
+  if (!supportsEnhancement) {
+    makeStatic(state.reduced);
+    return;
+  }
+
+  setupObservers();
+
+  selectedStack.addEventListener('focusin', (event) => {
+    commissionPiece(event.target.closest('.decision-piece'));
   });
 
-  observer.observe(mount, { childList: true, subtree: true });
-  window.addEventListener('scroll', queueDepthUpdate, { passive: true });
-  window.addEventListener('resize', queueDepthUpdate, { passive: true });
+  window.addEventListener('scroll', invalidateMetrics, { passive: true });
+  window.addEventListener('resize', invalidateMetrics, { passive: true });
+  window.addEventListener('load', invalidateMetrics, { once: true });
+
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(invalidateMetrics).catch(() => {});
+  }
 
   if (typeof reduceQuery.addEventListener === 'function') {
     reduceQuery.addEventListener('change', handleMotionPreference);
   } else if (typeof reduceQuery.addListener === 'function') {
     reduceQuery.addListener(handleMotionPreference);
   }
+
+  if (state.reduced) makeStatic(true);
+  else startHero();
 })();

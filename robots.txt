@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://griffin-p-quinn.github.io/digital-thread-site/sitemap.xml

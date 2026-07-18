@@ -3,12 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Griffin Quinn — Interactive Projects &amp; Codebase Studio (63 Projects)</title>
-<meta name="description" content="Explore 63 source-audited engineering projects across Siemens DISW presales, agentic AI, CAD/PLM, and industrial edge telemetry.">
+<title>Griffin Quinn — Applied AI &amp; Industrial Systems</title>
+<meta name="description" content="MCP servers, local desktop tools, and applied-AI applications for PLM, CAD, manufacturing, and engineering workflows.">
+<link rel="canonical" href="https://griffin-p-quinn.github.io/digital-thread-site/projects.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23131720'/%3E%3Ccircle cx='16' cy='16' r='7' stroke='%2348ce98' stroke-width='1.4' fill='none'/%3E%3Ccircle cx='16' cy='8' r='2.4' fill='%238579e5'/%3E%3Ccircle cx='22.5' cy='21' r='2.4' fill='%235d9edf'/%3E%3Ccircle cx='9.5' cy='21' r='2.4' fill='%23edb050'/%3E%3C/svg%3E">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Griffin Quinn — Interactive Projects & Codebase Studio">
-<meta property="og:description" content="A source-audited interactive portfolio spanning 63 engineering projects, including MRO Workbench, NX MCP, Teamcenter SOA, and Mendix Edge IIoT.">
+<meta property="og:title" content="Griffin Quinn — Applied AI &amp; Industrial Systems">
+<meta property="og:description" content="Selected MCP, applied-AI, PLM, CAD, and manufacturing systems built by Griffin Quinn.">
+<meta property="og:url" content="https://griffin-p-quinn.github.io/digital-thread-site/projects.html">
+<meta property="og:image" content="https://griffin-p-quinn.github.io/digital-thread-site/assets/projects/griffin-quinn-portfolio-og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Griffin Quinn portfolio preview with Maia MCP, DTC Production Co-Pilot, and NX automation artifacts.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Griffin Quinn — Applied AI &amp; Industrial Systems">
+<meta name="twitter:description" content="MCP servers, local desktop tools, and applied-AI applications for industrial engineering workflows.">
+<meta name="twitter:image" content="https://griffin-p-quinn.github.io/digital-thread-site/assets/projects/griffin-quinn-portfolio-og.png">
+<meta name="twitter:image:alt" content="Griffin Quinn portfolio preview with Maia MCP, DTC Production Co-Pilot, and NX automation artifacts.">
 <link rel="stylesheet" href="styles/fabric.css">
 <link rel="stylesheet" href="assets/projects/workbenches-content.css">
 <link rel="stylesheet" href="assets/projects/workbenches-labs.css">
@@ -768,97 +779,576 @@ input[type="range"] { width: 100%; accent-color: var(--teal); }
 </style>
 <link rel="stylesheet" href="assets/projects/editorial-gallery.css">
 <link rel="stylesheet" href="assets/projects/editorial-studio.css">
+<link rel="stylesheet" href="assets/projects/executive-portfolio.css">
+<link rel="stylesheet" href="assets/projects/decision-thread.css">
 </head>
 <body>
+
+<a class="skip-link" href="#mainContent">Skip to selected work</a>
 
 <!-- Atmosphere -->
 <div class="atmosphere" aria-hidden="true"><div class="mesh"></div><div class="grain"></div></div>
 
-<!-- ══════ TOP BAR (exact Digital Fabric styling) ══════ -->
+<!-- ══════ PERSONAL MASTHEAD ══════ -->
 <header class="topbar" id="topbar">
-  <div class="topbar-brand">
-    <div class="sigil">df</div>
-    <span>Digital Fabric <span class="dim">/ Siemens DISW</span></span>
-  </div>
-  <nav class="topbar-nav">
-    <a class="home-link" href="index.html">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M11 7H3M7 3L3 7l4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      Home
-    </a>
-    <a href="#tacticalGrid" class="active">Projects (63)</a>
-    <a href="index.html#mini-sites">Mini Sites</a>
-    <a href="index.html#catalog">References</a>
-    <a href="index.html#about">About</a>
+  <a class="topbar-brand" href="#intro" aria-label="Griffin Quinn — back to top">
+    <div class="sigil" aria-hidden="true">GQ</div>
+    <span>Griffin Quinn <span class="dim">/ Applied AI &amp; industrial systems</span></span>
+  </a>
+  <nav class="topbar-nav" aria-label="Portfolio navigation">
+    <a href="#selectedWork" class="active" aria-current="page">Selected work</a>
+    <a href="#explorations">Explorations</a>
+    <a href="#archive">Archive</a>
+    <a href="#aboutGriffin">About Griffin</a>
     <span class="theme-slot" data-theme-mount></span>
   </nav>
 </header>
 
+<main id="mainContent">
 <!-- ══════ ARTIFACT-LED INTRO ══════ -->
 <section class="intro" id="intro">
-  <div class="intro-kicker reveal-up">Griffin Quinn · Industrial systems</div>
+  <div class="intro-kicker reveal-up">Digital Fabric — selected work, 2025–26</div>
   <h1 class="reveal-up">I build the tools between a machine and a decision.</h1>
-  <p class="intro-lead reveal-up">Interactive systems for PLM, manufacturing, applied AI, and the engineering work that connects them.</p>
+  <div class="intro-side reveal-up">
+    <p class="intro-lead">I build MCP servers, local desktop tools, and applied-AI applications that connect models to PLM, CAD, manufacturing systems, and the people making decisions.</p>
+    <div class="intro-actions" aria-label="Portfolio shortcuts">
+      <a href="#selectedWork">Selected work</a>
+      <a href="#aboutGriffin">About Griffin</a>
+    </div>
+  </div>
 
-  <div class="intro-artifacts" aria-label="Selected project artifacts">
-    <button class="intro-artifact intro-artifact--dtc" type="button" onclick="openStudio('dt-composer')" aria-label="Open DTC Production Co-Pilot">
+  <div class="intro-artifacts" data-decision-thread aria-label="Three projects that define the practice">
+    <svg class="decision-thread" viewBox="0 0 1200 680" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+      <path class="decision-thread__base" d="M74 420 C220 420 205 150 410 150 S650 128 716 245 S818 570 1118 570" pathLength="1" />
+      <path class="decision-thread__live" id="decisionThreadPath" d="M74 420 C220 420 205 150 410 150 S650 128 716 245 S818 570 1118 570" pathLength="1" />
+      <circle class="decision-thread__node" cx="74" cy="420" r="5" />
+      <circle class="decision-thread__node" cx="410" cy="150" r="5" />
+      <circle class="decision-thread__node" cx="716" cy="245" r="5" />
+      <circle class="decision-thread__node" cx="1118" cy="570" r="5" />
+      <circle class="decision-thread__packet" id="decisionThreadPacket" cx="74" cy="420" r="6" />
+    </svg>
+
+    <button class="intro-artifact intro-artifact--maia" data-thread-node="0" type="button" onclick="openStudio('playwright')" aria-label="Preview Maia Local MCP Toolkit">
+      <span class="maia-schematic" aria-hidden="true">
+        <span class="maia-schematic__bar"><b>MAIA LOCAL MCP</b><i>127.0.0.1:8790</i></span>
+        <span class="maia-schematic__flow">
+          <b>Studio Pro Maia</b><i>Streamable HTTP</i><b>Capability gates</b><i>Explicit authority</i><b>Local tools</b>
+        </span>
+        <span class="maia-schematic__tools"><i>Files</i><i>Git</i><i>mx / MxBuild</i><i>Widgets</i><i>Browser</i><i>Tasks</i></span>
+        <span class="maia-schematic__facts"><b>62 tools</b><b>Native Windows control center</b><b>Single EXE</b></span>
+      </span>
+      <span><b>Maia Local MCP Toolkit</b><small>Safe local agent authority · packaged for Windows</small></span>
+    </button>
+    <button class="intro-artifact intro-artifact--dtc" data-thread-node="1" type="button" onclick="openStudio('dt-composer')" aria-label="Preview DTC Production Co-Pilot">
       <img src="assets/projects/dtc_composer_cover.png" alt="DTC Production Co-Pilot showing a 3D final assembly line and agent diagnosis">
       <span><b>DTC Production Co-Pilot</b><small>3D plant · MES state · observable agent flow</small></span>
     </button>
-    <button class="intro-artifact intro-artifact--nx" type="button" onclick="openStudio('graph')" aria-label="Open GraphStudio RDF Integration">
-      <img src="assets/projects/teamcenter_semantic_graph_cover.png" alt="Teamcenter semantic graph canvas with a selected lineage edge and evidence inspector">
-      <span><b>GraphStudio</b><small>Teamcenter lineage · RDF · query evidence</small></span>
-    </button>
-    <button class="intro-artifact intro-artifact--ix" type="button" onclick="openStudio('video')" aria-label="Open Local Video Analysis Studio">
-      <img src="assets/projects/video_analyzer_cover.png" alt="Video Analyzer Studio desktop workspace with Gemini scene-report controls">
-      <span><b>Video Analyzer Studio</b><small>Gemini scene reports · local history</small></span>
+    <button class="intro-artifact intro-artifact--nx" data-thread-node="2" type="button" onclick="openStudio('nx')" aria-label="Preview NX MCP Automation Server">
+      <img src="assets/nx-renders/ss-charlie-benchmark.png" alt="NX model created through the MCP automation server, with construction planes and feature geometry visible">
+      <span><b>NX MCP Automation Server</b><small>68 typed NXOpen tools · geometry · FEA</small></span>
     </button>
   </div>
 </section>
 
 <!-- ══════ EDITORIAL PROJECT GALLERY ══════ -->
-<main class="gallery-wrap" id="tacticalGrid">
-  <div class="gallery-controls" id="galleryControls">
-    <div class="gc-tabs" id="catTabs">
-      <button class="gc-chip active" data-filter="all">All <span class="n" data-count-for="all">63</span></button>
-      <button class="gc-chip" data-filter="mcp">Agentic &amp; MCP <span class="n" data-count-for="mcp">0</span></button>
-      <button class="gc-chip" data-filter="ai">Frontier AI <span class="n" data-count-for="ai">0</span></button>
-      <button class="gc-chip" data-filter="plm">Teamcenter &amp; PLM <span class="n" data-count-for="plm">0</span></button>
-      <button class="gc-chip" data-filter="edge">Edge IIoT <span class="n" data-count-for="edge">0</span></button>
-      <button class="gc-chip" data-filter="exe">Standalone <span class="n" data-count-for="exe">0</span></button>
-      <button class="gc-chip" data-filter="app">UI &amp; Hubs <span class="n" data-count-for="app">0</span></button>
+<section class="gallery-wrap" id="tacticalGrid" aria-label="Portfolio projects">
+  <div id="galleryMount">
+    <!-- STATIC-GALLERY:START -->
+    <div class="static-gallery">
+      <noscript><p class="static-gallery__notice">JavaScript is off. Every project remains readable below; interactive filters and previews are unavailable.</p></noscript>
+      <section class="static-gallery__section" aria-labelledby="staticSelectedTitle">
+        <p class="static-gallery__kicker">The defining systems</p>
+        <h2 id="staticSelectedTitle">Selected work</h2>
+        <div class="static-selected-list">
+      <article class="static-selected-project">
+        <p class="static-project-meta">01 / 08 · Agents &amp; MCP · Packaged Windows tool</p>
+        <h3>Maia Local MCP Toolkit</h3>
+        <p class="static-project-summary">Makes local agent authority visible and controllable across Mendix development work.</p>
+        <dl class="static-story">
+          <div><dt>Problem</dt><dd>A useful local agent needs access to files, processes, browsers, builds, and documentation, but unrestricted desktop authority is too broad.</dd></div>
+          <div><dt>My contribution</dt><dd>I built a self-contained Windows MCP server and native control center for Mendix, Git, widget, build, task, browser, and documentation tooling, with interdependent capability gates.</dd></div>
+          <div><dt>Proof</dt><dd>The project includes a TypeScript and Node package, Streamable HTTP transport, a standalone executable path, a documented safety model, and a browser-safe control-center walkthrough.</dd></div>
+          <div><dt>Result</dt><dd>Local tool access becomes an explicit set of capabilities that can be enabled, inspected, and kept within an allowed workspace.</dd></div>
+        </dl>
+        <a href="projects/maia-local-mcp/">Open full case study</a>
+      </article>
+      <article class="static-selected-project">
+        <p class="static-project-meta">02 / 08 · Edge &amp; manufacturing · Working prototype</p>
+        <h3>DTC Production Co-Pilot</h3>
+        <p class="static-project-summary">Makes an assembly-line shortfall diagnosable from one interface while keeping the MES evidence and agent tool path visible.</p>
+        <dl class="static-story">
+          <div><dt>Problem</dt><dd>Plant geometry, station state, and diagnostic reasoning are difficult to follow when they live in separate views and the recommendation hides its evidence.</dd></div>
+          <div><dt>My contribution</dt><dd>I built the React and Three.js production view and paired it with LangGraph and ReAct diagnostic, recovery, and simulation tools in scripted and live modes.</dd></div>
+          <div><dt>Proof</dt><dd>The browser build opens a throughput alert, shows the 3D final-assembly line, identifies the constrained station, and exposes the diagnosis-to-recovery tool sequence.</dd></div>
+          <div><dt>Result</dt><dd>An operator can inspect the shortfall, the source state, and the proposed recovery path in one continuous workflow.</dd></div>
+        </dl>
+        <a href="projects/dtc-production-copilot/">Open full case study</a>
+      </article>
+      <article class="static-selected-project">
+        <p class="static-project-meta">03 / 08 · Agents &amp; MCP · Working prototype</p>
+        <h3>NX MCP Automation Server</h3>
+        <p class="static-project-summary">Wraps 68 NXOpen operations in typed MCP tools for modeling, feature creation, file handling, and FEA results.</p>
+        <dl class="static-story">
+          <div><dt>Problem</dt><dd>CAD automation is hard to reuse conversationally when geometry, feature, and analysis operations remain isolated in journals or opaque commands.</dd></div>
+          <div><dt>My contribution</dt><dd>I built a FastMCP server over NXOpen with 68 typed operations spanning modeling, features, file handling, and FEA result access.</dd></div>
+          <div><dt>Proof</dt><dd>The project includes the 68-operation inventory, an NX runtime capture, a cargo-ship benchmark artifact, and representative browser previews for solid modeling and stress response.</dd></div>
+          <div><dt>Result</dt><dd>NX operations become explicit agent tools with named inputs and outputs instead of an unstructured desktop-control sequence.</dd></div>
+        </dl>
+        <a href="projects/nx-mcp-automation/">Open full case study</a>
+      </article>
+      <article class="static-selected-project">
+        <p class="static-project-meta">04 / 08 · Agents &amp; MCP · Working prototype</p>
+        <h3>MCP-Teamcenter · SOA Gateway</h3>
+        <p class="static-project-summary">Lets an MCP client work through authenticated Teamcenter SOA sessions, with separate read, edit, and full-write gates.</p>
+        <dl class="static-story">
+          <div><dt>Problem</dt><dd>An agent needs authenticated Teamcenter context to be useful, but a single undifferentiated permission level makes enterprise operations difficult to govern.</dd></div>
+          <div><dt>My contribution</dt><dd>I built a FastMCP gateway over Teamcenter SOA with session authentication, local and Eureka modes, resources, prompts, and runtime write gates.</dd></div>
+          <div><dt>Proof</dt><dd>The gateway registers 77 tools, documents its session and discovery modes, and includes a redacted walkthrough of search, object loading, BOM expansion, and permission changes.</dd></div>
+          <div><dt>Result</dt><dd>The client can discover 77 named Teamcenter operations, while the operator can see which write level is enabled before a call runs.</dd></div>
+        </dl>
+        <a href="projects/teamcenter-soa-mcp/">Open full case study</a>
+      </article>
+      <article class="static-selected-project">
+        <p class="static-project-meta">05 / 08 · PLM &amp; CAD · Working prototype</p>
+        <h3>Teamcenter Change KPI Dashboard</h3>
+        <p class="static-project-summary">Moves Teamcenter change reporting out of spreadsheet rollups and into a query-backed view of KPI, workflow, and impact evidence.</p>
+        <dl class="static-story">
+          <div><dt>Problem</dt><dd>Saved-query results, workflow state, and downstream impact are difficult to review when they must be reconstructed across spreadsheet exports.</dd></div>
+          <div><dt>My contribution</dt><dd>I built a reporting dashboard that uses Teamcenter saved queries and SOA hydration to assemble change KPIs, workflow state, and impact views.</dd></div>
+          <div><dt>Proof</dt><dd>The documented implementation and sanitized walkthrough show the saved-query input, hydrated change records, KPI summaries, workflow stages, and linked impact context.</dd></div>
+          <div><dt>Result</dt><dd>Reviewers can follow current change state and impact in one view instead of rebuilding the story from separate rollups.</dd></div>
+        </dl>
+        <a href="projects/teamcenter-change-dashboard/">Open full case study</a>
+      </article>
+      <article class="static-selected-project">
+        <p class="static-project-meta">06 / 08 · Local tools · Packaged collection</p>
+        <h3>Mendix Widget Foundry</h3>
+        <p class="static-project-summary">Ten packaged Mendix widgets, plus the MxWidgetForge and Mx Pluggable Widget Complete Markdown specs I shared so other builders could reuse the build, validation, accessibility, and .mpk packaging process.</p>
+        <dl class="static-story">
+          <div><dt>Problem</dt><dd>Each pluggable widget repeats the same XML, generated typing, accessibility, build, packaging, and deployment decisions unless the working procedure is captured.</dd></div>
+          <div><dt>My contribution</dt><dd>I packaged ten Mendix widgets, then turned the recurring XML, typing, accessibility, build, and validation rules into three agent-spec Markdown guides and two reusable skills that I shared with other Mendix builders.</dd></div>
+          <div><dt>Proof</dt><dd>The portfolio includes the live Diagram Editor LocalLab, a packaged MPK artifact, and the MxWidgetForge and Mx Pluggable Widget Complete specifications with their build and validation constraints.</dd></div>
+          <div><dt>Result</dt><dd>The learned workflow becomes a portable specification and repeatable packaging path rather than staying inside one widget repository.</dd></div>
+        </dl>
+        <a href="projects/mendix-widget-foundry/">Open full case study</a>
+      </article>
+      <article class="static-selected-project">
+        <p class="static-project-meta">07 / 08 · Industrial applications · Working prototype</p>
+        <h3>MRO Workbench</h3>
+        <p class="static-project-summary">Keeps inspection evidence, asset context, repair planning, and disposition inside one guided work-order flow.</p>
+        <dl class="static-story">
+          <div><dt>Problem</dt><dd>An MRO decision becomes harder to follow when inspection findings, JT context, service BOM data, and disposition steps are separated.</dd></div>
+          <div><dt>My contribution</dt><dd>I built a React 19 and Siemens iX prototype with Zustand state, JT context, and a guided path from work-order intake through assessment and disposition.</dd></div>
+          <div><dt>Proof</dt><dd>The live browser build lets a visitor open a sample work order, inspect the asset and service BOM, resume the damage assessment, and carry findings into disposition.</dd></div>
+          <div><dt>Result</dt><dd>The evidence needed for a disposition stays connected to the work order as the user advances through the decision.</dd></div>
+        </dl>
+        <a href="projects/mro-workbench/">Open full case study</a>
+      </article>
+      <article class="static-selected-project">
+        <p class="static-project-meta">08 / 08 · Local tools · Packaged desktop app</p>
+        <h3>Video Analyzer Studio</h3>
+        <p class="static-project-summary">A packaged desktop app that sends a local video to Gemini, turns the response into a structured scene report, and keeps prior runs in SQLite.</p>
+        <dl class="static-story">
+          <div><dt>Problem</dt><dd>Ad hoc video prompts are difficult to compare or revisit when the source, analysis request, report structure, and prior runs are not retained together.</dd></div>
+          <div><dt>My contribution</dt><dd>I built a packaged desktop workspace for selecting a local video, sending it to Gemini, assembling a structured scene report, and storing each run in SQLite history.</dd></div>
+          <div><dt>Proof</dt><dd>The project includes the desktop-workspace capture, the documented upload-to-report workflow, and a sanitized interactive reconstruction of provider selection, scene output, and local history.</dd></div>
+          <div><dt>Result</dt><dd>A video-analysis run becomes a repeatable local record instead of a one-off prompt and response.</dd></div>
+        </dl>
+        <a href="projects/video-analyzer-studio/">Open full case study</a>
+      </article>
+        </div>
+      </section>
+      <section class="static-gallery__section" aria-labelledby="staticExplorationTitle">
+        <p class="static-gallery__kicker">Applied research</p>
+        <h2 id="staticExplorationTitle">Explorations</h2>
+        <div class="static-exploration-list">
+      <article class="static-exploration-project">
+        <p class="static-project-meta">PLM &amp; CAD · Working prototype</p>
+        <h3>GraphStudio · RDF Integration</h3>
+        <p>Integration pipeline that pages Teamcenter data through Mendix AGS REST, transforms it into RDF/SPARQL triples, and validates visible ontology edges in Graph Studio.</p>
+      </article>
+      <article class="static-exploration-project">
+        <p class="static-project-meta">PLM &amp; CAD · Working prototype</p>
+        <h3>NewView — Mendix JT Viewer</h3>
+        <p>Mendix pluggable widget that embeds PLMVisWeb/JTReader, accepts a JT URL or Mendix document source, exposes viewer configuration, and writes load, error, and selection state back to the host app.</p>
+      </article>
+      <article class="static-exploration-project">
+        <p class="static-project-meta">Edge &amp; manufacturing · Working prototype</p>
+        <h3>Mendix Edge IIoT Gateway</h3>
+        <p>Node-RED edge flow that reads nine IIH asset signals over OPC UA, publishes them to MQTT each second, and surfaces operations state in Mendix.</p>
+      </article>
+      <article class="static-exploration-project">
+        <p class="static-project-meta">Experiments · Applied research</p>
+        <h3>Multi-Surface LLM Bench</h3>
+        <p>Model-discovery and evaluation workbench spanning chat, agent, transcription, accuracy, embedding, rerank, and word-error-rate benchmarks with HTML findings.</p>
+      </article>
+      <article class="static-exploration-project">
+        <p class="static-project-meta">Experiments · Applied research</p>
+        <h3>Gene / Protein Interaction Explorer</h3>
+        <p>Interactive gene/protein simulator that applies activator and repressor motifs and compares the resulting synthetic activity with mocked DepMap-style dependency context.</p>
+      </article>
+      <article class="static-exploration-project">
+        <p class="static-project-meta">Experiments · Working prototype</p>
+        <h3>Real-Time WorldView</h3>
+        <p>Cesium globe for real-time visualization of satellites, aircraft, vessels, trains, threats, imagery layers, cameras, and entity details.</p>
+      </article>
+        </div>
+      </section>
+      <section class="static-gallery__section" aria-labelledby="staticArchiveTitle">
+        <p class="static-gallery__kicker">Complete project index</p>
+        <h2 id="staticArchiveTitle">Archive</h2>
+        <div class="static-archive-list">
+      <article class="static-archive-record">
+        <span>01</span>
+        <div><h3>_notes Knowledge Base</h3><p>Local, plaintext-first knowledge base of engineering notes, decisions, and runbooks.</p></div>
+        <small>Local tools · Internal utility</small>
+      </article>
+      <article class="static-archive-record">
+        <span>02</span>
+        <div><h3>AI Lunch Concierge</h3><p>Lunch concierge combining deal radar, price comparison, MapLibre results, and Siemens-model tool calling with a visible recommendation rationale.</p></div>
+        <small>Experiments · Working prototype</small>
+      </article>
+      <article class="static-archive-record">
+        <span>03</span>
+        <div><h3>AI Studio Agent Builder Harness</h3><p>Hardening harness for the Altair AI Studio MCP Agent Builder with operator catalogs, process-XML validation, synthetic datasets, and mission-style run checks.</p></div>
+        <small>Local tools · Internal utility</small>
+      </article>
+      <article class="static-archive-record">
+        <span>04</span>
+        <div><h3>AI Studio AutoModel Cost Scorer</h3><p>Altair AI Studio AutoModel project that deploys a Gradient Boosted Trees annual-defect-cost scorer to AI Hub with per-row explanations.</p></div>
+        <small>Experiments · Applied research</small>
+      </article>
+      <article class="static-archive-record">
+        <span>05</span>
+        <div><h3>AI Studio MCP Agent</h3><p>Installable Altair AI Studio Agent extension that adds profile-driven chat modes and can load external MCP servers inside AI Studio.</p></div>
+        <small>Agents &amp; MCP · Working prototype</small>
+      </article>
+      <article class="static-archive-record">
+        <span>06</span>
+        <div><h3>Animated Hello World</h3><p>A single animated static HTML page—a deliberately tiny visual experiment rather than a project scaffolder.</p></div>
+        <small>Experiments · Archived artifact</small>
+      </article>
+      <article class="static-archive-record">
+        <span>07</span>
+        <div><h3>Capital Copilot Local Model Connector</h3><p>Custom connector that extends Capital Copilot beyond its default provider path so engineering teams can use locally hosted and open-weight models.</p></div>
+        <small>PLM &amp; CAD · Case study</small>
+      </article>
+      <article class="static-archive-record">
+        <span>08</span>
+        <div><h3>Capital ECAD MCP</h3><p>MCP server exposing Capital ECAD operations as typed tools so agents can query and modify harness designs safely.</p></div>
+        <small>Agents &amp; MCP · Working prototype</small>
+      </article>
+      <article class="static-archive-record">
+        <span>09</span>
+        <div><h3>Change Graph Cockpit</h3><p>Cross-system cockpit linking manufacturing-quality NCRs to engineering changes, corrective actions, cost evidence, design inboxes, and copilot context.</p></div>
+        <small>PLM &amp; CAD · Interface concept</small>
+      </article>
+      <article class="static-archive-record">
+        <span>10</span>
+        <div><h3>CRM JDBC Demo Databases</h3><p>Paired PostgreSQL and H2 CRM fixtures for demonstrating Mendix external-database and database-connector patterns through JDBC.</p></div>
+        <small>Local tools · Internal utility</small>
+      </article>
+      <article class="static-archive-record">
+        <span>11</span>
+        <div><h3>Cross-System Change Story</h3><p>Fixed eight-scene supply-chain change-impact narrative spanning Teamcenter, ERP, CRM, MES, graph, and Mendix artifacts with a critical traversal.</p></div>
+        <small>PLM &amp; CAD · Case study</small>
+      </article>
+      <article class="static-archive-record">
+        <span>12</span>
+        <div><h3>CSV Time Tracker</h3><p>Single-page time-entry dashboard and editor for importing, filtering, adjusting, totaling, and exporting CSV records.</p></div>
+        <small>Local tools · Internal utility</small>
+      </article>
+      <article class="static-archive-record">
+        <span>13</span>
+        <div><h3>Digital Thread Storytelling Platform</h3><p>Full-stack storytelling platform with a 3D lifecycle map, 2D journey, no-auth editor, draft persistence, reordering, and publication flow.</p></div>
+        <small>Industrial applications · Working prototype</small>
+      </article>
+      <article class="static-archive-record">
+        <span>14</span>
+        <div><h3>Dotmatics Luma API Research Client</h3><p>Research notes and client experiments for Dotmatics Luma GraphQL and REST operations across apps, repositories, tables, and flows.</p></div>
+        <small>Experiments · Applied research</small>
+      </article>
+      <article class="static-archive-record">
+        <span>15</span>
+        <div><h3>Drone Fleet Control Center</h3><p>Single-file fleet-control interface for filtering drones, selecting an aircraft, and inspecting mission, status, map, battery, and telemetry readouts.</p></div>
+        <small>Industrial applications · Interface concept</small>
+      </article>
+      <article class="static-archive-record">
+        <span>16</span>
+        <div><h3>DTC Production Co-Pilot</h3><p>Makes an assembly-line shortfall diagnosable from one interface while keeping the MES evidence and agent tool path visible.</p></div>
+        <small>Edge &amp; manufacturing · Working prototype</small>
+      </article>
+      <article class="static-archive-record">
+        <span>17</span>
+        <div><h3>Eifel Apex Racing Game</h3><p>Native Godot 3D racing game with selectable cars and circuits, keyboard driving controls, checkpoints, laps, and packaged builds.</p></div>
+        <small>Experiments · Working prototype</small>
+      </article>
+      <article class="static-archive-record">
+        <span>18</span>
+        <div><h3>Flights MCP Server</h3><p>A minimal, well-typed MCP server wrapping a live flights API to test how small a useful agent tool surface can be.</p></div>
+        <small>Agents &amp; MCP · Working prototype</small>
+      </article>
+      <article class="static-archive-record">
+        <span>19</span>
+        <div><h3>Frontend Design Skill Package</h3><p>Reusable frontend-design instruction package for turning a real subject and audience into a distinctive visual direction, implementation, and critique loop.</p></div>
+        <small>Local tools · Documentation</small>
+      </article>
+      <article class="static-archive-record">
+        <span>20</span>
+        <div><h3>Gene / Protein Interaction Explorer</h3><p>Interactive gene/protein simulator that applies activator and repressor motifs and compares the resulting synthetic activity with mocked DepMap-style dependency context.</p></div>
+        <small>Experiments · Applied research</small>
+      </article>
+      <article class="static-archive-record">
+        <span>21</span>
+        <div><h3>Goal Evidence Draft</h3><p>Private drafting document that structures goals into minimum, stretch, and evidence sections; the public interaction uses anonymized sample content.</p></div>
+        <small>Local tools · Archived artifact</small>
+      </article>
+      <article class="static-archive-record">
+        <span>22</span>
+        <div><h3>GraphRAG Knowledge Engine</h3><p>Retrieval engine that grounds LLM answers by traversing a typed knowledge graph rather than a flat vector index.</p></div>
+        <small>Experiments · Applied research</small>
+      </article>
+      <article class="static-archive-record">
+        <span>23</span>
+        <div><h3>GraphStudio · RDF Integration</h3><p>Integration pipeline that pages Teamcenter data through Mendix AGS REST, transforms it into RDF/SPARQL triples, and validates visible ontology edges in Graph Studio.</p></div>
+        <small>PLM &amp; CAD · Working prototype</small>
+      </article>
+      <article class="static-archive-record">
+        <span>24</span>
+        <div><h3>Hyper-V IEVD Snapshot Archive</h3><p>Preserved Hyper-V virtual-machine configuration and recovery snapshots for an IEVD lab environment; the repository contains state artifacts, not provisioning IaC.</p></div>
+        <small>Local tools · Archived artifact</small>
+      </article>
+      <article class="static-archive-record">
+        <span>25</span>
+        <div><h3>Jetson Thor NX Model Artifact</h3><p>Repository preserving the native NX part and faceted representation of a Jetson Thor development-kit model for CAD inspection and reuse.</p></div>
+        <small>PLM &amp; CAD · Archived artifact</small>
+      </article>
+      <article class="static-archive-record">
+        <span>26</span>
+        <div><h3>Maia Local MCP Toolkit</h3><p>Makes local agent authority visible and controllable across Mendix development work.</p></div>
+        <small>Agents &amp; MCP · Packaged Windows tool</small>
+      </article>
+      <article class="static-archive-record">
+        <span>27</span>
+        <div><h3>MCP Reference Workspace</h3><p>Reference workspace containing a read-only flights MCP server and a Windows desktop MCP implementation for side-by-side study—not a scaffolding product.</p></div>
+        <small>Agents &amp; MCP · Documentation</small>
+      </article>
+      <article class="static-archive-record">
+        <span>28</span>
+        <div><h3>MCP-Teamcenter · SOA Gateway</h3><p>Lets an MCP client work through authenticated Teamcenter SOA sessions, with separate read, edit, and full-write gates.</p></div>
+        <small>Agents &amp; MCP · Working prototype</small>
+      </article>
+      <article class="static-archive-record">
+        <span>29</span>
+        <div><h3>Mendix + MES Frontend Presentation</h3><p>Self-contained presentation comparing Mendix extensions for SAP ME with Mendix embedded natively in Opcenter Core.</p></div>
+        <small>Edge &amp; manufacturing · Documentation</small>
+      </article>
+      <article class="static-archive-record">
+        <span>30</span>
+        <div><h3>Mendix Edge IIoT Gateway</h3><p>Node-RED edge flow that reads nine IIH asset signals over OPC UA, publishes them to MQTT each second, and surfaces operations state in Mendix.</p></div>
+        <small>Edge &amp; manufacturing · Working prototype</small>
+      </article>
+      <article class="static-archive-record">
+        <span>31</span>
+        <div><h3>Mendix React Migration Retrospective</h3><p>Retrospective of a Mendix 10.24 React migration attempt, cataloging exported errors, failed approaches, guardrails, and a controlled reset plan.</p></div>
+        <small>Local tools · Documentation</small>
+      </article>
+      <article class="static-archive-record">
+        <span>32</span>
+        <div><h3>Mendix SAP Demo Expressions</h3><p>Deterministic Mendix conditional expressions that replace unavailable SAP demo data with product-specific captions and values for a stable demonstration.</p></div>
+        <small>Industrial applications · Internal utility</small>
+      </article>
+      <article class="static-archive-record">
+        <span>33</span>
+        <div><h3>Mendix Widget Foundry</h3><p>Ten packaged Mendix widgets, plus the MxWidgetForge and Mx Pluggable Widget Complete Markdown specs I shared so other builders could reuse the build, validation, accessibility, and .mpk packaging process.</p></div>
+        <small>Local tools · Packaged collection</small>
+      </article>
+      <article class="static-archive-record">
+        <span>34</span>
+        <div><h3>Mendix-to-NX Configuration Bridge</h3><p>Polling connector that consumes parametric configurations from Mendix, drives NX templates and expressions, exports requested formats, and patches results back.</p></div>
+        <small>PLM &amp; CAD · Working prototype</small>
+      </article>
+      <article class="static-archive-record">
+        <span>35</span>
+        <div><h3>Microsoft 365 Copilot CLI + MCP</h3><p>Windows CLI and MCP bridge that drives the signed-in Microsoft 365 Copilot desktop app through accessibility and window messages, returning read-only grounded text.</p></div>
+        <small>Agents &amp; MCP · Working prototype</small>
+      </article>
+      <article class="static-archive-record">
+        <span>36</span>
+        <div><h3>MRO Workbench</h3><p>Keeps inspection evidence, asset context, repair planning, and disposition inside one guided work-order flow.</p></div>
+        <small>Industrial applications · Working prototype</small>
+      </article>
+      <article class="static-archive-record">
+        <span>37</span>
+        <div><h3>Multi-Surface LLM Bench</h3><p>Model-discovery and evaluation workbench spanning chat, agent, transcription, accuracy, embedding, rerank, and word-error-rate benchmarks with HTML findings.</p></div>
+        <small>Experiments · Applied research</small>
+      </article>
+      <article class="static-archive-record">
+        <span>38</span>
+        <div><h3>MXDocker Snapshot Deployment</h3><p>Isolated Mendix release deployment from a copied MDA and HSQLDB snapshot, with one-time PostgreSQL migration, filestore seed, health checks, and recovery controls.</p></div>
+        <small>Edge &amp; manufacturing · Internal utility</small>
+      </article>
+      <article class="static-archive-record">
+        <span>39</span>
+        <div><h3>Neo4j Desktop MCP Server</h3><p>Twenty-four-tool MCP server for Neo4j Desktop auto-discovery, lifecycle control, databases, read-only Cypher, plugins, backups, settings, and connections.</p></div>
+        <small>Agents &amp; MCP · Working prototype</small>
+      </article>
+      <article class="static-archive-record">
+        <span>40</span>
+        <div><h3>NewView — Mendix JT Viewer</h3><p>Mendix pluggable widget that embeds PLMVisWeb/JTReader, accepts a JT URL or Mendix document source, exposes viewer configuration, and writes load, error, and selection state back to the host app.</p></div>
+        <small>PLM &amp; CAD · Working prototype</small>
+      </article>
+      <article class="static-archive-record">
+        <span>41</span>
+        <div><h3>Nexus iX Workflow Concept</h3><p>Browser interface concept built with locally bundled Siemens iX components to explore a signal-to-action workflow across maintenance, quality, and energy scenarios.</p></div>
+        <small>Industrial applications · Interface concept</small>
+      </article>
+      <article class="static-archive-record">
+        <span>42</span>
+        <div><h3>NX Custom Directory Configuration</h3><p>NX customDirs.dat and startup deployment that direct NX to a managed startup folder and load NXHostFacade.dll with diagnostic logging.</p></div>
+        <small>PLM &amp; CAD · Internal utility</small>
+      </article>
+      <article class="static-archive-record">
+        <span>43</span>
+        <div><h3>NX Journal Automations</h3><p>Two recorded C# NXOpen journals covering FEM/simulation setup and algorithmic-feature logic, retained with their ordered calls and hardcoded-input risks.</p></div>
+        <small>PLM &amp; CAD · Archived artifact</small>
+      </article>
+      <article class="static-archive-record">
+        <span>44</span>
+        <div><h3>NX MCP Automation Server</h3><p>Wraps 68 NXOpen operations in typed MCP tools for modeling, feature creation, file handling, and FEA results.</p></div>
+        <small>Agents &amp; MCP · Working prototype</small>
+      </article>
+      <article class="static-archive-record">
+        <span>45</span>
+        <div><h3>Obsidian Workspace Configuration</h3><p>Obsidian workspace and plugin configuration—including core plugins and obsidian-git settings—not a standalone repair or sync application.</p></div>
+        <small>Local tools · Archived artifact</small>
+      </article>
+      <article class="static-archive-record">
+        <span>46</span>
+        <div><h3>One-Pager Authoring Kit</h3><p>Siemens one-page style guide paired with a fixed HTML composition and Puppeteer PDF build for disciplined A4 authoring and visual QA.</p></div>
+        <small>Local tools · Internal utility</small>
+      </article>
+      <article class="static-archive-record">
+        <span>47</span>
+        <div><h3>OpenWrt Demo Router Toolkit</h3><p>Setup and audit toolkit for OpenWrt/GL.iNet demonstration routers, including client and service inventory, security checks, traffic inspection, and throughput tests.</p></div>
+        <small>Local tools · Internal utility</small>
+      </article>
+      <article class="static-archive-record">
+        <span>48</span>
+        <div><h3>PLMVisWeb SDK Documentation</h3><p>Parser, server, and searchable Markdown mirror for the PLMVisWeb SDK API and developer guide—not a standalone product viewer.</p></div>
+        <small>PLM &amp; CAD · Documentation</small>
+      </article>
+      <article class="static-archive-record">
+        <span>49</span>
+        <div><h3>Presales Command Hub</h3><p>Windows project launcher with a .NET WPF shell, WebView2 React interface, repository scanning, saved metadata, and bounded process output.</p></div>
+        <small>Local tools · Internal utility</small>
+      </article>
+      <article class="static-archive-record">
+        <span>50</span>
+        <div><h3>PriceBook Knowledge Graph</h3><p>Local Neo4j knowledge graph with a Siemens iX viewer and LLM chat agent over software, hardware, and service price-book workbooks.</p></div>
+        <small>Industrial applications · Working prototype</small>
+      </article>
+      <article class="static-archive-record">
+        <span>51</span>
+        <div><h3>Progression Evidence Board</h3><p>Personal progression evidence organizer that assembles required sections, project proof, development planning, and readiness gaps into a review presentation.</p></div>
+        <small>Local tools · Internal utility</small>
+      </article>
+      <article class="static-archive-record">
+        <span>52</span>
+        <div><h3>Real-Time WorldView</h3><p>Cesium globe for real-time visualization of satellites, aircraft, vessels, trains, threats, imagery layers, cameras, and entity details.</p></div>
+        <small>Experiments · Working prototype</small>
+      </article>
+      <article class="static-archive-record">
+        <span>53</span>
+        <div><h3>RL26 Workshop Guide Generator</h3><p>Source and python-docx generator for six hands-on Mendix and Teamcenter workshop activity guides assembled from transcripts and reviewed drafts.</p></div>
+        <small>Local tools · Documentation</small>
+      </article>
+      <article class="static-archive-record">
+        <span>54</span>
+        <div><h3>RUNE DIFF — UE5 MOBA Prototype</h3><p>Unreal Engine 5 C++ 3D MOBA vertical slice with champion and build selection plus clause-driven combat resolution.</p></div>
+        <small>Experiments · Working prototype</small>
+      </article>
+      <article class="static-archive-record">
+        <span>55</span>
+        <div><h3>Salesforce Local Token Broker</h3><p>Packaged local Salesforce OAuth broker with automatic refresh, browser and headless paths, a global CLI, and sanitized read-only API examples for agents.</p></div>
+        <small>Local tools · Internal utility</small>
+      </article>
+      <article class="static-archive-record">
+        <span>56</span>
+        <div><h3>Salesforce Local Token Broker v1</h3><p>Local OAuth client and token broker that completes browser or client-credentials authentication, persists tokens separately, and exposes read-only example routes.</p></div>
+        <small>Local tools · Archived artifact</small>
+      </article>
+      <article class="static-archive-record">
+        <span>57</span>
+        <div><h3>Siemens Deck Builder</h3><p>Assembles on-brand slide decks from a content library and structured outlines.</p></div>
+        <small>Local tools · Internal utility</small>
+      </article>
+      <article class="static-archive-record">
+        <span>58</span>
+        <div><h3>Source-Backed Genealogy Research</h3><p>HTML and PDF genealogy research project that builds a family tree from cited sources and records unresolved evidence gaps; the public demo is fully fictionalized.</p></div>
+        <small>Experiments · Case study</small>
+      </article>
+      <article class="static-archive-record">
+        <span>59</span>
+        <div><h3>Supply Chain Risk — Mendix + Custom Widgets</h3><p>Mendix supply-chain risk demonstrator built around three custom pluggable-widget surfaces—a 3D globe, analytical charts, and an agent graph editor—connected to graph reasoning and forecasting assets.</p></div>
+        <small>Industrial applications · Working prototype</small>
+      </article>
+      <article class="static-archive-record">
+        <span>60</span>
+        <div><h3>Teamcenter BOM — Mendix Widget</h3><p>Packaged Mendix widget that hosts the Teamcenter Active Workspace BOM tree, takes product, configuration, and revision-rule inputs, and returns the selected BOM line’s UID, item ID, and revision ID to the app.</p></div>
+        <small>PLM &amp; CAD · Working prototype</small>
+      </article>
+      <article class="static-archive-record">
+        <span>61</span>
+        <div><h3>Teamcenter Change KPI Dashboard</h3><p>Moves Teamcenter change reporting out of spreadsheet rollups and into a query-backed view of KPI, workflow, and impact evidence.</p></div>
+        <small>PLM &amp; CAD · Working prototype</small>
+      </article>
+      <article class="static-archive-record">
+        <span>62</span>
+        <div><h3>Teamcenter Semantic Graph API</h3><p>Read-only Teamcenter semantic-graph API over Microsoft SQL Server, designed for graph ingestion, node and edge search, and request-correlated diagnostics.</p></div>
+        <small>PLM &amp; CAD · Working prototype</small>
+      </article>
+      <article class="static-archive-record">
+        <span>63</span>
+        <div><h3>Video Analyzer Studio</h3><p>A packaged desktop app that sends a local video to Gemini, turns the response into a structured scene report, and keeps prior runs in SQLite.</p></div>
+        <small>Local tools · Packaged desktop app</small>
+      </article>
+        </div>
+      </section>
     </div>
-    <div class="gc-sep"></div>
-    <div class="gc-tabs" id="archTabs">
-      <button class="gc-chip active" data-arch="all">All work</button>
-      <button class="gc-chip" data-arch="frontier">Frontier R&amp;D</button>
-      <button class="gc-chip" data-arch="utility">Utilities</button>
-    </div>
-    <div class="gc-search">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-      <input type="text" id="searchInput" placeholder="Search tech, name, extension…" aria-label="Search projects">
-    </div>
-    <div class="gc-count" id="resultCount"></div>
+    <!-- STATIC-GALLERY:END -->
   </div>
 
-  <div id="galleryMount"><!-- gallery sections injected by JS --></div>
-
   <div class="gallery-empty" id="galleryEmpty" style="display:none">No projects match this filter.</div>
+</section>
 </main>
+
+<section class="about-griffin" id="aboutGriffin" aria-labelledby="aboutGriffinTitle">
+  <div class="about-griffin__inner">
+    <span class="about-griffin__label">About Griffin</span>
+    <h2 id="aboutGriffinTitle">I work where industrial software, local tools, and applied AI meet.</h2>
+    <div class="about-griffin__copy">
+      <p>Digital Fabric is my working archive of MCP, applied-AI, PLM, CAD, manufacturing, and developer-tool experiments.</p>
+      <p>Across the work, I connect AI to real engineering systems, make the evidence behind decisions visible, and turn repeated implementation work into reusable tools and specifications.</p>
+    </div>
+  </div>
+</section>
 
 <footer class="portfolio-close" aria-labelledby="portfolioCloseTitle">
   <div class="portfolio-close__inner">
     <span class="portfolio-close__index" aria-hidden="true">04</span>
     <div class="portfolio-close__body">
-      <span class="portfolio-close__kicker">Open thread</span>
-      <h2 id="portfolioCloseTitle">There is always another system worth making legible.</h2>
-      <p>The strongest work here starts with a real engineering constraint, a working artifact, and enough curiosity to trace the whole system.</p>
+      <span class="portfolio-close__kicker">Continue the conversation</span>
+      <h2 id="portfolioCloseTitle">If a model makes a recommendation, I want the engineer to see what it touched—and why.</h2>
+      <p>That is the thread through the MCP servers, PLM integrations, Mendix widgets, and local tools collected here.</p>
       <nav class="portfolio-close__links" aria-label="Continue exploring">
-        <a href="index.html#about">About the practice <span>→</span></a>
+        <a href="#aboutGriffin">About Griffin <span>→</span></a>
         <a href="https://github.com/griffin-p-quinn" target="_blank" rel="noopener">GitHub <span>↗</span></a>
         <a href="#intro">Back to top <span>↑</span></a>
       </nav>
+      <p class="portfolio-close__disclaimer">Digital Fabric is a personal portfolio by Griffin Quinn, not an official Siemens site. Views are my own. Demos use sanitized, fictionalized, or browser-safe sample data where noted. Product names and marks belong to their respective owners.</p>
     </div>
-    <p class="portfolio-close__mark">Griffin Quinn<br>Digital Fabric<br><span>Industrial systems · 2026</span></p>
+    <p class="portfolio-close__mark">Griffin Quinn<br>Digital Fabric<br><span>Selected work · 2025–26</span></p>
   </div>
 </footer>
 
@@ -867,38 +1357,40 @@ input[type="range"] { width: 100%; accent-color: var(--teal); }
 <aside class="studio-drawer" id="studioDrawer" role="dialog" aria-modal="true" aria-labelledby="studioTitle" aria-hidden="true">
   <div class="drawer-header">
     <div class="drawer-title-group">
-      <span class="drawer-archetype utility" id="studioArchetype">Utility</span>
+      <span class="drawer-archetype utility" id="studioArchetype">Project preview</span>
       <h2 id="studioTitle">Project Title</h2>
       <div class="drawer-sub" id="studioSub">Project technologies</div>
     </div>
+    <a class="drawer-case-link" id="studioCaseLink" href="#" hidden>Open full case study <span aria-hidden="true">↗</span></a>
     <button class="btn-close-drawer" onclick="closeStudio()" aria-label="Close studio">&times;</button>
   </div>
   <div class="drawer-tabs" role="tablist" aria-label="Project studio views">
     <button class="drawer-tab-btn active" id="tab-arch" onclick="switchDrawerPane('arch')" role="tab" aria-controls="pane-arch" aria-selected="true" tabindex="0">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/></svg>
-      Project Brief
+      Brief
     </button>
     <button class="drawer-tab-btn" id="tab-code" onclick="switchDrawerPane('code')" role="tab" aria-controls="pane-code" aria-selected="false" tabindex="-1">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-      Repository Evidence
+      What you can inspect
     </button>
     <button class="drawer-tab-btn" id="tab-sim" onclick="switchDrawerPane('sim')" role="tab" aria-controls="pane-sim" aria-selected="false" tabindex="-1">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-      Interactive Demo
+      Demo
     </button>
   </div>
-  <div class="drawer-body">
+  <div class="drawer-body" tabindex="0" aria-label="Project preview content">
     <div class="drawer-pane active" id="pane-arch" role="tabpanel" aria-labelledby="tab-arch"><div id="studioArchContent"></div></div>
     <div class="drawer-pane" id="pane-code" role="tabpanel" aria-labelledby="tab-code" hidden><div id="studioCodeContent"></div></div>
     <div class="drawer-pane" id="pane-sim" role="tabpanel" aria-labelledby="tab-sim" hidden><div id="studioSimContent"></div></div>
   </div>
 </aside>
 
+<script src="assets/projects/portfolio-content.js"></script>
 <script>
 /* ═══════════════════════════════════════════════════════════
    DATA MANIFEST — single source of truth
    Feeds: editorial project grid · studio drawer fallbacks
-   spec entries are [label, value]. q = frontier research question.
+   spec entries are [label, value]. q = technical question explored.
    ═══════════════════════════════════════════════════════════ */
 const PROJECTS = [
   /* ── Applied engineering projects ── */
@@ -911,9 +1403,9 @@ const PROJECTS = [
   { k:'hub', name:'Presales Command Hub', cats:['exe','app'], arch:'utility', hero:true,
     blurb:'Windows project launcher with a .NET WPF shell, WebView2 React interface, repository scanning, saved metadata, and bounded process output.',
     tags:['.NET 10','WPF','WebView2','EF Core'], specs:[['Shell','WPF'],['UI','React + WebView2'],['Store','SQLite']] },
-  { k:'ix', name:'Nexus iX Industrial Platform', cats:['app'], arch:'utility', hero:true,
-    blurb:'Siemens iX industrial platform experience that carries shop-floor signals through context and intelligence into maintenance, quality, and energy operator workflows.',
-    tags:['Siemens iX','Web Components','HTML'], specs:[['Signal path','Edge → context → insight → action'],['Workflows','Maintenance · quality · energy'],['UI','Real iX components']] },
+  { k:'ix', name:'Nexus iX Workflow Concept', cats:['app'], arch:'utility',
+    blurb:'Browser concept built with locally bundled Siemens iX components to explore a signal-to-action workflow across maintenance, quality, and energy scenarios.',
+    tags:['Siemens iX','Web Components','HTML'], specs:[['Signal path','Edge → context → insight → action'],['Scenarios','Maintenance · quality · energy'],['UI','Siemens iX components']] },
   { k:'ai-studio-mcp', name:'AI Studio MCP Agent', cats:['mcp','ai'], arch:'frontier', hero:true,
     q:'How can an installable AI Studio agent use provider profiles and external MCP tools without leaving the modeling environment?',
     blurb:'Installable Altair AI Studio Agent extension that adds profile-driven chat modes and can load external MCP servers inside AI Studio.',
@@ -932,7 +1424,7 @@ const PROJECTS = [
     blurb:'Source and python-docx generator for six hands-on Mendix and Teamcenter workshop activity guides assembled from transcripts and reviewed drafts.',
     tags:['Python','python-docx','Mendix','Teamcenter'], specs:[['Output','6 DOCX guides'],['Source','Workshop transcripts'],['Generator','python-docx']] },
   { k:'mx-migration', name:'Mendix React Migration Retrospective', cats:['edge','app'], arch:'utility',
-    blurb:'Evidence-backed retrospective of a Mendix 10.24 React migration attempt, cataloging exported errors, failed approaches, guardrails, and a controlled reset plan.',
+    blurb:'Retrospective of a Mendix 10.24 React migration attempt, cataloging exported errors, failed approaches, guardrails, and a controlled reset plan.',
     tags:['Mendix 10.24','React','Retrospective','CSV'], specs:[['Status','Retrospective'],['Evidence','Issue exports'],['Outcome','Reset plan']] },
   { k:'mx-sap', name:'Mendix + MES Frontend Presentation', cats:['edge','plm'], arch:'utility',
     blurb:'Self-contained presentation comparing Mendix extensions for SAP ME with Mendix embedded natively in Opcenter Core.',
@@ -968,14 +1460,14 @@ const PROJECTS = [
   { k:'hyperv', name:'Hyper-V IEVD Snapshot Archive', cats:['edge'], arch:'utility',
     blurb:'Preserved Hyper-V virtual-machine configuration and recovery snapshots for an IEVD lab environment; the repository contains state artifacts, not provisioning IaC.',
     tags:['Hyper-V','VM configuration','Snapshots'], specs:[['Artifact','VMRS + config'],['Mode','Recovery inventory'],['Automation','Not present']] },
-  { k:'llms', name:'Siemens Model Evaluation Workbench', cats:['ai'], arch:'frontier',
+  { k:'llms', name:'Multi-Surface LLM Bench', cats:['ai'], arch:'frontier',
     q:'How can one workbench compare discovered models across chat, agent, transcription, embedding, rerank, and speech metrics without collapsing them into one score?',
     blurb:'Model-discovery and evaluation workbench spanning chat, agent, transcription, accuracy, embedding, rerank, and word-error-rate benchmarks with HTML findings.',
     tags:['Python','Model discovery','Benchmarks','Transcription'], specs:[['Surfaces','Chat · agent · transcribe'],['Metrics','Accuracy · WER · rerank'],['Output','HTML findings']] },
   { k:'video', name:'Video Analyzer Studio', cats:['ai','app','exe'], arch:'frontier',
     q:'How can a local studio make general video-analysis requests reproducible while retaining structured scene evidence and history?',
-    blurb:'Packaged desktop workspace for selecting a local video, sending it to a configured Gemini-compatible provider, and retaining structured scene reports and run history.',
-    tags:['Desktop app','Gemini','Scene reports','Local history'], specs:[['Surface','Packaged desktop'],['Output','Scene report'],['State','Run history']] },
+    blurb:'Packaged desktop app for sending a local video to Gemini, turning the response into a structured scene report, and retaining prior runs in SQLite.',
+    tags:['Desktop app','Gemini','Scene reports','SQLite history'], specs:[['Surface','Packaged desktop'],['Output','Scene report'],['State','SQLite run history']] },
   { k:'explore', name:'Digital Thread Storytelling Platform', cats:['app','plm'], arch:'utility',
     blurb:'Full-stack storytelling platform with a 3D lifecycle map, 2D journey, no-auth editor, draft persistence, reordering, and publication flow.',
     tags:['React','3D','SQLite','Digital thread'], specs:[['Views','3D + 2D'],['Authoring','Draft editor'],['State','Publish workflow']] },
@@ -991,8 +1483,8 @@ const PROJECTS = [
     tags:['Unreal Engine 5','C++','3D','MOBA'], specs:[['Engine','UE 5.8'],['Mode','Vertical slice'],['System','Combat clauses']] },
   { k:'playwright', name:'Maia Local MCP Toolkit', cats:['mcp','edge','exe'], arch:'frontier',
     q:'How can Maia inspect and test a local Mendix workspace through MCP while keeping file, process, browser, and network authority explicitly gated?',
-    blurb:'Self-contained Windows MCP server and native control center for safe Mendix, Git, widget, build, task, browser, and documentation tooling.',
-    tags:['MCP','Mendix','TypeScript','Windows'], specs:[['Transport','Streamable HTTP'],['Control','Capability gates'],['Package','Standalone EXE']] },
+    blurb:'Self-contained Windows MCP server and native control center that makes local agent authority explicit across Mendix, Git, widgets, builds, tasks, browsers, and documentation.',
+    tags:['MCP','Mendix','TypeScript','Windows'], specs:[['Tools','62'],['Control','Capability gates'],['Package','Standalone EXE']] },
   { k:'pricebook', name:'PriceBook Knowledge Graph', cats:['app','ai'], arch:'frontier',
     q:'How can a graph viewer and grounded chat make a spreadsheet price-book structure inspectable without exposing live commercial data?',
     blurb:'Local Neo4j knowledge graph with a Siemens iX viewer and LLM chat agent over software, hardware, and service price-book workbooks.',
@@ -1014,7 +1506,7 @@ const PROJECTS = [
   /* ── Research and developer-tool projects ── */
   { k:'nx', name:'NX MCP Automation Server', cats:['mcp','plm','ai'], arch:'frontier', hero:true, feat:true,
     q:'What becomes possible when a GenAI agent can drive Siemens NX directly — extruding, booleaning, and running FEA — over Model Context Protocol?',
-    blurb:'A production MCP server exposing 68 typed NX automation tools so an LLM agent can model geometry, run features, and read FEA results conversationally.',
+    blurb:'MCP server exposing 68 typed NX automation tools so an LLM agent can model geometry, run features, and read FEA results conversationally.',
     tags:['FastMCP','NXOpen','Python','JSON-RPC'], specs:[['Tools','68'],['Host','NX Open'],['Protocol','MCP']] },
   { k:'graph', name:'GraphStudio · RDF Integration', cats:['app','plm','ai'], arch:'frontier', hero:true,
     q:'How can Teamcenter and Mendix objects become ontology-valid RDF edges that an enterprise graph platform can visibly traverse?',
@@ -1025,8 +1517,8 @@ const PROJECTS = [
     blurb:'Custom connector that extends Capital Copilot beyond its default provider path so engineering teams can use locally hosted and open-weight models.',
     tags:['Capital Copilot','Custom connector','Local models','Open-weight LLMs'], specs:[['Surface','Capital Copilot'],['Integration','Custom connector'],['Providers','Local + open-weight']] },
   { k:'flights-mcp', name:'Flights MCP Server', cats:['mcp','ai'], arch:'frontier', hero:true,
-    q:'How compact can a production MCP server be while turning a real third-party API into governed, typed agent tools?',
-    blurb:'A minimal, well-typed MCP server wrapping a live flights API — the canonical reference for how small a real agent tool surface can be.',
+    q:'How compact can an MCP server be while turning a third-party API into governed, typed agent tools?',
+    blurb:'A minimal, well-typed MCP server wrapping a live flights API to test how small a useful agent tool surface can be.',
     tags:['FastMCP','Python','REST','JSON-RPC'], specs:[['Protocol','MCP'],['API','Flights'],['Size','Minimal']] },
   { k:'graph-rag', name:'GraphRAG Knowledge Engine', cats:['ai','plm'], arch:'frontier',
     q:'Can retrieval over a typed knowledge graph beat vector RAG for grounded engineering Q&A?',
@@ -1121,15 +1613,48 @@ const PROJECTS = [
     tags:['FastMCP','Teamcenter SOA','Python','MCP'], specs:[['Tools','77 registered'],['Modes','Local + Eureka'],['Gates','Read · edit · full write']] }
 ];
 
-/* Category display metadata (order matters for grid) */
-const CATS = {
-  exe:  'Standalone .EXE',
-  mcp:  'Agentic & MCP',
-  plm:  'Teamcenter & PLM',
-  edge: 'Mendix & Edge IIoT',
-  ai:   'Frontier AI & LLMs',
-  app:  'UI & Desktop Hubs'
+/* Public portfolio model: one curation tier, one primary category, one factual
+   maturity label. The source manifest retains its implementation tags for the
+   project-specific demos, but those tags no longer define the information
+   architecture visitors see. */
+const PORTFOLIO = window.PORTFOLIO_CONTENT || {};
+const SELECTED_KEYS = PORTFOLIO.selectedKeys || ['playwright','dt-composer','nx','soa','tc-change','widgets','mro','video'];
+const EXPLORATION_KEYS = PORTFOLIO.explorationKeys || ['graph','new-view','edge','llms','protein','world'];
+const CASE_STUDY_SLUGS = PORTFOLIO.caseStudySlugs || {
+  playwright:'maia-local-mcp-toolkit', 'dt-composer':'dtc-production-copilot', nx:'nx-mcp-automation',
+  soa:'teamcenter-soa', 'tc-change':'teamcenter-change', widgets:'mendix-widget-foundry',
+  mro:'mro-workbench', video:'video-analyzer-studio'
 };
+const CATEGORY_OPTIONS = PORTFOLIO.categories || [
+  { id:'agents-mcp', label:'Agents & MCP' },
+  { id:'industrial-applications', label:'Industrial applications' },
+  { id:'plm-cad', label:'PLM & CAD' },
+  { id:'edge-manufacturing', label:'Edge & manufacturing' },
+  { id:'local-tools', label:'Local tools' },
+  { id:'experiments', label:'Experiments' }
+];
+const NORMALIZED_CATEGORIES = CATEGORY_OPTIONS.map(x => ({ ...x, id:x.id || x.key }));
+const CATEGORY_LABELS = Object.fromEntries(NORMALIZED_CATEGORIES.map(x => [x.id, x.label]));
+const categoryFor = p => (PORTFOLIO.categoryByKey && PORTFOLIO.categoryByKey[p.k]) ||
+  (p.cats.includes('mcp') ? 'agents-mcp' : p.cats.includes('plm') ? 'plm-cad' :
+   p.cats.includes('edge') ? 'edge-manufacturing' : p.cats.includes('exe') ? 'local-tools' :
+   p.cats.includes('ai') ? 'experiments' : 'industrial-applications');
+const statusFor = p => (PORTFOLIO.statusByKey && PORTFOLIO.statusByKey[p.k]) ||
+  (SELECTED_KEYS.includes(p.k) ? 'Case study' : p.arch === 'frontier' ? 'Applied research' : 'Internal utility');
+const storyFor = p => (PORTFOLIO.stories && PORTFOLIO.stories[p.k]) || null;
+const titleFor = p => (PORTFOLIO.projectOverrides && PORTFOLIO.projectOverrides[p.k] && PORTFOLIO.projectOverrides[p.k].name) || p.name;
+const summaryFor = p => (storyFor(p) && storyFor(p).summary) ||
+  (PORTFOLIO.projectOverrides && PORTFOLIO.projectOverrides[p.k] && PORTFOLIO.projectOverrides[p.k].summary) || p.blurb;
+const mediaAltFor = p => (PORTFOLIO.mediaAlt && PORTFOLIO.mediaAlt[p.k]) || `${titleFor(p)} project artifact`;
+const slugFor = p => CASE_STUDY_SLUGS[p.k] || p.k;
+const previewHref = p => `#project=${encodeURIComponent(slugFor(p))}`;
+const caseStudyHref = p => CASE_STUDY_SLUGS[p.k] ? `projects/${CASE_STUDY_SLUGS[p.k]}/` : '';
+
+PROJECTS.forEach(p => {
+  p.tier = SELECTED_KEYS.includes(p.k) ? 'selected' : EXPLORATION_KEYS.includes(p.k) ? 'exploration' : 'archive';
+  p.category = categoryFor(p);
+  p.status = statusFor(p);
+});
 /* ═══════════════════════════════════════════════════════════
    STUDIO REGISTRY — bespoke deep-dives (flagships)
    arch: [{icon,tag,title,desc}]  ·  code: {file,lang,src}
@@ -1189,8 +1714,12 @@ function runCountUp() {
 }
 
 /* ═════ EDITORIAL GALLERY ═════ */
-const filterState = { cat:'all', arch:'all', q:'' };
-const searchStr = p => (p.name + ' ' + p.tags.join(' ') + ' ' + p.cats.join(' ')).toLowerCase();
+const filterState = { category:'all', q:'' };
+const searchStr = p => {
+  const story = storyFor(p);
+  return [titleFor(p), summaryFor(p), p.tags.join(' '), CATEGORY_LABELS[p.category], p.status,
+    story && story.summary, story && story.problem, story && story.result].filter(Boolean).join(' ').toLowerCase();
+};
 
 /* ── Generative cover art: deterministic SVG "engineering renders" ── */
 const HUES = {
@@ -1218,7 +1747,7 @@ const EMBEDS = {
   protein: { src:'assets/embeds/protein/index.html', poster:'assets/projects/protein_cover.jpg', title:'GENE OS — Gene / Protein Visualizer', note:'Live React build. Initialize the simulator, define binding motifs, and watch DepMap-style dependency scores respond in real time.' },
   hub: { src:'assets/embeds/hub/index.html', title:'ProjectHub · Browser Mock Mode', note:'Real React/Vite build. Outside its desktop WebView host, ProjectHub intentionally uses browser-safe sample repositories and successful no-op launch actions.' },
   widgets: { src:'assets/embeds/widgets/index.html', title:'Diagram Editor · Mendix Widget LocalLab', note:'Real local-lab build of the same pure React display layer packaged into the Mendix widget. Add, connect, nest, import, auto-layout, and bridge selections entirely in the browser.' },
-  ix: { src:'assets/embeds/ix/index.html', title:'Nexus · Intelligent Industrial Platform', note:'Real locally bundled Siemens iX application shell and components. Explore the industrial signal path, six platform capabilities, operating workflows, and light/dark themes.' },
+  ix: { src:'assets/embeds/ix/index.html', title:'Nexus · iX Workflow Concept', note:'Browser concept built with locally bundled Siemens iX components. Explore the illustrative signal path, operating scenarios, and light/dark themes.' },
   'new-view': { src:'assets/embeds/new-view/index.html', poster:'assets/projects/new_view_jt_cover.png', title:'NewView · JT Assembly Viewer', note:'Real standalone PLMVisWeb + JTReader runtime. A bundled JT fixture loads immediately; orbit it and switch among fit, front, isometric, shaded, and face-wireframe views.' },
   'dt-composer': { src:'assets/embeds/dt-composer/index.html', poster:'assets/projects/dtc_composer_cover.png', title:'DTC Production Co-Pilot', gate:true, note:'Real static React build in scripted mode. Launch the alert, inspect the 3D final-assembly line, and follow the diagnosis → recovery → simulation tool flow without a backend or credentials.' }
 };
@@ -1247,7 +1776,7 @@ const INTERACTIONS = Object.freeze({
     { label:'Tank level', base:72, amp:5, unit:'%' }, { label:'Tank temperature', base:49, amp:5, unit:' °C', limit:62 }
   ], { label:'Tank-temperature excursion', boost:20, message:'The documented asset signal crossed its sample limit and the Mendix view received the alarm state.' })],
   hub: [{ type:'embed', key:'hub', title:'Live ProjectHub Browser Build', desc:'Use the real ProjectHub React interface in its deliberate browser mock mode—filter, inspect, favorite, and launch sample repositories safely.' }],
-  ix: [{ type:'embed', key:'ix', title:'Live Nexus iX Industrial Platform', desc:'Navigate the actual Nexus experience built with locally bundled Siemens iX web components.' }],
+  ix: [{ type:'embed', key:'ix', title:'Nexus iX Workflow Concept', desc:'Navigate the browser concept built with locally bundled Siemens iX web components.' }],
   'ai-studio-mcp': [{ type:'aiStudioAgent', title:'AI Studio Agent Connection Lab', desc:'Configure the AI Studio connection path and provider profile, attach an external MCP server, then inspect the in-studio chat and tool trace.' }],
   'ai-studio-millon': [{ type:'autoModelScore', title:'AutoModel GBT Scoring Workbench', desc:'Edit a sanitized scoring row and inspect the annual-cost prediction, empirical error band, local support/contradict drivers, and stepwise sensitivity.' }],
   'change-graph': [{ type:'changeCockpit', title:'Cross-System Change Graph Cockpit', desc:'Start from a sanitized quality NCR and inspect its linked engineering change, corrective action, cost evidence, design task, and approval context.' }],
@@ -1438,103 +1967,149 @@ function coverArt(p) {
     motif +
     `</svg>`;
 }
+function systemDiagram(p) {
+  if (p.k === 'playwright') return `<div class="system-schematic system-schematic--maia" role="img" aria-label="Maia Studio Pro connects over local Streamable HTTP to explicit capability gates controlling 62 local tools.">
+    <div class="system-schematic__eyebrow">LOCAL MCP CONTROL PLANE <span>v2.5.0</span></div>
+    <div class="system-schematic__route"><b>Studio Pro Maia</b><i>HTTP</i><b>Capability gates</b><i>ALLOW</i><b>62 local tools</b></div>
+    <div class="system-schematic__clusters"><span>Files</span><span>Git</span><span>Mendix</span><span>Widgets</span><span>Browser</span><span>Tasks</span><span>Docs</span></div>
+    <div class="system-schematic__foot"><span>Loopback only</span><span>Native Windows control center</span><span>Single executable</span></div>
+  </div>`;
+  if (p.k === 'soa') return `<div class="system-schematic system-schematic--soa" role="img" aria-label="Teamcenter MCP gateway connects an MCP client through runtime authority gates to Teamcenter SOA sessions and 77 registered tools.">
+    <div class="system-schematic__eyebrow">TEAMCENTER AUTHORITY MAP <span>77 tools</span></div>
+    <div class="system-schematic__route"><b>MCP client</b><i>SESSION</i><b>FastMCP gateway</b><i>SOA</i><b>Teamcenter</b></div>
+    <div class="system-schematic__gates"><span>Read</span><span>Edit</span><span>Full write</span></div>
+    <div class="system-schematic__foot"><span>Local mode</span><span>Eureka discovery</span><span>Runtime write gates</span></div>
+  </div>`;
+  if (p.k === 'tc-change') return `<div class="system-schematic system-schematic--change" role="img" aria-label="Teamcenter saved queries flow through SOA hydration into change KPI, workflow, and impact views.">
+    <div class="system-schematic__eyebrow">CHANGE REPORTING PIPELINE <span>Teamcenter</span></div>
+    <div class="system-schematic__route"><b>Saved queries</b><i>SOA</i><b>Hydrated changes</b><i>VIEW</i><b>Decision evidence</b></div>
+    <div class="system-schematic__clusters"><span>KPI</span><span>Workflow</span><span>Impact</span><span>Ownership</span><span>Age</span></div>
+    <div class="system-schematic__foot"><span>Query-backed</span><span>Spreadsheet rollups replaced</span><span>Sanitized walkthrough</span></div>
+  </div>`;
+  return '';
+}
 function coverInner(p) {
   const rm = REAL_MEDIA[p.k];
   if (rm && rm.video) return `<video muted loop playsinline preload="none" poster="${rm.poster}"><source src="${rm.video}" type="video/mp4"></video>`;
-  if (rm) return `<img src="${rm.poster}" alt="${esc(p.name)} render" loading="lazy">`;
-  // No invented thumbnail: projects without repository media become honest
-  // typographic folios in the editorial index.
-  return '';
+  if (rm) return `<img src="${rm.poster}" alt="${esc(mediaAltFor(p))}" loading="lazy">`;
+  return systemDiagram(p);
 }
-function coverBlock(p, clickable) {
-  const rm = REAL_MEDIA[p.k], live = rm && rm.video;
-  const click = clickable ? ` onclick="openStudio('${p.k}')"` : '';
-  return `<div class="cover ${live ? 'live-media' : ''}" data-k="${p.k}"${click}>
+function coverBlock(p) {
+  const rm = REAL_MEDIA[p.k], live = rm && rm.video, diagram = Boolean(systemDiagram(p));
+  return `<a class="cover ${live ? 'live-media' : ''}${diagram ? ' diagram-media' : ''}" data-k="${p.k}" data-media-kind="${rm ? 'capture' : diagram ? 'diagram' : 'text'}" data-preview-key="${p.k}" href="${previewHref(p)}" aria-label="Quick preview of ${esc(titleFor(p))}">
     <div class="cover-media">${coverInner(p)}</div>
-    <span class="cover-badge ${p.arch}">${p.arch === 'frontier' ? 'Frontier' : 'Utility'}</span>
-    <span class="cover-tag">${live ? 'Live render' : 'View'}</span>
-  </div>`;
+    <span class="cover-badge">${esc(p.status)}</span>
+    <span class="cover-tag">${live ? 'Motion capture' : 'Quick preview'}</span>
+  </a>`;
 }
 
-/* ── Piece + tile templates ── */
+/* ── Selected work, exploration, and archive templates ── */
+function storyField(label, value) {
+  const text = Array.isArray(value) ? value.join(' · ') : value;
+  return `<div><dt>${label}</dt><dd>${esc(text || 'See the project brief.')}</dd></div>`;
+}
 function featurePieceHTML(p, i, total) {
   const flip = i % 2 === 1;
+  const story = storyFor(p) || {};
   const stack = p.tags.slice(0, 4).map(t => `<span class="piece-tag">${esc(t)}</span>`).join('');
-  return `<article class="piece ${p.arch} reveal-piece${flip ? ' flip' : ''}"
-      data-k="${p.k}" data-cats="${p.cats.join(' ')}" data-arch="${p.arch}" data-search="${esc(searchStr(p))}">
-    <div class="piece-visual">${coverBlock(p, true)}</div>
+  const caseHref = caseStudyHref(p);
+  return `<article class="piece reveal-piece${flip ? ' flip' : ''}"
+      data-k="${p.k}" data-category="${p.category}" data-status="${esc(p.status)}" data-search="${esc(searchStr(p))}">
+    <div class="piece-visual">${coverBlock(p)}</div>
     <div class="piece-body">
       <div class="piece-meta">
         <span class="piece-index">${String(i + 1).padStart(2, '0')}<span class="tot"> / ${String(total).padStart(2, '0')}</span></span>
-        <span class="m-dot"></span><span class="piece-arch">${p.arch === 'frontier' ? 'Frontier R&D' : 'Utility'}</span>
+        <span class="m-dot"></span><span class="piece-arch">${esc(CATEGORY_LABELS[p.category])}</span>
+        <span class="piece-status">${esc(p.status)}</span>
       </div>
-      <h3 class="piece-title">${esc(p.name)}</h3>
-      <p class="piece-blurb">${esc(p.blurb)}</p>
+      <h3 class="piece-title">${esc(titleFor(p))}</h3>
+      <p class="piece-blurb piece-blurb--lead">${esc(story.summary || summaryFor(p))}</p>
+      <dl class="piece-story">
+        ${storyField('Problem', story.problem || p.q)}
+        ${storyField('My contribution', story.contribution || p.blurb)}
+        ${storyField('Proof', story.proof || p.specs.map(x => x.join(': ')))}
+        ${storyField('Result', story.result || p.blurb)}
+      </dl>
       <div class="piece-footer">
         <div class="piece-tags">${stack}</div>
-        <button class="piece-open" onclick="openStudio('${p.k}')" aria-label="Open ${esc(p.name)}">View project<span class="po-line"></span></button>
+        <div class="piece-links">
+          <a class="piece-preview" href="${previewHref(p)}" data-preview-key="${p.k}">Quick preview</a>
+          <a class="piece-open" href="${caseHref}">Full case study<span class="po-line"></span></a>
+        </div>
       </div>
     </div>
   </article>`;
 }
 function tileHTML(p) {
   const tags = p.tags.slice(0, 3).map(t => `<span class="tile-tag">${esc(t)}</span>`).join('');
-  return `<article class="tile ${p.arch} reveal-piece"
-      data-k="${p.k}" data-cats="${p.cats.join(' ')}" data-arch="${p.arch}" data-search="${esc(searchStr(p))}"
-      onclick="openStudio('${p.k}')" role="button" tabindex="0" aria-label="Open studio for ${esc(p.name)}">
-    ${coverBlock(p, false)}
+  return `<article class="tile reveal-piece"
+      data-k="${p.k}" data-category="${p.category}" data-status="${esc(p.status)}" data-search="${esc(searchStr(p))}">
+    ${coverBlock(p)}
     <div class="tile-cap">
-      <h3 class="tile-title">${esc(p.name)}</h3>
-      <p class="tile-blurb">${esc(p.blurb)}</p>
+      <div class="tile-meta"><span class="t-arch">${esc(CATEGORY_LABELS[p.category])}</span><span>${esc(p.status)}</span></div>
+      <h3 class="tile-title">${esc(titleFor(p))}</h3>
+      <p class="tile-blurb">${esc(summaryFor(p))}</p>
       <div class="tile-tags">${tags}</div>
+      <a class="tile-preview" href="${previewHref(p)}" data-preview-key="${p.k}">Explore project <span aria-hidden="true">→</span></a>
     </div>
   </article>`;
 }
-function divider(title, kicker, cls, count, note, first) {
+function archiveRowHTML(p, i) {
+  return `<article class="archive-row" data-k="${p.k}" data-category="${p.category}" data-status="${esc(p.status)}" data-search="${esc(searchStr(p))}">
+    <a class="archive-row__link" href="${previewHref(p)}" data-preview-key="${p.k}">
+      <span class="archive-row__index">${String(i + 1).padStart(2, '0')}</span>
+      <span class="archive-row__main"><strong>${esc(titleFor(p))}</strong><small>${esc(summaryFor(p))}</small></span>
+      <span class="archive-row__area">${esc(CATEGORY_LABELS[p.category])}</span>
+      <span class="archive-row__status">${esc(p.status)}</span>
+      <span class="archive-row__arrow" aria-hidden="true">↗</span>
+    </a>
+  </article>`;
+}
+function divider(title, kicker, cls, note, first) {
   return `<div class="gallery-divider ${cls}${first ? ' first' : ''} reveal-piece">
     <div class="gd-kicker">${kicker}</div>
-    <div class="gd-row"><h2>${title}</h2><span class="gd-count"><span data-count-el="${cls}">${count}</span> projects</span></div>
+    <div class="gd-row"><h2>${title}</h2></div>
     <p class="gd-note">${note}</p>
+  </div>`;
+}
+function controlsHTML() {
+  const categories = NORMALIZED_CATEGORIES.map((cat) =>
+    `<button class="gc-chip" type="button" data-filter="${cat.id}" aria-pressed="false">${esc(cat.label)}</button>`).join('');
+  return `<div class="gallery-controls" id="galleryControls">
+    <div class="gc-tabs" id="catTabs" role="group" aria-label="Filter the archive by primary category">
+      <button class="gc-chip active" type="button" data-filter="all" aria-pressed="true">All work</button>${categories}
+    </div>
+    <div class="gc-search">
+      <svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input type="search" id="searchInput" placeholder="Search the archive…" aria-label="Search the complete project archive">
+    </div>
+    <div class="gc-count" id="resultCount" role="status" aria-live="polite">Complete archive</div>
   </div>`;
 }
 
 function renderGallery() {
-  const heroOrder = ['dt-composer', 'new-view', 'change-graph', 'nx', 'mro', 'video'];
-  const heroKeys = new Set(heroOrder);
-  const heroes = heroOrder.map(k => PROJECTS.find(p => p.k === k)).filter(Boolean);
-  const catalogLead = new Map([['widgets', 0]]);
-  const realMediaFirst = (a, b) => {
-    const leadA = catalogLead.has(a.k) ? catalogLead.get(a.k) : 99;
-    const leadB = catalogLead.has(b.k) ? catalogLead.get(b.k) : 99;
-    return leadA - leadB || Number(Boolean(REAL_MEDIA[b.k])) - Number(Boolean(REAL_MEDIA[a.k]));
-  };
-  const restF  = PROJECTS.filter(p => !heroKeys.has(p.k) && p.arch === 'frontier').sort(realMediaFirst);
-  const restU  = PROJECTS.filter(p => !heroKeys.has(p.k) && p.arch === 'utility').sort(realMediaFirst);
-  const section = (inner, key) => `<section class="gallery-section" data-section="${key}">${inner}</section>`;
+  const selected = SELECTED_KEYS.map(k => PROJECTS.find(p => p.k === k)).filter(Boolean);
+  const explorations = EXPLORATION_KEYS.map(k => PROJECTS.find(p => p.k === k)).filter(Boolean);
+  const archive = [...PROJECTS].sort((a, b) => titleFor(a).localeCompare(titleFor(b)));
+  const section = (inner, key, id) => `<section class="gallery-section" id="${id}" data-section="${key}">${inner}</section>`;
   let html = '';
   html += section(
-    divider('Featured builds', 'Selected work', 'featured', heroes.length,
-      'Six projects where the artifact can carry the story.', true) +
-    `<div class="feature-stack">${heroes.map((p, i) => featurePieceHTML(p, i, heroes.length)).join('')}</div>`, 'featured');
+    divider('Selected work', 'The defining systems', 'featured',
+      'Eight projects I can show in detail—from safe local MCP tooling and NX automation to packaged Mendix widgets and a Gemini video-analysis desktop app.', true) +
+    `<div class="feature-stack" data-selected-thread>${selected.map((p, i) => featurePieceHTML(p, i, selected.length)).join('')}</div>`, 'featured', 'selectedWork');
   html += section(
-    divider('Exploratory systems', 'Research &amp; development', 'frontier', restF.length,
-      'Experimental engineering bridging generative AI with CAD, PLM, and knowledge graphs.') +
-    `<div class="tile-grid">${restF.map(tileHTML).join('')}</div>`, 'frontier');
+    divider('Explorations', 'Applied research', 'frontier',
+      'Smaller studies where a technical question, visual idea, or integration pattern was worth testing directly.') +
+    `<div class="tile-grid">${explorations.map(tileHTML).join('')}</div>`, 'frontier', 'explorations');
   html += section(
-    divider('Applied engineering tools', 'Utilities &amp; delivery', 'utility', restU.length,
-      'Purpose-built developer and presales tooling, described strictly by what the technology does.') +
-    `<div class="tile-grid">${restU.map(tileHTML).join('')}</div>`, 'utility');
+    divider('Archive', 'Complete project index', 'utility',
+      'The full searchable record—working prototypes, internal utilities, interface concepts, research, documentation, and archived artifacts.') +
+    controlsHTML() +
+    `<div class="archive-list" id="archiveList">${archive.map(archiveRowHTML).join('')}</div>`, 'utility', 'archive');
   $('#galleryMount').innerHTML = html;
 
-  Object.keys(CATS).forEach(c => {
-    const el = $(`[data-count-for="${c}"]`);
-    if (el) el.textContent = PROJECTS.filter(p => p.cats.includes(c)).length;
-  });
-  $('[data-count-for="all"]').textContent = PROJECTS.length;
-
-  observeReveal();
   wireCovers();
-  coverParallax();
+  wirePreviewLinks();
   applyFilters();
 }
 
@@ -1544,111 +2119,87 @@ function wireCovers() {
     c.addEventListener('mouseenter', () => { if (!REDUCE) { v.play().catch(() => {}); c.classList.add('playing'); } });
     c.addEventListener('mouseleave', () => { v.pause(); c.classList.remove('playing'); });
   });
-  $$('.piece .cover').forEach(el => {
-    el.setAttribute('tabindex', '0'); el.setAttribute('role', 'button');
-    el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openStudio(el.dataset.k); } });
-  });
-  $$('.tile').forEach(el => {
-    el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openStudio(el.dataset.k); } });
-  });
 }
-
-function observeReveal() {
-  const items = $$('.reveal-piece');
-  if (REDUCE) { items.forEach(i => i.classList.add('in')); return; }
-  const io = new IntersectionObserver((entries, obs) => {
-    entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); obs.unobserve(en.target); } });
-  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
-  items.forEach(i => io.observe(i));
-}
-
-function coverParallax() {
-  if (REDUCE) return;
-  const medias = $$('.cover-media');
-  let ticking = false;
-  const upd = () => {
-    ticking = false; const vh = innerHeight;
-    medias.forEach(cm => {
-      const c = cm.parentElement, r = c.getBoundingClientRect();
-      if (r.bottom < 0 || r.top > vh) return;
-      const prog = (r.top + r.height / 2 - vh / 2) / vh;
-      cm.style.setProperty('--cover-shift', (prog * -22).toFixed(1) + 'px');
+function wirePreviewLinks() {
+  $$('[data-preview-key]').forEach(link => {
+    link.addEventListener('click', e => {
+      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      e.preventDefault();
+      openStudio(link.dataset.previewKey);
     });
-  };
-  addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(upd); } }, { passive: true });
-  upd();
+  });
 }
 
 function applyFilters() {
-  const { cat, arch, q } = filterState;
+  const { category, q } = filterState;
   let visible = 0;
-  $$('.piece, .tile').forEach(el => {
-    const okCat  = cat === 'all'  || el.dataset.cats.split(' ').includes(cat);
-    const okArch = arch === 'all' || el.dataset.arch === arch;
+  $$('.archive-row').forEach(el => {
+    const okCategory = category === 'all' || el.dataset.category === category;
     const okQ    = !q || el.dataset.search.includes(q);
-    const show = okCat && okArch && okQ;
-    el.style.display = show ? '' : 'none';
+    const show = okCategory && okQ;
+    el.hidden = !show;
     if (show) visible++;
   });
-  $$('.gallery-section').forEach(sec => {
-    const shown = $$('.piece, .tile', sec).filter(e => e.style.display !== 'none').length;
-    sec.style.display = shown ? '' : 'none';
-    const cnt = $('[data-count-el]', sec);
-    if (cnt) cnt.textContent = shown;
-  });
-  $('#resultCount').innerHTML = `<b>${visible}</b> / ${PROJECTS.length}`;
-  $('#galleryEmpty').style.display = visible ? 'none' : '';
+  const result = $('#resultCount');
+  if (result) result.textContent = visible === PROJECTS.length ? 'Complete archive' : `${visible} record${visible === 1 ? '' : 's'}`;
+  const empty = $('#galleryEmpty');
+  if (empty) empty.style.display = visible ? 'none' : '';
 }
 
 function wireControls() {
-  $('#catTabs').addEventListener('click', e => {
+  const tabs = $('#catTabs'), input = $('#searchInput');
+  if (!tabs || !input) return;
+  tabs.addEventListener('click', e => {
     const b = e.target.closest('.gc-chip'); if (!b) return;
-    $$('#catTabs .gc-chip').forEach(x => x.classList.remove('active'));
-    b.classList.add('active'); filterState.cat = b.dataset.filter; applyFilters();
+    $$('#catTabs .gc-chip').forEach(x => { x.classList.remove('active'); x.setAttribute('aria-pressed', 'false'); });
+    b.classList.add('active'); b.setAttribute('aria-pressed', 'true');
+    filterState.category = b.dataset.filter; applyFilters();
   });
-  $('#archTabs').addEventListener('click', e => {
-    const b = e.target.closest('.gc-chip'); if (!b) return;
-    $$('#archTabs .gc-chip').forEach(x => x.classList.remove('active'));
-    b.classList.add('active'); filterState.arch = b.dataset.arch; applyFilters();
-  });
-  $('#searchInput').addEventListener('input', e => {
+  input.addEventListener('input', e => {
     filterState.q = e.target.value.trim().toLowerCase(); applyFilters();
   });
 }
 
 /* ═════ STUDIO DRAWER ═════ */
-let activeWidgets = [], lastFocus = null, studioSession = null;
+let activeWidgets = [], lastFocus = null, studioSession = null, studioHistoryOwned = false;
 
 function renderArchPane(p, reg) {
   const evidence = (window.PROJECT_EVIDENCE && window.PROJECT_EVIDENCE[p.k]) || { files:[], demo:'The portfolio preview is a sanitized representation of the manifest description.' };
-  const question = p.arch === 'frontier' && p.q
-    ? `<div class="research-callout"><div class="rc-lbl">◇ Frontier research question</div><div class="rc-q">${esc(p.q)}</div></div>` : '';
+  const story = storyFor(p);
+  const question = p.q
+    ? `<div class="research-callout"><div class="rc-lbl">Question explored</div><div class="rc-q">${esc(p.q)}</div></div>` : '';
   const facts = p.specs.slice(0, 3).map(([label, value]) => `<div class="proof-fact"><span>${esc(label)}</span><strong>${esc(value)}</strong></div>`).join('');
-  const files = evidence.files.slice(0, 3).map(([file, role]) => `<div class="proof-file"><code>${esc(file)}</code><span>${esc(role)}</span></div>`).join('');
   const artifacts = (evidence.artifacts || []).map(a => `<figure class="proof-artifact"><img src="${esc(a.src)}" alt="${esc(a.alt)}" loading="lazy"><figcaption><b>${esc(a.title)}</b><span>${esc(a.note)}</span></figcaption></figure>`).join('');
+  const narrative = story ? `<dl class="drawer-story">
+    ${storyField('Problem', story.problem)}
+    ${storyField('My contribution', story.contribution)}
+    ${storyField('Proof', story.proof)}
+    ${storyField('Result', story.result)}
+  </dl>` : '';
   return `${question}<div class="proof-brief">
     <section class="proof-purpose">
-      <span class="proof-kicker">Verified purpose</span>
-      <p>${esc(p.blurb)}</p>
+      <span class="proof-kicker">Why it matters</span>
+      <p>${esc(summaryFor(p))}</p>
     </section>
-    ${artifacts ? `<section class="proof-artifacts" aria-label="Verified project artifacts">${artifacts}</section>` : ''}
+    ${narrative}
+    ${artifacts ? `<section class="proof-artifacts" aria-label="Project artifacts">${artifacts}</section>` : ''}
     <div class="proof-facts" aria-label="Project facts">${facts}</div>
-    <section class="proof-evidence">
-      <span class="proof-section-label">Source record</span>
-      <div class="proof-file-list">${files || '<div class="proof-file"><code>Manifest entry</code><span>No additional source artifact is available for this entry.</span></div>'}</div>
-    </section>
   </div>`;
 }
 
 function renderCodePane(p, reg) {
-  const evidence = (window.PROJECT_EVIDENCE && window.PROJECT_EVIDENCE[p.k]) || { files:[], demo:'No unsupported source claim is made.' };
-  const files = evidence.files.map(([file, role]) => `<div class="proof-file"><code>${esc(file)}</code><span>${esc(role)}</span></div>`).join('');
+  const rm = REAL_MEDIA[p.k], embed = EMBEDS[p.k], caseHref = caseStudyHref(p);
+  const inspect = [];
+  if (caseHref) inspect.push(`<a href="${caseHref}"><b>Full case study</b><span>Permanent project brief, architecture, contribution, and result.</span><i aria-hidden="true">↗</i></a>`);
+  if (embed) inspect.push(`<a href="${esc(embed.src)}" target="_blank" rel="noopener"><b>Live browser build</b><span>${esc(embed.title)}</span><i aria-hidden="true">↗</i></a>`);
+  if (rm && rm.video) inspect.push(`<a href="${esc(rm.video)}" target="_blank" rel="noopener"><b>Runtime capture</b><span>Open the recorded project motion.</span><i aria-hidden="true">↗</i></a>`);
+  else if (rm) inspect.push(`<a href="${esc(rm.poster)}" target="_blank" rel="noopener"><b>Project artifact</b><span>Open the capture at full resolution.</span><i aria-hidden="true">↗</i></a>`);
   const truths = p.specs.slice(0, 3).map(([label, value]) => `<article><span>${esc(label)}</span><b>${esc(value)}</b></article>`).join('');
   return `<div class="evidence-ledger">
-    <span class="proof-kicker">Source record</span>
-    <p class="evidence-ledger__intro">Files and artifacts that define what this project does.</p>
-    <div class="proof-file-list">${files || '<div class="proof-file"><code>Manifest entry</code><span>No additional source artifact is available for this entry.</span></div>'}</div>
-    <span class="proof-section-label" style="margin-top:6px">Documented capabilities</span>
+    <span class="proof-kicker">What you can inspect</span>
+    <p class="evidence-ledger__intro">Public-facing artifacts and build facts for this project.</p>
+    ${inspect.length ? `<div class="inspect-links">${inspect.join('')}</div>` : `<p class="inspect-note">The public portfolio includes a browser-safe walkthrough and the build facts below; project source is not linked here.</p>`}
+    <span class="proof-section-label">Build facts</span>
     <div class="evidence-ledger__truth">${truths}</div>
   </div>`;
 }
@@ -1712,18 +2263,27 @@ function mountActiveSimulation() {
   studioSession.mounted = true;
 }
 
-window.openStudio = k => {
+function projectFromLocation() {
+  const params = new URLSearchParams(location.hash.replace(/^#/, ''));
+  const slug = params.get('project');
+  return slug ? PROJECTS.find(p => slugFor(p) === slug) : null;
+}
+
+window.openStudio = (k, options = {}) => {
   const p = PROJECTS.find(x => x.k === k); if (!p) return;
   const wasOpen = $('#studioDrawer').classList.contains('open');
   if (!wasOpen) lastFocus = document.activeElement;
   destroyActiveWidgets();
   const reg = studioRegistry[k];
   studioSession = { project:p, reg, mounted:false };
-  $('#studioTitle').textContent = p.name;
-  $('#studioSub').textContent = p.tags.slice(0, 3).join(' · ');
+  $('#studioTitle').textContent = titleFor(p);
+  $('#studioSub').textContent = [CATEGORY_LABELS[p.category], ...p.tags.slice(0, 3)].join(' · ');
   const badge = $('#studioArchetype');
-  badge.className = 'drawer-archetype ' + p.arch;
-  badge.textContent = p.arch === 'frontier' ? 'Frontier R&D' : 'Utility';
+  badge.className = 'drawer-archetype';
+  badge.textContent = p.status;
+  const caseLink = $('#studioCaseLink'), caseHref = caseStudyHref(p);
+  caseLink.hidden = !caseHref;
+  if (caseHref) caseLink.href = caseHref;
   $('#studioArchContent').innerHTML = renderArchPane(p, reg);
   $('#studioCodeContent').innerHTML = renderCodePane(p, reg);
   $('#studioSimContent').innerHTML = '';
@@ -1736,8 +2296,12 @@ window.openStudio = k => {
   $('.btn-close-drawer').focus();
   document.removeEventListener('keydown', onDrawerKey);
   document.addEventListener('keydown', onDrawerKey);
+  if (options.updateHistory !== false && projectFromLocation()?.k !== p.k) {
+    history.pushState({ project:p.k }, '', previewHref(p));
+    studioHistoryOwned = true;
+  }
 };
-window.closeStudio = () => {
+window.closeStudio = (options = {}) => {
   $('#studioBackdrop').classList.remove('open');
   const d = $('#studioDrawer'); d.classList.remove('open'); d.setAttribute('aria-hidden', 'true');
   [...document.body.children].forEach(el => { if (el.inert) el.inert = false; });
@@ -1747,7 +2311,23 @@ window.closeStudio = () => {
   document.removeEventListener('keydown', onDrawerKey);
   if (lastFocus && document.contains(lastFocus)) lastFocus.focus();
   lastFocus = null;
+  if (options.updateHistory !== false && projectFromLocation()) {
+    if (studioHistoryOwned) {
+      studioHistoryOwned = false;
+      history.back();
+    } else {
+      const url = new URL(location.href); url.hash = '';
+      history.replaceState(null, '', url);
+    }
+  }
 };
+function syncStudioFromLocation() {
+  const project = projectFromLocation();
+  if (project) openStudio(project.k, { updateHistory:false });
+  else if ($('#studioDrawer').classList.contains('open')) closeStudio({ updateHistory:false });
+}
+addEventListener('popstate', syncStudioFromLocation);
+addEventListener('hashchange', syncStudioFromLocation);
 function onDrawerKey(e) {
   if (e.key === 'Escape') { e.preventDefault(); closeStudio(); return; }
   const d = $('#studioDrawer');
@@ -1769,6 +2349,8 @@ function onDrawerKey(e) {
 renderGallery();
 wireControls();
 runCountUp();
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', syncStudioFromLocation, { once:true });
+else syncStudioFromLocation();
 /* ═══════════════════════════════════════════════════════════
    INTERACTIVE WIDGET FACTORIES
    Each returns a cleanup() that halts timers/animation loops.
@@ -2211,8 +2793,8 @@ function wScenario(spec, host, head) {
     const button = e.currentTarget, turn = ++generation; button.disabled = true; state.className = 'sim-state busy'; state.querySelector('span').textContent = 'Running · browser model';
     const scan = host.querySelector('[data-scan]'); scan.classList.remove('busy'); void scan.offsetWidth; scan.classList.add('busy');
     const rows = [...host.querySelectorAll('[data-step]')]; rows.forEach(r=>{r.className='sim-trace-row';r.lastElementChild.textContent='queued';});
-    steps.forEach((s,i)=>timers.push(setTimeout(()=>{ if(turn!==generation)return; if(i>0){rows[i-1].className='sim-trace-row done';rows[i-1].lastElementChild.textContent='verified';} rows[i].className='sim-trace-row done';rows[i].lastElementChild.textContent=i===steps.length-1?'complete':'running'; }, REDUCE ? i*20 : i*230)));
-    timers.push(setTimeout(()=>{ if(turn!==generation)return; rows.forEach(r=>{r.className='sim-trace-row done';r.lastElementChild.textContent='verified';}); state.className='sim-state live';state.querySelector('span').textContent='Complete · output verified';button.disabled=false; }, REDUCE?steps.length*22:steps.length*230+160));
+    steps.forEach((s,i)=>timers.push(setTimeout(()=>{ if(turn!==generation)return; if(i>0){rows[i-1].className='sim-trace-row done';rows[i-1].lastElementChild.textContent='shown';} rows[i].className='sim-trace-row done';rows[i].lastElementChild.textContent=i===steps.length-1?'complete':'running'; }, REDUCE ? i*20 : i*230)));
+    timers.push(setTimeout(()=>{ if(turn!==generation)return; rows.forEach(r=>{r.className='sim-trace-row done';r.lastElementChild.textContent='shown';}); state.className='sim-state live';state.querySelector('span').textContent='Complete · sample output ready';button.disabled=false; }, REDUCE?steps.length*22:steps.length*230+160));
   });
   update();
   return () => { generation++; timers.forEach(clearTimeout); };
@@ -2263,13 +2845,13 @@ function wTelemetry(spec, host, head, ctx) {
 /* ── Connector / governed data-flow trace ── */
 function wFlow(spec, host, head) {
   const nodes = spec.nodes || [], timers=[]; let generation=0, active=0;
-  host.innerHTML=head+`<div class="sim-toolbar"><button class="w-btn primary" data-run>${esc(spec.action||'Send sample')}</button><span class="sim-state live" data-state><i></i><span>Ready · path validated</span></span></div>
+  host.innerHTML=head+`<div class="sim-toolbar"><button class="w-btn primary" data-run>${esc(spec.action||'Send sample')}</button><span class="sim-state live" data-state><i></i><span>Ready · sample path</span></span></div>
     <div class="flow-canvas" style="--flow-count:${nodes.length}">${nodes.map((n,i)=>`<button class="flow-node${i===0?' active':''}" data-node="${i}"><span class="fn-tag">${esc(n.tag)}</span><span class="fn-title">${esc(n.title)}</span><span class="fn-meta">${esc(n.meta||'')}</span></button>`).join('')}</div>
     <div class="flow-detail" data-detail aria-live="polite"></div>`;
   const state=host.querySelector('[data-state]'), run=host.querySelector('[data-run]');
   function show(i){active=i;host.querySelectorAll('[data-node]').forEach((n,j)=>n.classList.toggle('active',j===i));const n=nodes[i];host.querySelector('[data-detail]').innerHTML=`<div><h5>${esc(n.title)}</h5><p>${esc(n.desc||'')}</p></div><span class="flow-payload">${esc(n.payload||'ready')}</span>`;}
   host.querySelectorAll('[data-node]').forEach(n=>n.addEventListener('click',()=>show(+n.dataset.node)));
-  run.addEventListener('click',()=>{const turn=++generation;run.disabled=true;state.className='sim-state busy';state.querySelector('span').textContent='Routing · sample payload';nodes.forEach((n,i)=>timers.push(setTimeout(()=>{if(turn!==generation)return;const el=host.querySelector(`[data-node="${i}"]`);el.classList.remove('packet');void el.offsetWidth;el.classList.add('packet');show(i);},REDUCE?i*25:i*360)));timers.push(setTimeout(()=>{if(turn!==generation)return;state.className='sim-state live';state.querySelector('span').textContent='Complete · trace verified';run.disabled=false;},REDUCE?nodes.length*28:nodes.length*360+220));});
+  run.addEventListener('click',()=>{const turn=++generation;run.disabled=true;state.className='sim-state busy';state.querySelector('span').textContent='Routing · sample payload';nodes.forEach((n,i)=>timers.push(setTimeout(()=>{if(turn!==generation)return;const el=host.querySelector(`[data-node="${i}"]`);el.classList.remove('packet');void el.offsetWidth;el.classList.add('packet');show(i);},REDUCE?i*25:i*360)));timers.push(setTimeout(()=>{if(turn!==generation)return;state.className='sim-state live';state.querySelector('span').textContent='Complete · sample trace shown';run.disabled=false;},REDUCE?nodes.length*28:nodes.length*360+220));});
   show(0); return()=>{generation++;timers.forEach(clearTimeout)};
 }
 
@@ -2317,7 +2899,7 @@ function wScaffold(spec, host, head) {
   const generate=host.querySelector('[data-generate]'),choices=[...host.querySelectorAll('[data-template]')];
   function cancelRun(){generation++;timers.splice(0).forEach(clearTimeout);generate.disabled=false;choices.forEach(x=>x.disabled=false);}
   choices.forEach(b=>b.addEventListener('click',()=>{cancelRun();active=+b.dataset.template;draw();host.querySelector('[data-state]').textContent='Ready · template changed';}));
-  generate.addEventListener('click',()=>{timers.splice(0).forEach(clearTimeout);const turn=++generation;generate.disabled=true;choices.forEach(x=>x.disabled=true);draw(false);host.querySelector('[data-state]').textContent='Running · validating boundaries';const lines=[...host.querySelectorAll('[data-line]')];lines.forEach((line,i)=>timers.push(setTimeout(()=>{if(turn===generation)line.classList.add('on')},REDUCE?i*20:i*180)));timers.push(setTimeout(()=>{if(turn!==generation)return;host.querySelector('[data-state]').textContent='Complete · plan verified';host.querySelector('[data-summary]').textContent+=' · no filesystem changes made';generate.disabled=false;choices.forEach(x=>x.disabled=false);},REDUCE?lines.length*22:lines.length*180+130));});draw();return()=>cancelRun();
+  generate.addEventListener('click',()=>{timers.splice(0).forEach(clearTimeout);const turn=++generation;generate.disabled=true;choices.forEach(x=>x.disabled=true);draw(false);host.querySelector('[data-state]').textContent='Running · validating boundaries';const lines=[...host.querySelectorAll('[data-line]')];lines.forEach((line,i)=>timers.push(setTimeout(()=>{if(turn===generation)line.classList.add('on')},REDUCE?i*20:i*180)));timers.push(setTimeout(()=>{if(turn!==generation)return;host.querySelector('[data-state]').textContent='Complete · dry run finished';host.querySelector('[data-summary]').textContent+=' · no filesystem changes made';generate.disabled=false;choices.forEach(x=>x.disabled=false);},REDUCE?lines.length*22:lines.length*180+130));});draw();return()=>cancelRun();
 }
 
 /* ── Draggable spatial relationship canvas ── */

@@ -13,7 +13,7 @@ Get-ChildItem -Path $root -Filter '*.html' -File | ForEach-Object {
 }
 
 # Copy static site folders/files needed for standalone hosting.
-foreach ($entry in @('styles', 'assets', 'serve.ps1', 'WEBSTATE.md')) {
+foreach ($entry in @('styles', 'assets', 'projects', 'sitemap.xml', 'robots.txt', 'serve.ps1', 'WEBSTATE.md')) {
   $source = Join-Path $root $entry
   if (Test-Path $source) { Copy-Item $source $stage -Recurse -Force }
 }

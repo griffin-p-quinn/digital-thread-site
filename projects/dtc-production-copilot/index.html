@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DTC Production Co-Pilot — Griffin Quinn</title>
+  <meta name="description" content="A production co-pilot by Griffin Quinn that connects a 3D assembly line, MES station state, and an observable diagnostic tool path.">
+  <meta name="author" content="Griffin Quinn">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <link rel="canonical" href="https://griffin-p-quinn.github.io/digital-thread-site/projects/dtc-production-copilot/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Griffin Quinn — Digital Fabric">
+  <meta property="og:title" content="DTC Production Co-Pilot — Griffin Quinn">
+  <meta property="og:description" content="One interface for a 3D assembly line, MES evidence, and an observable diagnosis-to-recovery tool flow.">
+  <meta property="og:url" content="https://griffin-p-quinn.github.io/digital-thread-site/projects/dtc-production-copilot/">
+  <meta property="og:image" content="https://griffin-p-quinn.github.io/digital-thread-site/assets/projects/social/dtc-production-copilot.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="DTC Production Co-Pilot case study by Griffin Quinn">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="DTC Production Co-Pilot — Griffin Quinn">
+  <meta name="twitter:description" content="A 3D plant, MES state, and observable co-pilot tool path in one production interface.">
+  <meta name="twitter:image" content="https://griffin-p-quinn.github.io/digital-thread-site/assets/projects/social/dtc-production-copilot.png">
+  <meta name="twitter:image:alt" content="DTC Production Co-Pilot case study by Griffin Quinn">
+  <meta name="theme-color" content="#0b0c0b">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230b0c0b'/%3E%3Cpath d='M7 8h18v16H7z' fill='none' stroke='%23ff6542'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../../assets/projects/case-study.css">
+  <script>try{var t=localStorage.getItem('fabric-theme');document.documentElement.dataset.theme=t==='light'||t==='dark'?t:(matchMedia('(prefers-color-scheme:light)').matches?'light':'dark')}catch(e){document.documentElement.dataset.theme='dark'}</script>
+  <script defer src="../../assets/projects/case-study.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to case study</a>
+  <header class="site-header">
+    <a class="identity" href="../../projects.html" aria-label="Griffin Quinn — return to selected work">
+      <span><strong>Griffin Quinn</strong><span>Applied AI &amp; industrial systems</span></span>
+    </a>
+    <div class="header-actions" aria-label="Page utilities">
+      <button class="utility-button" type="button" data-copy-link>Copy link</button>
+      <span class="copy-status" data-copy-status role="status" aria-live="polite"></span>
+      <button class="utility-button" type="button" data-theme-toggle aria-pressed="false">Theme</button>
+    </div>
+  </header>
+
+  <main class="case-main" id="main-content">
+    <article>
+      <header class="case-hero" aria-labelledby="case-title">
+        <div class="hero-copy">
+          <p class="eyebrow">Digital Fabric · Selected work</p>
+          <h1 id="case-title">DTC Production Co-Pilot</h1>
+          <p class="case-deck">Makes an assembly-line shortfall diagnosable from one interface while keeping the MES evidence and agent tool path visible.</p>
+          <div class="case-actions">
+            <a class="case-action primary" href="../../assets/embeds/dt-composer/index.html">Open browser-safe build <span aria-hidden="true">↗</span></a>
+            <a class="case-action" href="../../projects.html">All selected work</a>
+          </div>
+        </div>
+        <aside class="case-index" aria-label="Project snapshot">
+          <span class="case-number">Case 02 / 08</span>
+          <dl>
+            <div><dt>Role</dt><dd>Product design and implementation</dd></div>
+            <div><dt>Surface</dt><dd>Production operations interface</dd></div>
+            <div><dt>Stack</dt><dd>React · Three.js · LangGraph</dd></div>
+            <div><dt>Demo</dt><dd>Scripted browser-safe build</dd></div>
+          </dl>
+        </aside>
+      </header>
+
+      <dl class="evidence-strip" aria-label="Build facts">
+        <div><dt>Plant context</dt><dd>3D final-assembly line</dd></div>
+        <div><dt>Operating state</dt><dd>MES station dashboard</dd></div>
+        <div><dt>Reasoning</dt><dd>Observable ReAct trace</dd></div>
+        <div><dt>Modes</dt><dd>Scripted and live paths</dd></div>
+      </dl>
+
+      <figure class="media-figure" data-reveal>
+        <div class="media-frame">
+          <img src="../../assets/projects/dtc_composer_cover.png" width="1600" height="900" alt="DTC Production Co-Pilot interface showing a 3D final-assembly line, station state, and diagnostic assistant panels">
+        </div>
+        <figcaption><span class="figure-label">Working interface</span><span>The portfolio build preserves the real React presentation layer and runs a bounded scripted scenario without enterprise connections or credentials.</span></figcaption>
+      </figure>
+
+      <div class="story-grid">
+        <nav class="case-nav" aria-label="Case study sections">
+          <strong>Case notes</strong>
+          <ol>
+            <li><a href="#problem">Problem</a></li>
+            <li><a href="#contribution">My contribution</a></li>
+            <li><a href="#proof">Proof</a></li>
+            <li><a href="#result">Result</a></li>
+          </ol>
+        </nav>
+
+        <div class="story-content">
+          <section class="story-section" id="problem" data-case-section data-reveal>
+            <div><span class="section-kicker">01 · Problem</span><h2>One shortfall, several disconnected views</h2></div>
+            <div class="story-copy">
+              <p class="lead">A throughput alert is not useful by itself. An operator still has to connect the affected station, the plant layout, the available MES evidence, and a credible recovery path.</p>
+              <p>The project asks whether that investigation can happen in one legible surface without turning the assistant into a black box. The recommendation should stay attached to the station state and to the tools used to produce it.</p>
+            </div>
+          </section>
+
+          <section class="story-section" id="contribution" data-case-section data-reveal>
+            <div><span class="section-kicker">02 · My contribution</span><h2>Designed the evidence and the action together</h2></div>
+            <div class="story-copy">
+              <p class="lead">I composed the 3D plant, production dashboard, station views, alert flow, and co-pilot into one React experience.</p>
+              <ul class="contribution-list">
+                <li><strong>Connected spatial and operating context.</strong> The line view and station state tell the same production story rather than living in separate demos.</li>
+                <li><strong>Made the assistant inspectable.</strong> The diagnosis, recovery, and simulation stages expose the tool sequence behind the recommendation.</li>
+                <li><strong>Supported two operating modes.</strong> A scripted path keeps the public build repeatable; the source also defines a live diagnostic path for a configured backend.</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="story-section" id="proof" data-case-section data-reveal>
+            <div><span class="section-kicker">03 · Proof</span><h2>A real interface with an explicit demo boundary</h2></div>
+            <div class="story-copy">
+              <p class="lead">The linked artifact is the real static React build running in scripted mode, not a replacement illustration.</p>
+              <ul class="proof-list">
+                <li><strong>Browser-safe build:</strong> launch the alert, inspect the 3D line, and follow diagnosis → recovery → simulation without a backend.</li>
+                <li><strong>Frontend composition:</strong> <code>app/frontend/src/App.tsx</code> composes the production view, station state, alert flow, and co-pilot panel.</li>
+                <li><strong>Tool contracts:</strong> <code>app/backend/dtc_copilot/tools.py</code> defines the diagnostic, recovery, and simulation interfaces used by the assistant flow.</li>
+              </ul>
+              <p class="boundary-note"><strong>Public-demo boundary:</strong> the deployed case uses scripted, browser-safe data. It does not connect to a live MES, plant, model provider, or credential store.</p>
+            </div>
+          </section>
+
+          <section class="story-section" id="result" data-case-section data-reveal>
+            <div><span class="section-kicker">04 · Result</span><h2>The recommendation stays attached to its evidence</h2></div>
+            <div class="story-copy">
+              <p class="lead">The finished prototype turns a production shortfall into a traceable investigation: where the problem is, what the station reports, what the assistant checked, and what recovery path it proposes.</p>
+              <p>No time or cost reduction is claimed. The demonstrated result is a more inspectable way to connect spatial context, operating state, and agent reasoning in one workflow.</p>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <section class="architecture" aria-labelledby="architecture-title" data-reveal>
+        <div class="architecture-head">
+          <div><span class="section-kicker">System view</span><h2 id="architecture-title">From alert to recovery path</h2></div>
+          <div class="architecture-copy"><p>The interface preserves a straight evidence chain. The public build substitutes a deterministic scenario at the system boundary while leaving the product interaction intact.</p></div>
+        </div>
+        <figure>
+          <div class="architecture-diagram">
+            <div class="architecture-flow" role="img" aria-label="MES and station evidence flows into a React production view, then through the co-pilot tool path to a recovery simulation">
+              <div class="flow-node"><small>Evidence</small><strong>MES + station state</strong><span>Alert, output, affected station, operating context</span></div>
+              <div class="flow-node"><small>Orientation</small><strong>3D plant + dashboard</strong><span>React interface with Three.js line context</span></div>
+              <div class="flow-node"><small>Reasoning</small><strong>Co-pilot tool trace</strong><span>Diagnosis and recovery tools remain visible</span></div>
+              <div class="flow-node"><small>Decision support</small><strong>Recovery simulation</strong><span>Compare the proposed production response</span></div>
+            </div>
+          </div>
+          <figcaption><span class="figure-label">Architecture</span><span>Conceptual view derived from the project’s documented frontend and tool contracts; it is not a live-enterprise topology.</span></figcaption>
+        </figure>
+      </section>
+
+      <nav class="related-nav" aria-label="Continue exploring">
+        <div><span class="section-kicker">Continue</span><h2>More selected work</h2></div>
+        <div class="related-links">
+          <a href="../maia-local-mcp/">Maia Local MCP Toolkit</a>
+          <a href="../nx-mcp-automation/">NX MCP Automation Server</a>
+          <a href="../../projects.html">Return to the portfolio</a>
+        </div>
+      </nav>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div><strong>Griffin Quinn</strong><span>Digital Fabric · Personal portfolio</span></div>
+    <p>Digital Fabric is a personal portfolio by Griffin Quinn, not an official Siemens site. Views are my own. Demos use sanitized, fictionalized, or browser-safe sample data where noted. Product names and marks belong to their respective owners.</p>
+  </footer>
+</body>
+</html>

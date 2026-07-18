@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Teamcenter Change KPI Dashboard — Griffin Quinn</title>
+  <meta name="description" content="How Griffin Quinn built a React reporting dashboard that turns Teamcenter saved-query results and SOA hydration into change KPIs, workflow state, and impact evidence.">
+  <link rel="canonical" href="https://griffin-p-quinn.github.io/digital-thread-site/projects/teamcenter-change-dashboard/">
+  <meta name="theme-color" content="#f2ede3">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230b0c0b'/%3E%3Cpath d='M7 8h18v16H7z' fill='none' stroke='%23ff6542'/%3E%3C/svg%3E">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Griffin Quinn — Applied AI &amp; Industrial Systems">
+  <meta property="og:title" content="Teamcenter Change KPI Dashboard — Griffin Quinn">
+  <meta property="og:description" content="A Teamcenter reporting workflow built from saved queries, SOA-hydrated objects, KPIs, workflow state, and impact evidence.">
+  <meta property="og:url" content="https://griffin-p-quinn.github.io/digital-thread-site/projects/teamcenter-change-dashboard/">
+  <meta property="og:image" content="https://griffin-p-quinn.github.io/digital-thread-site/assets/projects/social/teamcenter-change-dashboard.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Reporting-flow preview for Griffin Quinn's Teamcenter Change KPI Dashboard.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Teamcenter Change KPI Dashboard — Griffin Quinn">
+  <meta name="twitter:description" content="Saved-query results and SOA-hydrated Teamcenter objects organized into KPIs, workflow state, and impact evidence.">
+  <meta name="twitter:image" content="https://griffin-p-quinn.github.io/digital-thread-site/assets/projects/social/teamcenter-change-dashboard.png">
+  <meta name="twitter:image:alt" content="Reporting-flow preview for Griffin Quinn's Teamcenter Change KPI Dashboard.">
+  <link rel="stylesheet" href="../../assets/projects/case-study.css">
+  <script defer src="../../assets/projects/case-study.js"></script>
+</head>
+<body data-project="teamcenter-change-dashboard">
+  <a class="skip-link" href="#main-content">Skip to case study</a>
+  <header class="site-header">
+    <a class="identity" href="../../projects.html" aria-label="Griffin Quinn — all projects">
+      <strong>Griffin Quinn</strong>
+      <span>Applied AI &amp; Industrial Systems</span>
+    </a>
+    <div class="header-actions" aria-label="Page utilities">
+      <button type="button" class="utility-button" data-theme-toggle aria-pressed="false">Theme</button>
+      <button type="button" class="utility-button" data-copy-link>Copy link</button>
+      <span class="copy-status" data-copy-status role="status" aria-live="polite"></span>
+    </div>
+  </header>
+
+  <main id="main-content" class="case-main">
+    <article>
+      <header class="case-hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Case study · PLM reporting</p>
+          <h1>Teamcenter Change KPI Dashboard</h1>
+          <p class="case-deck">A React reporting surface that starts with Teamcenter saved queries, hydrates the returned objects through SOA, and keeps KPI, workflow, and impact evidence in one drillable view.</p>
+          <div class="case-actions">
+            <a class="case-action primary" href="../../projects.html">Browse all projects</a>
+            <a class="text-link" href="#proof">Inspect the source record</a>
+          </div>
+        </div>
+        <aside class="case-index" aria-label="Case-study index">
+          <span class="case-number">Case 05 / 08</span>
+          <dl>
+            <div><dt>Domain</dt><dd>PLM reporting</dd></div>
+            <div><dt>Focus</dt><dd>Change evidence</dd></div>
+            <div><dt>Form</dt><dd>React dashboard</dd></div>
+          </dl>
+        </aside>
+      </header>
+
+      <dl class="evidence-strip" aria-label="Project facts">
+        <div><dt>Input</dt><dd>Teamcenter saved queries</dd></div>
+        <div><dt>Hydration</dt><dd>Teamcenter SOA</dd></div>
+        <div><dt>Interface</dt><dd>React reporting dashboard</dd></div>
+        <div><dt>Views</dt><dd>KPI · workflow · impact</dd></div>
+      </dl>
+
+      <div class="story-grid">
+        <nav class="case-nav" aria-label="Case-study sections">
+          <strong>Case file</strong>
+          <ol>
+            <li><a href="#problem">Problem</a></li>
+            <li><a href="#contribution">My contribution</a></li>
+            <li><a href="#proof">Proof</a></li>
+            <li><a href="#result">Result</a></li>
+          </ol>
+        </nav>
+        <div class="story-content">
+        <section class="story-section" id="problem" data-case-section data-reveal aria-labelledby="problem-title">
+          <div><span class="section-kicker">01 · Reporting friction</span><h2 id="problem-title">Problem</h2></div>
+          <div class="story-copy">
+            <p class="lead">Spreadsheet rollups separate headline change metrics from the Teamcenter objects, workflow state, and downstream impact that explain them.</p>
+            <p>A reviewer can see a number but has to reconstruct the supporting story across exports and records. The goal was a repeatable reporting path that begins with Teamcenter queries and preserves drill-down evidence behind the summary.</p>
+          </div>
+        </section>
+
+        <section class="story-section" id="contribution" data-case-section data-reveal aria-labelledby="contribution-title">
+          <div><span class="section-kicker">02 · Reporting pipeline</span><h2 id="contribution-title">My contribution</h2></div>
+          <div class="story-copy">
+            <p class="lead">I built the React dashboard and the reporting flow from saved-query selection through SOA hydration.</p>
+            <p>I organized the resulting change records into KPI, workflow, and impact views so a summary and its underlying evidence remain part of the same interaction.</p>
+          </div>
+        </section>
+
+          <figure class="architecture" data-reveal>
+            <div class="architecture-head">
+              <div><span class="section-kicker">System map</span><h2>Architecture</h2></div>
+              <div class="architecture-copy"><p>The dashboard keeps the saved-query scope, hydrated object context, and reporting views connected.</p></div>
+            </div>
+            <div class="architecture-diagram">
+            <svg viewBox="0 0 920 400" role="img" aria-labelledby="change-architecture-title change-architecture-desc">
+              <title id="change-architecture-title">Teamcenter change reporting architecture</title>
+              <desc id="change-architecture-desc">A saved query selects Teamcenter change records. SOA hydrates those records. A normalized reporting model feeds KPI summaries, workflow state, and impact evidence in the React dashboard.</desc>
+              <rect width="920" height="400" rx="18" fill="#12110f"/>
+              <path d="M184 198H278M452 198H546M702 198H790" fill="none" stroke="#ddd2c4" stroke-width="2"/>
+              <g fill="#e9662c"><circle cx="231" cy="198" r="5"/><circle cx="499" cy="198" r="5"/><circle cx="746" cy="198" r="5"/></g>
+              <g fill="#201f1b" stroke="#746d64" stroke-width="1.5">
+                <rect x="36" y="132" width="148" height="132" rx="10"/>
+                <rect x="278" y="108" width="174" height="180" rx="10"/>
+                <rect x="546" y="108" width="156" height="180" rx="10" stroke="#e9662c"/>
+                <rect x="790" y="58" width="94" height="76" rx="8"/>
+                <rect x="790" y="162" width="94" height="76" rx="8"/>
+                <rect x="790" y="266" width="94" height="76" rx="8"/>
+              </g>
+              <g fill="#f6efe5" font-family="ui-monospace, SFMono-Regular, Consolas, monospace" text-anchor="middle">
+                <text x="110" y="174" font-size="14">SAVED QUERY</text><text x="110" y="202" fill="#aaa196" font-size="10">CHANGE SCOPE</text><text x="110" y="228" fill="#aaa196" font-size="10">TEAMCENTER</text>
+                <text x="365" y="160" font-size="15">SOA HYDRATION</text><text x="365" y="190" font-size="12">PROPERTIES</text><text x="365" y="214" font-size="12">RELATIONS</text><text x="365" y="238" font-size="12">WORKFLOW</text><text x="365" y="263" fill="#aaa196" font-size="10">OBJECT CONTEXT</text>
+                <text x="624" y="166" font-size="15">REPORTING</text><text x="624" y="190" font-size="15">MODEL</text><text x="624" y="224" fill="#e9662c" font-size="11">ONE EVIDENCE PATH</text><text x="624" y="252" fill="#aaa196" font-size="10">REACT VIEW</text>
+                <text x="837" y="89" font-size="12">KPI</text><text x="837" y="111" fill="#aaa196" font-size="9">SUMMARY</text>
+                <text x="837" y="193" font-size="12">WORKFLOW</text><text x="837" y="215" fill="#aaa196" font-size="9">STATE</text>
+                <text x="837" y="297" font-size="12">IMPACT</text><text x="837" y="319" fill="#aaa196" font-size="9">EVIDENCE</text>
+              </g>
+            </svg>
+            </div>
+            <figcaption><span class="figure-label">Evidence path</span><span>A query-defined scope becomes hydrated object context before it is summarized for reporting.</span></figcaption>
+          </figure>
+
+        <section class="story-section" id="proof" data-case-section data-reveal aria-labelledby="proof-title">
+          <div><span class="section-kicker">03 · Source record</span><h2 id="proof-title">Proof</h2></div>
+          <div class="story-copy">
+          <ul class="proof-list">
+            <li><strong><code>README.md</code></strong> defines the reporting dashboard and its spreadsheet-replacement goal.</li>
+            <li><strong><code>CLAUDE.md</code></strong> documents saved queries, SOA hydration, KPIs, workflow state, and impact views.</li>
+            <li><strong>Sanitized dashboard preview</strong> runs a saved-query lens, exposes hydrated change rows, and supports workflow and impact drill-down without connecting to a live Teamcenter environment.</li>
+          </ul>
+          <dl class="project-facts">
+            <div><dt>Selection</dt><dd>Saved-query lens defines the reporting scope</dd></div>
+            <div><dt>Evidence</dt><dd>Change rows retain workflow and impact context</dd></div>
+            <div><dt>Public demo</dt><dd>Deterministic fixtures, not enterprise records</dd></div>
+          </dl>
+          </div>
+        </section>
+
+        <section class="story-section" id="result" data-case-section data-reveal aria-labelledby="result-title">
+          <div><span class="section-kicker">04 · Outcome</span><h2 id="result-title">Result</h2></div>
+          <div class="story-copy"><p class="lead">The project produces a repeatable Teamcenter reporting surface in which summary measures lead back to their evidence.</p><p>The change objects, workflow state, and impact remain available for inspection. It demonstrates the workflow without claiming a measured time or cost reduction that the source record does not establish.</p></div>
+        </section>
+        </div>
+      </div>
+
+      <nav class="related-nav" aria-label="Related case studies">
+        <div><span class="section-kicker">Related work</span><h2>Continue through the systems</h2></div>
+        <div class="related-links">
+          <a href="../teamcenter-soa-mcp/">Teamcenter SOA Gateway</a>
+          <a href="../nx-mcp-automation/">NX MCP Automation</a>
+        </div>
+      </nav>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <p><strong>Griffin Quinn</strong> · Personal portfolio of applied AI and industrial-system work.</p>
+    <p>This is an independent, unofficial presentation of personal project work, not a Siemens website. Views are my own. Product names and marks belong to their respective owners.</p>
+  </footer>
+</body>
+</html>
