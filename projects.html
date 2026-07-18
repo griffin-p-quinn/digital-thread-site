@@ -807,6 +807,22 @@ input[type="range"] { width: 100%; accent-color: var(--teal); }
 <main id="mainContent">
 <!-- ══════ ARTIFACT-LED INTRO ══════ -->
 <section class="intro" id="intro">
+  <svg class="intro-breath-field" viewBox="0 0 1200 760" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+    <g class="intro-breath-field__body">
+      <path class="intro-breath-field__wash" d="M92 395C122 166 332 34 585 82C815 126 1020 82 1120 252C1231 441 1100 642 870 681C661 717 504 646 318 681C156 711 48 586 92 395Z" />
+      <path class="intro-breath-field__contour intro-breath-field__contour--outer" d="M92 395C122 166 332 34 585 82C815 126 1020 82 1120 252C1231 441 1100 642 870 681C661 717 504 646 318 681C156 711 48 586 92 395Z" />
+      <path class="intro-breath-field__contour" d="M154 403C180 217 352 105 575 137C768 164 950 127 1035 272C1126 426 1022 579 830 618C652 654 511 591 350 621C213 646 118 555 154 403Z" />
+      <path class="intro-breath-field__contour" d="M222 407C246 267 379 176 566 192C729 206 878 171 950 292C1025 416 942 523 790 556C641 588 519 536 386 560C278 580 195 518 222 407Z" />
+      <path class="intro-breath-field__contour intro-breath-field__contour--inner" d="M302 408C326 314 421 244 557 246C681 248 803 221 865 313C925 403 860 472 746 500C629 528 530 486 427 503C346 516 279 481 302 408Z" />
+      <path class="intro-breath-field__contour intro-breath-field__contour--core" d="M402 404C422 351 477 315 558 310C638 305 717 284 770 335C818 381 777 425 705 443C629 462 564 435 498 444C448 451 386 446 402 404Z" />
+    </g>
+    <path class="intro-breath-field__dotted" pathLength="100" d="M108 480C230 652 420 691 602 633C772 579 918 663 1086 511" />
+    <g class="intro-breath-field__nodes">
+      <circle cx="302" cy="408" r="4" />
+      <circle cx="770" cy="335" r="3" />
+      <circle cx="950" cy="292" r="3" />
+    </g>
+  </svg>
   <div class="intro-kicker reveal-up">Griffin Quinn · Things I built in 2025–26</div>
   <h1 class="reveal-up"><span>Here’s what I’ve</span> <span>been building.</span></h1>
   <div class="intro-side reveal-up">
@@ -817,7 +833,7 @@ input[type="range"] { width: 100%; accent-color: var(--teal); }
     </div>
   </div>
 
-  <div class="intro-artifacts" data-decision-thread aria-label="Six projects from the portfolio">
+  <div class="intro-artifacts" data-decision-thread aria-label="Seven projects from the portfolio">
     <svg class="decision-thread" viewBox="0 0 1200 680" preserveAspectRatio="none" aria-hidden="true" focusable="false">
       <path class="decision-thread__base" d="M74 420 C220 420 205 150 410 150 S650 128 716 245 S818 570 1118 570" pathLength="1" />
       <path class="decision-thread__live" id="decisionThreadPath" d="M74 420 C220 420 205 150 410 150 S650 128 716 245 S818 570 1118 570" pathLength="1" />
@@ -829,14 +845,7 @@ input[type="range"] { width: 100%; accent-color: var(--teal); }
     </svg>
 
     <button class="intro-artifact intro-artifact--maia" data-thread-node="0" type="button" onclick="openStudio('playwright')" aria-label="Preview Maia Local MCP Toolkit">
-      <span class="maia-schematic" aria-hidden="true">
-        <span class="maia-schematic__bar"><b>MAIA LOCAL MCP</b><i>127.0.0.1:8790</i></span>
-        <span class="maia-schematic__flow">
-          <b>Studio Pro Maia</b><i>Streamable HTTP</i><b>Capability gates</b><i>Explicit authority</i><b>Local tools</b>
-        </span>
-        <span class="maia-schematic__tools"><i>Files</i><i>Git</i><i>mx / MxBuild</i><i>Widgets</i><i>Browser</i><i>Tasks</i></span>
-        <span class="maia-schematic__facts"><b>62 tools</b><b>Native Windows control center</b><b>Single EXE</b></span>
-      </span>
+      <img src="assets/projects/maia_control_center_capture.png" alt="Maia Local MCP control center showing the running server, allowed locations, 62 local tools, safety defaults, and dependency checks">
       <span><b>Maia Local MCP Toolkit</b><small>Safe local agent authority · packaged for Windows</small></span>
     </button>
     <button class="intro-artifact intro-artifact--dtc" data-thread-node="1" type="button" onclick="openStudio('dt-composer')" aria-label="Preview DTC Production Co-Pilot">
@@ -848,10 +857,7 @@ input[type="range"] { width: 100%; accent-color: var(--teal); }
       <span><b>NX MCP Automation Server</b><small>68 typed NXOpen tools · geometry · FEA</small></span>
     </button>
     <button class="intro-artifact intro-artifact--edge intro-artifact--change" type="button" onclick="openStudio('tc-change')" aria-label="Preview Teamcenter Change KPI Dashboard">
-      <span class="edge-system-card" aria-hidden="true">
-        <b>TEAMCENTER CHANGE</b>
-        <span>Saved query</span><i>→</i><span>SOA</span><i>→</i><span>Workflow · KPI · Impact</span>
-      </span>
+      <img src="assets/projects/tc_change_dashboard_actual_capture.png" alt="Teamcenter Change Dashboard showing workflow completion, aging, ownership, disposition, and task bottlenecks">
       <span><b>Teamcenter Change Dashboard</b><small>Query-backed status without spreadsheet rollups</small></span>
     </button>
     <button class="intro-artifact intro-artifact--edge intro-artifact--widgets" type="button" onclick="openStudio('widgets')" aria-label="Preview Mendix Widget Foundry">
@@ -861,6 +867,10 @@ input[type="range"] { width: 100%; accent-color: var(--teal); }
     <button class="intro-artifact intro-artifact--edge intro-artifact--video" type="button" onclick="openStudio('video')" aria-label="Preview Video Analyzer Studio">
       <img src="assets/projects/video_analyzer_report_actual_capture.png" alt="Video Analyzer Studio desktop app with media preview, saved Gemini scene report, and run history">
       <span><b>Video Analyzer Studio</b><small>Gemini reports · SQLite history</small></span>
+    </button>
+    <button class="intro-artifact intro-artifact--edge intro-artifact--llm" type="button" onclick="openStudio('llms')" aria-label="Preview Multi-Surface LLM Bench">
+      <img src="assets/projects/llm_bench_actual_capture.png" alt="LLMS Workbench benchmark screen showing model availability, modalities, scores, and run history">
+      <span><b>Multi-Surface LLM Bench</b><small>Chat · agents · speech · benchmark runs</small></span>
     </button>
   </div>
 </section>
@@ -1767,11 +1777,11 @@ const EMBEDS = {
   mro: { src:'assets/embeds/mro/index.html', poster:'assets/projects/mro_cover.jpg', title:'MRO Guided Disposition Workbench', gate:true, note:'Live React build — Siemens iX. Open a sample work order, review the asset and service BOM, resume its damage assessment, and carry findings into a guided disposition.' },
   protein: { src:'assets/embeds/protein/index.html', poster:'assets/projects/protein_cover.jpg', title:'GENE OS — Gene / Protein Visualizer', note:'Live React build. Initialize the simulator, define binding motifs, and watch DepMap-style dependency scores respond in real time.' },
   hub: { src:'assets/embeds/hub/index.html', title:'ProjectHub · Browser Mock Mode', note:'Real React/Vite build. Outside its desktop WebView host, ProjectHub intentionally uses browser-safe sample repositories and successful no-op launch actions.' },
-  widgets: { src:'assets/embeds/widget-foundry/index.html', title:'Agent Graph Editor · Mendix widget lab', frameClass:'w-embed-stage--tall', note:'The actual AgentGraphEditor React and React Flow display layer from the shipped Mendix widget, using its real specialist/tool JSON contract with browser-safe sample data. Inspect nodes, expand tools, replay handoffs, switch themes, and drag to create.' },
+  widgets: { src:'assets/embeds/widget-foundry/index.html', title:'Mendix Widget Foundry · React layer lab', frameClass:'w-embed-stage--tall', note:'Three real widget surfaces: the Agent Graph Editor and Supply Chain Charts run directly from their React source, and the Diagram Editor runs its compiled LocalLab. Sample values and local action adapters replace the parts normally supplied by Mendix.' },
   video: { src:'assets/embeds/video-analyzer/index.html', poster:'assets/projects/video_analyzer_report_actual_capture.png', title:'Video Analyzer Studio', frameClass:'w-embed-stage--tall', note:'The actual exported Next frontend wired to a browser-safe sample API. The report views, history behavior, file selection, and interaction flow come from the working desktop app; this public build does not upload media or call Gemini.' },
   ix: { src:'assets/embeds/ix/index.html', title:'Nexus · iX Workflow Concept', note:'Browser concept built with locally bundled Siemens iX components. Explore the illustrative signal path, operating scenarios, and light/dark themes.' },
   'new-view': { src:'assets/embeds/new-view/index.html', poster:'assets/projects/new_view_jt_cover.png', title:'NewView · JT Assembly Viewer', note:'Real standalone PLMVisWeb + JTReader runtime. A bundled JT fixture loads immediately; orbit it and switch among fit, front, isometric, shaded, and face-wireframe views.' },
-  'dt-composer': { src:'assets/embeds/dt-composer/index.html', poster:'assets/projects/dtc_composer_cover.png', title:'DTC Production Co-Pilot', gate:true, note:'Real static React build in scripted mode. Launch the alert, inspect the 3D final-assembly line, and follow the diagnosis → recovery → simulation tool flow without a backend or credentials.' }
+  'dt-composer': { src:'assets/embeds/dt-composer/index.html', poster:'assets/projects/dtc_composer_cover.png', title:'DTC Production Co-Pilot', gate:true, note:'Real static React build in scripted mode. Launch the alert, inspect the 3D final-assembly line, and follow the diagnosis → recovery → simulation tool flow without a backend or credentials. On a phone, open the menu first, then choose Alerts.' }
 };
 
 /* ═══════════════════════════════════════════════════════════
@@ -1867,7 +1877,7 @@ const INTERACTIONS = Object.freeze({
   luma: [{ type:'lumaApi', title:'Luma Unsupported API Explorer', desc:'Browse sanitized GraphQL and REST operations for apps, repositories, tables, and flows with the unsupported/internal boundary always visible.' }],
   'ml-dev': [{ type:'agentBuilder', title:'AI Studio Agent Builder Harness', desc:'Start from a prompt, inspect catalog/tool iterations, validate generated process XML, and run it against a synthetic mission fixture.' }],
   time: [{ type:'timeTracker', title:'CSV Time Entry Dashboard', desc:'Import a sanitized fixture, filter and edit entries, inspect weekly totals, and preview a CSV export.' }],
-  widgets: [{ type:'embed', key:'widgets', title:'Live Agent Graph Editor widget', desc:'Use the real AgentGraphEditor display layer to inspect specialists and tools, expand branches, replay handoffs, switch themes, and drag to create.' }],
+  widgets: [{ type:'embed', key:'widgets', title:'Live Mendix widget React layers', desc:'Switch between the real Agent Graph Editor, Supply Chain Charts, and Diagram Editor surfaces. Inspect nodes, create a sample agent, replay a handoff, and exercise the browser-safe adapters.' }],
   evora: [{ type:'droneFleet', title:'Drone Fleet Control Center', desc:'Filter the sample fleet, select a drone, inspect its mission and map position, and issue browser-only hold or return commands.' }],
   lunch: [{ type:'lunchConcierge', title:'AI Lunch Concierge', desc:'Set location and preferences, compare sanitized deals on price and distance, and inspect the tool calls and rationale behind the recommendation.' }],
   world: [{ type:'worldGlobe', title:'Real-Time WorldView', desc:'Toggle satellite, aircraft, vessel, train, threat, imagery, and camera layers on a browser-safe globe and inspect a selected entity.' }],
@@ -2421,8 +2431,8 @@ function wEmbed(spec, host, head) {
   function launch() {
     if (frame) return;
     stage.innerHTML = '<div class="we-loading" data-load>Loading live build…</div>';
-    frame = document.createElement('iframe'); frame.className = 'we-frame'; frame.title = title; frame.loading = 'lazy';
-    frame.setAttribute('sandbox','allow-scripts allow-same-origin allow-pointer-lock allow-popups');
+    frame = document.createElement('iframe'); frame.className = 'we-frame'; frame.title = title;
+    frame.setAttribute('sandbox','allow-scripts allow-same-origin allow-forms allow-pointer-lock allow-popups');
     frame.addEventListener('load', () => { const load = stage.querySelector('[data-load]'); if (load) load.style.display = 'none'; frame.classList.add('ready'); }, { once:true });
     stage.appendChild(frame); frame.src = src;
   }

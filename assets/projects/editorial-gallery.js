@@ -38,7 +38,6 @@
     heroDuration: 1680,
     pathLength: 0,
     frame: 0,
-    pointerFrame: 0,
     metricsDirty: true,
     activeDepth: new Set(),
     depthTargets: [],
@@ -203,8 +202,6 @@
     commissionEverything();
     setThreadProgress(1);
     resetDepth();
-    hero.style.setProperty('--decision-ambient-x', '0px');
-    hero.style.setProperty('--decision-ambient-y', '0px');
   }
 
   function updateSelectedProgress() {
@@ -317,7 +314,7 @@
   }
 
   function startHero() {
-    state.heroDuration = window.innerWidth <= 620 ? 1320 : 1680;
+    state.heroDuration = window.innerWidth <= 620 ? 1320 : 1720;
     state.hasPlayedHero = true;
     state.heroRunning = true;
     state.heroStart = performance.now() + 100;
@@ -391,25 +388,6 @@
     }
   }
 
-  function handleHeroPointer(event) {
-    if (state.reduced || window.innerWidth <= 720) return;
-    const rect = hero.getBoundingClientRect();
-    const x = clamp((event.clientX - rect.left) / Math.max(1, rect.width), 0, 1) - 0.5;
-    const y = clamp((event.clientY - rect.top) / Math.max(1, rect.height), 0, 1) - 0.5;
-
-    if (state.pointerFrame) window.cancelAnimationFrame(state.pointerFrame);
-    state.pointerFrame = window.requestAnimationFrame(() => {
-      state.pointerFrame = 0;
-      hero.style.setProperty('--decision-ambient-x', `${(x * 12).toFixed(2)}px`);
-      hero.style.setProperty('--decision-ambient-y', `${(y * 8).toFixed(2)}px`);
-    });
-  }
-
-  function resetHeroPointer() {
-    hero.style.setProperty('--decision-ambient-x', '0px');
-    hero.style.setProperty('--decision-ambient-y', '0px');
-  }
-
   decoratePortfolio();
 
   if (!supportsEnhancement) {
@@ -424,8 +402,6 @@
     commissionPiece(event.target.closest('.decision-piece'));
   });
 
-  hero.addEventListener('pointermove', handleHeroPointer, { passive: true });
-  hero.addEventListener('pointerleave', resetHeroPointer, { passive: true });
   window.addEventListener('scroll', invalidateMetrics, { passive: true });
   window.addEventListener('resize', invalidateMetrics, { passive: true });
   window.addEventListener('load', invalidateMetrics, { once: true });

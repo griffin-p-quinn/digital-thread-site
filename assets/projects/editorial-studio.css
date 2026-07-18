@@ -757,7 +757,7 @@
 }
 
 .widget .w-embed-stage--tall {
-  height: clamp(640px, 72dvh, 780px);
+  height: clamp(520px, calc(100dvh - 330px), 720px);
 }
 
 .widget .we-note {

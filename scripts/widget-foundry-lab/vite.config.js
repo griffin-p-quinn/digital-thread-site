@@ -13,7 +13,9 @@ export default defineConfig({
     alias: [
       { find: /^@xyflow\/react$/, replacement: resolve(dependencies, "@xyflow/react/dist/esm/index.mjs") },
       { find: /^@xyflow\/react\/dist\/style\.css$/, replacement: resolve(dependencies, "@xyflow/react/dist/style.css") },
+      { find: /^@nivo\/(.*)$/, replacement: resolve(dependencies, "@nivo/$1") },
       { find: /^dagre$/, replacement: resolve(dependencies, "dagre/index.js") },
+      { find: /^framer-motion$/, replacement: resolve(dependencies, "framer-motion/dist/es/index.mjs") },
       { find: /^react$/, replacement: resolve(dependencies, "react/index.js") },
       { find: /^react-dom$/, replacement: resolve(dependencies, "react-dom/index.js") },
       { find: /^react-dom\/client$/, replacement: resolve(dependencies, "react-dom/client.js") }
