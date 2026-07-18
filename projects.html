@@ -118,9 +118,10 @@ body > .portfolio-close { position: relative; z-index: 1; }
   100% { transform: translate3d(-2%, 2.5%, 0) scale(1.02); }
 }
 @keyframes mesh-drift-mobile {
-  0%   { transform: translate3d(-4%, -1.5%, 0) scale(1.01); }
-  50%  { transform: translate3d(3%, -3%, 0) scale(1.06); }
-  100% { transform: translate3d(-1%, 4%, 0) scale(1.035); }
+  0%, 100% { transform: translate3d(-5%, -3%, 0) scale(1.02); }
+  25%      { transform: translate3d(4%, -5%, 0) scale(1.055); }
+  50%      { transform: translate3d(6%, 3%, 0) scale(1.025); }
+  75%      { transform: translate3d(-3%, 5%, 0) scale(1.06); }
 }
 .atmosphere .grain {
   position: absolute; inset: 0; opacity: var(--grain-op); mix-blend-mode: overlay;
@@ -134,7 +135,7 @@ body > .portfolio-close { position: relative; z-index: 1; }
     inset: -18%;
     filter: none;
     opacity: .92;
-    animation: mesh-drift-mobile 14s ease-in-out infinite alternate;
+    animation: mesh-drift-mobile 16s linear infinite;
     will-change: transform;
     backface-visibility: hidden;
   }
@@ -815,10 +816,10 @@ input[type="range"] { width: 100%; accent-color: var(--teal); }
   .reveal-up { opacity: 1 !important; transform: none !important; animation: none !important; }
 }
 </style>
-<link rel="stylesheet" href="assets/projects/editorial-gallery.css?v=20260718-dynamic2">
+<link rel="stylesheet" href="assets/projects/editorial-gallery.css?v=20260718-dynamic3">
 <link rel="stylesheet" href="assets/projects/editorial-studio.css">
 <link rel="stylesheet" href="assets/projects/executive-portfolio.css">
-<link rel="stylesheet" href="assets/projects/decision-thread.css?v=20260718-dynamic2">
+<link rel="stylesheet" href="assets/projects/decision-thread.css?v=20260718-dynamic3">
 </head>
 <body>
 

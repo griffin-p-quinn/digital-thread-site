@@ -85,8 +85,10 @@
 }
 
 @keyframes decision-mobile-field-breathe {
-  0%, 100% { opacity: .5; transform: translate3d(-4%, 2%, 0) scale(.97); }
-  50% { opacity: .88; transform: translate3d(4%, -3%, 0) scale(1.055); }
+  0%, 100% { opacity: .52; transform: translate3d(-6%, 3%, 0) scale(.98); }
+  25%      { opacity: .72; transform: translate3d(2%, -4%, 0) scale(1.04); }
+  50%      { opacity: .86; transform: translate3d(7%, 1%, 0) scale(1.07); }
+  75%      { opacity: .65; transform: translate3d(-1%, 5%, 0) scale(1.01); }
 }
 
 .intro-artifacts[data-decision-thread] {
@@ -968,7 +970,7 @@
       radial-gradient(ellipse 54% 42% at 64% 52%, color-mix(in srgb, var(--decision-signal) 48%, transparent), transparent 72%),
       radial-gradient(ellipse 42% 30% at 32% 74%, color-mix(in srgb, var(--decision-signal) 22%, transparent), transparent 76%);
     transform-origin: 62% 48%;
-    animation: decision-mobile-field-breathe 12s ease-in-out 1.2s infinite;
+    animation: decision-mobile-field-breathe 18s linear 1.2s infinite;
     will-change: opacity, transform;
     backface-visibility: hidden;
   }
