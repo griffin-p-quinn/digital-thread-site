@@ -808,19 +808,30 @@ input[type="range"] { width: 100%; accent-color: var(--teal); }
 <!-- ══════ ARTIFACT-LED INTRO ══════ -->
 <section class="intro" id="intro">
   <svg class="intro-breath-field" viewBox="0 0 1200 760" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="introWaveGradient" x1="4%" y1="18%" x2="96%" y2="82%">
+        <stop offset="0" stop-color="currentColor" stop-opacity="0" />
+        <stop offset="0.28" stop-color="currentColor" stop-opacity="0.2" />
+        <stop offset="0.54" stop-color="currentColor" stop-opacity="0.72" />
+        <stop offset="0.78" stop-color="currentColor" stop-opacity="0.24" />
+        <stop offset="1" stop-color="currentColor" stop-opacity="0" />
+      </linearGradient>
+      <radialGradient id="introWaveWash" cx="58%" cy="48%" r="58%">
+        <stop offset="0" stop-color="currentColor" stop-opacity="0.46" />
+        <stop offset="0.48" stop-color="currentColor" stop-opacity="0.18" />
+        <stop offset="1" stop-color="currentColor" stop-opacity="0" />
+      </radialGradient>
+      <filter id="introWaveBlur" x="-24%" y="-42%" width="148%" height="184%" color-interpolation-filters="sRGB">
+        <feGaussianBlur stdDeviation="30" />
+      </filter>
+      <filter id="introWaveBlurSoft" x="-30%" y="-52%" width="160%" height="204%" color-interpolation-filters="sRGB">
+        <feGaussianBlur stdDeviation="48" />
+      </filter>
+    </defs>
     <g class="intro-breath-field__body">
-      <path class="intro-breath-field__wash" d="M92 395C122 166 332 34 585 82C815 126 1020 82 1120 252C1231 441 1100 642 870 681C661 717 504 646 318 681C156 711 48 586 92 395Z" />
-      <path class="intro-breath-field__contour intro-breath-field__contour--outer" d="M92 395C122 166 332 34 585 82C815 126 1020 82 1120 252C1231 441 1100 642 870 681C661 717 504 646 318 681C156 711 48 586 92 395Z" />
-      <path class="intro-breath-field__contour" d="M154 403C180 217 352 105 575 137C768 164 950 127 1035 272C1126 426 1022 579 830 618C652 654 511 591 350 621C213 646 118 555 154 403Z" />
-      <path class="intro-breath-field__contour" d="M222 407C246 267 379 176 566 192C729 206 878 171 950 292C1025 416 942 523 790 556C641 588 519 536 386 560C278 580 195 518 222 407Z" />
-      <path class="intro-breath-field__contour intro-breath-field__contour--inner" d="M302 408C326 314 421 244 557 246C681 248 803 221 865 313C925 403 860 472 746 500C629 528 530 486 427 503C346 516 279 481 302 408Z" />
-      <path class="intro-breath-field__contour intro-breath-field__contour--core" d="M402 404C422 351 477 315 558 310C638 305 717 284 770 335C818 381 777 425 705 443C629 462 564 435 498 444C448 451 386 446 402 404Z" />
-    </g>
-    <path class="intro-breath-field__dotted" pathLength="100" d="M108 480C230 652 420 691 602 633C772 579 918 663 1086 511" />
-    <g class="intro-breath-field__nodes">
-      <circle cx="302" cy="408" r="4" />
-      <circle cx="770" cy="335" r="3" />
-      <circle cx="950" cy="292" r="3" />
+      <ellipse class="intro-breath-field__wash" cx="696" cy="374" rx="520" ry="322" />
+      <path class="intro-breath-field__wave intro-breath-field__wave--back" d="M-140 314C92 116 270 188 454 338C627 479 757 506 917 398C1077 290 1198 262 1348 342L1348 572C1186 504 1052 522 889 620C690 740 503 671 332 520C169 376 26 348-140 482Z" />
+      <path class="intro-breath-field__wave intro-breath-field__wave--front" d="M-148 488C70 326 226 342 410 464C593 585 751 606 925 474C1095 345 1216 343 1342 416L1342 610C1182 553 1066 582 900 680C702 797 506 724 338 614C160 498 20 486-148 624Z" />
     </g>
   </svg>
   <div class="intro-kicker reveal-up">Griffin Quinn · Things I built in 2025–26</div>

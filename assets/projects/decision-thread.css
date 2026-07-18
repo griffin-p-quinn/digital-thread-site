@@ -28,9 +28,8 @@
   isolation: isolate;
 }
 
-/* The previous data-URI was too faint to read and moved like a background
-   image. This is a real inline SVG: its nested contours inhale/exhale around
-   one fixed origin while a dotted current moves slowly along the lower wave. */
+/* A fixed, soft SVG wash follows the whole page. Its blurred ribbons breathe
+   around one origin without introducing crisp lines behind the project UI. */
 .intro::before,
 .intro::after {
   content: none;
@@ -44,9 +43,11 @@
 .intro-breath-field {
   position: fixed;
   top: 46px;
-  right: -4vw;
+  right: auto;
+  left: -10vw;
   z-index: 0;
-  width: min(1320px, 95vw);
+  width: 120vw;
+  max-width: none;
   height: min(920px, 72vw);
   overflow: visible;
   color: var(--decision-signal);
@@ -55,74 +56,32 @@
   mask-image: radial-gradient(ellipse 82% 78% at 61% 46%, #000 36%, rgba(0, 0, 0, .82) 72%, transparent 100%);
 }
 
-.intro-breath-field__body,
-.intro-breath-field__nodes {
+.intro-breath-field__body {
   transform-box: view-box;
   transform-origin: 62% 46%;
 }
 
 .intro-breath-field__wash {
-  fill: currentColor;
-  opacity: .018;
-}
-
-.intro-breath-field__contour,
-.intro-breath-field__dotted {
-  fill: none;
-  stroke: currentColor;
-  vector-effect: non-scaling-stroke;
-}
-
-.intro-breath-field__contour {
-  stroke-width: 1.25;
+  fill: url(#introWaveWash);
+  filter: url(#introWaveBlurSoft);
   opacity: .16;
 }
 
-.intro-breath-field__contour--outer { opacity: .08; }
-.intro-breath-field__contour--inner { opacity: .22; }
-.intro-breath-field__contour--core {
-  stroke-width: 1.5;
-  opacity: .28;
+.intro-breath-field__wave {
+  fill: url(#introWaveGradient);
+  filter: url(#introWaveBlur);
 }
 
-.intro-breath-field__dotted {
-  stroke-width: 1.25;
-  stroke-linecap: round;
-  stroke-dasharray: 1.2 5.8;
-  opacity: .14;
-}
-
-.intro-breath-field__nodes {
-  fill: currentColor;
-  opacity: .22;
-}
+.intro-breath-field__wave--back { opacity: .32; }
+.intro-breath-field__wave--front { opacity: .46; }
 
 .decision-motion .intro-breath-field__body {
-  animation: decision-field-breathe 12s ease-in-out 1.2s infinite;
-}
-
-.decision-motion .intro-breath-field__dotted {
-  animation: decision-field-wave 20s linear infinite;
-}
-
-.decision-motion .intro-breath-field__nodes {
-  animation: decision-field-nodes 6s ease-in-out 900ms infinite;
+  animation: decision-field-breathe 14s ease-in-out 1.2s infinite;
 }
 
 @keyframes decision-field-breathe {
-  0%, 100% { opacity: .52; transform: scale(.982); }
-  50% { opacity: .88; transform: scale(1.024); }
-}
-
-@keyframes decision-field-wave {
-  0% { opacity: .12; stroke-dashoffset: 0; }
-  48% { opacity: .28; }
-  100% { opacity: .12; stroke-dashoffset: -14; }
-}
-
-@keyframes decision-field-nodes {
-  0%, 100% { opacity: .12; transform: scale(.8); }
-  50% { opacity: .34; transform: scale(1.28); }
+  0%, 100% { opacity: .58; transform: translate3d(-1.1%, .6%, 0) scale(.988); }
+  50% { opacity: .9; transform: translate3d(1.2%, -.7%, 0) scale(1.026); }
 }
 
 .intro-artifacts[data-decision-thread] {
@@ -886,6 +845,7 @@
 @media (max-width: 900px) {
   .intro-breath-field {
     top: 72px;
+    left: auto;
     right: -22%;
     width: 132%;
     height: 720px;
@@ -943,6 +903,10 @@
     width: 184%;
     height: 640px;
   }
+
+  .intro-breath-field__wash { opacity: .1; }
+  .intro-breath-field__wave--back { opacity: .24; }
+  .intro-breath-field__wave--front { opacity: .36; }
 
   .intro-artifact--maia > .maia-schematic .maia-schematic__flow {
     grid-template-columns: minmax(0, 1fr) !important;
@@ -1223,9 +1187,6 @@
     opacity: .72 !important;
     transform: none !important;
   }
-
-  .intro-breath-field__dotted { opacity: .16 !important; }
-  .intro-breath-field__nodes { opacity: .26 !important; transform: none !important; }
 
   .decision-thread__live { stroke-dashoffset: 0 !important; }
 
