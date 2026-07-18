@@ -756,6 +756,10 @@
   aspect-ratio: auto;
 }
 
+.widget .w-embed-stage--tall {
+  height: clamp(640px, 72dvh, 780px);
+}
+
 .widget .we-note {
   max-width: 76ch;
   margin: 15px 0 0;
@@ -887,6 +891,7 @@
   .widget .w-embed-bar { gap: 10px; }
   .widget .w-embed-bar .we-title::before { display: none; }
   .widget .w-embed-stage { height: clamp(450px, 66dvh, 590px); }
+  .widget .w-embed-stage--tall { height: clamp(540px, 72dvh, 640px); }
   .widget .we-gate-card { width: calc(100% - 24px); padding: 16px 12px; }
   .widget .we-gate .we-poster {
     object-fit: contain;

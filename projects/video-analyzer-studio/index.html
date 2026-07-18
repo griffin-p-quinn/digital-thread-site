@@ -49,7 +49,8 @@
           <h1 id="case-title">Video Analyzer Studio</h1>
           <p class="case-deck">Sends a local video to Gemini, turns the response into a structured scene report, and keeps prior runs in SQLite.</p>
           <div class="case-actions">
-            <a class="case-action primary" href="#proof">Inspect the evidence</a>
+            <a class="case-action primary" href="../../assets/embeds/video-analyzer/index.html">Open the browser build <span aria-hidden="true">↗</span></a>
+            <a class="case-action" href="#proof">Inspect the evidence</a>
             <a class="case-action" href="../../projects.html">All selected work</a>
           </div>
         </div>
@@ -73,7 +74,7 @@
 
       <figure class="media-figure" data-reveal>
         <div class="media-frame">
-          <img src="../../assets/projects/video_analyzer_cover.png" width="1600" height="1000" alt="Video Analyzer Studio desktop workspace with video selection, Gemini analysis controls, a structured scene report, and SQLite run history">
+          <img src="../../assets/projects/video_analyzer_report_actual_capture.png" width="1540" height="1000" alt="Video Analyzer Studio desktop workspace showing the video stage, Gemini analysis controls, saved report, timeline, and SQLite run history">
         </div>
         <figcaption><span class="figure-label">Desktop workspace</span><span>The application keeps the selected input, provider context, report, and prior runs in one local working surface.</span></figcaption>
       </figure>
@@ -91,7 +92,7 @@
 
         <div class="story-content">
           <section class="story-section" id="problem" data-case-section data-reveal>
-            <div><span class="section-kicker">01 · Problem</span><h2>A one-off model response is hard to revisit</h2></div>
+            <div><span class="section-kicker">01 · Problem</span><h2>A one-off Gemini response is hard to come back to</h2></div>
             <div class="story-copy">
               <p class="lead">General video analysis becomes difficult to compare when the input, provider, report, and prior runs are scattered across uploads and chat sessions.</p>
               <p>The project asks how a local tool can make that work reproducible without pretending to be a full video production suite. Its job is narrower: organize a request and retain its structured evidence.</p>
@@ -99,7 +100,7 @@
           </section>
 
           <section class="story-section" id="contribution" data-case-section data-reveal>
-            <div><span class="section-kicker">02 · My contribution</span><h2>Built a durable workspace around the model call</h2></div>
+            <div><span class="section-kicker">02 · My contribution</span><h2>I wrapped the model call in a small desktop app</h2></div>
             <div class="story-copy">
               <p class="lead">I packaged the analysis flow as a desktop workspace instead of leaving it as a disposable prompt-and-response exchange.</p>
               <ul class="contribution-list">
@@ -111,7 +112,7 @@
           </section>
 
           <section class="story-section" id="proof" data-case-section data-reveal>
-            <div><span class="section-kicker">03 · Proof</span><h2>The project record defines the whole run loop</h2></div>
+            <div><span class="section-kicker">03 · Proof</span><h2>The real app covers upload, report generation, and history</h2></div>
             <div class="story-copy">
               <p class="lead">The source record and desktop capture document local selection, provider analysis, structured scene reporting, and retained history as one packaged workflow.</p>
               <ul class="proof-list">
@@ -120,12 +121,12 @@
                 <li><strong>Persistent working state:</strong> run history is part of the workspace and remains visible beside the current report.</li>
                 <li><strong>Source definition:</strong> the project README documents upload, provider analysis, report structure, and history.</li>
               </ul>
-              <p class="boundary-note"><strong>Portfolio boundary:</strong> this public case does not upload a video or call a live model provider. The interactive portfolio preview is a deterministic reconstruction of the documented workflow.</p>
+              <p class="boundary-note"><strong>Portfolio boundary:</strong> the browser demo is the real exported application frontend wired to a local sample API. It does not upload a video or call Gemini, but the interface, report views, history behavior, and interaction flow come from the working app.</p>
             </div>
           </section>
 
           <section class="story-section" id="result" data-case-section data-reveal>
-            <div><span class="section-kicker">04 · Result</span><h2>Analysis becomes a session that can be inspected</h2></div>
+            <div><span class="section-kicker">04 · Result</span><h2>Each run is saved instead of disappearing into a chat</h2></div>
             <div class="story-copy">
               <p class="lead">The result is a repeatable local analysis loop: choose a video, choose the configured provider path, request a report, and retain the outcome with its history.</p>
               <p>No claim is made about model accuracy or time saved. The demonstrated consequence is organizational: each run has an inspectable place and a structured record.</p>
@@ -136,7 +137,7 @@
 
       <section class="architecture" aria-labelledby="architecture-title" data-reveal>
         <div class="architecture-head">
-          <div><span class="section-kicker">Run model</span><h2 id="architecture-title">A report with context and memory</h2></div>
+          <div><span class="section-kicker">Run model</span><h2 id="architecture-title">Video → Gemini → report → SQLite</h2></div>
           <div class="architecture-copy"><p>The tool’s architecture is deliberately small. The product value sits in preserving the relationship between a local input, the configured request path, and the retained output.</p></div>
         </div>
         <figure>

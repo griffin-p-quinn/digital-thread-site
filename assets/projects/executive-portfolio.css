@@ -703,19 +703,46 @@
 }
 
 /* ── Drawer: permanent case-study handoff + consequence grid ─ */
+.drawer-header-actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 18px;
+}
+
 .drawer-case-link {
-  position: absolute;
-  top: 38px;
-  right: 112px;
+  position: static;
   display: inline-flex;
   gap: 9px;
   padding: 8px 0;
   color: var(--folio-accent);
   border-bottom: 1px solid currentColor;
   font: 600 11px/1 var(--eg-sans);
+  white-space: nowrap;
 }
 
 .drawer-case-link[hidden] { display: none; }
+
+@media (max-width: 620px) {
+  .drawer-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .drawer-title-group { max-width: 100%; }
+
+  .drawer-header-actions {
+    align-self: start;
+    flex-direction: column-reverse;
+    align-items: flex-end;
+    gap: 7px;
+  }
+
+  .drawer-header-actions .drawer-case-link {
+    padding-block: 5px;
+    font-size: 9.5px;
+  }
+}
 
 .drawer-story {
   margin: 34px 0 40px;
@@ -918,14 +945,11 @@
   .portfolio-close__disclaimer { margin-top: 42px !important; }
 
   .drawer-case-link {
-    top: 18px;
-    right: 66px;
-    font-size: 0;
+    font-size: 9.5px;
   }
 
   .drawer-case-link::before {
-    content: 'Case study ↗';
-    font-size: 10px;
+    content: none;
   }
 
   .inspect-links a {

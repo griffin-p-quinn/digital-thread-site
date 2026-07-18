@@ -97,21 +97,21 @@ const generated = `<!-- STATIC-GALLERY:START -->
     <div class="static-gallery">
       <noscript><p class="static-gallery__notice">JavaScript is off. Every project remains readable below; interactive filters and previews are unavailable.</p></noscript>
       <section class="static-gallery__section" aria-labelledby="staticSelectedTitle">
-        <p class="static-gallery__kicker">The defining systems</p>
+        <p class="static-gallery__kicker">Worth a closer look</p>
         <h2 id="staticSelectedTitle">Selected work</h2>
         <div class="static-selected-list">
       ${selected.map(selectedProject).join('\n      ')}
         </div>
       </section>
       <section class="static-gallery__section" aria-labelledby="staticExplorationTitle">
-        <p class="static-gallery__kicker">Applied research</p>
+        <p class="static-gallery__kicker">Smaller things I tried</p>
         <h2 id="staticExplorationTitle">Explorations</h2>
         <div class="static-exploration-list">
       ${explorations.map(exploration).join('\n      ')}
         </div>
       </section>
       <section class="static-gallery__section" aria-labelledby="staticArchiveTitle">
-        <p class="static-gallery__kicker">Complete project index</p>
+        <p class="static-gallery__kicker">Everything else</p>
         <h2 id="staticArchiveTitle">Archive</h2>
         <div class="static-archive-list">
       ${archive.map(archiveRecord).join('\n      ')}

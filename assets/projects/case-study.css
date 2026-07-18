@@ -480,6 +480,10 @@ a:hover {
   margin: 0;
 }
 
+.artifact-grid .artifact-grid__wide {
+  grid-column: 1 / -1;
+}
+
 .media-figure {
   position: relative;
 }

@@ -84,7 +84,7 @@
     'edge',
     'llms',
     'protein',
-    'world'
+    'change-graph'
   ]);
 
   const CATEGORIES = Object.freeze([
@@ -272,7 +272,7 @@
       result: 'Local tool access becomes an explicit set of capabilities that can be enabled, inspected, and kept within an allowed workspace.'
     }),
     'dt-composer': Object.freeze({
-      summary: 'Makes an assembly-line shortfall diagnosable from one interface while keeping the MES evidence and agent tool path visible.',
+      summary: 'I put the line view, MES state, and agent diagnosis in the same screen.',
       problem: 'Plant geometry, station state, and diagnostic reasoning are difficult to follow when they live in separate views and the recommendation hides its evidence.',
       contribution: 'I built the React and Three.js production view and paired it with LangGraph and ReAct diagnostic, recovery, and simulation tools in scripted and live modes.',
       proof: 'The browser build opens a throughput alert, shows the 3D final-assembly line, identifies the constrained station, and exposes the diagnosis-to-recovery tool sequence.',
@@ -303,8 +303,8 @@
       summary: 'Ten packaged Mendix widgets, plus the MxWidgetForge and Mx Pluggable Widget Complete Markdown specs I shared so other builders could reuse the build, validation, accessibility, and .mpk packaging process.',
       problem: 'Each pluggable widget repeats the same XML, generated typing, accessibility, build, packaging, and deployment decisions unless the working procedure is captured.',
       contribution: 'I packaged ten Mendix widgets, then turned the recurring XML, typing, accessibility, build, and validation rules into three agent-spec Markdown guides and two reusable skills that I shared with other Mendix builders.',
-      proof: 'The portfolio includes the live Diagram Editor LocalLab, a packaged MPK artifact, and the MxWidgetForge and Mx Pluggable Widget Complete specifications with their build and validation constraints.',
-      result: 'The learned workflow becomes a portable specification and repeatable packaging path rather than staying inside one widget repository.'
+      proof: 'The portfolio includes the live Agent Graph Editor display layer, a packaged Diagram Editor MPK, another working widget capture, and the MxWidgetForge and Mx Pluggable Widget Complete specifications with their build and validation constraints.',
+      result: 'I turned the process into docs other Mendix widget builders could reuse.'
     }),
     mro: Object.freeze({
       summary: 'Keeps inspection evidence, asset context, repair planning, and disposition inside one guided work-order flow.',

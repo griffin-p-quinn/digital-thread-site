@@ -17,24 +17,106 @@
 }
 
 /* ─────────────────────────────────────────────────────────────
-   HERO SIGNAL PATH
+   OPENING FIELD
+
+   The signal path belongs to the workbench underneath the artifacts. It is
+   intentionally only visible in the negative space between project windows.
    ───────────────────────────────────────────────────────────── */
+
+.intro {
+  --decision-ambient-x: 0px;
+  --decision-ambient-y: 0px;
+  position: relative;
+  isolation: isolate;
+}
+
+/* A real SVG contour field, held to a very low alpha. It gives the opening a
+   slow, living background without turning the page into an animated poster. */
+.intro::before {
+  content: "";
+  position: absolute;
+  top: 58px;
+  right: max(-15vw, -220px);
+  z-index: -2;
+  display: block;
+  width: min(1120px, 88vw);
+  height: min(760px, 70vw);
+  opacity: .19;
+  pointer-events: none;
+  background: center / 100% 100% no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 780'%3E%3Cg fill='none' stroke='%23ff623f' stroke-opacity='.52'%3E%3Cpath d='M-40 530C140 340 245 720 430 475S770 180 1240 345'/%3E%3Cpath d='M-35 578C165 388 260 756 462 512S805 228 1248 389' stroke-opacity='.32'/%3E%3Cpath d='M72 120C282 10 366 305 604 158S957 70 1190 182' stroke-opacity='.22'/%3E%3C/g%3E%3Cg fill='%23ff623f' fill-opacity='.18'%3E%3Ccircle cx='430' cy='475' r='5'/%3E%3Ccircle cx='604' cy='158' r='4'/%3E%3Ccircle cx='1018' cy='310' r='3'/%3E%3C/g%3E%3C/svg%3E");
+  -webkit-mask-image: linear-gradient(115deg, transparent 2%, #000 25%, #000 72%, transparent 98%);
+  mask-image: linear-gradient(115deg, transparent 2%, #000 25%, #000 72%, transparent 98%);
+  translate: var(--decision-ambient-x) var(--decision-ambient-y);
+  transform-origin: 58% 48%;
+  transition: translate 420ms ease-out;
+}
+
+/* The softer layer is the "weather" behind the contour drawing. */
+.intro::after {
+  content: "";
+  position: absolute;
+  top: 2%;
+  left: -18%;
+  z-index: -3;
+  width: 108%;
+  height: 72%;
+  opacity: .3;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 30% 42%, color-mix(in srgb, var(--decision-signal) 22%, transparent) 0, transparent 54%),
+    radial-gradient(ellipse at 72% 28%, color-mix(in srgb, var(--decision-ink) 9%, transparent) 0, transparent 58%);
+  filter: blur(46px);
+  translate: var(--decision-ambient-x) var(--decision-ambient-y);
+  transform-origin: 50% 50%;
+  transition: translate 620ms ease-out;
+}
+
+.decision-motion .intro::before {
+  animation: decision-contour-breathe 18s ease-in-out 1.4s infinite alternate;
+}
+
+.decision-motion .intro::after {
+  animation: decision-cloud-pass 24s ease-in-out 900ms infinite alternate;
+}
+
+@keyframes decision-contour-breathe {
+  0% { opacity: .12; transform: scale(.97) rotate(-.35deg); }
+  48% { opacity: .22; transform: scale(1.025) rotate(.2deg); }
+  100% { opacity: .15; transform: scale(1.01) translate3d(-2.5%, 1.5%, 0); }
+}
+
+@keyframes decision-cloud-pass {
+  0% { opacity: .18; transform: translate3d(-3%, 0, 0) scale(.96); }
+  55% { opacity: .34; transform: translate3d(2%, -2%, 0) scale(1.06); }
+  100% { opacity: .22; transform: translate3d(5%, 1%, 0) scale(1.01); }
+}
 
 .intro-artifacts[data-decision-thread] {
   position: relative;
   overflow: visible;
+  isolation: isolate;
 }
 
 .decision-thread {
   position: absolute;
-  inset: 0;
-  /* The authored path deliberately crosses the three artifact surfaces. */
-  z-index: 5;
-  width: 100%;
-  height: 100%;
+  inset: 5% 1% 7%;
+  z-index: 0;
+  width: 98%;
+  height: 88%;
   overflow: visible;
+  opacity: .56;
   pointer-events: none;
+  filter: saturate(.82);
 }
+
+/* Every artifact establishes an opaque surface above the signal drawing. */
+.intro-artifacts[data-decision-thread] > .intro-artifact {
+  z-index: 2;
+}
+
+.intro-artifacts[data-decision-thread] > .intro-artifact--dtc { z-index: 4; }
+.intro-artifacts[data-decision-thread] > .intro-artifact--nx { z-index: 5; }
+.intro-artifacts[data-decision-thread] > .intro-artifact--edge { z-index: 6; }
 
 .decision-thread__base,
 .decision-thread__live {
@@ -47,12 +129,12 @@
 .decision-thread__base {
   stroke: var(--decision-rule-strong);
   stroke-width: 1;
-  opacity: .58;
+  opacity: .32;
 }
 
 .decision-thread__live {
   stroke: var(--decision-signal);
-  stroke-width: 1.5;
+  stroke-width: 1.25;
   stroke-dasharray: 1;
   stroke-dashoffset: 0;
 }
@@ -60,7 +142,7 @@
 .decision-thread__node {
   fill: var(--decision-paper);
   stroke: var(--decision-signal);
-  stroke-width: 1.5;
+  stroke-width: 1.25;
   vector-effect: non-scaling-stroke;
   transform-box: fill-box;
   transform-origin: center;
@@ -69,7 +151,7 @@
 .decision-thread__packet {
   fill: var(--decision-signal);
   stroke: var(--decision-paper);
-  stroke-width: 2;
+  stroke-width: 1.5;
   vector-effect: non-scaling-stroke;
   opacity: 0;
   filter: drop-shadow(0 0 5px color-mix(in srgb, var(--decision-signal) 55%, transparent));
@@ -106,87 +188,208 @@
 }
 
 /* ─────────────────────────────────────────────────────────────
-   HERO COMMISSIONING — copy, then artifacts in reading order
+   LANDING SEQUENCE — one aperture, then the evidence settles in
    ───────────────────────────────────────────────────────────── */
 
-.decision-motion .intro :is(.intro-kicker, h1, .intro-side) {
-  opacity: 0;
-  clip-path: inset(0 0 18% 0);
-  transform: translate3d(0, 18px, 0);
+.decision-motion .topbar {
+  transform: translate3d(0, -102%, 0);
+  transition: transform 680ms var(--decision-ease) 30ms;
 }
 
-.decision-motion .intro .intro-kicker {
-  transition:
-    opacity 420ms var(--decision-ease) 30ms,
-    clip-path 520ms var(--decision-ease) 30ms,
-    transform 520ms var(--decision-ease) 30ms;
+.decision-motion.decision-hero-started .topbar {
+  animation: decision-masthead-in 680ms var(--decision-ease) 30ms both;
+}
+
+.decision-motion .intro-kicker {
+  opacity: 0;
+  transform: translate3d(-22px, 0, 0);
+  transition: opacity 360ms ease 120ms, transform 620ms var(--decision-ease) 120ms;
+}
+
+.decision-motion .intro-kicker::before {
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 720ms var(--decision-ease) 80ms;
+}
+
+.intro h1 > span {
+  display: block;
 }
 
 .decision-motion .intro h1 {
-  transition:
-    opacity 500ms var(--decision-ease) 90ms,
-    clip-path 650ms var(--decision-ease) 90ms,
-    transform 650ms var(--decision-ease) 90ms;
-}
-
-.decision-motion .intro .intro-side {
-  transition:
-    opacity 460ms var(--decision-ease) 185ms,
-    clip-path 570ms var(--decision-ease) 185ms,
-    transform 570ms var(--decision-ease) 185ms;
-}
-
-.decision-motion.decision-hero-started .intro :is(.intro-kicker, h1, .intro-side) {
   opacity: 1;
-  clip-path: inset(0 0 0 0);
-  transform: translate3d(0, 0, 0);
+  clip-path: none;
+  filter: none;
+  transform: none;
 }
 
-.decision-motion .intro-artifact {
+.decision-motion .intro h1 > span {
   opacity: 0;
-  clip-path: inset(0 0 13% 0);
-  transform: translate3d(0, 16px, 0);
+  transform: translate3d(0, 42px, 0) scale(.965);
+  transform-origin: left bottom;
+  will-change: opacity, transform;
+}
+
+.decision-motion .intro-side {
+  opacity: 0;
+  clip-path: none;
+  filter: none;
+  transform: translate3d(24px, 0, 0);
   transition:
-    opacity 430ms var(--decision-ease),
-    clip-path 560ms var(--decision-ease),
-    transform 560ms var(--decision-ease),
-    border-color 180ms ease;
+    opacity 540ms ease 390ms,
+    transform 760ms var(--decision-ease) 370ms;
 }
 
-.decision-motion .intro-artifact[data-thread-node="0"] {
-  transform: translate3d(-14px, 12px, 0);
-  transition-delay: 280ms, 280ms, 280ms, 0ms;
-}
-
-.decision-motion .intro-artifact[data-thread-node="1"] {
-  transform: translate3d(0, 18px, 0);
-  transition-delay: 465ms, 465ms, 465ms, 0ms;
-}
-
-.decision-motion .intro-artifact[data-thread-node="2"] {
-  transform: translate3d(14px, 12px, 0);
-  transition-delay: 650ms, 650ms, 650ms, 0ms;
-}
-
-.decision-motion.decision-hero-started .intro-artifact[data-thread-node] {
+.decision-motion.decision-hero-started .intro-kicker,
+.decision-motion.decision-hero-started .intro h1,
+.decision-motion.decision-hero-started .intro-side {
   opacity: 1;
-  clip-path: inset(0 0 0 0);
+  clip-path: none;
+  filter: blur(0);
   transform: translate3d(0, 0, 0);
+}
+
+.decision-motion.decision-hero-started .intro-kicker {
+  animation: decision-kicker-in 620ms var(--decision-ease) 100ms both;
+}
+
+.decision-motion.decision-hero-started .intro h1 > span {
+  animation: decision-title-in 860ms var(--decision-ease) 120ms both;
+}
+
+.decision-motion.decision-hero-started .intro h1 > span:nth-child(2) {
+  animation-delay: 220ms;
+}
+
+.decision-motion.decision-hero-started .intro-side {
+  animation: decision-side-in 780ms var(--decision-ease) 360ms both;
+}
+
+.decision-motion.decision-hero-started .intro-kicker::before { transform: scaleX(1); }
+
+@keyframes decision-masthead-in {
+  from { transform: translate3d(0, -102%, 0); }
+  to { transform: translate3d(0, 0, 0); }
+}
+
+@keyframes decision-kicker-in {
+  from { opacity: 0; transform: translate3d(-22px, 0, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+@keyframes decision-title-in {
+  0% { opacity: 0; transform: translate3d(0, 42px, 0) scale(.965); }
+  62% { opacity: 1; }
+  100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+}
+
+@keyframes decision-side-in {
+  from { opacity: 0; transform: translate3d(24px, 0, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+/* The field arrives cleanly after the title; individual project windows then
+   lock into place on top of the live signal path. */
+.decision-motion .intro-artifacts[data-decision-thread] {
+  opacity: 1;
+  clip-path: none;
+  filter: none;
+  transform: translate3d(0, 30px, 0) scale(.975);
+  transform-origin: 50% 34%;
+  transition:
+    opacity 520ms ease 500ms,
+    transform 1080ms var(--decision-ease) 500ms;
+}
+
+.decision-motion.decision-hero-started .intro-artifacts[data-decision-thread] {
+  opacity: 1;
+  clip-path: none;
+  filter: none;
+  transform: translate3d(0, 0, 0) scale(1);
+  animation: decision-artifact-field-in 1060ms var(--decision-ease-soft) 480ms both;
+}
+
+.decision-motion.decision-hero-complete .intro-artifacts[data-decision-thread] {
+  clip-path: none;
+}
+
+/* A narrow scan travels only through the negative space because it sits on
+   the same back plane as the path, beneath every opaque artifact surface. */
+@media (min-width: 621px) {
+  .intro-artifacts[data-decision-thread]::after {
+    content: "";
+    position: absolute;
+    inset: -2% auto -2% -8%;
+    z-index: 1;
+    width: 3.5%;
+    opacity: 0;
+    pointer-events: none;
+    background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--decision-signal) 42%, transparent), transparent);
+    transform: translate3d(0, 0, 0) skewX(-8deg);
+  }
+
+  .decision-motion.decision-hero-started .intro-artifacts[data-decision-thread]::after {
+    animation: decision-stage-scan 1180ms var(--decision-ease-soft) 510ms both;
+  }
+}
+
+@keyframes decision-stage-scan {
+  0% { left: -8%; opacity: 0; }
+  12% { opacity: .34; }
+  82% { opacity: .2; }
+  100% { left: 103%; opacity: 0; }
+}
+
+@keyframes decision-artifact-field-in {
+  from { opacity: 1; transform: translate3d(0, 30px, 0) scale(.975); }
+  to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+}
+
+/* Project windows enter as one composition. Their directions reinforce the
+   layout instead of making six unrelated cards bob upward. */
+.decision-motion .intro-artifact {
+  --decision-artifact-x: 0px;
+  --decision-hero-delay: 610ms;
+  opacity: 0;
+  transform: translate3d(var(--decision-artifact-x), 0, 0) scale(.965);
+  transition:
+    opacity 360ms ease var(--decision-hero-delay),
+    transform 780ms var(--decision-ease) var(--decision-hero-delay),
+    border-color 180ms ease,
+    box-shadow 260ms var(--decision-ease);
+}
+
+.decision-motion .intro-artifact--maia { --decision-artifact-x: -28px; }
+.decision-motion .intro-artifact--dtc,
+.decision-motion .intro-artifact--nx { --decision-artifact-x: 26px; }
+.decision-motion .intro-artifact--edge { --decision-artifact-x: -14px; }
+
+.decision-motion.decision-hero-started .intro-artifact {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+  animation: decision-project-window-in 760ms var(--decision-ease) var(--decision-hero-delay) both;
+}
+
+@keyframes decision-project-window-in {
+  from { opacity: 0; transform: translate3d(var(--decision-artifact-x), 0, 0) scale(.965); }
+  28% { opacity: 1; }
+  to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
 }
 
 /* Once the commissioning pass is complete, direct interaction changes only
    the border. The project windows do not become floating cards. */
-.decision-motion.decision-hero-complete .intro-artifact[data-thread-node],
-.decision-motion.decision-hero-complete .intro-artifact[data-thread-node]:hover,
-.decision-motion.decision-hero-complete .intro-artifact[data-thread-node]:focus-visible {
+.decision-motion.decision-hero-complete .intro-artifact,
+.decision-motion.decision-hero-complete .intro-artifact:hover,
+.decision-motion.decision-hero-complete .intro-artifact:focus-visible {
+  animation: none;
   transform: none;
   transition:
     border-color 180ms ease,
     box-shadow 260ms var(--decision-ease);
 }
 
-.decision-motion.decision-hero-complete .intro-artifact[data-thread-node]:hover,
-.decision-motion.decision-hero-complete .intro-artifact[data-thread-node]:focus-visible {
+.decision-motion.decision-hero-complete .intro-artifact:hover,
+.decision-motion.decision-hero-complete .intro-artifact:focus-visible {
   border-color: var(--decision-signal);
   box-shadow: 0 25px 58px rgba(0, 0, 0, .25);
 }
@@ -308,6 +511,128 @@
   }
 }
 
+@media (min-width: 721px) {
+  /* NX begins after the small evidence cards instead of covering the video
+     card or losing the first word of its own caption. */
+  .intro-artifact--nx {
+    right: 0;
+    width: min(37%, 540px);
+  }
+
+  /* The main-card overlap is known in advance; reserve that right-hand zone
+     so Maia's supporting caption remains wholly readable underneath it. */
+  .intro-artifact--maia > span:last-child {
+    padding-right: clamp(154px, 13vw, 204px);
+  }
+}
+
+/* ── The three smaller cards use the lower edge of the composition. They are
+   supporting evidence, so their footprint and type scale stay subordinate to
+   Maia / DTC / NX. */
+.intro-artifacts[data-decision-thread] {
+  min-height: clamp(670px, 57vw, 860px);
+}
+
+.intro-artifact--edge {
+  top: auto;
+  right: auto;
+  width: min(19%, 268px);
+  aspect-ratio: 4 / 3;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, .3);
+}
+
+.intro-artifact--change {
+  bottom: 0;
+  left: 1.5%;
+  width: min(21%, 296px);
+  aspect-ratio: 16 / 11;
+}
+
+.intro-artifact--widgets {
+  bottom: 3.5%;
+  left: 24.5%;
+  width: min(17.5%, 244px);
+}
+
+.intro-artifact--video {
+  bottom: .5%;
+  left: 43.5%;
+  width: min(17.5%, 244px);
+}
+
+.intro-artifact--edge > img {
+  aspect-ratio: 4 / 3;
+  object-position: center;
+}
+
+.intro-artifact--edge > span:last-child {
+  display: block;
+  min-height: 48px;
+  padding: 11px 12px 12px;
+}
+
+.intro-artifact--edge > span:last-child b {
+  display: block;
+  font-size: clamp(14px, 1.22vw, 18px);
+  line-height: 1.05;
+}
+
+.intro-artifact--edge > span:last-child small {
+  display: block;
+  margin-top: 5px;
+  font-size: 8.5px;
+  text-align: left;
+}
+
+.intro-artifact--change > .edge-system-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, .72fr) auto minmax(0, 1.45fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 8px 5px;
+  align-items: center;
+  min-height: 0;
+  padding: 14px;
+  color: #f2f0e8;
+  border: 0;
+  background:
+    linear-gradient(rgba(255, 98, 63, .09) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 98, 63, .09) 1px, transparent 1px),
+    #111312;
+  background-size: 30px 30px;
+}
+
+.intro-artifact--change > .edge-system-card > b {
+  grid-column: 1 / -1;
+  padding-bottom: 9px;
+  color: #ff7c5e;
+  border-bottom: 1px solid rgba(242, 240, 232, .24);
+  font: 650 8px/1 var(--eg-sans);
+  letter-spacing: .12em;
+}
+
+.intro-artifact--change > .edge-system-card > span {
+  display: grid;
+  min-height: 48px;
+  place-items: center;
+  padding: 5px;
+  color: rgba(242, 240, 232, .82);
+  border: 1px solid rgba(242, 240, 232, .26);
+  font: 550 8px/1.25 var(--eg-sans);
+  text-align: center;
+}
+
+.intro-artifact--change > .edge-system-card > span:last-child {
+  color: #111312;
+  background: #ff623f;
+  border-color: #ff623f;
+}
+
+.intro-artifact--change > .edge-system-card > i {
+  color: #ff7c5e;
+  font-size: 9px;
+  font-style: normal;
+}
+
 /* ─────────────────────────────────────────────────────────────
    SELECTED WORK — rail / waypoint, artifact, proof
    ───────────────────────────────────────────────────────────── */
@@ -343,6 +668,17 @@
 }
 
 [data-selected-thread] > .piece {
+  --decision-visual-inset: 0%;
+  --decision-visual-shift: 0px;
+  --decision-visual-scale: 1;
+  --decision-copy-opacity: 1;
+  --decision-copy-y: 0px;
+  --decision-copy-inset: 0%;
+  --decision-detail-opacity: 1;
+  --decision-detail-y: 0px;
+  --decision-branch-progress: 1;
+  --decision-node-opacity: 1;
+  --decision-node-scale: 1;
   position: relative;
 }
 
@@ -381,52 +717,71 @@
   display: block;
 }
 
+/* Scroll does not fade a whole card in. It first exposes the actual artifact
+   with a directional crop, then brings in the title, then the proof. The
+   controller writes these variables from real viewport progress. */
 .decision-motion [data-selected-thread] > .decision-piece::before {
-  transform: scaleX(0);
-  transition: transform 260ms var(--decision-ease);
+  transform: scaleX(var(--decision-branch-progress));
+  transition: transform 300ms linear;
 }
 
 .decision-motion [data-selected-thread] > .decision-piece::after {
-  opacity: 0;
-  transform: scale(.55);
-  transition:
-    opacity 160ms ease 160ms,
-    transform 280ms var(--decision-ease) 160ms;
+  opacity: var(--decision-node-opacity);
+  transform: scale(var(--decision-node-scale));
+  transition: opacity 260ms linear, transform 360ms var(--decision-ease);
 }
 
 .decision-motion [data-selected-thread] > .decision-piece .piece-visual {
-  opacity: 0;
-  clip-path: inset(0 0 14% 0);
-  transform: translate3d(0, 20px, 0);
-  transition:
-    opacity 500ms var(--decision-ease) 235ms,
-    clip-path 690ms var(--decision-ease) 235ms,
-    transform 690ms var(--decision-ease) 235ms;
-}
-
-.decision-motion [data-selected-thread] > .decision-piece .piece-body {
-  opacity: 0;
-  clip-path: inset(0 0 9% 0);
-  transform: translate3d(0, 14px, 0);
-  transition:
-    opacity 440ms var(--decision-ease) 380ms,
-    clip-path 580ms var(--decision-ease) 380ms,
-    transform 580ms var(--decision-ease) 380ms;
-}
-
-.decision-motion [data-selected-thread] > .decision-piece.is-decision-commissioned::before {
-  transform: scaleX(1);
-}
-
-.decision-motion [data-selected-thread] > .decision-piece.is-decision-commissioned::after {
   opacity: 1;
-  transform: scale(1);
+  clip-path: inset(0 var(--decision-visual-inset) 0 0);
+  transform: translate3d(var(--decision-visual-shift), 0, 0) scale(var(--decision-visual-scale));
+  transform-origin: 0 50%;
+  transition:
+    clip-path 620ms cubic-bezier(.4, 0, .2, 1),
+    transform 560ms var(--decision-ease);
 }
 
-.decision-motion [data-selected-thread] > .decision-piece.is-decision-commissioned :is(.piece-visual, .piece-body) {
-  opacity: 1;
-  clip-path: inset(0 0 0 0);
-  transform: translate3d(0, 0, 0);
+.decision-motion [data-selected-thread] > .decision-piece:nth-child(even) .piece-visual {
+  clip-path: inset(0 0 0 var(--decision-visual-inset));
+  transform-origin: 100% 50%;
+}
+
+.decision-motion [data-selected-thread] > .decision-piece :is(
+  .piece-meta,
+  .piece-title,
+  .piece-blurb--lead
+) {
+  opacity: var(--decision-copy-opacity);
+  transform: translate3d(0, var(--decision-copy-y), 0);
+  transition: opacity 420ms ease, transform 540ms var(--decision-ease);
+}
+
+.decision-motion [data-selected-thread] > .decision-piece .piece-title {
+  clip-path: inset(0 0 var(--decision-copy-inset) 0);
+  transition:
+    opacity 420ms ease,
+    transform 540ms var(--decision-ease),
+    clip-path 620ms cubic-bezier(.4, 0, .2, 1);
+}
+
+.decision-motion [data-selected-thread] > .decision-piece :is(.piece-story, .piece-footer) {
+  opacity: var(--decision-detail-opacity);
+  transform: translate3d(0, var(--decision-detail-y), 0);
+  transition: opacity 460ms ease, transform 560ms var(--decision-ease);
+}
+
+.decision-motion [data-selected-thread] > .decision-piece.is-decision-commissioned {
+  --decision-visual-inset: 0% !important;
+  --decision-visual-shift: 0px !important;
+  --decision-visual-scale: 1 !important;
+  --decision-copy-opacity: 1 !important;
+  --decision-copy-y: 0px !important;
+  --decision-copy-inset: 0% !important;
+  --decision-detail-opacity: 1 !important;
+  --decision-detail-y: 0px !important;
+  --decision-branch-progress: 1 !important;
+  --decision-node-opacity: 1 !important;
+  --decision-node-scale: 1 !important;
 }
 
 /* Explicitly opt the rest of the catalog out of reveal choreography. */
@@ -501,6 +856,51 @@
 }
 
 @media (max-width: 720px) {
+  .intro::before {
+    top: 120px;
+    right: -54vw;
+    width: 150vw;
+    height: 112vw;
+    opacity: .14;
+  }
+
+  .intro::after {
+    top: 8%;
+    left: -42%;
+    width: 145%;
+    height: 48%;
+    opacity: .2;
+    filter: blur(32px);
+  }
+
+  .intro-artifacts[data-decision-thread] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    min-height: 0;
+  }
+
+  .intro-artifact--maia,
+  .intro-artifact--dtc,
+  .intro-artifact--nx {
+    grid-column: 1 / -1;
+  }
+
+  .intro-artifact--edge,
+  .intro-artifact--change,
+  .intro-artifact--widgets,
+  .intro-artifact--video {
+    position: relative;
+    inset: auto;
+    width: auto;
+    aspect-ratio: 4 / 3;
+  }
+
+  .intro-artifact--change {
+    grid-column: 1 / -1;
+    aspect-ratio: 16 / 8;
+  }
+
+  .intro-artifact--edge > span:last-child small { display: none; }
+
   .intro-artifact--maia > .maia-schematic .maia-schematic__flow {
     grid-template-columns: minmax(0, 1fr) !important;
     gap: 8px !important;
@@ -538,6 +938,48 @@
 }
 
 @media (max-width: 620px) {
+  .intro h1 > span {
+    display: inline;
+  }
+
+  .decision-motion .intro h1 {
+    opacity: 0;
+    transform: translate3d(0, 34px, 0) scale(.975);
+    transform-origin: left bottom;
+  }
+
+  .decision-motion .intro h1 > span,
+  .decision-motion.decision-hero-started .intro h1 > span,
+  .decision-motion.decision-hero-started .intro h1 > span:nth-child(2) {
+    opacity: 1;
+    transform: none;
+    animation: none;
+    will-change: auto;
+  }
+
+  .decision-motion.decision-hero-started .intro h1 {
+    animation: decision-title-mobile-in 700ms var(--decision-ease) 70ms both;
+  }
+
+  .decision-motion.decision-hero-started .intro-side {
+    animation-duration: 620ms;
+    animation-delay: 250ms;
+  }
+
+  .decision-motion.decision-hero-started .intro-artifacts[data-decision-thread] {
+    animation-duration: 780ms;
+    animation-delay: 330ms;
+  }
+
+  .decision-motion.decision-hero-started .intro-artifact {
+    animation-duration: 620ms;
+  }
+
+  @keyframes decision-title-mobile-in {
+    from { opacity: 0; transform: translate3d(0, 34px, 0) scale(.975); }
+    to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+  }
+
   /* The desktop spline becomes one vertical engineering rail. */
   .decision-thread {
     display: none;
@@ -670,6 +1112,12 @@
     right: calc(100% + var(--decision-rail-gutter) - 11px);
   }
 
+  /* The crop choreography remains on mobile, but the distance is shorter and
+     there is no continuous parallax under the reader's finger. */
+  .decision-motion [data-selected-thread] > .decision-piece {
+    --decision-visual-shift: 0px !important;
+  }
+
   /* Mobile gets no scroll-linked optical movement. */
   .decision-motion .decision-depth .cover-media,
   .decision-motion .intro-artifact.decision-depth > img,
@@ -695,16 +1143,32 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .intro::before,
+  .intro::after,
+  .topbar,
+  .intro-artifacts[data-decision-thread],
   .decision-thread__live {
-    stroke-dashoffset: 0 !important;
+    animation: none !important;
+    transition: none !important;
   }
+
+  .decision-thread__live { stroke-dashoffset: 0 !important; }
 
   .decision-thread__node,
   .intro :is(.intro-kicker, h1, .intro-side),
+  .intro h1 > span,
   .intro-artifact,
   [data-selected-thread] > .piece::before,
   [data-selected-thread] > .piece::after,
-  [data-selected-thread] > .piece :is(.piece-visual, .piece-body),
+  [data-selected-thread] > .piece :is(
+    .piece-visual,
+    .piece-body,
+    .piece-meta,
+    .piece-title,
+    .piece-blurb--lead,
+    .piece-story,
+    .piece-footer
+  ),
   .decision-depth .cover-media,
   .intro-artifact.decision-depth > img,
   .intro-artifact.decision-depth > .maia-schematic {

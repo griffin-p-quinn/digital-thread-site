@@ -69,7 +69,7 @@
         ['.github/skills/mendix-widget-ui-craft/SKILL.md','Captures UI patterns for dashboards, matrices, timelines, kanban, selection bridges, and LocalLab development.'],
         ['DiagramEditorWidget/src/DiagramEditorWidget.xml','Defines the packaged Mendix widget contract and Studio Pro properties.'],
         ['DiagramEditorWidget/MENDIX_TESTING_GUIDE.md','Documents configuration, events, permissions, import behavior, testing, and deployment.'],
-        ['DiagramEditorWidget/dist/1.0.0/enterprisewidgets.DiagramEditorWidget.mpk','Concrete packaged output from the same foundry represented by the live LocalLab build.']
+        ['DiagramEditorWidget/dist/1.0.0/enterprisewidgets.DiagramEditorWidget.mpk','Concrete packaged output from the same foundry, shown alongside the live Agent Graph Editor widget lab.']
       ],
       demo:realStatic
     },
