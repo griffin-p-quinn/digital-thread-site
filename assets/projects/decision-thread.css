@@ -85,10 +85,9 @@
 }
 
 @keyframes decision-mobile-field-breathe {
-  0%, 100% { opacity: .52; transform: translate3d(-6%, 3%, 0) scale(.98); }
-  25%      { opacity: .72; transform: translate3d(2%, -4%, 0) scale(1.04); }
-  50%      { opacity: .86; transform: translate3d(7%, 1%, 0) scale(1.07); }
-  75%      { opacity: .65; transform: translate3d(-1%, 5%, 0) scale(1.01); }
+  0%   { opacity: .58; transform: translate3d(0, -2%, 0) scale(.96); }
+  50%  { opacity: .78; transform: translate3d(50vw, 2%, 0) scale(1.08); }
+  100% { opacity: .58; transform: translate3d(100vw, -1%, 0) scale(.98); }
 }
 
 .intro-artifacts[data-decision-thread] {
@@ -952,25 +951,26 @@
 }
 
 @media (max-width: 620px) {
-  /* The desktop SVG wash uses two large blur filters. Mobile keeps the same
-     breathing signal as a transform-only gradient layer so it stays smooth. */
+  /* Mobile uses one defined radial glow that visibly crosses the viewport.
+     The element itself moves, keeping the sweep on the compositor. */
   .intro-breath-field { display: none; }
 
   .intro::before {
     content: "";
     display: block;
     position: fixed;
-    top: max(56px, 8svh);
-    right: -52vw;
+    top: max(56px, 10svh);
+    right: auto;
+    left: -45vw;
     z-index: 0;
-    width: 172vw;
-    height: 72svh;
+    width: 90vw;
+    height: 80svh;
     pointer-events: none;
     background:
-      radial-gradient(ellipse 54% 42% at 64% 52%, color-mix(in srgb, var(--decision-signal) 48%, transparent), transparent 72%),
-      radial-gradient(ellipse 42% 30% at 32% 74%, color-mix(in srgb, var(--decision-signal) 22%, transparent), transparent 76%);
-    transform-origin: 62% 48%;
-    animation: decision-mobile-field-breathe 18s linear 1.2s infinite;
+      radial-gradient(ellipse 72% 50% at 50% 50%, color-mix(in srgb, var(--decision-signal) 52%, transparent), transparent 72%),
+      radial-gradient(ellipse 48% 34% at 46% 62%, color-mix(in srgb, var(--decision-signal) 24%, transparent), transparent 76%);
+    transform-origin: 50% 50%;
+    animation: decision-mobile-field-breathe 14s linear infinite alternate;
     will-change: opacity, transform;
     backface-visibility: hidden;
   }
