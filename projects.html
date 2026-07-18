@@ -109,9 +109,35 @@ body { min-height: 100vh; background: var(--bg); color: var(--text); }
   50%  { transform: translate3d(2.5%, -2%, 0) scale(1.06); }
   100% { transform: translate3d(-2%, 2.5%, 0) scale(1.02); }
 }
+@keyframes mesh-drift-mobile {
+  0%   { transform: translate3d(-1.5%, 0, 0) scale(1); }
+  100% { transform: translate3d(1.5%, -1%, 0) scale(1.025); }
+}
 .atmosphere .grain {
   position: absolute; inset: 0; opacity: var(--grain-op); mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Mobile keeps the atmosphere moving without continuously repainting a
+   viewport-sized blur and blend layer behind the page. */
+@media (max-width: 620px) {
+  .atmosphere .mesh {
+    inset: -12%;
+    filter: none;
+    opacity: .68;
+    animation: mesh-drift-mobile 18s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+  .atmosphere .grain { display: none; }
+  .topbar {
+    background: var(--surface) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  .studio-drawer-backdrop {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
 }
 
 /* ── Topbar (exact Digital Fabric tokens — do not restyle structure) ── */
@@ -858,31 +884,31 @@ input[type="range"] { width: 100%; accent-color: var(--teal); }
     </svg>
 
     <button class="intro-artifact intro-artifact--maia" data-thread-node="0" type="button" onclick="openStudio('playwright')" aria-label="Preview Maia Local MCP Toolkit">
-      <img src="assets/projects/maia_control_center_capture.png" width="1540" height="1020" decoding="async" alt="Maia Local MCP control center showing the running server, allowed locations, 62 local tools, safety defaults, and dependency checks">
+      <img src="assets/projects/maia_control_center_capture.png" srcset="assets/projects/hero-720/maia_control_center_capture.webp 720w, assets/projects/hero-1024/maia_control_center_capture.webp 1024w, assets/projects/maia_control_center_capture.png 1540w" sizes="(max-width: 620px) calc(100vw - 68px), (max-width: 900px) calc(100vw - 80px), 65vw" width="1540" height="1020" decoding="async" fetchpriority="high" alt="Maia Local MCP control center showing the running server, allowed locations, 62 local tools, safety defaults, and dependency checks">
       <span><b>Maia Local MCP Toolkit</b><small>Safe local agent authority · packaged for Windows</small></span>
     </button>
     <button class="intro-artifact intro-artifact--dtc" data-thread-node="1" type="button" onclick="openStudio('dt-composer')" aria-label="Preview DTC Production Co-Pilot">
-      <img src="assets/projects/dtc_composer_cover.png" width="1600" height="900" decoding="async" alt="DTC Production Co-Pilot showing a 3D final assembly line and agent diagnosis">
+      <img src="assets/projects/dtc_composer_cover.png" srcset="assets/projects/hero-720/dtc_composer_cover.webp 720w, assets/projects/hero-1024/dtc_composer_cover.webp 1024w, assets/projects/dtc_composer_cover.png 1600w" sizes="(max-width: 620px) calc(100vw - 68px), (max-width: 900px) calc((100vw - 96px) / 2), 42vw" width="1600" height="900" decoding="async" alt="DTC Production Co-Pilot showing a 3D final assembly line and agent diagnosis">
       <span><b>DTC Production Co-Pilot</b><small>3D plant · MES state · observable agent flow</small></span>
     </button>
     <button class="intro-artifact intro-artifact--nx" data-thread-node="2" type="button" onclick="openStudio('nx')" aria-label="Preview NX MCP Automation Server">
-      <img src="assets/nx-renders/ss-charlie-benchmark.png" width="2186" height="1174" decoding="async" alt="NX model created through the MCP automation server, with construction planes and feature geometry visible">
+      <img src="assets/nx-renders/ss-charlie-benchmark.png" srcset="assets/projects/hero-720/ss-charlie-benchmark.webp 720w, assets/projects/hero-1024/ss-charlie-benchmark.webp 1024w, assets/nx-renders/ss-charlie-benchmark.png 2186w" sizes="(max-width: 620px) calc(100vw - 68px), (max-width: 900px) calc((100vw - 96px) / 2), 36vw" width="2186" height="1174" decoding="async" alt="NX model created through the MCP automation server, with construction planes and feature geometry visible">
       <span><b>NX MCP Automation Server</b><small>68 typed NXOpen tools · geometry · FEA</small></span>
     </button>
     <button class="intro-artifact intro-artifact--edge intro-artifact--change" type="button" onclick="openStudio('tc-change')" aria-label="Preview Teamcenter Change KPI Dashboard">
-      <img src="assets/projects/tc_change_dashboard_actual_capture.png" width="1540" height="1000" decoding="async" alt="Teamcenter Change Dashboard showing workflow completion, aging, ownership, disposition, and task bottlenecks">
+      <img src="assets/projects/tc_change_dashboard_actual_capture.png" srcset="assets/projects/hero-720/tc_change_dashboard_actual_capture.webp 720w, assets/projects/hero-1024/tc_change_dashboard_actual_capture.webp 1024w, assets/projects/tc_change_dashboard_actual_capture.png 1540w" sizes="(max-width: 620px) calc((100vw - 84px) / 2), (max-width: 900px) calc((100vw - 96px) / 2), 16vw" width="1540" height="1000" loading="lazy" decoding="async" fetchpriority="low" alt="Teamcenter Change Dashboard showing workflow completion, aging, ownership, disposition, and task bottlenecks">
       <span><b>Teamcenter Change Dashboard</b><small>Query-backed status without spreadsheet rollups</small></span>
     </button>
     <button class="intro-artifact intro-artifact--edge intro-artifact--widgets" type="button" onclick="openStudio('widgets')" aria-label="Preview Mendix Widget Foundry">
-      <img src="assets/projects/mendix_agent_graph_actual_capture.png" width="1440" height="900" decoding="async" alt="Agent Graph Editor Mendix widget showing connected specialist agents, their tools, and the Mendix bridge inspector">
+      <img src="assets/projects/mendix_agent_graph_actual_capture.png" srcset="assets/projects/hero-720/mendix_agent_graph_actual_capture.webp 720w, assets/projects/hero-1024/mendix_agent_graph_actual_capture.webp 1024w, assets/projects/mendix_agent_graph_actual_capture.png 1440w" sizes="(max-width: 620px) calc((100vw - 84px) / 2), (max-width: 900px) calc((100vw - 96px) / 2), 14vw" width="1440" height="900" loading="lazy" decoding="async" fetchpriority="low" alt="Agent Graph Editor Mendix widget showing connected specialist agents, their tools, and the Mendix bridge inspector">
       <span><b>Mendix Widget Foundry</b><small>React Flow widget · reusable build specs</small></span>
     </button>
     <button class="intro-artifact intro-artifact--edge intro-artifact--video" type="button" onclick="openStudio('video')" aria-label="Preview Video Analyzer Studio">
-      <img src="assets/projects/video_analyzer_report_actual_capture.png" width="1540" height="1000" decoding="async" alt="Video Analyzer Studio desktop app with media preview, saved Gemini scene report, and run history">
+      <img src="assets/projects/video_analyzer_report_actual_capture.png" srcset="assets/projects/hero-720/video_analyzer_report_actual_capture.webp 720w, assets/projects/hero-1024/video_analyzer_report_actual_capture.webp 1024w, assets/projects/video_analyzer_report_actual_capture.png 1540w" sizes="(max-width: 620px) calc((100vw - 84px) / 2), (max-width: 900px) calc((100vw - 96px) / 2), 14vw" width="1540" height="1000" loading="lazy" decoding="async" fetchpriority="low" alt="Video Analyzer Studio desktop app with media preview, saved Gemini scene report, and run history">
       <span><b>Video Analyzer Studio</b><small>Gemini reports · SQLite history</small></span>
     </button>
     <button class="intro-artifact intro-artifact--edge intro-artifact--llm" type="button" onclick="openStudio('llms')" aria-label="Preview Multi-Surface LLM Bench">
-      <img src="assets/projects/llm_bench_actual_capture.png" width="1540" height="1000" decoding="async" alt="LLMS Workbench benchmark screen showing model availability, modalities, scores, and run history">
+      <img src="assets/projects/llm_bench_actual_capture.png" srcset="assets/projects/hero-720/llm_bench_actual_capture.webp 720w, assets/projects/hero-1024/llm_bench_actual_capture.webp 1024w, assets/projects/llm_bench_actual_capture.png 1540w" sizes="(max-width: 620px) calc((100vw - 84px) / 2), (max-width: 900px) calc((100vw - 96px) / 2), 14vw" width="1540" height="1000" loading="lazy" decoding="async" fetchpriority="low" alt="LLMS Workbench benchmark screen showing model availability, modalities, scores, and run history">
       <span><b>Multi-Surface LLM Bench</b><small>Chat · agents · speech · benchmark runs</small></span>
     </button>
   </div>

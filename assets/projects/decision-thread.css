@@ -84,6 +84,11 @@
   50% { opacity: .9; transform: translate3d(1.2%, -.7%, 0) scale(1.026); }
 }
 
+@keyframes decision-mobile-field-breathe {
+  0%, 100% { opacity: .42; transform: translate3d(-1.5%, 1%, 0) scale(.985); }
+  50% { opacity: .66; transform: translate3d(1.5%, -1%, 0) scale(1.025); }
+}
+
 .intro-artifacts[data-decision-thread] {
   position: relative;
   overflow: visible;
@@ -945,6 +950,27 @@
 }
 
 @media (max-width: 620px) {
+  /* The desktop SVG wash uses two large blur filters. Mobile gets the same
+     breathing signal as one gradient layer, avoiding tiled filter repaints. */
+  .intro-breath-field { display: none; }
+
+  .intro::before {
+    content: "";
+    position: absolute;
+    top: 74px;
+    right: -46%;
+    z-index: 0;
+    width: 176%;
+    height: 660px;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 54% 42% at 64% 52%, color-mix(in srgb, var(--decision-signal) 34%, transparent), transparent 72%),
+      radial-gradient(ellipse 42% 30% at 32% 74%, color-mix(in srgb, var(--decision-signal) 15%, transparent), transparent 76%);
+    transform-origin: 62% 48%;
+    animation: decision-mobile-field-breathe 14s ease-in-out 1.2s infinite;
+    will-change: opacity, transform;
+  }
+
   .intro-artifacts[data-decision-thread] {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 16px;
@@ -997,13 +1023,35 @@
     animation-delay: 250ms;
   }
 
+  /* On desktop the whole artifact field and each card move together. Moving
+     only the cards on mobile removes a large nested compositing layer while
+     retaining the staggered project-window entrance. */
+  .decision-motion .intro-artifacts[data-decision-thread],
   .decision-motion.decision-hero-started .intro-artifacts[data-decision-thread] {
-    animation-duration: 780ms;
-    animation-delay: 330ms;
+    transform: none;
+    transition: none;
+    animation: none;
   }
 
   .decision-motion.decision-hero-started .intro-artifact {
     animation-duration: 620ms;
+  }
+
+  .decision-motion:not(.decision-hero-complete) :is(
+    .intro-artifact--maia,
+    .intro-artifact--dtc,
+    .intro-artifact--nx
+  ) {
+    backface-visibility: hidden;
+    will-change: opacity, transform;
+  }
+
+  .decision-motion.decision-hero-complete :is(
+    .intro-artifact--maia,
+    .intro-artifact--dtc,
+    .intro-artifact--nx
+  ) {
+    will-change: auto;
   }
 
   @keyframes decision-title-mobile-in {
@@ -1144,9 +1192,25 @@
   }
 
   /* The crop choreography remains on mobile, but the distance is shorter and
-     there is no continuous parallax under the reader's finger. */
+     there is no continuous parallax or clip-path repaint under the reader's
+     finger. The controller commissions each piece once as it enters. */
   .decision-motion [data-selected-thread] > .decision-piece {
     --decision-visual-shift: 0px !important;
+  }
+
+  .decision-motion [data-selected-thread] > .decision-piece .piece-visual,
+  .decision-motion [data-selected-thread] > .decision-piece:nth-child(even) .piece-visual {
+    opacity: var(--decision-copy-opacity);
+    clip-path: none;
+    transform: scale(var(--decision-visual-scale));
+    transition:
+      opacity 380ms ease,
+      transform 520ms var(--decision-ease);
+  }
+
+  .decision-motion [data-selected-thread] > .decision-piece .piece-title {
+    clip-path: none;
+    transition: opacity 380ms ease, transform 500ms var(--decision-ease);
   }
 
   /* Mobile gets no scroll-linked optical movement. */
@@ -1156,6 +1220,23 @@
     transform: none !important;
     transition: none !important;
     will-change: auto !important;
+  }
+
+  /* Skip paint/layout work for the long catalog until the reader approaches
+     it. Intrinsic sizes keep anchors and the scrollbar stable. */
+  #explorations {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 3540px;
+  }
+
+  #archive {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 5515px;
+  }
+
+  #aboutGriffin {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 784px;
   }
 }
 
@@ -1174,6 +1255,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .intro::before,
   .intro-breath-field,
   .intro-breath-field *,
   .topbar,
@@ -1181,6 +1263,11 @@
   .decision-thread__live {
     animation: none !important;
     transition: none !important;
+  }
+
+  .intro::before {
+    opacity: .54 !important;
+    transform: none !important;
   }
 
   .intro-breath-field__body {

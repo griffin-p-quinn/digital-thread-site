@@ -20,6 +20,7 @@
     ? [...selectedStack.querySelectorAll(':scope > .piece')]
     : [];
   const reduceQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const compactQuery = window.matchMedia('(max-width: 620px)');
   const supportsEnhancement = Boolean(
     hero &&
     selectedStack &&
@@ -42,6 +43,7 @@
     activeDepth: new Set(),
     depthTargets: [],
     observer: null,
+    pieceObserver: null,
     resizeObserver: null
   };
 
@@ -53,9 +55,11 @@
     'decision-motion',
     'decision-motion--static',
     'decision-motion--reduced',
+    'decision-motion--compact',
     'decision-hero-started',
     'decision-hero-complete'
   );
+  root.classList.toggle('decision-motion--compact', compactQuery.matches);
 
   function clamp(value, min, max) {
     return Math.min(max, Math.max(min, value));
@@ -155,7 +159,7 @@
       /* Time values are authored here so CSS does not depend on unsupported
          multiplication inside calc(). */
       artifact.style.setProperty('--decision-hero-order', String(index));
-      const compactHero = window.innerWidth <= 620;
+      const compactHero = compactQuery.matches;
       artifact.style.setProperty(
         '--decision-hero-delay',
         `${(compactHero ? 430 : 610) + index * (compactHero ? 48 : 72)}ms`
@@ -205,7 +209,7 @@
   }
 
   function updateSelectedProgress() {
-    if (!selectedStack || state.reduced) return;
+    if (!selectedStack || state.reduced || compactQuery.matches) return;
     const rect = selectedStack.getBoundingClientRect();
     const viewport = window.innerHeight || 1;
     const start = viewport * 0.78;
@@ -215,7 +219,7 @@
   }
 
   function updateSelectedPieces() {
-    if (state.reduced) return;
+    if (state.reduced || compactQuery.matches) return;
     const viewport = window.innerHeight || 1;
     const revealStart = viewport * 0.92;
     const revealEnd = viewport * 0.38;
@@ -242,14 +246,14 @@
   }
 
   function depthRangeFor(target) {
-    if (window.innerWidth <= 620) return 0;
+    if (compactQuery.matches) return 0;
     const requested = Number(target.dataset.decisionDepth) || 6;
     if (window.innerWidth <= 1024) return Math.min(3, requested);
     return Math.min(7, requested);
   }
 
   function updateDepth() {
-    if (state.reduced) return;
+    if (state.reduced || compactQuery.matches) return;
     const viewport = window.innerHeight || 1;
     const writes = [];
 
@@ -309,6 +313,7 @@
   }
 
   function invalidateMetrics() {
+    if (compactQuery.matches && !state.heroRunning) return;
     state.metricsDirty = true;
     queueFrame();
   }
@@ -358,6 +363,12 @@
   function handleIntersections(entries) {
     entries.forEach((entry) => {
       const target = entry.target;
+      if (compactQuery.matches) {
+        target.classList.remove('is-decision-depth-active');
+        state.activeDepth.delete(target);
+        target.style.setProperty('--decision-depth-y', '0px');
+        return;
+      }
       target.classList.toggle(
         'is-decision-depth-active',
         entry.isIntersecting && !state.reduced
@@ -373,6 +384,44 @@
     invalidateMetrics();
   }
 
+  function setupCompactPieceObserver() {
+    if (!compactQuery.matches || state.pieceObserver) return;
+
+    state.pieceObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        commissionPiece(entry.target);
+        state.pieceObserver.unobserve(entry.target);
+      });
+    }, {
+      rootMargin: '0px 0px -10% 0px',
+      threshold: 0.08
+    });
+
+    selectedPieces.forEach((piece) => {
+      if (!piece.classList.contains('is-decision-commissioned')) {
+        state.pieceObserver.observe(piece);
+      }
+    });
+  }
+
+  function handleCompactPreference(event) {
+    root.classList.toggle('decision-motion--compact', event.matches);
+
+    if (event.matches) {
+      if (selectedStack) selectedStack.style.setProperty('--decision-selected-progress', '1');
+      resetDepth();
+      setupCompactPieceObserver();
+      return;
+    }
+
+    if (state.pieceObserver) {
+      state.pieceObserver.disconnect();
+      state.pieceObserver = null;
+    }
+    invalidateMetrics();
+  }
+
   function setupObservers() {
     state.observer = new IntersectionObserver(handleIntersections, {
       rootMargin: '18% 0px 18% 0px',
@@ -380,6 +429,7 @@
     });
 
     state.depthTargets.forEach((target) => state.observer.observe(target));
+    setupCompactPieceObserver();
 
     if ('ResizeObserver' in window) {
       state.resizeObserver = new ResizeObserver(invalidateMetrics);
@@ -414,6 +464,12 @@
     reduceQuery.addEventListener('change', handleMotionPreference);
   } else if (typeof reduceQuery.addListener === 'function') {
     reduceQuery.addListener(handleMotionPreference);
+  }
+
+  if (typeof compactQuery.addEventListener === 'function') {
+    compactQuery.addEventListener('change', handleCompactPreference);
+  } else if (typeof compactQuery.addListener === 'function') {
+    compactQuery.addListener(handleCompactPreference);
   }
 
   if (state.reduced) makeStatic(true);
