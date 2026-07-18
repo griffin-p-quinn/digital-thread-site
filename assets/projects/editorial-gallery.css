@@ -56,10 +56,7 @@ body *::selection {
   color: var(--eg-paper);
 }
 
-/* A quiet field makes the work, not an animated backdrop, the atmosphere. */
-.atmosphere {
-  display: none;
-}
+/* The shared gradient mesh remains visible behind the editorial work. */
 
 /* ─────────────────────────────────────────────────────────────
    NAVIGATION — a thin publication masthead

@@ -85,8 +85,8 @@
 }
 
 @keyframes decision-mobile-field-breathe {
-  0%, 100% { opacity: .42; transform: translate3d(-1.5%, 1%, 0) scale(.985); }
-  50% { opacity: .66; transform: translate3d(1.5%, -1%, 0) scale(1.025); }
+  0%, 100% { opacity: .5; transform: translate3d(-4%, 2%, 0) scale(.97); }
+  50% { opacity: .88; transform: translate3d(4%, -3%, 0) scale(1.055); }
 }
 
 .intro-artifacts[data-decision-thread] {
@@ -950,25 +950,27 @@
 }
 
 @media (max-width: 620px) {
-  /* The desktop SVG wash uses two large blur filters. Mobile gets the same
-     breathing signal as one gradient layer, avoiding tiled filter repaints. */
+  /* The desktop SVG wash uses two large blur filters. Mobile keeps the same
+     breathing signal as a transform-only gradient layer so it stays smooth. */
   .intro-breath-field { display: none; }
 
   .intro::before {
     content: "";
-    position: absolute;
-    top: 74px;
-    right: -46%;
+    display: block;
+    position: fixed;
+    top: max(56px, 8svh);
+    right: -52vw;
     z-index: 0;
-    width: 176%;
-    height: 660px;
+    width: 172vw;
+    height: 72svh;
     pointer-events: none;
     background:
-      radial-gradient(ellipse 54% 42% at 64% 52%, color-mix(in srgb, var(--decision-signal) 34%, transparent), transparent 72%),
-      radial-gradient(ellipse 42% 30% at 32% 74%, color-mix(in srgb, var(--decision-signal) 15%, transparent), transparent 76%);
+      radial-gradient(ellipse 54% 42% at 64% 52%, color-mix(in srgb, var(--decision-signal) 48%, transparent), transparent 72%),
+      radial-gradient(ellipse 42% 30% at 32% 74%, color-mix(in srgb, var(--decision-signal) 22%, transparent), transparent 76%);
     transform-origin: 62% 48%;
-    animation: decision-mobile-field-breathe 14s ease-in-out 1.2s infinite;
+    animation: decision-mobile-field-breathe 12s ease-in-out 1.2s infinite;
     will-change: opacity, transform;
+    backface-visibility: hidden;
   }
 
   .intro-artifacts[data-decision-thread] {
