@@ -42,7 +42,7 @@
 }
 
 .intro-breath-field {
-  position: absolute;
+  position: fixed;
   top: 46px;
   right: -4vw;
   z-index: 0;
