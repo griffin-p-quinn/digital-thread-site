@@ -8,12 +8,14 @@
   'use strict';
 
   const root = document.documentElement;
+  const syncMotionVisibility = () => root.classList.toggle('motion-paused', document.hidden);
+  syncMotionVisibility();
+  document.addEventListener('visibilitychange', syncMotionVisibility, { passive: true });
   const mount = document.getElementById('galleryMount');
   const hero = document.querySelector('.intro');
   const heroArtifactsHost = document.querySelector('[data-decision-thread]');
   const heroArtifacts = [...document.querySelectorAll('.intro-artifact')];
   const threadPath = document.getElementById('decisionThreadPath');
-  const threadPacket = document.getElementById('decisionThreadPacket');
   const threadNodes = [...document.querySelectorAll('.decision-thread__node')];
   const selectedStack = document.querySelector('[data-selected-thread]');
   const selectedPieces = selectedStack
@@ -25,10 +27,8 @@
     hero &&
     selectedStack &&
     threadPath &&
-    threadPacket &&
     'IntersectionObserver' in window &&
-    'requestAnimationFrame' in window &&
-    typeof threadPath.getTotalLength === 'function'
+    'requestAnimationFrame' in window
   );
 
   const state = {
@@ -37,7 +37,6 @@
     heroRunning: false,
     heroStart: 0,
     heroDuration: 1680,
-    pathLength: 0,
     frame: 0,
     metricsDirty: true,
     activeDepth: new Set(),
@@ -71,12 +70,6 @@
 
   function easeOutCubic(value) {
     return 1 - Math.pow(1 - value, 3);
-  }
-
-  function easeInOutCubic(value) {
-    return value < 0.5
-      ? 4 * value * value * value
-      : 1 - Math.pow(-2 * value + 2, 3) / 2;
   }
 
   function mediaKindFor(cover) {
@@ -164,29 +157,13 @@
         '--decision-hero-delay',
         `${(compactHero ? 430 : 610) + index * (compactHero ? 48 : 72)}ms`
       );
-
-      if (!artifact.querySelector('img, .maia-schematic')) return;
-      artifact.classList.add('decision-depth');
-      artifact.dataset.decisionObserve = 'depth';
-      artifact.dataset.decisionDepth = artifact.classList.contains('intro-artifact--edge') ? '3' : '5';
-      state.depthTargets.push(artifact);
     });
   }
 
-  function setThreadProgress(progress) {
-    const normalized = clamp(progress, 0, 1);
+  function settleDecisionThread() {
     threadPath.style.strokeDasharray = '1';
-    threadPath.style.strokeDashoffset = String(1 - normalized);
-
-    if (!state.pathLength) state.pathLength = threadPath.getTotalLength();
-    const point = threadPath.getPointAtLength(state.pathLength * normalized);
-    threadPacket.setAttribute('cx', point.x.toFixed(2));
-    threadPacket.setAttribute('cy', point.y.toFixed(2));
-
-    const lastNode = Math.max(1, threadNodes.length - 1);
-    threadNodes.forEach((node, index) => {
-      node.classList.toggle('is-reached', normalized >= index / lastNode - 0.012);
-    });
+    threadPath.style.strokeDashoffset = '0';
+    threadNodes.forEach((node) => node.classList.add('is-reached'));
   }
 
   function resetDepth() {
@@ -204,7 +181,7 @@
     root.classList.add(reduced ? 'decision-motion--reduced' : 'decision-motion--static');
     root.classList.add('decision-hero-complete');
     commissionEverything();
-    setThreadProgress(1);
+    settleDecisionThread();
     resetDepth();
   }
 
@@ -284,8 +261,6 @@
   function updateHero(now) {
     if (!state.heroRunning || state.reduced) return;
     const raw = clamp((now - state.heroStart) / state.heroDuration, 0, 1);
-    const pathProgress = easeInOutCubic(remap(raw, 0.08, 0.9));
-    setThreadProgress(pathProgress);
 
     if (raw >= 1) {
       state.heroRunning = false;
@@ -323,15 +298,13 @@
     state.hasPlayedHero = true;
     state.heroRunning = true;
     state.heroStart = performance.now() + 100;
-    state.pathLength = threadPath.getTotalLength();
-
     root.classList.remove(
       'decision-motion--static',
       'decision-motion--reduced',
       'decision-hero-complete'
     );
     root.classList.add('decision-motion');
-    setThreadProgress(0);
+    settleDecisionThread();
 
     /* One intentional layout read establishes the aperture's closed state. */
     void hero.offsetWidth;
@@ -346,7 +319,7 @@
     root.classList.remove('decision-motion--reduced', 'decision-motion--static');
     root.classList.add('decision-motion', 'decision-hero-started', 'decision-hero-complete');
     commissionEverything();
-    setThreadProgress(1);
+    settleDecisionThread();
     invalidateMetrics();
   }
 
@@ -474,4 +447,56 @@
 
   if (state.reduced) makeStatic(true);
   else startHero();
+})();
+
+/* Keep the compact masthead honest about the section currently being read. */
+(function portfolioScrollspy() {
+  'use strict';
+
+  const nav = document.querySelector('.topbar-nav');
+  if (!nav) return;
+  const links = [...nav.querySelectorAll('a[href^="#"]')]
+    .map(link => ({ link, section:document.querySelector(link.getAttribute('href')) }))
+    .filter(item => item.section);
+  if (!links.length) return;
+
+  let frame = 0;
+  let current = '';
+
+  function activate(item) {
+    const id = item.section.id;
+    if (id === current) return;
+    current = id;
+    links.forEach(candidate => {
+      const active = candidate === item;
+      candidate.link.classList.toggle('active', active);
+      if (active) candidate.link.setAttribute('aria-current', 'location');
+      else candidate.link.removeAttribute('aria-current');
+    });
+
+    if (matchMedia('(max-width: 720px)').matches) {
+      const left = Math.max(0, item.link.offsetLeft - (nav.clientWidth - item.link.offsetWidth) / 2);
+      nav.scrollTo({ left, behavior:matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    }
+  }
+
+  function update() {
+    frame = 0;
+    const chrome = document.querySelector('.topbar')?.getBoundingClientRect().height || 56;
+    const activationLine = chrome + Math.min(190, innerHeight * .28);
+    let active = links[0];
+    links.forEach(item => {
+      if (item.section.getBoundingClientRect().top <= activationLine) active = item;
+    });
+    activate(active);
+  }
+
+  function queue() {
+    if (!frame) frame = requestAnimationFrame(update);
+  }
+
+  addEventListener('scroll', queue, { passive:true });
+  addEventListener('resize', queue, { passive:true });
+  addEventListener('hashchange', queue);
+  queue();
 })();

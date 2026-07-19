@@ -28,66 +28,15 @@
   isolation: isolate;
 }
 
-/* A fixed, soft SVG wash follows the whole page. Its blurred ribbons breathe
-   around one origin without introducing crisp lines behind the project UI. */
+/* Gradient motion belongs exclusively to the full-viewport atmosphere. */
 .intro::before,
 .intro::after {
   content: none;
 }
 
-.intro > :not(.intro-breath-field) {
+.intro > * {
   position: relative;
   z-index: 1;
-}
-
-.intro-breath-field {
-  position: fixed;
-  top: 46px;
-  right: auto;
-  left: -10vw;
-  z-index: 0;
-  width: 120vw;
-  max-width: none;
-  height: min(920px, 72vw);
-  overflow: visible;
-  color: var(--decision-signal);
-  pointer-events: none;
-  -webkit-mask-image: radial-gradient(ellipse 82% 78% at 61% 46%, #000 36%, rgba(0, 0, 0, .82) 72%, transparent 100%);
-  mask-image: radial-gradient(ellipse 82% 78% at 61% 46%, #000 36%, rgba(0, 0, 0, .82) 72%, transparent 100%);
-}
-
-.intro-breath-field__body {
-  transform-box: view-box;
-  transform-origin: 62% 46%;
-}
-
-.intro-breath-field__wash {
-  fill: url(#introWaveWash);
-  filter: url(#introWaveBlurSoft);
-  opacity: .16;
-}
-
-.intro-breath-field__wave {
-  fill: url(#introWaveGradient);
-  filter: url(#introWaveBlur);
-}
-
-.intro-breath-field__wave--back { opacity: .32; }
-.intro-breath-field__wave--front { opacity: .46; }
-
-.decision-motion .intro-breath-field__body {
-  animation: decision-field-breathe 14s ease-in-out 1.2s infinite;
-}
-
-@keyframes decision-field-breathe {
-  0%, 100% { opacity: .58; transform: translate3d(-1.1%, .6%, 0) scale(.988); }
-  50% { opacity: .9; transform: translate3d(1.2%, -.7%, 0) scale(1.026); }
-}
-
-@keyframes decision-mobile-field-breathe {
-  0%   { opacity: .58; transform: translate3d(0, -2%, 0) scale(.96); }
-  50%  { opacity: .78; transform: translate3d(50vw, 2%, 0) scale(1.08); }
-  100% { opacity: .58; transform: translate3d(100vw, -1%, 0) scale(.98); }
 }
 
 .intro-artifacts[data-decision-thread] {
@@ -110,12 +59,13 @@
 
 /* Every artifact establishes an opaque surface above the signal drawing. */
 .intro-artifacts[data-decision-thread] > .intro-artifact {
-  z-index: 2;
+  --decision-artifact-z: 2;
+  z-index: var(--decision-artifact-z);
 }
 
-.intro-artifacts[data-decision-thread] > .intro-artifact--dtc { z-index: 4; }
-.intro-artifacts[data-decision-thread] > .intro-artifact--nx { z-index: 5; }
-.intro-artifacts[data-decision-thread] > .intro-artifact--edge { z-index: 6; }
+.intro-artifacts[data-decision-thread] > .intro-artifact--dtc { --decision-artifact-z: 4; }
+.intro-artifacts[data-decision-thread] > .intro-artifact--nx { --decision-artifact-z: 5; }
+.intro-artifacts[data-decision-thread] > .intro-artifact--edge { --decision-artifact-z: 6; }
 
 .decision-thread__base,
 .decision-thread__live {
@@ -147,44 +97,7 @@
   transform-origin: center;
 }
 
-.decision-thread__packet {
-  fill: var(--decision-signal);
-  stroke: var(--decision-paper);
-  stroke-width: 1.5;
-  vector-effect: non-scaling-stroke;
-  opacity: 0;
-  filter: drop-shadow(0 0 5px color-mix(in srgb, var(--decision-signal) 55%, transparent));
-}
-
-/* The path and nodes are complete without JS. Once enhancement is active,
-   the controller owns path progress and activates nodes as the packet lands. */
-.decision-motion .decision-thread__live {
-  stroke-dashoffset: 1;
-}
-
-.decision-motion .decision-thread__node {
-  opacity: .2;
-  transform: scale(.66);
-  transition:
-    opacity 180ms ease,
-    transform 300ms var(--decision-ease);
-}
-
-.decision-motion .decision-thread__node.is-reached {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.decision-motion.decision-hero-started .decision-thread__packet {
-  opacity: 1;
-  transition: opacity 140ms ease;
-}
-
-.decision-motion.decision-hero-complete .decision-thread__packet {
-  opacity: 0;
-  transition-delay: 100ms;
-  transition-duration: 260ms;
-}
+/* The route is a static piece of the composition, not another moving effect. */
 
 /* ─────────────────────────────────────────────────────────────
    LANDING SEQUENCE — one aperture, then the evidence settles in
@@ -312,33 +225,6 @@
   clip-path: none;
 }
 
-/* A narrow scan travels only through the negative space because it sits on
-   the same back plane as the path, beneath every opaque artifact surface. */
-@media (min-width: 621px) {
-  .intro-artifacts[data-decision-thread]::after {
-    content: "";
-    position: absolute;
-    inset: -2% auto -2% -8%;
-    z-index: 1;
-    width: 3.5%;
-    opacity: 0;
-    pointer-events: none;
-    background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--decision-signal) 42%, transparent), transparent);
-    transform: translate3d(0, 0, 0) skewX(-8deg);
-  }
-
-  .decision-motion.decision-hero-started .intro-artifacts[data-decision-thread]::after {
-    animation: decision-stage-scan 1180ms var(--decision-ease-soft) 510ms both;
-  }
-}
-
-@keyframes decision-stage-scan {
-  0% { left: -8%; opacity: 0; }
-  12% { opacity: .34; }
-  82% { opacity: .2; }
-  100% { left: 103%; opacity: 0; }
-}
-
 @keyframes decision-artifact-field-in {
   from { opacity: 1; transform: translate3d(0, 30px, 0) scale(.975); }
   to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
@@ -382,40 +268,18 @@
 .decision-motion.decision-hero-complete .intro-artifact:focus-visible {
   animation: none;
   transform: none;
+  z-index: var(--decision-artifact-z, 2);
+  filter: none;
+  opacity: 1;
   transition:
-    opacity 220ms ease,
-    filter 240ms ease,
-    transform 300ms var(--decision-ease),
     border-color 180ms ease,
-    box-shadow 260ms var(--decision-ease);
+    box-shadow 220ms ease;
 }
 
 .decision-motion.decision-hero-complete .intro-artifact:hover,
 .decision-motion.decision-hero-complete .intro-artifact:focus-visible {
   border-color: var(--decision-signal);
-  box-shadow: 0 25px 58px rgba(0, 0, 0, .25);
-}
-
-/* Restore the tactile focus that the commissioning-complete rule used to
-   cancel. Only fine-pointer devices get the group dim/lift treatment. */
-@media (hover: hover) and (pointer: fine) {
-  .decision-motion.decision-hero-complete
-  .intro-artifacts[data-decision-thread]:has(.intro-artifact:is(:hover, :focus-visible))
-  .intro-artifact:not(:is(:hover, :focus-visible)) {
-    opacity: 1;
-    filter: saturate(.42) brightness(.78) contrast(.92);
-    transform: scale(.99);
-  }
-
-  .decision-motion.decision-hero-complete
-  .intro-artifact:is(:hover, :focus-visible) {
-    z-index: 20;
-    opacity: 1;
-    filter: none;
-    transform: translate3d(0, -9px, 0) scale(1.012);
-    border-color: var(--decision-signal);
-    box-shadow: 0 30px 68px rgba(0, 0, 0, .32);
-  }
+  box-shadow: 0 12px 28px rgba(0, 0, 0, .18);
 }
 
 /* Keep the opening Maia plate legible in both portfolio themes. This is
@@ -779,7 +643,8 @@
 
 /* Explicitly opt the rest of the catalog out of reveal choreography. */
 .decision-motion :is(#explorations, #archive) .reveal-piece,
-.decision-motion :is(#explorations, #archive) :is(.tile, .archive-row, .gallery-divider) {
+.decision-motion :is(#explorations, #archive) :is(.tile, .gallery-divider),
+.decision-motion #archive .archive-row:not(.is-filter-transition) {
   opacity: 1 !important;
   clip-path: none !important;
   transform: none !important;
@@ -794,17 +659,13 @@
   --decision-depth-y: 0px;
 }
 
-.decision-motion .decision-depth .cover-media,
-.decision-motion .intro-artifact.decision-depth > img,
-.decision-motion .intro-artifact.decision-depth > .maia-schematic {
+.decision-motion .decision-depth .cover-media {
   transform: translate3d(0, var(--decision-depth-y), 0) scale(1.018);
   transform-origin: 50% 50%;
   transition: transform 120ms linear;
 }
 
-.decision-motion .decision-depth.is-decision-depth-active .cover-media,
-.decision-motion .intro-artifact.decision-depth.is-decision-depth-active > img,
-.decision-motion .intro-artifact.decision-depth.is-decision-depth-active > .maia-schematic {
+.decision-motion .decision-depth.is-decision-depth-active .cover-media {
   will-change: transform;
 }
 
@@ -849,14 +710,6 @@
 }
 
 @media (max-width: 900px) {
-  .intro-breath-field {
-    top: 72px;
-    left: auto;
-    right: -22%;
-    width: 132%;
-    height: 720px;
-  }
-
   .intro-artifacts[data-decision-thread] {
     display: grid;
     grid-template-columns: repeat(6, minmax(0, 1fr));
@@ -902,18 +755,6 @@
 }
 
 @media (max-width: 720px) {
-  .intro-breath-field {
-    top: 92px;
-    right: auto;
-    left: -42%;
-    width: 184%;
-    height: 640px;
-  }
-
-  .intro-breath-field__wash { opacity: .1; }
-  .intro-breath-field__wave--back { opacity: .24; }
-  .intro-breath-field__wave--front { opacity: .36; }
-
   .intro-artifact--maia > .maia-schematic .maia-schematic__flow {
     grid-template-columns: minmax(0, 1fr) !important;
     gap: 8px !important;
@@ -951,30 +792,6 @@
 }
 
 @media (max-width: 620px) {
-  /* Mobile uses one defined radial glow that visibly crosses the viewport.
-     The element itself moves, keeping the sweep on the compositor. */
-  .intro-breath-field { display: none; }
-
-  .intro::before {
-    content: "";
-    display: block;
-    position: fixed;
-    top: max(56px, 10svh);
-    right: auto;
-    left: -45vw;
-    z-index: 0;
-    width: 90vw;
-    height: 80svh;
-    pointer-events: none;
-    background:
-      radial-gradient(ellipse 72% 50% at 50% 50%, color-mix(in srgb, var(--decision-signal) 52%, transparent), transparent 72%),
-      radial-gradient(ellipse 48% 34% at 46% 62%, color-mix(in srgb, var(--decision-signal) 24%, transparent), transparent 76%);
-    transform-origin: 50% 50%;
-    animation: decision-mobile-field-breathe 14s linear infinite alternate;
-    will-change: opacity, transform;
-    backface-visibility: hidden;
-  }
-
   .intro-artifacts[data-decision-thread] {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 16px;
@@ -1094,15 +911,6 @@
     transform-origin: top;
   }
 
-  .decision-motion .intro-artifacts[data-decision-thread]::after {
-    transform: scaleY(0);
-    transition: transform 1120ms var(--decision-ease-soft) 80ms;
-  }
-
-  .decision-motion.decision-hero-started .intro-artifacts[data-decision-thread]::after {
-    transform: scaleY(1);
-  }
-
   .intro-artifact[data-thread-node] {
     overflow: visible;
   }
@@ -1136,43 +944,6 @@
     margin-top: -4px;
     background: var(--decision-paper);
     border: 1px solid var(--decision-signal);
-  }
-
-  .decision-motion .intro-artifact[data-thread-node]::before {
-    transform: scaleX(0);
-  }
-
-  .decision-motion .intro-artifact[data-thread-node]::after {
-    opacity: 0;
-    transform: scale(.6);
-  }
-
-  .decision-motion.decision-hero-started .intro-artifact[data-thread-node]::before {
-    transform: scaleX(1);
-    transition: transform 240ms var(--decision-ease);
-  }
-
-  .decision-motion.decision-hero-started .intro-artifact[data-thread-node]::after {
-    opacity: 1;
-    transform: scale(1);
-    transition:
-      opacity 160ms ease,
-      transform 260ms var(--decision-ease);
-  }
-
-  .decision-motion.decision-hero-started .intro-artifact[data-thread-node="0"]::before,
-  .decision-motion.decision-hero-started .intro-artifact[data-thread-node="0"]::after {
-    transition-delay: 280ms;
-  }
-
-  .decision-motion.decision-hero-started .intro-artifact[data-thread-node="1"]::before,
-  .decision-motion.decision-hero-started .intro-artifact[data-thread-node="1"]::after {
-    transition-delay: 465ms;
-  }
-
-  .decision-motion.decision-hero-started .intro-artifact[data-thread-node="2"]::before,
-  .decision-motion.decision-hero-started .intro-artifact[data-thread-node="2"]::after {
-    transition-delay: 650ms;
   }
 
   [data-selected-thread] {
@@ -1218,9 +989,7 @@
   }
 
   /* Mobile gets no scroll-linked optical movement. */
-  .decision-motion .decision-depth .cover-media,
-  .decision-motion .intro-artifact.decision-depth > img,
-  .decision-motion .intro-artifact.decision-depth > .maia-schematic {
+  .decision-motion .decision-depth .cover-media {
     transform: none !important;
     transition: none !important;
     will-change: auto !important;
@@ -1253,15 +1022,9 @@
   stroke-dashoffset: 0 !important;
 }
 
-.decision-motion--reduced .decision-thread__packet,
-.decision-motion--static .decision-thread__packet {
-  display: none !important;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .intro::before,
-  .intro-breath-field,
-  .intro-breath-field *,
+  .intro::after,
   .topbar,
   .intro-artifacts[data-decision-thread],
   .decision-thread__live {
@@ -1269,13 +1032,9 @@
     transition: none !important;
   }
 
-  .intro::before {
+  .intro::before,
+  .intro::after {
     opacity: .54 !important;
-    transform: none !important;
-  }
-
-  .intro-breath-field__body {
-    opacity: .72 !important;
     transform: none !important;
   }
 
@@ -1296,19 +1055,13 @@
     .piece-story,
     .piece-footer
   ),
-  .decision-depth .cover-media,
-  .intro-artifact.decision-depth > img,
-  .intro-artifact.decision-depth > .maia-schematic {
+  .decision-depth .cover-media {
     opacity: 1 !important;
     clip-path: none !important;
     transform: none !important;
     transition: none !important;
     animation: none !important;
     will-change: auto !important;
-  }
-
-  .decision-thread__packet {
-    display: none !important;
   }
 
   [data-selected-thread]::after,

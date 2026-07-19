@@ -4,14 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>MRO Workbench — Griffin Quinn</title>
-  <meta name="description" content="A guided MRO workbench by Griffin Quinn that keeps inspection evidence, JT context, repair planning, and disposition in one work-order flow.">
+  <meta name="description" content="A maintenance, repair, and overhaul (MRO) workbench that connects inspection evidence, Jupiter Tessellation (JT) 3D context, the service bill of materials (service BOM), repair planning, and disposition.">
   <meta name="author" content="Griffin Quinn">
   <meta name="robots" content="index,follow,max-image-preview:large">
   <link rel="canonical" href="https://griffin-p-quinn.github.io/digital-thread-site/projects/mro-workbench/">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="Griffin Quinn — Digital Fabric">
   <meta property="og:title" content="MRO Workbench — Griffin Quinn">
-  <meta property="og:description" content="Inspection evidence, asset context, repair planning, and disposition carried through one guided MRO work order.">
+  <meta property="og:description" content="A maintenance, repair, and overhaul workflow connecting inspection evidence, lightweight JT 3D context, the service bill of materials, repair planning, and disposition.">
   <meta property="og:url" content="https://griffin-p-quinn.github.io/digital-thread-site/projects/mro-workbench/">
   <meta property="og:image" content="https://griffin-p-quinn.github.io/digital-thread-site/assets/projects/social/mro-workbench.png">
   <meta property="og:image:width" content="1200">
@@ -19,16 +19,17 @@
   <meta property="og:image:alt" content="MRO Workbench case study by Griffin Quinn">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="MRO Workbench — Griffin Quinn">
-  <meta name="twitter:description" content="A Siemens iX and React prototype for a guided inspection-to-disposition workflow with JT context.">
+  <meta name="twitter:description" content="A guided maintenance, repair, and overhaul workflow with lightweight JT 3D context and service bill-of-materials evidence.">
   <meta name="twitter:image" content="https://griffin-p-quinn.github.io/digital-thread-site/assets/projects/social/mro-workbench.png">
   <meta name="twitter:image:alt" content="MRO Workbench case study by Griffin Quinn">
   <meta name="theme-color" content="#0b0c0b">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230b0c0b'/%3E%3Cpath d='M7 8h18v16H7z' fill='none' stroke='%23ff6542'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="../../assets/projects/case-study.css">
+  <link rel="stylesheet" href="../../assets/projects/case-study.css?v=20260719-portfolio1">
   <script>try{var t=localStorage.getItem('fabric-theme');document.documentElement.dataset.theme=t==='light'||t==='dark'?t:(matchMedia('(prefers-color-scheme:light)').matches?'light':'dark')}catch(e){document.documentElement.dataset.theme='dark'}</script>
-  <script defer src="../../assets/projects/case-study.js"></script>
+  <script defer src="../../assets/projects/portfolio-content.js?v=20260719-portfolio1"></script>
+  <script defer src="../../assets/projects/case-study.js?v=20260719-portfolio1"></script>
 </head>
-<body>
+<body data-project-key="mro">
   <a class="skip-link" href="#main-content">Skip to case study</a>
   <header class="site-header">
     <a class="identity" href="../../projects.html" aria-label="Griffin Quinn — return to selected work">
@@ -47,7 +48,7 @@
         <div class="hero-copy">
           <p class="eyebrow">Digital Fabric · Selected work</p>
           <h1 id="case-title">MRO Workbench</h1>
-          <p class="case-deck">Keeps inspection evidence, JT context, repair planning, and disposition inside one guided work-order flow.</p>
+          <p class="case-deck">A maintenance, repair, and overhaul (MRO) workbench that keeps inspection evidence, product context from the lightweight Jupiter Tessellation (JT) 3D engineering format, the service bill of materials (service BOM), repair planning, and disposition inside one guided work-order flow.</p>
           <div class="case-actions">
             <a class="case-action primary" href="../../assets/embeds/mro/index.html">Open browser-safe build <span aria-hidden="true">↗</span></a>
             <a class="case-action" href="../../projects.html">All selected work</a>
@@ -67,7 +68,7 @@
       <dl class="evidence-strip" aria-label="Build facts">
         <div><dt>Entry point</dt><dd>Sample maintenance work order</dd></div>
         <div><dt>Evidence</dt><dd>Inspection + damage assessment</dd></div>
-        <div><dt>Product context</dt><dd>Asset, service BOM, JT</dd></div>
+        <div><dt>Product context</dt><dd>Asset, service bill of materials (BOM), JT 3D model</dd></div>
         <div><dt>Decision</dt><dd>Guided disposition</dd></div>
       </dl>
 
@@ -102,6 +103,7 @@
             <div><span class="section-kicker">02 · My contribution</span><h2>I put the maintenance workflow in one workspace</h2></div>
             <div class="story-copy">
               <p class="lead">I designed and implemented a React workbench that carries a sample order through inspection review, damage assessment, repair planning, and disposition.</p>
+              <p><strong>Role of generative AI.</strong> I used generative AI as an implementation partner while supplying the maintenance workflow, interface constraints, and acceptance judgment.</p>
               <ul class="contribution-list">
                 <li><strong>Structured the workflow.</strong> The interface preserves progress across the order instead of presenting unrelated maintenance modules.</li>
                 <li><strong>Kept product context close.</strong> Asset and service-BOM information sit alongside JT assembly context and the inspection evidence.</li>

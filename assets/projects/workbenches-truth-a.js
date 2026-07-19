@@ -222,125 +222,6 @@
     };
   }
 
-  function autoModelScore(spec, host, head) {
-    const timers = [];
-    let generation = 0;
-    const formId = uid('automodel');
-    const features = [
-      { key: 'baseline', label: 'Baseline formula cost', value: 42000, min: 5000, max: 90000, step: 1000, unit: '$' },
-      { key: 'ncrs', label: 'NCRs per year', value: 22, min: 0, max: 60, step: 1, unit: '' },
-      { key: 'trend', label: 'NCR trend QoQ', value: 7, min: -20, max: 30, step: 1, unit: '%' },
-      { key: 'downtime', label: 'Downtime hours / NCR', value: 1.4, min: 0, max: 5, step: .1, unit: 'h' },
-      { key: 'quality', label: 'Supplier quality score', value: 81, min: 50, max: 100, step: 1, unit: '' },
-      { key: 'age', label: 'Part age', value: 48, min: 1, max: 120, step: 1, unit: 'mo' }
-    ];
-    const read = () => Object.fromEntries(features.map(feature => [feature.key, +$(`[data-score-field="${feature.key}"]`, host).value]));
-    const predict = row => {
-      let value = 7400;
-      if (row.baseline > 18000) value += 6200;
-      if (row.baseline > 38000) value += 10800;
-      if (row.baseline > 65000) value += 15100;
-      if (row.ncrs > 12) value += 4100;
-      if (row.ncrs > 30) value += 7300;
-      if (row.trend > 5) value += 3800;
-      if (row.trend > 16) value += 5200;
-      if (row.downtime > 1) value += 4900;
-      if (row.downtime > 3) value += 8200;
-      if (row.quality < 86) value += 3700;
-      if (row.quality < 70) value += 5900;
-      if (row.age > 36) value += 2100;
-      if (row.age > 84) value += 3600;
-      return Math.round(value / 100) * 100;
-    };
-    const driverData = row => {
-      const entries = [
-        ['baseline_formula_cost', row.baseline > 38000 ? .78 : .31, 'support'],
-        ['ncrs_per_year', row.ncrs > 12 ? .34 : -.08, row.ncrs > 12 ? 'support' : 'contradict'],
-        ['ncr_trend_qoq_pct', row.trend > 5 ? .26 : -.17, row.trend > 5 ? 'support' : 'contradict'],
-        ['downtime_hours_per_ncr', row.downtime > 1 ? .21 : -.13, row.downtime > 1 ? 'support' : 'contradict'],
-        ['supplier_quality_score', row.quality < 86 ? .19 : -.24, row.quality < 86 ? 'support' : 'contradict'],
-        ['part_age_months', row.age > 36 ? .12 : -.07, row.age > 36 ? 'support' : 'contradict']
-      ];
-      return entries.sort((a, b) => Math.abs(b[1]) - Math.abs(a[1]));
-    };
-    const sensitivity = row => features.map(feature => {
-      const low = predict({ ...row, [feature.key]: feature.min });
-      const high = predict({ ...row, [feature.key]: feature.max });
-      return { label: feature.label, swing: Math.abs(high - low), low, high };
-    }).sort((a, b) => b.swing - a.swing);
-
-    host.innerHTML = head + `
-      <div class="tw-workbench tw-score">
-        <div class="tw-score-ribbon">
-          <div><span class="tw-kicker">AI Studio → AI Hub</span><b>AutoModel GBT scoring replay</b><small>score_set.rmp · sanitized row · no live endpoint</small></div>
-          <div class="tw-score-contract"><span>POST</span><code>/api/score</code><i>local proxy</i></div>
-        </div>
-        <div class="tw-score-layout">
-          <section class="tw-score-input">
-            <div class="tw-section-head"><span>01</span><div><b>ExampleSet row</b><small>Edit the inputs the deployed process expects</small></div><span class="tw-pill warn">target placeholder = 0</span></div>
-            <div class="tw-score-fields">
-              <label class="tw-score-part" for="${formId}-part"><span>Sample part</span><input id="${formId}-part" value="DEMO-PART-204" aria-label="Sanitized sample part identifier"></label>
-              ${features.map(feature => `<label class="tw-score-field" for="${formId}-${feature.key}"><span>${escapeHtml(feature.label)} <output data-score-output="${feature.key}">${escapeHtml(feature.unit === '$' ? money(feature.value) : feature.value + feature.unit)}</output></span><input id="${formId}-${feature.key}" data-score-field="${feature.key}" type="range" min="${feature.min}" max="${feature.max}" step="${feature.step}" value="${feature.value}"></label>`).join('')}
-            </div>
-            <div class="tw-score-envelope"><span>Request envelope</span><code>{ "data": [ { …, "actual_annual_defect_cost": 0 } ] }</code></div>
-            <button class="w-btn primary tw-score-run" type="button" data-score-run>Score sanitized row</button>
-          </section>
-          <section class="tw-score-output" aria-live="polite">
-            <div class="tw-section-head"><span>02</span><div><b>Regression result</b><small>Piecewise-constant GBT output</small></div><span class="tw-status good" data-tw-status>Browser replay ready</span></div>
-            <div class="tw-score-hero">
-              <div><span>Predicted annual defect cost</span><b data-score-prediction>—</b><small data-score-band>Empirical error band appears after scoring</small></div>
-              <div class="tw-step-curve" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
-            </div>
-            <div class="tw-score-note"><b>Why sliders can appear “stuck”</b><span>Gradient boosted trees move in thresholds, not smooth slopes. A feature can change without crossing a split.</span></div>
-            <div class="tw-score-results">
-              <div>
-                <div class="tw-subhead"><b>Support / contradict</b><span>local explanation</span></div>
-                <div class="tw-driver-list" data-driver-list><div class="tw-empty">Run the row to inspect its per-feature explanation.</div></div>
-              </div>
-              <div>
-                <div class="tw-subhead"><b>Sensitivity tornado</b><span>full-range swing</span></div>
-                <div class="tw-tornado" data-sensitivity><div class="tw-empty">Sensitivity is computed as a browser-only batch replay.</div></div>
-              </div>
-            </div>
-          </section>
-        </div>
-      </div>`;
-
-    const outputValue = (feature, value) => feature.unit === '$' ? money(value) : `${value}${feature.unit}`;
-    features.forEach(feature => $(`[data-score-field="${feature.key}"]`, host).addEventListener('input', event => {
-      $(`[data-score-output="${feature.key}"]`, host).textContent = outputValue(feature, event.target.value);
-      setStatus(host, 'warn', 'Inputs changed · result is stale');
-    }));
-    $('[data-score-run]', host).addEventListener('click', event => {
-      const turn = ++generation;
-      clearTimers(timers);
-      const button = event.currentTarget;
-      const row = read();
-      button.disabled = true;
-      setStatus(host, 'busy', 'Applying production model and explanation operators');
-      $('[data-score-prediction]', host).textContent = 'scoring…';
-      later(timers, () => {
-        if (turn !== generation) return;
-        const prediction = predict(row);
-        const drivers = driverData(row);
-        const tornado = sensitivity(row);
-        const maxSwing = Math.max(...tornado.map(item => item.swing), 1);
-        $('[data-score-prediction]', host).textContent = money(prediction);
-        $('[data-score-band]', host).textContent = `Documented empirical error reference · ±11.3% (not a confidence interval)`;
-        $('[data-driver-list]', host).innerHTML = drivers.map(item => `
-          <div class="tw-driver ${item[2]}"><span>${escapeHtml(item[0])}</span><div><i style="width:${Math.round(Math.abs(item[1]) * 100)}%"></i></div><b>${item[1] > 0 ? '+' : ''}${item[1].toFixed(3)}</b></div>`).join('');
-        $('[data-sensitivity]', host).innerHTML = tornado.map(item => `
-          <div class="tw-tornado-row"><span>${escapeHtml(item.label)}</span><div><i style="width:${Math.max(2, Math.round(item.swing / maxSwing * 100))}%"></i></div><b>${money(item.swing)} swing</b></div>`).join('');
-        button.disabled = false;
-        setStatus(host, 'good', 'Scored · explanation and batch sensitivity complete');
-      }, 520);
-    });
-    return () => {
-      generation += 1;
-      clearTimers(timers);
-    };
-  }
-
   function workshopDocs(spec, host, head) {
     const documents = [
       { id:'01', title:'Get Started', sections:['Import Base Project'], sources:['Transcription · Part 1'], note:'Modules are pre-installed in the starter project.' },
@@ -1176,9 +1057,75 @@
     };
   }
 
+  function engineeringChangeAutoModel(spec, host, head) {
+    const timers = [];
+    let generation = 0;
+    const stages = [
+      ['Existing data', 'Prepare the reviewed engineering-change history used for the demonstration.'],
+      ['AI Studio AutoModel', 'Train a predictive model through the low-code AutoModel workflow.'],
+      ['AI Hub', 'Publish the resulting scoring process so an application can call it.'],
+      ['Cost dashboard', 'Send an engineering-change record and present the returned cost score for review.']
+    ];
+
+    host.innerHTML = head + `
+      <div class="tw-workbench tw-score tw-automodel-flow">
+        <div class="tw-score-ribbon">
+          <div><span class="tw-kicker">AI Studio → AI Hub → application</span><b>Engineering-change cost demonstration</b><small>sanitized browser reconstruction · no live model endpoint</small></div>
+          <div class="tw-score-contract"><span>DEMO</span><code>published scoring process</code><i>reviewable output</i></div>
+        </div>
+        <div class="tw-score-layout">
+          <section class="tw-score-input">
+            <div class="tw-section-head"><span>01</span><div><b>Deployment path</b><small>What the working demonstration connected</small></div><span class="tw-pill warn">No algorithm claim</span></div>
+            <ol class="tw-automodel-steps" data-automodel-steps>
+              ${stages.map((stage, index) => `<li data-automodel-stage="${index}"><i>${index + 1}</i><span><b>${escapeHtml(stage[0])}</b><small>${escapeHtml(stage[1])}</small></span><em>waiting</em></li>`).join('')}
+            </ol>
+            <button class="w-btn primary tw-score-run" type="button" data-automodel-run>Replay publish-and-score flow</button>
+          </section>
+          <section class="tw-score-output" aria-live="polite">
+            <div class="tw-section-head"><span>02</span><div><b>Dashboard handoff</b><small>The application consumes the process published from AI Studio</small></div><span class="tw-status" data-tw-status>Ready</span></div>
+            <div class="tw-automodel-result" data-automodel-result>
+              <span>INPUT</span><b>Sanitized engineering-change record</b><p>Run the reconstruction to follow the record through AutoModel, AI Hub, and the review dashboard.</p>
+            </div>
+            <div class="tw-score-note"><b>Public boundary</b><span>This reconstruction demonstrates the verified architecture and handoff. It does not train a model, call AI Hub, expose source data, name an algorithm, or claim a production outcome.</span></div>
+          </section>
+        </div>
+      </div>`;
+
+    $('[data-automodel-run]', host).addEventListener('click', event => {
+      const turn = ++generation;
+      clearTimers(timers);
+      const button = event.currentTarget;
+      const rows = $$('[data-automodel-stage]', host);
+      button.disabled = true;
+      rows.forEach(row => { row.className = ''; $('em', row).textContent = 'waiting'; });
+      $('[data-automodel-result]', host).innerHTML = '<span>RUNNING</span><b>Following the published scoring path…</b><p>The browser is replaying the documented handoffs with sanitized state.</p>';
+      setStatus(host, 'warn', 'Replaying flow');
+      rows.forEach((row, index) => later(timers, () => {
+        if (turn !== generation) return;
+        rows.forEach((item, itemIndex) => {
+          item.classList.toggle('active', itemIndex === index);
+          if (itemIndex < index) item.classList.add('done');
+        });
+        $('em', row).textContent = index === rows.length - 1 ? 'received' : 'complete';
+      }, index * 360));
+      later(timers, () => {
+        if (turn !== generation) return;
+        rows.forEach(row => { row.classList.remove('active'); row.classList.add('done'); });
+        $('[data-automodel-result]', host).innerHTML = '<span>RETURNED</span><b>Score available to the engineering-change dashboard</b><p>The review surface can now present the published model output alongside the source change context.</p>';
+        setStatus(host, 'good', 'Flow complete · sanitized result shown');
+        button.disabled = false;
+      }, stages.length * 360 + 120);
+    });
+
+    return () => {
+      generation += 1;
+      clearTimers(timers);
+    };
+  }
+
   window.PROJECT_WORKBENCHES = Object.assign(window.PROJECT_WORKBENCHES || {}, {
     aiStudioAgent,
-    autoModelScore,
+    autoModelScore: engineeringChangeAutoModel,
     workshopDocs,
     migrationRetrospective,
     oauthBroker,

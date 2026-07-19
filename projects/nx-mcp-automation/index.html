@@ -22,10 +22,11 @@
   <meta name="twitter:description" content="Sixty-eight typed NXOpen tools exposed through MCP for geometry, feature operations, and FEA inspection.">
   <meta name="twitter:image" content="https://griffin-p-quinn.github.io/digital-thread-site/assets/projects/social/nx-mcp-automation.png">
   <meta name="twitter:image:alt" content="NX model and architecture preview for Griffin Quinn's NX MCP Automation Server.">
-  <link rel="stylesheet" href="../../assets/projects/case-study.css">
-  <script defer src="../../assets/projects/case-study.js"></script>
+  <link rel="stylesheet" href="../../assets/projects/case-study.css?v=20260719-portfolio1">
+  <script defer src="../../assets/projects/portfolio-content.js?v=20260719-portfolio1"></script>
+  <script defer src="../../assets/projects/case-study.js?v=20260719-portfolio1"></script>
 </head>
-<body data-project="nx-mcp-automation">
+<body data-project="nx-mcp-automation" data-project-key="nx">
   <a class="skip-link" href="#main-content">Skip to case study</a>
   <header class="site-header">
     <a class="identity" href="../../projects.html" aria-label="Griffin Quinn — all projects">
@@ -48,7 +49,7 @@
           <p class="case-deck">A FastMCP server that gives an agent a typed route into NXOpen—covering geometry, feature operations, and FEA inspection through 68 typed automation tools.</p>
           <div class="case-actions">
             <a class="case-action primary" href="../../projects.html">Browse all projects</a>
-            <a class="text-link" href="#proof">Inspect the source record</a>
+            <a class="text-link" href="#proof">Review the evidence record</a>
           </div>
         </div>
         <aside class="case-index" aria-label="Case-study index">
@@ -91,6 +92,7 @@
           <div><span class="section-kicker">02 · Tool engineering</span><h2 id="contribution-title">My contribution</h2></div>
           <div class="story-copy">
             <p class="lead">I designed and implemented the MCP-to-NXOpen boundary as 68 typed tools.</p>
+            <p><strong>Role of generative AI.</strong> An AI client can plan and call the typed operations; I supply the CAD intent, parameter boundaries, NX runtime, and engineering review of the generated result.</p>
             <p>Geometry creation, feature work, and analysis inspection have distinct, callable contracts. I also built the verification workflow around the hosted NX/remoting architecture rather than presenting a browser mockup as the CAD integration itself.</p>
           </div>
         </section>
@@ -133,8 +135,8 @@
             <figcaption><span class="figure-label">NX capture</span><span>A real capture from the benchmark artifact; the geometry is not a decorative browser reconstruction.</span></figcaption>
           </figure>
           <ul class="proof-list">
-            <li><strong><code>README.md</code></strong> provides the documented inventory of all 68 NX automation tools and explains server behavior.</li>
-            <li><strong><code>CLAUDE.md</code></strong> documents the NXOpen/remoting architecture and verification workflow.</li>
+            <li><strong>Private source record · <code>README.md</code></strong> provides the documented inventory of all 68 NX automation tools and explains server behavior.</li>
+            <li><strong>Private source record · <code>CLAUDE.md</code></strong> documents the NXOpen/remoting architecture and verification workflow.</li>
             <li><strong><code>ss-charlie-benchmark.png</code></strong> preserves a working NX capture with construction planes and feature geometry visible.</li>
           </ul>
           <dl class="project-facts">

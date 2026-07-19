@@ -1610,9 +1610,7 @@ body *::selection {
 
 .intro-artifact:hover,
 .intro-artifact:focus-visible {
-  z-index: 4;
   border-color: var(--eg-signal);
-  transform: translateY(-7px);
 }
 
 .intro-artifact:focus-visible {
@@ -2090,36 +2088,8 @@ body *::selection {
 
 .editorial-motion-settled .intro-artifact:hover,
 .editorial-motion-settled .intro-artifact:focus-visible {
-  --eg-hover-y: -7px;
-  box-shadow: 0 30px 70px rgba(0, 0, 0, .29);
-}
-
-/* Image depth is capped to a handful of pixels and uses an overscan scale to
-   keep every screenshot edge covered. There is no rotation or perspective. */
-.motion-depth {
-  --eg-parallax-y: 0px;
-  --eg-depth-scale: 1.022;
-}
-
-.motion-depth .cover-media,
-.intro-artifact.motion-depth img {
-  transform: translate3d(0, var(--eg-parallax-y), 0) scale(var(--eg-depth-scale));
-  transform-origin: 50% 50%;
-  transition: transform 140ms linear;
-}
-
-.motion-depth.is-depth-active .cover-media,
-.intro-artifact.motion-depth.is-depth-active img {
-  will-change: transform;
-}
-
-.cover.motion-depth:hover,
-.tile[data-media="real"]:hover .cover.motion-depth,
-.tile[data-media="real"]:focus-visible .cover.motion-depth,
-.piece[data-media="real"]:focus-within .cover.motion-depth,
-.intro-artifact.motion-depth:hover,
-.intro-artifact.motion-depth:focus-visible {
-  --eg-depth-scale: 1.032;
+  --eg-hover-y: 0px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, .18);
 }
 
 /* Chapter openers reveal as a small sequence: rule and folio, title, note. */
@@ -2227,13 +2197,6 @@ body *::selection {
   transform: translate3d(0, -3px, 0);
 }
 
-@media (max-width: 620px) {
-  .editorial-motion-settled .intro-artifact:hover,
-  .editorial-motion-settled .intro-artifact:focus-visible {
-    --eg-hover-y: -3px;
-  }
-}
-
 /* A true static mode: no entry transforms, no parallax, no hover lift. */
 .editorial-motion-reduced .intro .reveal-up,
 .editorial-motion-reduced .intro-artifact,
@@ -2243,9 +2206,7 @@ body *::selection {
 .editorial-motion-reduced .motion-chapter > .gd-note,
 .editorial-motion-reduced .motion-artifact[data-media="real"] .cover,
 .editorial-motion-reduced .motion-artifact[data-media="real"] .piece-body,
-.editorial-motion-reduced .motion-artifact[data-media="real"] .tile-cap,
-.editorial-motion-reduced .motion-depth .cover-media,
-.editorial-motion-reduced .intro-artifact.motion-depth img {
+.editorial-motion-reduced .motion-artifact[data-media="real"] .tile-cap {
   opacity: 1 !important;
   clip-path: none !important;
   transform: none !important;
@@ -2267,9 +2228,7 @@ body *::selection {
   .motion-chapter > .gd-note,
   .motion-artifact[data-media="real"] .cover,
   .motion-artifact[data-media="real"] .piece-body,
-  .motion-artifact[data-media="real"] .tile-cap,
-  .motion-depth .cover-media,
-  .intro-artifact.motion-depth img {
+  .motion-artifact[data-media="real"] .tile-cap {
     opacity: 1 !important;
     clip-path: none !important;
     transform: none !important;

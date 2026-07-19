@@ -22,10 +22,11 @@
   <meta name="twitter:description" content="A FastMCP gateway with authenticated Teamcenter sessions, 77 tools, and explicit read, edit, and full-write gates.">
   <meta name="twitter:image" content="https://griffin-p-quinn.github.io/digital-thread-site/assets/projects/social/teamcenter-soa-mcp.png">
   <meta name="twitter:image:alt" content="Session and write-gate architecture for Griffin Quinn's MCP–Teamcenter SOA Gateway.">
-  <link rel="stylesheet" href="../../assets/projects/case-study.css">
-  <script defer src="../../assets/projects/case-study.js"></script>
+  <link rel="stylesheet" href="../../assets/projects/case-study.css?v=20260719-portfolio1">
+  <script defer src="../../assets/projects/portfolio-content.js?v=20260719-portfolio1"></script>
+  <script defer src="../../assets/projects/case-study.js?v=20260719-portfolio1"></script>
 </head>
-<body data-project="teamcenter-soa-mcp">
+<body data-project="teamcenter-soa-mcp" data-project-key="soa">
   <a class="skip-link" href="#main-content">Skip to case study</a>
   <header class="site-header">
     <a class="identity" href="../../projects.html" aria-label="Griffin Quinn — all projects">
@@ -48,7 +49,7 @@
           <p class="case-deck">A FastMCP gateway over real Teamcenter SOA sessions, with 77 registered tools and runtime gates that separate read, edit, and full-write authority.</p>
           <div class="case-actions">
             <a class="case-action primary" href="../../projects.html">Browse all projects</a>
-            <a class="text-link" href="#proof">Inspect the source record</a>
+            <a class="text-link" href="#proof">Review the evidence record</a>
           </div>
         </div>
         <aside class="case-index" aria-label="Case-study index">
@@ -91,6 +92,7 @@
           <div><span class="section-kicker">02 · Gateway design</span><h2 id="contribution-title">My contribution</h2></div>
           <div class="story-copy">
             <p class="lead">I built the Python/FastMCP gateway around authenticated Teamcenter sessions.</p>
+            <p><strong>Role of generative AI.</strong> The AI client chooses among named Teamcenter tools; I designed the tool contracts and operator-controlled authority levels around the real SOA sessions.</p>
             <p>I registered the 77-tool surface and supported both local and Eureka-discovered connection modes. I added resources and prompts around the tool layer and enforced separate read, edit, and full-write gates at runtime.</p>
           </div>
         </section>
@@ -133,8 +135,8 @@
           <div><span class="section-kicker">03 · Source record</span><h2 id="proof-title">Proof</h2></div>
           <div class="story-copy">
           <ul class="proof-list">
-            <li><strong><code>README.md</code></strong> defines session handling, local and Eureka modes, resources, prompts, and the write-gate model.</li>
-            <li><strong><code>app/main.py</code></strong> contains 77 registered MCP tool decorators and the real tool names.</li>
+            <li><strong>Private source record · <code>README.md</code></strong> defines session handling, local and Eureka modes, resources, prompts, and the write-gate model.</li>
+            <li><strong>Private source record · <code>app/main.py</code></strong> contains 77 registered MCP tool decorators and the real tool names.</li>
             <li><strong>Sanitized session preview</strong> demonstrates search, object loading, BOM expansion, and gate enforcement without connecting the public portfolio to Teamcenter or exposing credentials.</li>
           </ul>
           <dl class="project-facts">

@@ -1,8 +1,8 @@
 /*
  * README-grounded portfolio workbenches: Hyper-V archive, LLM evaluation,
  * Teamcenter BOM widget, OpenWrt audit, one-pager style proof, progression
- * evidence, goal drafting, Luma API research, Agent Builder hardening, and
- * static CSV time tracking.
+ * evidence, goal drafting, Luma API research, an open-weight connector, and
+ * the CSV review surface used by opportunity-time intelligence.
  *
  * These are deterministic browser fixtures. They make no network requests,
  * expose no private source data, and never mutate a visitor's machine.
@@ -1094,211 +1094,16 @@
     return cleanup(abort, timers);
   }
 
-  function agentBuilder(spec, host, head) {
-    const abort = controller();
-    const timers = [];
-    let run = 0;
-    let scenario = 'valid';
-    let selectedStage = 0;
-    const stages = [
-      ['searchOperators', 'Catalog lookup', 'Find Retrieve, Set Role, learner, validation, Apply Model, Performance.'],
-      ['getOperatorDetails', 'Authoritative metadata', 'Read real operator keys, parameters, input/output ports, and generated snippets.'],
-      ['getProcessXml', 'Process skeleton', 'Start from one valid top-level process operator instead of guessing the wrapper.'],
-      ['setProcessXml', 'Validate + commit', 'Run nine structural checks; reject and roll back an invalid candidate.'],
-      ['arrangeOperators', 'Canvas layout', 'Arrange only after the candidate XML is accepted.'],
-      ['runCurrentProcess', 'Synthetic execution', 'Run against a fixture repository entry, never a private dataset.'],
-      ['inspectLastRunResults', 'Execution evidence', 'Return fixture rows, performance, and a concise completion result.']
-    ];
-    const scenarios = {
-      valid: {
-        label: 'Valid synthetic mission fixture',
-        prompt: 'Build a classification process for a sanitized equipment-risk fixture, validate the XML, run it, and summarize the result.',
-        fail: -1, iteration: 12,
-        result: 'Valid XML committed · synthetic run completed · result inspected'
-      },
-      relative: {
-        label: 'Relative Retrieve path fault',
-        prompt: 'Build the same fixture process, but test a candidate with a relative repository entry.',
-        fail: 3, iteration: 9,
-        result: 'Rejected · prior process restored · use an absolute fixture repository entry'
-      },
-      fanout: {
-        label: 'Output fanout fault',
-        prompt: 'Test a candidate that connects one output directly to two downstream inputs.',
-        fail: 3, iteration: 10,
-        result: 'Rejected · prior process restored · insert Multiply for fanout'
-      }
-    };
-    const xml = {
-      valid: `<process version="10.3">
-  <operator name="Process" class="process" expanded="true">
-    <process expanded="true">
-      <operator name="Retrieve fixture" class="retrieve">
-        <parameter key="repository_entry"
-          value="//Fixture Repository/data/equipment_risk"/>
-      </operator>
-      <operator name="Set label" class="set_role"/>
-      <operator name="Validation" class="concurrency:cross_validation"/>
-      <connect from_op="Retrieve fixture" from_port="output"
-        to_op="Set label" to_port="example set input"/>
-    </process>
-  </operator>
-</process>`,
-      relative: `<operator name="Retrieve fixture" class="retrieve">
-  <parameter key="repository_entry"
-    value="../data/equipment_risk"/>
-</operator>`,
-      fanout: `<connect from_op="Retrieve fixture" from_port="output"
-  to_op="Set label" to_port="example set input"/>
-<connect from_op="Retrieve fixture" from_port="output"
-  to_op="Weights" to_port="example set"/>`
-    };
-
-    host.innerHTML = head + `
-      <div class="td-workbench td-builder">
-        <header class="td-builder-head">
-          <div class="td-builder-brand"><i>AI</i><span><b>Agent Builder hardening harness</b><small>headless Builder loop · deterministic browser replay</small></span></div>
-          <div class="td-builder-budget"><span>ITERATION BUDGET</span><b data-ab-budget>0 / 25</b><i><em data-ab-budget-bar></em></i></div>
-          <span class="td-status" data-td-status>Harness idle</span>
-        </header>
-        <div class="td-builder-prompt">
-          <label><span>Fault fixture</span><select data-ab-scenario>${Object.entries(scenarios).map(([key, item]) => `<option value="${key}">${escapeHtml(item.label)}</option>`).join('')}</select></label>
-          <label><span>Builder mission</span><textarea rows="3" data-ab-prompt></textarea></label>
-          <button class="td-button primary" type="button" data-ab-run>Run headless harness</button>
-        </div>
-        <div class="td-builder-layout">
-          <section class="td-builder-loop">
-            <div class="td-panel-head"><div><span class="td-kicker">Prompt → tools → validate → execute</span><b>Tool iteration trace</b></div><span>max 25 · fixture only</span></div>
-            <ol data-ab-stages>${stages.map((stage, index) => `
-              <li data-ab-stage="${index}" tabindex="0"><i>${index + 1}</i><span><b>${escapeHtml(stage[0])}</b><small>${escapeHtml(stage[1])}</small></span><em>waiting</em>
-                <button type="button" data-ab-inspect="${index}" aria-label="Inspect ${escapeHtml(stage[0])}">›</button>
-              </li>`).join('')}</ol>
-          </section>
-          <section class="td-builder-inspector">
-            <div class="td-builder-inspector-head"><span class="td-kicker" data-ab-inspect-kicker>Catalog lookup</span><h4 data-ab-inspect-title>searchOperators</h4><p data-ab-inspect-note></p></div>
-            <div class="td-builder-code"><div><span>Candidate process XML</span><em>sanitized synthetic fixture</em></div><pre data-ab-xml></pre></div>
-            <div class="td-validator">
-              <div><span class="td-kicker">Structural validator</span><b>9 checks + rollback</b></div>
-              <ul data-ab-checks>
-                <li><i>·</i><span>single top-level process operator</span></li>
-                <li><i>·</i><span>known operator keys and parameters</span></li>
-                <li><i>·</i><span>ports remain inside process scope</span></li>
-                <li><i>·</i><span>repository entries are absolute</span></li>
-                <li><i>·</i><span>one output feeds one input</span></li>
-              </ul>
-            </div>
-            <div class="td-builder-result" data-ab-result aria-live="polite"><span>Run the selected synthetic fixture to collect execution evidence.</span></div>
-          </section>
-        </div>
-        <footer class="td-builder-boundary"><b>Hardening evidence, not autonomous production deployment</b><span>Operator metadata, XML candidates, data, repository entries, and results are sanitized fixtures. No model endpoint or AI Studio process is invoked here.</span></footer>
-      </div>`;
-
-    const updateScenario = () => {
-      const item = scenarios[scenario];
-      $('[data-ab-prompt]', host).value = item.prompt;
-      $('[data-ab-xml]', host).textContent = xml[scenario];
-      $('[data-ab-result]', host).innerHTML = '<span>Run the selected synthetic fixture to collect execution evidence.</span>';
-      $('[data-ab-budget]', host).textContent = '0 / 25';
-      $('[data-ab-budget-bar]', host).style.width = '0%';
-      $$('[data-ab-stage]', host).forEach(stage => stage.className = '');
-      $$('[data-ab-checks] li', host).forEach(check => {
-        check.className = '';
-        $('i', check).textContent = '·';
-      });
-      setStatus(host, '', 'Harness idle');
-    };
-    const inspectStage = index => {
-      selectedStage = index;
-      const stage = stages[index];
-      $('[data-ab-inspect-kicker]', host).textContent = stage[1];
-      $('[data-ab-inspect-title]', host).textContent = stage[0];
-      $('[data-ab-inspect-note]', host).textContent = stage[2];
-      $$('[data-ab-stage]', host).forEach((row, rowIndex) => row.classList.toggle('selected', rowIndex === index));
-    };
-    on(host, abort.signal, 'change', '[data-ab-scenario]', (_, select) => {
-      run++;
-      clearTimers(timers);
-      scenario = select.value;
-      updateScenario();
-      inspectStage(0);
-    });
-    on(host, abort.signal, 'click', '[data-ab-inspect]', (_, button) => inspectStage(Number(button.dataset.abInspect)));
-    on(host, abort.signal, 'keydown', '[data-ab-stage]', (event, row) => {
-      if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        inspectStage(Number(row.dataset.abStage));
-      }
-    });
-    on(host, abort.signal, 'click', '[data-ab-run]', (_, button) => {
-      const turn = ++run;
-      clearTimers(timers);
-      button.disabled = true;
-      const item = scenarios[scenario];
-      const rows = $$('[data-ab-stage]', host);
-      const checks = $$('[data-ab-checks] li', host);
-      rows.forEach(row => row.className = '');
-      checks.forEach(check => { check.className = ''; $('i', check).textContent = '·'; });
-      $('[data-ab-result]', host).innerHTML = '<span>Builder loop running against the selected fixture…</span>';
-      setStatus(host, 'busy', 'Catalog-backed tool loop is running');
-      const stopAt = item.fail >= 0 ? item.fail : rows.length - 1;
-      rows.forEach((row, index) => {
-        if (index > stopAt) return;
-        later(timers, () => {
-          if (turn !== run) return;
-          if (index > 0) {
-            rows[index - 1].classList.remove('active');
-            rows[index - 1].classList.add('done');
-            $('em', rows[index - 1]).textContent = 'complete';
-          }
-          row.classList.add('active');
-          $('em', row).textContent = index === item.fail ? 'validating' : 'running';
-          inspectStage(index);
-          const used = Math.max(1, Math.round(item.iteration * (index + 1) / (stopAt + 1)));
-          $('[data-ab-budget]', host).textContent = `${used} / 25`;
-          $('[data-ab-budget-bar]', host).style.width = `${used / 25 * 100}%`;
-        }, 110 + index * 300);
-      });
-      later(timers, () => {
-        if (turn !== run) return;
-        const row = rows[stopAt];
-        row.classList.remove('active');
-        if (item.fail >= 0) {
-          row.classList.add('failed');
-          $('em', row).textContent = 'rejected';
-          checks.forEach((check, index) => {
-            const failing = (scenario === 'relative' && index === 3) || (scenario === 'fanout' && index === 4);
-            check.className = failing ? 'fail' : 'pass';
-            $('i', check).textContent = failing ? '×' : '✓';
-          });
-          setStatus(host, 'bad', 'Invalid XML rejected · previous process restored');
-          $('[data-ab-result]', host).innerHTML = `<i class="bad">×</i><span><b>Validator stopped the candidate</b><small>${escapeHtml(item.result)}</small></span>`;
-        } else {
-          row.classList.add('done');
-          $('em', row).textContent = 'complete';
-          checks.forEach(check => { check.className = 'pass'; $('i', check).textContent = '✓'; });
-          setStatus(host, 'good', 'Valid XML + synthetic execution evidence');
-          $('[data-ab-result]', host).innerHTML = `<i>✓</i><span><b>Harness mission completed in ${item.iteration} iterations</b><small>${escapeHtml(item.result)}</small></span>`;
-        }
-        $('[data-ab-budget]', host).textContent = `${item.iteration} / 25`;
-        $('[data-ab-budget-bar]', host).style.width = `${item.iteration / 25 * 100}%`;
-        button.disabled = false;
-      }, 170 + (stopAt + 1) * 300);
-    });
-    updateScenario();
-    inspectStage(0);
-    return cleanup(abort, timers);
-  }
-
   function timeTracker(spec, host, head) {
     const abort = controller();
     let filter = 'all';
     let selected = 0;
     const initialRows = [
-      { date: '2026-06-01', account: 'Sample account A', meeting: 45, async: 30, meetings: 1, signals: 1, subject: 'Discovery review', notes: 'Sanitized fixture entry.' },
-      { date: '2026-06-02', account: 'Internal enablement', meeting: 30, async: 90, meetings: 1, signals: 2, subject: 'Prototype walkthrough', notes: 'Prepared browser-safe materials.' },
-      { date: '2026-06-03', account: 'Sample account B', meeting: 60, async: 20, meetings: 1, signals: 1, subject: 'Architecture discussion', notes: 'Reviewed a bounded sample workflow.' },
-      { date: '2026-06-04', account: 'Internal enablement', meeting: 0, async: 120, meetings: 0, signals: 2, subject: 'Documentation', notes: 'Updated static project notes.' },
-      { date: '2026-06-05', account: 'Sample account A', meeting: 25, async: 35, meetings: 1, signals: 1, subject: 'Follow-up', notes: 'Recorded next-step summary.' }
+      { date: '2026-06-01', account: 'Sample opportunity A', meeting: 45, async: 30, meetings: 1, signals: 1, subject: 'Discovery review', notes: 'Sanitized calendar and WorkIQ estimate; review required.' },
+      { date: '2026-06-02', account: 'Internal enablement', meeting: 30, async: 90, meetings: 1, signals: 2, subject: 'Prototype walkthrough', notes: 'Sanitized work-context estimate; review required.' },
+      { date: '2026-06-03', account: 'Sample opportunity B', meeting: 60, async: 20, meetings: 1, signals: 1, subject: 'Architecture discussion', notes: 'Matched to a fictional Salesforce opportunity.' },
+      { date: '2026-06-04', account: 'Internal enablement', meeting: 0, async: 120, meetings: 0, signals: 2, subject: 'Documentation', notes: 'Sanitized email and WorkIQ estimate; review required.' },
+      { date: '2026-06-05', account: 'Sample opportunity A', meeting: 25, async: 35, meetings: 1, signals: 1, subject: 'Follow-up', notes: 'Reconciled with fictional opportunity context.' }
     ];
     let rows = clone(initialRows);
     const minutes = value => {
@@ -1310,20 +1115,20 @@
     host.innerHTML = head + `
       <div class="td-workbench td-time">
         <header class="td-time-head">
-          <div><span class="td-kicker">Static CSV workbench</span><h3>Time entry dashboard</h3><p>Import · filter · edit · total · export preview</p></div>
-          <div class="td-no-capture"><i>○</i><span><b>No activity capture</b><small>No timer, telemetry, or background monitoring</small></span></div>
-          <div class="td-time-actions"><button class="td-button" type="button" data-tt-import>Import sanitized fixture</button><button class="td-button primary" type="button" data-tt-export>Preview CSV export</button></div>
+          <div><span class="td-kicker">Human review surface</span><h3>Customer opportunity-time review</h3><p>Microsoft 365 Copilot + calendar/email/WorkIQ → Salesforce match → reviewed CSV</p></div>
+          <div class="td-no-capture"><i>○</i><span><b>Review before export</b><small>Context-derived estimates; no timer or background monitoring</small></span></div>
+          <div class="td-time-actions"><button class="td-button" type="button" data-tt-import>Reset sanitized estimates</button><button class="td-button primary" type="button" data-tt-export>Preview reviewed CSV</button></div>
         </header>
         <section class="td-time-metrics">
           <article><span>Total time</span><b data-tt-total>—</b><small>filtered rows</small></article>
           <article><span>Meeting time</span><b data-tt-meet>—</b><small data-tt-meet-count>— meetings</small></article>
-          <article><span>Async estimate</span><b data-tt-async>—</b><small>manually entered</small></article>
-          <article><span>CSV records</span><b data-tt-count>—</b><small>browser memory</small></article>
+          <article><span>WorkIQ estimate</span><b data-tt-async>—</b><small>editable before export</small></article>
+          <article><span>Review records</span><b data-tt-count>—</b><small>sanitized fixture</small></article>
         </section>
         <div class="td-time-layout">
           <main class="td-time-table-wrap">
             <div class="td-time-toolbar">
-              <label><span>Account filter</span><select data-tt-filter></select></label>
+              <label><span>Opportunity filter</span><select data-tt-filter></select></label>
               <span data-tt-summary></span>
             </div>
             <div class="td-time-table">
@@ -1332,9 +1137,9 @@
             </div>
           </main>
           <aside class="td-time-editor">
-            <div><span class="td-kicker">Selected CSV row</span><h4>Edit entry</h4><p>Changes remain local until an export is previewed.</p></div>
+            <div><span class="td-kicker">Selected estimate</span><h4>Review and adjust</h4><p>Copilot and WorkIQ provide context; the person remains responsible for the accepted time.</p></div>
             <label><span>Date</span><input type="date" data-tt-field="date"></label>
-            <label><span>Account</span><input data-tt-field="account"></label>
+            <label><span>Opportunity</span><input data-tt-field="account"></label>
             <label><span>Subject</span><input data-tt-field="subject"></label>
             <div class="td-time-field-pair">
               <label><span>Meeting minutes</span><input type="number" min="0" max="1440" data-tt-field="meeting"></label>
@@ -1346,7 +1151,7 @@
           </aside>
         </div>
         <section class="td-csv-preview" data-tt-preview hidden>
-          <div><span class="td-kicker">CSV export preview</span><b>Static rows · quoted fields</b><button type="button" data-tt-close aria-label="Close CSV preview">×</button></div>
+          <div><span class="td-kicker">Reviewed CSV export</span><b>Human-adjusted rows · quoted fields</b><button type="button" data-tt-close aria-label="Close CSV preview">×</button></div>
           <pre data-tt-csv></pre>
         </section>
       </div>`;
@@ -1375,7 +1180,7 @@
       $('[data-tt-async]', host).textContent = minutes(totals.async);
       $('[data-tt-count]', host).textContent = String(list.length);
       $('[data-tt-meet-count]', host).textContent = `${totals.meetings} meeting${totals.meetings === 1 ? '' : 's'}`;
-      $('[data-tt-summary]', host).textContent = `Showing ${list.length} of ${rows.length} static CSV rows`;
+      $('[data-tt-summary]', host).textContent = `Reviewing ${list.length} of ${rows.length} opportunity estimates`;
     };
     const renderEditor = () => {
       const row = rows[selected] || rows[0];
@@ -1406,14 +1211,14 @@
         row[key] = ['meeting', 'async'].includes(key) ? Math.max(0, Number(input.value) || 0) : input.value;
       });
       render();
-      setStatus(host, 'good', 'Static CSV row updated in browser memory');
+      setStatus(host, 'good', 'Opportunity estimate reviewed in browser memory');
     });
     on(host, abort.signal, 'click', '[data-tt-import]', () => {
       rows = clone(initialRows);
       filter = 'all';
       selected = 0;
       render();
-      setStatus(host, 'good', 'Sanitized CSV fixture imported · 5 rows');
+      setStatus(host, 'good', 'Sanitized opportunity estimates restored · 5 rows');
     });
     on(host, abort.signal, 'click', '[data-tt-export]', () => {
       const headers = ['Date', 'Account', 'Meeting_Time', 'Async_Time_Est', 'Total_Time', 'Meeting_Count', 'Async_Signal_Count', 'Meeting_Subjects', 'Notes'];
@@ -1433,6 +1238,73 @@
     return cleanup(abort);
   }
 
+  function openWeightConnector(spec, host, head) {
+    const abort = controller();
+    const timers = [];
+    let generation = 0;
+    const stages = [
+      ['Existing connector JAR', 'Start from the established AI Studio-to-LLM connector rather than claiming a new platform.'],
+      ['Provider path', 'Extend the connector boundary so it can address an open-weight model endpoint.'],
+      ['AI Studio profile', 'Select the enhanced connector from the low-code machine-learning environment.'],
+      ['Connection check', 'Verify the request and response path without publishing credentials or a live endpoint.']
+    ];
+
+    host.innerHTML = head + `
+      <div class="td-workbench td-builder td-open-connector">
+        <header class="td-builder-head">
+          <div class="td-builder-brand"><i>AI</i><span><b>Open-weight LLM connector</b><small>enhanced existing JAR · browser reconstruction</small></span></div>
+          <div class="td-builder-budget"><span>CONNECTION PATH</span><b data-connector-progress>0 / ${stages.length}</b><i><em data-connector-bar></em></i></div>
+          <span class="td-status" data-td-status>Ready to inspect</span>
+        </header>
+        <div class="td-builder-prompt">
+          <label><span>AI Studio environment</span><input value="AI Studio + AI Hub" readonly></label>
+          <label><span>Enhanced model path</span><input value="Open-weight endpoint profile" readonly></label>
+          <button class="td-button primary" type="button" data-connector-run>Trace connector handoff</button>
+        </div>
+        <div class="td-builder-layout">
+          <section class="td-builder-loop">
+            <div class="td-panel-head"><div><span class="td-kicker">Existing JAR → broader model choice</span><b>Connector extension path</b></div><span>no live endpoint</span></div>
+            <ol data-connector-stages>${stages.map((stage, index) => `
+              <li data-connector-stage="${index}" tabindex="0"><i>${index + 1}</i><span><b>${escapeHtml(stage[0])}</b><small>${escapeHtml(stage[1])}</small></span><em>waiting</em></li>`).join('')}</ol>
+          </section>
+          <section class="td-builder-inspector">
+            <div class="td-builder-inspector-head"><span class="td-kicker">Actual contribution</span><h4>Broadened the connector’s model-provider path</h4><p>Griffin enhanced an existing connector JAR so AI Studio could connect to open-weight models. This is distinct from the MCP Agent Extension, which adds agent behavior and external MCP servers inside AI Studio.</p></div>
+            <div class="td-builder-code"><div><span>Typed handoff</span><em>conceptual · no secret configuration</em></div><pre>AI Studio process\n  → existing LLM connector JAR\n  → enhanced open-weight provider path\n  → configured model endpoint\n  → response returned to AI Studio</pre></div>
+            <div class="td-builder-result" data-connector-result aria-live="polite"><span>Trace the path to inspect the verified boundary between the original connector and Griffin’s extension.</span></div>
+          </section>
+        </div>
+        <footer class="td-builder-boundary"><b>Public evidence boundary</b><span>The enhanced JAR and a live model endpoint are not published here. This reconstruction explains the connector contribution without substituting a different AI Studio experiment as proof.</span></footer>
+      </div>`;
+
+    on(host, abort.signal, 'click', '[data-connector-run]', (_, button) => {
+      const turn = ++generation;
+      clearTimers(timers);
+      button.disabled = true;
+      const rows = $$('[data-connector-stage]', host);
+      rows.forEach(row => { row.className = ''; $('em', row).textContent = 'waiting'; });
+      setStatus(host, 'busy', 'Tracing the enhanced provider path');
+      rows.forEach((row, index) => later(timers, () => {
+        if (turn !== generation) return;
+        rows.forEach((item, itemIndex) => {
+          item.classList.toggle('selected', itemIndex === index);
+          if (itemIndex < index) item.classList.add('done');
+        });
+        $('em', row).textContent = index === rows.length - 1 ? 'returned' : 'verified';
+        $('[data-connector-progress]', host).textContent = `${index + 1} / ${rows.length}`;
+        $('[data-connector-bar]', host).style.width = `${((index + 1) / rows.length) * 100}%`;
+      }, index * 350));
+      later(timers, () => {
+        if (turn !== generation) return;
+        rows.forEach(row => { row.classList.remove('selected'); row.classList.add('done'); });
+        $('[data-connector-result]', host).innerHTML = '<b>Connector path complete</b><span>AI Studio can reach the configured open-weight model path through the enhanced existing JAR.</span>';
+        setStatus(host, 'good', 'Connection path returned');
+        button.disabled = false;
+      }, rows.length * 350 + 100);
+    });
+
+    return cleanup(abort, timers);
+  }
+
   window.PROJECT_WORKBENCHES = Object.assign(window.PROJECT_WORKBENCHES || {}, {
     snapshotArchive,
     modelEval,
@@ -1442,7 +1314,7 @@
     evidenceBoard,
     goalDraft,
     lumaApi,
-    agentBuilder,
+    agentBuilder: openWeightConnector,
     timeTracker
   });
 })();

@@ -869,7 +869,7 @@
 .td-builder-boundary b { color: #4fd0a6; font-size: 8px; white-space: nowrap; }
 .td-builder-boundary span { color: var(--text3); font-size: 7.5px; line-height: 1.4; }
 
-/* Static CSV time tracker */
+/* Customer opportunity-time review surface */
 .td-time { --td-accent: #5aa9e6; }
 .td-no-capture { display: flex; align-items: center; gap: 8px; margin-left: auto; padding: 8px 10px; border: 1px solid color-mix(in srgb, #5aa9e6 35%, var(--border)); border-radius: 9px; }
 .td-no-capture > i { color: #5aa9e6; font-style: normal; }

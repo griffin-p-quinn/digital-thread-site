@@ -4,14 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>DTC Production Co-Pilot — Griffin Quinn</title>
-  <meta name="description" content="A production co-pilot by Griffin Quinn that connects a 3D assembly line, MES station state, and an observable diagnostic tool path.">
+  <meta name="description" content="A production co-pilot by Griffin Quinn that connects a 3D final-assembly line, manufacturing execution system state, and an observable agent diagnosis and recovery path.">
   <meta name="author" content="Griffin Quinn">
   <meta name="robots" content="index,follow,max-image-preview:large">
   <link rel="canonical" href="https://griffin-p-quinn.github.io/digital-thread-site/projects/dtc-production-copilot/">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="Griffin Quinn — Digital Fabric">
   <meta property="og:title" content="DTC Production Co-Pilot — Griffin Quinn">
-  <meta property="og:description" content="One interface for a 3D assembly line, MES evidence, and an observable diagnosis-to-recovery tool flow.">
+  <meta property="og:description" content="One interface for a 3D final-assembly line, manufacturing execution system evidence, and an observable diagnosis-to-recovery tool flow.">
   <meta property="og:url" content="https://griffin-p-quinn.github.io/digital-thread-site/projects/dtc-production-copilot/">
   <meta property="og:image" content="https://griffin-p-quinn.github.io/digital-thread-site/assets/projects/social/dtc-production-copilot.png">
   <meta property="og:image:width" content="1200">
@@ -19,16 +19,17 @@
   <meta property="og:image:alt" content="DTC Production Co-Pilot case study by Griffin Quinn">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="DTC Production Co-Pilot — Griffin Quinn">
-  <meta name="twitter:description" content="A 3D plant, MES state, and observable co-pilot tool path in one production interface.">
+  <meta name="twitter:description" content="A 3D plant, manufacturing execution system state, and observable co-pilot tool path in one production interface.">
   <meta name="twitter:image" content="https://griffin-p-quinn.github.io/digital-thread-site/assets/projects/social/dtc-production-copilot.png">
   <meta name="twitter:image:alt" content="DTC Production Co-Pilot case study by Griffin Quinn">
   <meta name="theme-color" content="#0b0c0b">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230b0c0b'/%3E%3Cpath d='M7 8h18v16H7z' fill='none' stroke='%23ff6542'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="../../assets/projects/case-study.css">
+  <link rel="stylesheet" href="../../assets/projects/case-study.css?v=20260719-portfolio1">
   <script>try{var t=localStorage.getItem('fabric-theme');document.documentElement.dataset.theme=t==='light'||t==='dark'?t:(matchMedia('(prefers-color-scheme:light)').matches?'light':'dark')}catch(e){document.documentElement.dataset.theme='dark'}</script>
-  <script defer src="../../assets/projects/case-study.js"></script>
+  <script defer src="../../assets/projects/portfolio-content.js?v=20260719-portfolio1"></script>
+  <script defer src="../../assets/projects/case-study.js?v=20260719-portfolio1"></script>
 </head>
-<body>
+<body data-project-key="dt-composer">
   <a class="skip-link" href="#main-content">Skip to case study</a>
   <header class="site-header">
     <a class="identity" href="../../projects.html" aria-label="Griffin Quinn — return to selected work">
@@ -47,7 +48,7 @@
         <div class="hero-copy">
           <p class="eyebrow">Digital Fabric · Selected work</p>
           <h1 id="case-title">DTC Production Co-Pilot</h1>
-          <p class="case-deck">I put the line view, MES state, and agent diagnosis in the same screen.</p>
+          <p class="case-deck">A production co-pilot that puts a 3D final-assembly line, manufacturing execution system state, and an observable agent diagnosis in the same screen.</p>
           <div class="case-actions">
             <a class="case-action primary" href="../../assets/embeds/dt-composer/index.html">Open browser-safe build <span aria-hidden="true">↗</span></a>
             <a class="case-action" href="../../projects.html">All selected work</a>
@@ -102,6 +103,7 @@
             <div><span class="section-kicker">02 · My contribution</span><h2>I put the plant state and the co-pilot in one workflow</h2></div>
             <div class="story-copy">
               <p class="lead">I composed the 3D plant, production dashboard, station views, alert flow, and co-pilot into one React experience.</p>
+              <p><strong>Role of generative AI.</strong> The co-pilot interprets the visible manufacturing state and calls explicit diagnosis, recovery, and simulation tools; I designed that tool sequence and kept its evidence visible.</p>
               <ul class="contribution-list">
                 <li><strong>Connected spatial and operating context.</strong> The line view and station state tell the same production story rather than living in separate demos.</li>
                 <li><strong>Made the assistant inspectable.</strong> The diagnosis, recovery, and simulation stages expose the tool sequence behind the recommendation.</li>
@@ -116,8 +118,8 @@
               <p class="lead">The linked artifact is the real static React build running in scripted mode, not a replacement illustration.</p>
               <ul class="proof-list">
                 <li><strong>Browser-safe build:</strong> launch the alert, inspect the 3D line, and follow diagnosis → recovery → simulation without a backend.</li>
-                <li><strong>Frontend composition:</strong> <code>app/frontend/src/App.tsx</code> composes the production view, station state, alert flow, and co-pilot panel.</li>
-                <li><strong>Tool contracts:</strong> <code>app/backend/dtc_copilot/tools.py</code> defines the diagnostic, recovery, and simulation interfaces used by the assistant flow.</li>
+                <li><strong>Private source record · frontend composition:</strong> <code>app/frontend/src/App.tsx</code> composes the production view, station state, alert flow, and co-pilot panel.</li>
+                <li><strong>Private source record · tool contracts:</strong> <code>app/backend/dtc_copilot/tools.py</code> defines the diagnostic, recovery, and simulation interfaces used by the assistant flow.</li>
               </ul>
               <p class="boundary-note"><strong>Public-demo boundary:</strong> the deployed case uses scripted, browser-safe data. It does not connect to a live MES, plant, model provider, or credential store.</p>
             </div>

@@ -24,11 +24,12 @@
   <meta name="twitter:image:alt" content="Video Analyzer Studio case study by Griffin Quinn">
   <meta name="theme-color" content="#0b0c0b">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230b0c0b'/%3E%3Cpath d='M7 8h18v16H7z' fill='none' stroke='%23ff6542'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="../../assets/projects/case-study.css">
+  <link rel="stylesheet" href="../../assets/projects/case-study.css?v=20260719-portfolio1">
   <script>try{var t=localStorage.getItem('fabric-theme');document.documentElement.dataset.theme=t==='light'||t==='dark'?t:(matchMedia('(prefers-color-scheme:light)').matches?'light':'dark')}catch(e){document.documentElement.dataset.theme='dark'}</script>
-  <script defer src="../../assets/projects/case-study.js"></script>
+  <script defer src="../../assets/projects/portfolio-content.js?v=20260719-portfolio1"></script>
+  <script defer src="../../assets/projects/case-study.js?v=20260719-portfolio1"></script>
 </head>
-<body>
+<body data-project-key="video">
   <a class="skip-link" href="#main-content">Skip to case study</a>
   <header class="site-header">
     <a class="identity" href="../../projects.html" aria-label="Griffin Quinn — return to selected work">
@@ -103,6 +104,7 @@
             <div><span class="section-kicker">02 · My contribution</span><h2>I wrapped the model call in a small desktop app</h2></div>
             <div class="story-copy">
               <p class="lead">I packaged the analysis flow as a desktop workspace instead of leaving it as a disposable prompt-and-response exchange.</p>
+              <p><strong>Role of generative AI.</strong> Gemini performs the requested video analysis; I designed the request and report contract and the local workflow that makes each run inspectable.</p>
               <ul class="contribution-list">
                 <li><strong>Kept input selection local.</strong> The user chooses a video from the desktop workflow and sees its working context.</li>
                 <li><strong>Made the Gemini call explicit.</strong> The analysis request is sent to Gemini through the configured desktop workflow rather than hiding the model path.</li>

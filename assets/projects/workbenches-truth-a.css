@@ -498,6 +498,59 @@ button.tw-tree-line { cursor: pointer; }
 .tw-driver > div, .tw-tornado-row > div { height: 5px; border-radius: 4px; overflow: hidden; background: var(--bg3); }
 .tw-driver i, .tw-tornado-row i { display: block; height: 100%; border-radius: inherit; background: var(--teal); }
 .tw-driver.contradict i { margin-left: auto; background: var(--purple); }
+
+/* AutoModel deployment story — intentionally describes the verified handoff,
+   not a particular algorithm or invented prediction surface. */
+.tw-automodel-steps {
+  display: grid;
+  gap: 8px;
+  margin: 18px 0 22px;
+  padding: 0;
+  list-style: none;
+}
+.tw-automodel-steps li {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) auto;
+  gap: 11px;
+  align-items: center;
+  padding: 12px;
+  color: var(--text2);
+  border: 1px solid var(--border);
+  background: var(--surface-sunken);
+  transition: border-color 180ms ease, background 180ms ease, transform 180ms ease;
+}
+.tw-automodel-steps li > i {
+  display: grid;
+  width: 26px;
+  height: 26px;
+  place-items: center;
+  color: var(--text3);
+  border: 1px solid var(--border2);
+  border-radius: 50%;
+  font: 600 10px/1 var(--font-mono, monospace);
+}
+.tw-automodel-steps li > span { display: grid; gap: 3px; }
+.tw-automodel-steps li b { color: var(--text); font-size: 12px; }
+.tw-automodel-steps li small { color: var(--text3); font-size: 10.5px; line-height: 1.4; }
+.tw-automodel-steps li em { color: var(--text3); font: 600 9px/1 var(--font-mono, monospace); text-transform: uppercase; }
+.tw-automodel-steps li.active {
+  transform: translateX(4px);
+  border-color: var(--amber);
+  background: var(--amber-bg);
+}
+.tw-automodel-steps li.done { border-color: color-mix(in srgb, var(--teal) 45%, var(--border)); }
+.tw-automodel-steps li.done > i,
+.tw-automodel-steps li.done > em { color: var(--teal); border-color: var(--teal); }
+.tw-automodel-result {
+  min-height: 152px;
+  margin: 18px 0;
+  padding: 22px;
+  border: 1px solid var(--border);
+  background: linear-gradient(135deg, var(--teal-bg), transparent 72%), var(--surface);
+}
+.tw-automodel-result > span { color: var(--teal); font: 650 9px/1 var(--font-mono, monospace); letter-spacing: .12em; }
+.tw-automodel-result > b { display: block; margin-top: 16px; color: var(--text); font-size: 18px; line-height: 1.25; }
+.tw-automodel-result > p { margin: 10px 0 0; color: var(--text2); font-size: 12px; line-height: 1.6; }
 .tw-driver b, .tw-tornado-row b { color: var(--text3); text-align: right; font: 6.5px/1 monospace; }
 .tw-tornado-row { grid-template-columns: minmax(95px, 1fr) minmax(55px, .8fr) 68px; }
 .tw-tornado-row i { background: linear-gradient(90deg, var(--blue), var(--purple)); }

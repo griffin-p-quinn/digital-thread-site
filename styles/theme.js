@@ -17,7 +17,8 @@
     root.setAttribute('data-theme', theme);
     if (btn) {
       var isLight = theme === 'light';
-      btn.setAttribute('aria-pressed', String(isLight));
+      /* Pressed means the dark-theme preference is active. */
+      btn.setAttribute('aria-pressed', String(!isLight));
       btn.setAttribute('aria-label', isLight ? 'Switch to dark theme' : 'Switch to light theme');
       btn.title = isLight ? 'Switch to dark theme' : 'Switch to light theme';
     }

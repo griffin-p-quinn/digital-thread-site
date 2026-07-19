@@ -9,6 +9,10 @@
     "preview": "vite preview",
     "portfolio:generate": "node scripts/generate-static-portfolio.mjs",
     "portfolio:check": "node scripts/generate-static-portfolio.mjs --check",
+    "test": "npm run portfolio:check && playwright test --grep-invert @visual",
+    "test:e2e": "playwright test --grep-invert @visual",
+    "test:visual": "playwright test --grep @visual --workers=2",
+    "test:all": "npm run portfolio:check && playwright test",
     "zip": "powershell -c \"Compress-Archive -Path dist/* -DestinationPath ags-graph-experience.zip -Force\""
   },
   "dependencies": {
@@ -17,6 +21,7 @@
     "react-router-dom": "^7.18.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.61.1",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
     "@vitejs/plugin-react": "^4.5.2",
