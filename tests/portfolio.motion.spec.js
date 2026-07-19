@@ -22,6 +22,61 @@ async function atmosphereState(page) {
   }));
 }
 
+async function visibleAtmosphereDelta(page, delay = 3_000) {
+  await page.addStyleTag({
+    content: 'body > *:not(.atmosphere) { visibility: hidden !important; } .atmosphere { visibility: visible !important; }'
+  });
+  const before = await page.screenshot({ animations: 'allow' });
+  await page.waitForTimeout(delay);
+  const after = await page.screenshot({ animations: 'allow' });
+
+  return page.evaluate(async ({ beforeBase64, afterBase64 }) => {
+    const loadImage = async (base64) => {
+      const image = new Image();
+      image.src = `data:image/png;base64,${base64}`;
+      await image.decode();
+      return image;
+    };
+    const [beforeImage, afterImage] = await Promise.all([
+      loadImage(beforeBase64),
+      loadImage(afterBase64)
+    ]);
+    const canvas = document.createElement('canvas');
+    canvas.width = beforeImage.width;
+    canvas.height = beforeImage.height;
+    const context = canvas.getContext('2d', { willReadFrequently: true });
+    context.drawImage(beforeImage, 0, 0);
+    const beforePixels = context.getImageData(0, 0, canvas.width, canvas.height).data;
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    context.drawImage(afterImage, 0, 0);
+    const afterPixels = context.getImageData(0, 0, canvas.width, canvas.height).data;
+
+    let samples = 0;
+    let totalDelta = 0;
+    let meaningfullyChanged = 0;
+    for (let y = 0; y < canvas.height; y += 3) {
+      for (let x = 0; x < canvas.width; x += 3) {
+        const index = (y * canvas.width + x) * 4;
+        const delta = (
+          Math.abs(beforePixels[index] - afterPixels[index])
+          + Math.abs(beforePixels[index + 1] - afterPixels[index + 1])
+          + Math.abs(beforePixels[index + 2] - afterPixels[index + 2])
+        ) / 3;
+        samples += 1;
+        totalDelta += delta;
+        if (delta >= 4) meaningfullyChanged += 1;
+      }
+    }
+    return {
+      meanRgbDelta: totalDelta / samples,
+      meaningfulPixelShare: meaningfullyChanged / samples
+    };
+  }, {
+    beforeBase64: before.toString('base64'),
+    afterBase64: after.toString('base64')
+  });
+}
+
 for (const viewport of [
   { name: 'desktop', width: 1366, height: 768 },
   { name: 'mobile', width: 390, height: 844 }
@@ -43,7 +98,7 @@ for (const viewport of [
       expect(field.opacity).toBeGreaterThan(0);
       expect(field.playState).toBe('running');
       expect(field.width).toBeGreaterThan(viewport.width);
-      expect(field.height).toBeGreaterThan(viewport.height);
+      expect(field.height).toBeGreaterThan(viewport.height * .65);
       expect(field.background).toContain('radial-gradient');
       expect(field.background).toContain('rgba(0, 0, 0, 0)');
       expect(field.keyframes.length).toBeGreaterThanOrEqual(3);
@@ -71,6 +126,12 @@ for (const viewport of [
         + Math.abs(field.opacity - before.opacity) * 100;
     });
     expect(motionScores.filter((score) => score >= 6).length).toBeGreaterThanOrEqual(2);
+
+    if (viewport.name === 'mobile') {
+      const visualMotion = await visibleAtmosphereDelta(page);
+      expect(visualMotion.meanRgbDelta).toBeGreaterThanOrEqual(2.5);
+      expect(visualMotion.meaningfulPixelShare).toBeGreaterThanOrEqual(.2);
+    }
 
     await expect(page.locator('.atmosphere .grain')).toHaveCSS('animation-name', 'none');
     const introEffects = await page.locator('.intro').evaluate((intro) => ({

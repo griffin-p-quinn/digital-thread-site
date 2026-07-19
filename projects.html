@@ -26,17 +26,17 @@
   <link rel="stylesheet" href="assets/projects/workbenches-content.css">
   <link rel="stylesheet" href="assets/projects/workbenches-labs.css">
   <link rel="stylesheet" href="assets/projects/workbenches-ops.css">
-  <link rel="stylesheet" href="assets/projects/workbenches-truth-a.css?v=20260719-portfolio1">
+  <link rel="stylesheet" href="assets/projects/workbenches-truth-a.css?v=20260719-mobile2">
   <link rel="stylesheet" href="assets/projects/workbenches-truth-b.css">
   <link rel="stylesheet" href="assets/projects/workbenches-truth-c.css">
-  <link rel="stylesheet" href="assets/projects/workbenches-truth-d.css?v=20260719-portfolio1">
+  <link rel="stylesheet" href="assets/projects/workbenches-truth-d.css?v=20260719-mobile2">
   <link rel="stylesheet" href="assets/projects/workbenches-truth-e.css">
 </noscript>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&display=swap">
 <script>/* no-flash theme bootstrap */(function(){try{var t=localStorage.getItem("fabric-theme");if(t!=="light"&&t!=="dark"){t=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();</script>
-<script defer src="styles/theme.js?v=20260719-portfolio1"></script>
+<script defer src="styles/theme.js?v=20260719-mobile2"></script>
 <style>
 /* ═══════════════════════════════════════════════════════════
    PROJECTS STUDIO — editorial project gallery (scoped to projects.html)
@@ -60,9 +60,15 @@
   --c-num:     #e6b45a;
   --c-type:    #b18cf0;
   /* Atmosphere mesh tints: warm relatives of the editorial signal. */
-  --mesh-1: rgba(255,98,63,0.18);
-  --mesh-2: rgba(222,145,59,0.15);
-  --mesh-3: rgba(177,64,84,0.13);
+  --mesh-1: rgba(255,98,63,0.24);
+  --mesh-1-in: rgba(255,98,63,0.20);
+  --mesh-1-out: rgba(255,98,63,0.07);
+  --mesh-2: rgba(222,145,59,0.20);
+  --mesh-2-in: rgba(222,145,59,0.17);
+  --mesh-2-out: rgba(222,145,59,0.06);
+  --mesh-3: rgba(177,64,84,0.18);
+  --mesh-3-in: rgba(177,64,84,0.15);
+  --mesh-3-out: rgba(177,64,84,0.06);
   --grain-op: 0.045;
 }
 :root[data-theme="light"] {
@@ -78,9 +84,15 @@
   --c-str:     #0f8a5e;
   --c-num:     #a8690a;
   --c-type:    #6a4fc0;
-  --mesh-1: rgba(207,62,32,0.13);
-  --mesh-2: rgba(158,92,18,0.11);
-  --mesh-3: rgba(125,43,57,0.10);
+  --mesh-1: rgba(207,62,32,0.17);
+  --mesh-1-in: rgba(207,62,32,0.14);
+  --mesh-1-out: rgba(207,62,32,0.05);
+  --mesh-2: rgba(158,92,18,0.14);
+  --mesh-2-in: rgba(158,92,18,0.12);
+  --mesh-2-out: rgba(158,92,18,0.04);
+  --mesh-3: rgba(125,43,57,0.12);
+  --mesh-3-in: rgba(125,43,57,0.10);
+  --mesh-3-out: rgba(125,43,57,0.04);
   --grain-op: 0.03;
 }
 
@@ -108,36 +120,36 @@ body > .portfolio-close { position: relative; z-index: 1; }
 }
 .atmosphere .mesh--one {
   width: 124vmax; height: 104vmax; left: -43vmax; top: -31vmax;
-  background: radial-gradient(ellipse at 48% 44%, var(--mesh-1) 0%, color-mix(in srgb, var(--mesh-1) 66%, transparent) 32%, transparent 72%);
+  background: radial-gradient(ellipse at 45% 42%, var(--mesh-1) 0%, var(--mesh-1-in) 28%, var(--mesh-1-out) 55%, transparent 74%);
   animation: liquid-one 18s cubic-bezier(.42, .05, .58, .95) -2.1s infinite;
 }
 .atmosphere .mesh--two {
   width: 118vmax; height: 110vmax; right: -41vmax; top: -25vmax;
-  background: radial-gradient(ellipse at 54% 42%, var(--mesh-2) 0%, color-mix(in srgb, var(--mesh-2) 64%, transparent) 33%, transparent 73%);
+  background: radial-gradient(ellipse at 57% 39%, var(--mesh-2) 0%, var(--mesh-2-in) 29%, var(--mesh-2-out) 56%, transparent 74%);
   animation: liquid-two 23s cubic-bezier(.42, .05, .58, .95) -8.4s infinite;
 }
 .atmosphere .mesh--three {
   width: 126vmax; height: 108vmax; left: calc(50vw - 63vmax); top: -6vmax;
-  background: radial-gradient(ellipse at 50% 52%, var(--mesh-3) 0%, color-mix(in srgb, var(--mesh-3) 62%, transparent) 34%, transparent 74%);
+  background: radial-gradient(ellipse at 50% 52%, var(--mesh-3) 0%, var(--mesh-3-in) 30%, var(--mesh-3-out) 58%, transparent 75%);
   animation: liquid-three 29s cubic-bezier(.42, .05, .58, .95) -23.2s infinite;
 }
 @keyframes liquid-one {
-  0%, 100% { opacity: .74; transform: translate3d(-5%, -4%, 0) rotate(-5deg) scale3d(1.01, .96, 1); }
-  24% { opacity: .92; transform: translate3d(7%, 1%, 0) rotate(1deg) scale3d(1.08, 1.03, 1); }
-  51% { opacity: .8; transform: translate3d(4%, 10%, 0) rotate(6deg) scale3d(1.02, 1.08, 1); }
-  77% { opacity: .87; transform: translate3d(-8%, 6%, 0) rotate(-1deg) scale3d(.97, 1.01, 1); }
+  0%, 100% { opacity: .64; transform: translate3d(-7%, -4%, 0) rotate(-5deg) scale3d(1.01, .96, 1); }
+  24% { opacity: .96; transform: translate3d(8%, 2%, 0) rotate(1deg) scale3d(1.08, 1.03, 1); }
+  51% { opacity: .74; transform: translate3d(4%, 11%, 0) rotate(6deg) scale3d(1.02, 1.08, 1); }
+  77% { opacity: .9; transform: translate3d(-9%, 5%, 0) rotate(-1deg) scale3d(.97, 1.01, 1); }
 }
 @keyframes liquid-two {
-  0%, 100% { opacity: .84; transform: translate3d(6%, -6%, 0) rotate(4deg) scale3d(1.04, .97, 1); }
-  27% { opacity: .69; transform: translate3d(-7%, -10%, 0) rotate(-3deg) scale3d(.98, 1.05, 1); }
-  54% { opacity: .9; transform: translate3d(-13%, 4%, 0) rotate(-7deg) scale3d(1.07, 1, 1); }
-  80% { opacity: .76; transform: translate3d(2%, 9%, 0) rotate(2deg) scale3d(1.01, 1.08, 1); }
+  0%, 100% { opacity: .88; transform: translate3d(6%, -7%, 0) rotate(4deg) scale3d(1.04, .97, 1); }
+  27% { opacity: .6; transform: translate3d(-8%, -10%, 0) rotate(-3deg) scale3d(.98, 1.05, 1); }
+  54% { opacity: .96; transform: translate3d(-14%, 5%, 0) rotate(-7deg) scale3d(1.07, 1, 1); }
+  80% { opacity: .72; transform: translate3d(3%, 10%, 0) rotate(2deg) scale3d(1.01, 1.08, 1); }
 }
 @keyframes liquid-three {
-  0%, 100% { opacity: .68; transform: translate3d(-6%, -3%, 0) rotate(-3deg) scale3d(.98, 1.04, 1); }
-  22% { opacity: .84; transform: translate3d(1%, -9%, 0) rotate(4deg) scale3d(1.06, .98, 1); }
-  49% { opacity: .73; transform: translate3d(9%, -4%, 0) rotate(7deg) scale3d(1.01, 1.07, 1); }
-  76% { opacity: .88; transform: translate3d(5%, 8%, 0) rotate(0deg) scale3d(1.08, 1, 1); }
+  0%, 100% { opacity: .66; transform: translate3d(-7%, -4%, 0) rotate(-3deg) scale3d(.98, 1.04, 1); }
+  22% { opacity: .9; transform: translate3d(2%, -10%, 0) rotate(4deg) scale3d(1.06, .98, 1); }
+  49% { opacity: .7; transform: translate3d(10%, -3%, 0) rotate(7deg) scale3d(1.01, 1.07, 1); }
+  76% { opacity: .96; transform: translate3d(6%, 9%, 0) rotate(0deg) scale3d(1.08, 1, 1); }
 }
 .atmosphere .grain {
   position: absolute; inset: 0; opacity: var(--grain-op); mix-blend-mode: overlay;
@@ -146,14 +158,64 @@ body > .portfolio-close { position: relative; z-index: 1; }
 .motion-paused .atmosphere .mesh,
 .motion-paused .atmosphere .grain { animation-play-state: paused !important; }
 
-/* Mobile keeps a lower-cost version of both the mesh and the paper grain. */
+/* Mobile uses tighter fields so their contours visibly cross the viewport. */
 @media (max-width: 620px) {
-  .atmosphere .mesh {
-    opacity: .78;
+  :root {
+    --mesh-1: rgba(255,98,63,0.28);
+    --mesh-1-in: rgba(255,98,63,0.23);
+    --mesh-1-out: rgba(255,98,63,0.08);
+    --mesh-2: rgba(222,145,59,0.23);
+    --mesh-2-in: rgba(222,145,59,0.19);
+    --mesh-2-out: rgba(222,145,59,0.07);
+    --mesh-3: rgba(177,64,84,0.21);
+    --mesh-3-in: rgba(177,64,84,0.17);
+    --mesh-3-out: rgba(177,64,84,0.07);
   }
-  .atmosphere .mesh--one { animation-duration: 19s; animation-delay: -2.2s; }
-  .atmosphere .mesh--two { animation-duration: 24s; animation-delay: -8.8s; }
-  .atmosphere .mesh--three { display: block; animation-duration: 30s; animation-delay: -24s; }
+  :root[data-theme="light"] {
+    --mesh-1: rgba(207,62,32,0.22);
+    --mesh-1-in: rgba(207,62,32,0.18);
+    --mesh-1-out: rgba(207,62,32,0.06);
+    --mesh-2: rgba(158,92,18,0.18);
+    --mesh-2-in: rgba(158,92,18,0.15);
+    --mesh-2-out: rgba(158,92,18,0.05);
+    --mesh-3: rgba(125,43,57,0.16);
+    --mesh-3-in: rgba(125,43,57,0.13);
+    --mesh-3-out: rgba(125,43,57,0.05);
+  }
+  .atmosphere .mesh {
+    opacity: .86;
+  }
+  .atmosphere .mesh--one {
+    width: 145vw;
+    height: 72vh;
+    height: 72svh;
+    left: -72vw;
+    top: -12vh;
+    top: -12svh;
+    animation-duration: 14s;
+    animation-delay: -1.7s;
+  }
+  .atmosphere .mesh--two {
+    width: 140vw;
+    height: 74vh;
+    height: 74svh;
+    right: -70vw;
+    top: 8vh;
+    top: 8svh;
+    animation-duration: 18s;
+    animation-delay: -6.6s;
+  }
+  .atmosphere .mesh--three {
+    display: block;
+    width: 150vw;
+    height: 80vh;
+    height: 80svh;
+    left: -25vw;
+    top: 45vh;
+    top: 45svh;
+    animation-duration: 22s;
+    animation-delay: -17.6s;
+  }
   .atmosphere .grain {
     display: block;
     opacity: .012;
@@ -835,10 +897,10 @@ input[type="range"] { width: 100%; accent-color: var(--teal); }
   .reveal-up { opacity: 1 !important; transform: none !important; animation: none !important; }
 }
 </style>
-<link rel="stylesheet" href="assets/projects/editorial-gallery.css?v=20260719-portfolio1">
-<link rel="stylesheet" href="assets/projects/editorial-studio.css?v=20260719-portfolio1">
-<link rel="stylesheet" href="assets/projects/executive-portfolio.css?v=20260719-portfolio1">
-<link rel="stylesheet" href="assets/projects/decision-thread.css?v=20260719-portfolio1">
+<link rel="stylesheet" href="assets/projects/editorial-gallery.css?v=20260719-mobile2">
+<link rel="stylesheet" href="assets/projects/editorial-studio.css?v=20260719-mobile2">
+<link rel="stylesheet" href="assets/projects/executive-portfolio.css?v=20260719-mobile2">
+<link rel="stylesheet" href="assets/projects/decision-thread.css?v=20260719-mobile2">
 </head>
 <body>
 
@@ -862,7 +924,7 @@ input[type="range"] { width: 100%; accent-color: var(--teal); }
     <a href="#selectedWork" class="active" aria-current="page">Selected work</a>
     <a href="#explorations">Explorations</a>
     <a href="#archive">Archive</a>
-    <a href="#aboutGriffin">About Griffin</a>
+    <a href="#aboutGriffin">About me</a>
     <span class="theme-slot" data-theme-mount></span>
   </nav>
 </header>
@@ -937,8 +999,8 @@ input[type="range"] { width: 100%; accent-color: var(--teal); }
         <p class="static-project-summary">A self-contained Windows MCP server and native control center that makes local agent authority visible across Mendix, Git, widgets, builds, tasks, browsers, and documentation.</p>
         <dl class="static-story">
           <div><dt>Problem</dt><dd>A useful local agent needs files, processes, browsers, builds, and documentation, but unrestricted desktop authority is too broad.</dd></div>
-          <div><dt>My contribution</dt><dd>Griffin designed the safety model and built the TypeScript/Node MCP server, native control center, packaging path, and interdependent capability gates.</dd></div>
-          <div><dt>Role of GenAI</dt><dd>A coding agent uses the exposed local tools only when their capabilities are enabled; Griffin decides the authority model and allowed workspace.</dd></div>
+          <div><dt>My contribution</dt><dd>I designed the safety model and built the TypeScript/Node MCP server, native control center, packaging path, and interdependent capability gates.</dd></div>
+          <div><dt>Role of GenAI</dt><dd>A coding agent uses the exposed local tools only when their capabilities are enabled; I decide the authority model and allowed workspace.</dd></div>
           <div><dt>Validation</dt><dd>Tool groups, gate dependencies, workspace boundaries, transport, and packaged launch path were tested locally.</dd></div>
           <div><dt>Limitations</dt><dd>The public reconstruction cannot exercise desktop authority; safety still depends on deliberate gate and workspace configuration by the operator.</dd></div>
         </dl>
@@ -950,8 +1012,8 @@ input[type="range"] { width: 100%; accent-color: var(--teal); }
         <p class="static-project-summary">A production co-pilot that puts a 3D final-assembly line, manufacturing execution system state, and an observable agent diagnosis in the same screen.</p>
         <dl class="static-story">
           <div><dt>Problem</dt><dd>Plant geometry, station state, and diagnostic reasoning are difficult to follow when they live in separate views and the recommendation hides its evidence.</dd></div>
-          <div><dt>My contribution</dt><dd>Griffin built the React and Three.js production view and paired it with LangGraph and ReAct diagnostic, recovery, and simulation tools in scripted and live modes.</dd></div>
-          <div><dt>Role of GenAI</dt><dd>The agent interprets the visible manufacturing state and calls explicit diagnosis, recovery, and simulation tools; Griffin designed the tool sequence and kept the evidence visible.</dd></div>
+          <div><dt>My contribution</dt><dd>I built the React and Three.js production view and paired it with LangGraph and ReAct diagnostic, recovery, and simulation tools in scripted and live modes.</dd></div>
+          <div><dt>Role of GenAI</dt><dd>The agent interprets the visible manufacturing state and calls explicit diagnosis, recovery, and simulation tools; I designed the tool sequence and kept the evidence visible.</dd></div>
           <div><dt>Validation</dt><dd>The public scripted mode runs the full alert-to-simulation sequence against a fixed, inspectable scenario.</dd></div>
           <div><dt>Limitations</dt><dd>The public build uses scripted sample manufacturing data and makes no claim of autonomous production control.</dd></div>
         </dl>
@@ -963,8 +1025,8 @@ input[type="range"] { width: 100%; accent-color: var(--teal); }
         <p class="static-project-summary">An MCP server that turns 68 Siemens NXOpen operations for modeling, features, file handling, and finite-element-analysis results into typed tools an AI client can call.</p>
         <dl class="static-story">
           <div><dt>Problem</dt><dd>CAD automation is difficult to reuse conversationally when geometry and analysis operations remain isolated in recorded journals or opaque desktop commands.</dd></div>
-          <div><dt>My contribution</dt><dd>Griffin traced the NXOpen operation patterns, designed the typed tool contracts, built the FastMCP server, and assembled inspectable CAD and analysis evidence.</dd></div>
-          <div><dt>Role of GenAI</dt><dd>An AI client can plan and call the explicit NX tools; Griffin supplies the CAD intent, parameter boundaries, runtime environment, and review of generated geometry.</dd></div>
+          <div><dt>My contribution</dt><dd>I traced the NXOpen operation patterns, designed the typed tool contracts, built the FastMCP server, and assembled inspectable CAD and analysis evidence.</dd></div>
+          <div><dt>Role of GenAI</dt><dd>An AI client can plan and call the explicit NX tools; I supply the CAD intent, parameter boundaries, runtime environment, and review of generated geometry.</dd></div>
           <div><dt>Validation</dt><dd>Representative tools were run inside NX and their resulting geometry, files, and analysis outputs were inspected.</dd></div>
           <div><dt>Limitations</dt><dd>The public portfolio cannot run NX, and agent-generated CAD still needs an engineer to verify geometry, units, constraints, and analysis assumptions.</dd></div>
         </dl>
@@ -976,8 +1038,8 @@ input[type="range"] { width: 100%; accent-color: var(--teal); }
         <p class="static-project-summary">A FastMCP gateway that lets an AI client work through authenticated Teamcenter service-oriented-architecture sessions while read, edit, and full-write authority remain explicit.</p>
         <dl class="static-story">
           <div><dt>Problem</dt><dd>An agent needs authenticated Teamcenter context to be useful, but a single undifferentiated permission level makes enterprise operations difficult to govern.</dd></div>
-          <div><dt>My contribution</dt><dd>Griffin built the gateway, session authentication, local and Eureka discovery modes, resources, prompts, 77 registered tools, and runtime write gates.</dd></div>
-          <div><dt>Role of GenAI</dt><dd>The AI client chooses among named Teamcenter tools; Griffin designed the tool surface and operator-controlled authority levels around the real SOA sessions.</dd></div>
+          <div><dt>My contribution</dt><dd>I built the gateway, session authentication, local and Eureka discovery modes, resources, prompts, 77 registered tools, and runtime write gates.</dd></div>
+          <div><dt>Role of GenAI</dt><dd>The AI client chooses among named Teamcenter tools; I designed the tool surface and operator-controlled authority levels around the real SOA sessions.</dd></div>
           <div><dt>Validation</dt><dd>Authentication, discovery, representative reads, BOM traversal, and gate transitions were exercised in the intended Teamcenter environment.</dd></div>
           <div><dt>Limitations</dt><dd>The public walkthrough is sanitized and cannot run a Teamcenter session; operator gates reduce accidental scope but do not replace enterprise authorization or review.</dd></div>
         </dl>
@@ -989,8 +1051,8 @@ input[type="range"] { width: 100%; accent-color: var(--teal); }
         <p class="static-project-summary">A query-backed Teamcenter dashboard that replaces spreadsheet rollups with a reviewable view of change KPIs, workflow state, ownership, aging, and downstream impact.</p>
         <dl class="static-story">
           <div><dt>Problem</dt><dd>Saved-query results, workflow state, and downstream impact are difficult to review when they must be reconstructed across spreadsheet exports.</dd></div>
-          <div><dt>My contribution</dt><dd>Griffin built the reporting dashboard and its saved-query and SOA hydration flow, then shaped the KPI, workflow, and impact views.</dd></div>
-          <div><dt>Role of GenAI</dt><dd>Generative AI accelerated implementation and helped organize the reporting surfaces; Griffin defined the Teamcenter queries, evidence fields, and review logic.</dd></div>
+          <div><dt>My contribution</dt><dd>I built the reporting dashboard and its saved-query and SOA hydration flow, then shaped the KPI, workflow, and impact views.</dd></div>
+          <div><dt>Role of GenAI</dt><dd>Generative AI accelerated implementation and helped organize the reporting surfaces; I defined the Teamcenter queries, evidence fields, and review logic.</dd></div>
           <div><dt>Validation</dt><dd>Dashboard records and aggregates were checked back to the sanitized saved-query results and hydrated change objects.</dd></div>
           <div><dt>Limitations</dt><dd>The public walkthrough uses sanitized data and cannot demonstrate live Teamcenter authentication or production reporting scale.</dd></div>
         </dl>
@@ -1002,8 +1064,8 @@ input[type="range"] { width: 100%; accent-color: var(--teal); }
         <p class="static-project-summary">Ten packaged Mendix pluggable widgets plus reusable agent specifications and skills that capture how to build, validate, make accessible, and package complete .mpk outputs.</p>
         <dl class="static-story">
           <div><dt>Problem</dt><dd>Each widget repeats XML, generated typing, accessibility, build, packaging, and deployment decisions unless the working procedure is captured.</dd></div>
-          <div><dt>My contribution</dt><dd>Griffin built and packaged the widget collection, identified the recurring constraints, and authored the reusable specifications and skills shared with other Mendix builders.</dd></div>
-          <div><dt>Role of GenAI</dt><dd>Coding agents helped implement widgets from the captured contracts; Griffin turned repeated failures and checks into explicit instructions and reviewed every packaged result.</dd></div>
+          <div><dt>My contribution</dt><dd>I built and packaged the widget collection, identified the recurring constraints, and authored the reusable specifications and skills shared with other Mendix builders.</dd></div>
+          <div><dt>Role of GenAI</dt><dd>Coding agents helped implement widgets from the captured contracts; I turned repeated failures and checks into explicit instructions and reviewed every packaged result.</dd></div>
           <div><dt>Validation</dt><dd>Widgets were built, type-checked, reviewed for accessibility, packaged as .mpk files, and exercised in Mendix or the public React lab as appropriate.</dd></div>
           <div><dt>Limitations</dt><dd>The browser lab substitutes sample values and local adapters for Mendix runtime services; each widget still needs validation in its target app and platform version.</dd></div>
         </dl>
@@ -1015,8 +1077,8 @@ input[type="range"] { width: 100%; accent-color: var(--teal); }
         <p class="static-project-summary">A maintenance, repair, and overhaul (MRO) workbench that keeps inspection evidence, product context from the lightweight Jupiter Tessellation (JT) 3D engineering format, the service bill of materials (service BOM), repair planning, and disposition in one guided work-order flow.</p>
         <dl class="static-story">
           <div><dt>Problem</dt><dd>Maintenance decisions become hard to review when findings, product context, repair options, and disposition steps live in separate tools.</dd></div>
-          <div><dt>My contribution</dt><dd>Griffin shaped the workflow and built the React 19 and Siemens iX interface, state model, sample work orders, and guided assessment-to-disposition path.</dd></div>
-          <div><dt>Role of GenAI</dt><dd>Generative AI acted as an implementation partner while Griffin supplied the maintenance domain flow, interface constraints, and acceptance judgment.</dd></div>
+          <div><dt>My contribution</dt><dd>I shaped the workflow and built the React 19 and Siemens iX interface, state model, sample work orders, and guided assessment-to-disposition path.</dd></div>
+          <div><dt>Role of GenAI</dt><dd>Generative AI acted as an implementation partner while I supplied the maintenance domain flow, interface constraints, and acceptance judgment.</dd></div>
           <div><dt>Validation</dt><dd>The public build exercises the complete guided path against sanitized sample data and preserves state across the decision steps.</dd></div>
           <div><dt>Limitations</dt><dd>The portfolio build uses sample records and a browser-safe JT context; it is not connected to a production maintenance or PLM system.</dd></div>
         </dl>
@@ -1028,8 +1090,8 @@ input[type="range"] { width: 100%; accent-color: var(--teal); }
         <p class="static-project-summary">A packaged desktop app that sends a local video to Gemini, turns the response into a structured scene report, and keeps prior runs in SQLite.</p>
         <dl class="static-story">
           <div><dt>Problem</dt><dd>Ad hoc video prompts are difficult to compare or revisit when the source, request, report structure, and prior runs are not retained together.</dd></div>
-          <div><dt>My contribution</dt><dd>Griffin built the desktop workspace, provider and prompt flow, structured report assembly, local history, and packaged application.</dd></div>
-          <div><dt>Role of GenAI</dt><dd>Gemini performs the requested video analysis; Griffin designed the request and report contract and the local workflow that makes each run inspectable.</dd></div>
+          <div><dt>My contribution</dt><dd>I built the desktop workspace, provider and prompt flow, structured report assembly, local history, and packaged application.</dd></div>
+          <div><dt>Role of GenAI</dt><dd>Gemini performs the requested video analysis; I designed the request and report contract and the local workflow that makes each run inspectable.</dd></div>
           <div><dt>Validation</dt><dd>The workflow was exercised from local file selection through structured report and SQLite history; the public build checks the UI against a sample API.</dd></div>
           <div><dt>Limitations</dt><dd>The portfolio build does not upload media or call Gemini, and a model-generated scene report still requires human review.</dd></div>
         </dl>
@@ -1074,7 +1136,7 @@ input[type="range"] { width: 100%; accent-color: var(--teal); }
       <article class="static-exploration-project static-exploration-project--paired">
         <p class="static-project-meta">Paired build story · 2 projects</p>
         <h3>Godot vs. Unreal — Agentic Game-Building Benchmarks</h3>
-        <p>Two native-engine builds compare what Codex and Sol could produce under Griffin’s direction, with playable evidence and candid limits instead of invented scores.</p>
+        <p>Two native-engine builds compare what Codex and Sol could produce under my direction, with playable evidence and candid limits instead of invented scores.</p>
         <ul><li><b>Eifel Apex — Godot GenAI Game Benchmark</b><span>A benchmark of how far Codex and Sol could take a native 3D Godot racing game from brief to packaged build; cars, circuits, controls, checkpoints, and laps are evidence of the benchmark rather than the entire point.</span></li><li><b>RUNE DIFF — Unreal GenAI Game Benchmark</b><span>A companion benchmark testing Codex and Sol on an Unreal Engine 5 multiplayer-online-battle-arena vertical slice with champions, builds, and combat systems, including what the agents achieved and where the result still fell short.</span></li></ul>
       </article>
       <article class="static-exploration-project">
@@ -1458,7 +1520,7 @@ input[type="range"] { width: 100%; accent-color: var(--teal); }
 
 <section class="about-griffin" id="aboutGriffin" aria-labelledby="aboutGriffinTitle">
   <div class="about-griffin__inner">
-    <span class="about-griffin__label">About Griffin</span>
+    <span class="about-griffin__label">About me</span>
     <h2 id="aboutGriffinTitle">Most of my work sits somewhere between industrial software and the tools around it.</h2>
     <div class="about-griffin__copy">
       <p>I work in presales and emerging technology across Mendix, product lifecycle management (PLM), computer-aided design (CAD), manufacturing, and applied AI.</p>
@@ -1477,12 +1539,12 @@ input[type="range"] { width: 100%; accent-color: var(--teal); }
       <h2 id="portfolioCloseTitle">Want to dig into any of it?</h2>
       <p>The case studies have the details. The archive has everything else I kept.</p>
       <nav class="portfolio-close__links" aria-label="Continue exploring">
-        <a href="#aboutGriffin">About Griffin <span>→</span></a>
+        <a href="#aboutGriffin">About me <span>→</span></a>
         <a href="https://github.com/griffin-p-quinn" target="_blank" rel="noopener">GitHub <span>↗</span></a>
         <span class="profile-link-mount" data-linkedin-mount data-linkedin-context="footer"></span>
         <a href="#intro">Back to top <span>↑</span></a>
       </nav>
-      <p class="portfolio-close__disclaimer">Digital Fabric is a personal portfolio by Griffin Quinn, not an official Siemens site. Views are my own. Demos use sanitized, fictionalized, or browser-safe sample data where noted. Product names and marks belong to their respective owners.</p>
+      <p class="portfolio-close__disclaimer">Digital Fabric is my personal portfolio, not an official Siemens site. Views are my own. Demos use sanitized, fictionalized, or browser-safe sample data where noted. Product names and marks belong to their respective owners.</p>
     </div>
     <p class="portfolio-close__mark">Griffin Quinn<br>Digital Fabric<br><span>Selected work · 2025–26</span></p>
   </div>
@@ -1526,7 +1588,7 @@ input[type="range"] { width: 100%; accent-color: var(--teal); }
   </div>
 </aside>
 
-<script src="assets/projects/portfolio-content.js?v=20260719-portfolio1"></script>
+<script src="assets/projects/portfolio-content.js?v=20260719-mobile2"></script>
 <script>
 /* ═══════════════════════════════════════════════════════════
    DATA MANIFEST — single source of truth
@@ -1804,7 +1866,7 @@ const INTERACTIONS = Object.freeze({
       { carrier:'Sample Air', price_usd:base*p.pax, stops:0 }, { carrier:'Fixture Jet', price_usd:Math.round(base*.82)*p.pax, stops:1 }, { carrier:'Demo Ways', price_usd:Math.round(base*1.24)*p.pax, stops:0 }
     ]}; } }],
   'graph-rag': [{ type:'retriever', title:'Typed Graph Retrieval Experiment', desc:'Ask a question, watch the typed traversal, compare a flat baseline, and inspect the retrieved facts and edge-level citations behind the grounded answer.' }],
-  'capital-mcp': [{ type:'jsonrpc', method:'capital.queryNet', title:'Capital REST API → Local MCP Tool', desc:'Exercise one typed sample tool from the local MCP server Griffin built around Capital’s existing REST API.',
+  'capital-mcp': [{ type:'jsonrpc', method:'capital.queryNet', title:'Capital REST API → Local MCP Tool', desc:'Exercise one typed sample tool from the local MCP server I built around Capital’s existing REST API.',
     params:[{ name:'net_name', label:'Sample net', kind:'select', options:['PWR_12V','GND_CHASSIS','CAN_HI','CAN_LO'] }],
     respond:(p)=>({ session:'fixture-session', tool:'query_net', net:p.net_name, endpoints:['J1-04','J4-06'], gauge_awg:p.net_name.startsWith('PWR')?12:20, status:p.net_name==='CAN_LO'?'WARN':'PASS' }) }],
   'nx-mendix': [{ type:'nxJob', title:'Mendix-to-NX Configuration Job', desc:'Submit a sample parametric configuration, watch the polling connector drive NX expressions, choose exports, and inspect the patched result status.' }],
@@ -2384,7 +2446,7 @@ const PREVIEW_BUNDLES = Object.freeze({
     types:['vision','testRunner','activity','fileCleaner','fabric','nxJournal','mendixAudit','release']
   },
   truthA: {
-    style:'assets/projects/workbenches-truth-a.css?v=20260719-portfolio1', script:'assets/projects/workbenches-truth-a.js?v=20260719-portfolio1',
+    style:'assets/projects/workbenches-truth-a.css?v=20260719-mobile2', script:'assets/projects/workbenches-truth-a.js?v=20260719-mobile2',
     types:['aiStudioAgent','autoModelScore','workshopDocs','migrationRetrospective','oauthBroker','maiaControl','priceGraph','mxDocker']
   },
   truthB: {
@@ -2396,7 +2458,7 @@ const PREVIEW_BUNDLES = Object.freeze({
     types:['rdfPipeline','capitalNx','nxJob','changeDashboard','fixedStory','mcpWorkspace','nxJournalReview','designBrief','semanticApi','genealogy']
   },
   truthD: {
-    style:'assets/projects/workbenches-truth-d.css?v=20260719-portfolio1', script:'assets/projects/workbenches-truth-d.js?v=20260719-portfolio1',
+    style:'assets/projects/workbenches-truth-d.css?v=20260719-mobile2', script:'assets/projects/workbenches-truth-d.js?v=20260719-mobile2',
     types:['snapshotArchive','modelEval','tcBomWidget','routerAudit','onePagerKit','evidenceBoard','goalDraft','lumaApi','agentBuilder','timeTracker']
   },
   truthE: {
@@ -2663,7 +2725,7 @@ function renderArchPane(p, reg) {
   const facts = p.specs.slice(0, 3).map(([label, value]) => `<div class="proof-fact"><span>${esc(label)}</span><strong>${esc(value)}</strong></div>`).join('');
   const narrative = `<dl class="drawer-story">
     ${optionalStoryField('Role of generative AI', story.roleOfGenAI)}
-    ${optionalStoryField('Griffin’s role', story.griffinsRole || story.contribution)}
+    ${optionalStoryField('My role', story.griffinsRole || story.contribution)}
     ${optionalStoryField('Proof', story.proof)}
     ${optionalStoryField('Validation', story.validation || story.result)}
     ${optionalStoryField('Limits', story.limitations)}
@@ -3523,7 +3585,7 @@ function wRunner(spec, host, head) {
   return () => timers.forEach(clearTimeout);
 }
 </script>
-<script defer src="assets/projects/editorial-gallery.js?v=20260719-portfolio1"></script>
-<script defer src="assets/projects/project-evidence.js?v=20260719-portfolio1"></script>
+<script defer src="assets/projects/editorial-gallery.js?v=20260719-mobile2"></script>
+<script defer src="assets/projects/project-evidence.js?v=20260719-mobile2"></script>
 </body>
 </html>

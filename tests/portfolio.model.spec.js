@@ -88,6 +88,20 @@ test.describe('canonical portfolio content model', () => {
     expect(html).not.toMatch(/const\s+FALLBACK_PROJECTS\s*=\s*\[/);
   });
 
+  test('uses first-person voice for authored project narratives', () => {
+    const narrativeFields = ['summary', 'problem', 'roleOfGenAI', 'griffinsRole', 'proof', 'validation', 'limitations'];
+    for (const project of projects) {
+      const key = projectKey(project);
+      const narrative = narrativeFields.map((field) => project[field]).filter(Boolean).join(' ');
+      expect(narrative, `${key} narrative`).not.toMatch(/\bGriffin(?:['’]s)?\b/i);
+    }
+
+    const html = readPortfolioHtml();
+    expect(html).not.toContain('About Griffin');
+    expect(html).not.toContain('Griffin’s role');
+    expect(html).not.toContain('a personal portfolio by Griffin Quinn');
+  });
+
   test('gives every selected project a truthful multi-item media gallery', () => {
     expect(model.selectedKeys).toHaveLength(8);
     for (const key of model.selectedKeys) {

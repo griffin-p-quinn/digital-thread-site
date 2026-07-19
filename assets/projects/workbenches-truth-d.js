@@ -1268,9 +1268,9 @@
               <li data-connector-stage="${index}" tabindex="0"><i>${index + 1}</i><span><b>${escapeHtml(stage[0])}</b><small>${escapeHtml(stage[1])}</small></span><em>waiting</em></li>`).join('')}</ol>
           </section>
           <section class="td-builder-inspector">
-            <div class="td-builder-inspector-head"><span class="td-kicker">Actual contribution</span><h4>Broadened the connector’s model-provider path</h4><p>Griffin enhanced an existing connector JAR so AI Studio could connect to open-weight models. This is distinct from the MCP Agent Extension, which adds agent behavior and external MCP servers inside AI Studio.</p></div>
+            <div class="td-builder-inspector-head"><span class="td-kicker">Actual contribution</span><h4>Broadened the connector’s model-provider path</h4><p>I enhanced an existing connector JAR so AI Studio could connect to open-weight models. This is distinct from the MCP Agent Extension, which adds agent behavior and external MCP servers inside AI Studio.</p></div>
             <div class="td-builder-code"><div><span>Typed handoff</span><em>conceptual · no secret configuration</em></div><pre>AI Studio process\n  → existing LLM connector JAR\n  → enhanced open-weight provider path\n  → configured model endpoint\n  → response returned to AI Studio</pre></div>
-            <div class="td-builder-result" data-connector-result aria-live="polite"><span>Trace the path to inspect the verified boundary between the original connector and Griffin’s extension.</span></div>
+            <div class="td-builder-result" data-connector-result aria-live="polite"><span>Trace the path to inspect the verified boundary between the original connector and my extension.</span></div>
           </section>
         </div>
         <footer class="td-builder-boundary"><b>Public evidence boundary</b><span>The enhanced JAR and a live model endpoint are not published here. This reconstruction explains the connector contribution without substituting a different AI Studio experiment as proof.</span></footer>
