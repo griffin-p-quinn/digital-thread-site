@@ -13,7 +13,11 @@ async function atmosphereState(page) {
       width: mesh.getBoundingClientRect().width,
       height: mesh.getBoundingClientRect().height,
       background: style.backgroundImage,
-      keyframes: animation?.effect?.getKeyframes().map((frame) => frame.transform) || []
+      playState: animation?.playState,
+      keyframes: animation?.effect?.getKeyframes().map((frame) => ({
+        transform: frame.transform,
+        opacity: frame.opacity
+      })) || []
     };
   }));
 }
@@ -37,12 +41,36 @@ for (const viewport of [
     state.forEach((field) => {
       expect(field.display).not.toBe('none');
       expect(field.opacity).toBeGreaterThan(0);
+      expect(field.playState).toBe('running');
       expect(field.width).toBeGreaterThan(viewport.width);
       expect(field.height).toBeGreaterThan(viewport.height);
       expect(field.background).toContain('radial-gradient');
       expect(field.background).toContain('rgba(0, 0, 0, 0)');
       expect(field.keyframes.length).toBeGreaterThanOrEqual(3);
+      expect(new Set(field.keyframes.map((frame) => frame.opacity)).size).toBeGreaterThanOrEqual(3);
     });
+
+    const motionSnapshot = () => page.locator('.atmosphere .mesh').evaluateAll((meshes) => meshes.map((mesh) => {
+      const rect = mesh.getBoundingClientRect();
+      return {
+        x: rect.left + rect.width / 2,
+        y: rect.top + rect.height / 2,
+        width: rect.width,
+        height: rect.height,
+        opacity: Number(getComputedStyle(mesh).opacity)
+      };
+    }));
+    const beforeMotion = await motionSnapshot();
+    await page.waitForTimeout(1_200);
+    const afterMotion = await motionSnapshot();
+    const motionScores = afterMotion.map((field, index) => {
+      const before = beforeMotion[index];
+      return Math.hypot(field.x - before.x, field.y - before.y)
+        + Math.abs(field.width - before.width) * .25
+        + Math.abs(field.height - before.height) * .25
+        + Math.abs(field.opacity - before.opacity) * 100;
+    });
+    expect(motionScores.filter((score) => score >= 6).length).toBeGreaterThanOrEqual(2);
 
     await expect(page.locator('.atmosphere .grain')).toHaveCSS('animation-name', 'none');
     const introEffects = await page.locator('.intro').evaluate((intro) => ({
