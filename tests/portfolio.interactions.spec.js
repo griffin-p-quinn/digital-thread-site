@@ -19,11 +19,11 @@ test.describe('mobile archive', () => {
 
     const heroImage = page.locator('.intro-artifact--maia img');
     await expect(heroImage).toHaveAttribute('srcset', /hero-720\/.*\.webp 720w.*hero-1024\/.*\.webp 1024w/);
-    await expect.poll(() => heroImage.evaluate((image) => image.currentSrc)).toMatch(/hero-(?:720|1024)\/maia_control_center_capture\.webp$/);
+    await expect.poll(() => heroImage.evaluate((image) => image.currentSrc)).toMatch(/hero-(?:720|1024)\/mro_cover\.webp$/);
     const downloadedHeroSources = await page.evaluate(() => performance.getEntriesByType('resource')
       .map((entry) => entry.name)
-      .filter((name) => /maia_control_center_capture\.(?:png|webp)(?:\?|$)/.test(name)));
-    expect(downloadedHeroSources.some((name) => /\.png(?:\?|$)/.test(name))).toBe(false);
+      .filter((name) => /mro_cover\.(?:jpg|webp)(?:\?|$)/.test(name)));
+    expect(downloadedHeroSources.some((name) => /\.jpg(?:\?|$)/.test(name))).toBe(false);
 
     const grainStyle = await page.locator('.atmosphere .grain').evaluate((grain) => {
       const style = getComputedStyle(grain);
