@@ -93,6 +93,14 @@
         caption: 'The production view keeps the line, station evidence, and diagnosis-to-recovery trace on the same screen.'
       },
       {
+        kind: 'video',
+        src: 'assets/projects/dtc_mcp.mp4',
+        poster: 'assets/projects/dtc_composer_cover.png',
+        title: 'DTC runtime capture',
+        alt: 'Recorded Digital Twin Composer & NVIDIA Omniverse assembly line bottleneck resolution session.',
+        caption: 'The retained runtime capture shows the Digital Thread Operations Agent diagnosing and simulating line recovery.'
+      },
+      {
         kind: 'diagram',
         title: 'Observable recovery path',
         alt: 'Manufacturing execution system evidence flows through the production view into diagnosis, recovery, and simulation tools.',
@@ -134,6 +142,14 @@
         caption: 'Session handling and authority gates stay visible before any registered tool reaches Teamcenter.'
       },
       {
+        kind: 'video',
+        src: 'assets/projects/tc_soa_mcp.mp4',
+        poster: 'assets/projects/social/teamcenter-soa-mcp.png',
+        title: 'Teamcenter SOA MCP gateway capture',
+        alt: 'Recorded Agentic Enterprise Platform session executing Teamcenter SOA change requests.',
+        caption: 'The retained runtime capture shows an AI agent executing cross-system change requests via Teamcenter SOA.'
+      },
+      {
         kind: 'image',
         src: 'assets/projects/social/teamcenter-soa-mcp.png',
         title: 'Gateway case-study cover',
@@ -171,6 +187,14 @@
         title: 'Agent Graph Editor',
         alt: 'Mendix Agent Graph Editor showing connected specialist agents, their tools, and the Mendix bridge inspector.',
         caption: 'One working widget from the collection, shown with its graph editing and host-bridge behavior.'
+      },
+      {
+        kind: 'video',
+        src: 'assets/projects/molex_agent_dev.mp4',
+        poster: 'assets/projects/mendix_agent_graph_actual_capture.png',
+        title: 'Agentic Mendix build capture',
+        alt: 'Recorded terminal developer agent building a Mendix application live in Mendix Studio Pro.',
+        caption: 'The recorded session demonstrates a terminal-based Claude developer agent constructing a Mendix app.'
       },
       {
         kind: 'image',
@@ -215,6 +239,23 @@
         title: 'Rejected inspection reference',
         alt: 'Close inspection reference of a turbine-blade tip with severe edge wear and deformation.',
         caption: 'The contrasting rejected reference makes the evidence behind a disposition visible.'
+      }
+    ]),
+    graph: defineMedia([
+      {
+        kind: 'image',
+        src: 'assets/projects/teamcenter_semantic_graph_cover.png',
+        title: 'Teamcenter Semantic Graph API',
+        alt: 'GraphStudio showing Teamcenter RDF graph relationships, query builder, and ontology node structure.',
+        caption: 'The GraphStudio interface connects Teamcenter RDF graph relationships and ontology structures.'
+      },
+      {
+        kind: 'video',
+        src: 'assets/projects/graph_studio_agent.mp4',
+        poster: 'assets/projects/teamcenter_semantic_graph_cover.png',
+        title: 'GraphStudio agent capture',
+        alt: 'Recorded agentic AI session navigating Teamcenter Knowledge Graph and RDF ontology.',
+        caption: 'The retained runtime capture shows an AI agent interacting with the Teamcenter RDF graph ontology.'
       }
     ]),
     video: defineMedia([
