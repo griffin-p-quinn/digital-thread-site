@@ -891,7 +891,7 @@
       relatedProjects: ['copilot365', 'sfdc-main', 'sfdc-v1'], tags: ['Microsoft 365 Copilot', 'WorkIQ', 'Salesforce', 'CSV review'], specs: [['Context', 'Calendar + email + WorkIQ'], ['Reconcile', 'Internal Salesforce agent'], ['Control', 'Human review']]
     }),
     defineProject({
-      k: 'widgets', title: 'Mendix Widget Foundry', category: 'local-tools', artifactType: 'Packaged tool', status: 'Packaged collection', collection: 'selected',
+      k: 'widgets', title: 'Reusable GenAI Assets for Mendix App Development', category: 'local-tools', artifactType: 'Packaged tool', status: 'Packaged collection', collection: 'selected',
       summary: 'Ten packaged Mendix pluggable widgets plus reusable GenAI agent specifications, skills, and developer workflows for building Mendix applications.',
       problem: 'Each widget repeats XML, generated typing, accessibility, build, packaging, and deployment decisions unless the working procedure is captured.',
       griffinsRole: 'I built and packaged the widget collection, identified the recurring constraints, and authored the reusable specifications and skills shared with other Mendix builders.',
