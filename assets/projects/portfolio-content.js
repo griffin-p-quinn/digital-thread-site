@@ -10,7 +10,7 @@
     Object.freeze({ key: 'experiments', label: 'Experiments', description: 'Bounded prototypes and tests of what generative-AI systems can actually produce.' })
   ]);
 
-  const SELECTED_KEYS = Object.freeze(['playwright', 'dt-composer', 'nx', 'soa', 'tc-change', 'widgets', 'mro', 'video']);
+  const SELECTED_KEYS = Object.freeze(['mro', 'dt-composer', 'nx', 'soa', 'tc-change', 'widgets', 'playwright', 'video']);
   const EXPLORATION_KEYS = Object.freeze(['graph', 'new-view', 'edge', 'llms', 'change-graph', 'copilot365', 'racer', 'et-site', 'codex']);
   const CASE_STUDY_SLUGS = Object.freeze({
     playwright: 'maia-local-mcp',
