@@ -194,7 +194,7 @@
         poster: 'assets/projects/mendix_agent_graph_actual_capture.png',
         title: 'Agentic Mendix build capture',
         alt: 'Recorded terminal developer agent building a Mendix application live in Mendix Studio Pro.',
-        caption: 'The recorded session demonstrates a terminal-based Claude developer agent constructing a Mendix app.'
+        caption: 'A terminal-based GenAI developer agent programmatically constructs a Mendix application, demonstrating reusable GenAI assets for Mendix app development.'
       },
       {
         kind: 'image',
@@ -892,14 +892,14 @@
     }),
     defineProject({
       k: 'widgets', title: 'Mendix Widget Foundry', category: 'local-tools', artifactType: 'Packaged tool', status: 'Packaged collection', collection: 'selected',
-      summary: 'Ten packaged Mendix pluggable widgets plus reusable agent specifications and skills that capture how to build, validate, make accessible, and package complete .mpk outputs.',
+      summary: 'Ten packaged Mendix pluggable widgets plus reusable GenAI agent specifications, skills, and developer workflows for building Mendix applications.',
       problem: 'Each widget repeats XML, generated typing, accessibility, build, packaging, and deployment decisions unless the working procedure is captured.',
       griffinsRole: 'I built and packaged the widget collection, identified the recurring constraints, and authored the reusable specifications and skills shared with other Mendix builders.',
       roleOfGenAI: 'Coding agents helped implement widgets from the captured contracts; I turned repeated failures and checks into explicit instructions and reviewed every packaged result.',
       proof: 'The portfolio includes the live Agent Graph Editor layer, a packaged Diagram Editor, additional working captures, three agent specifications, and two reusable skills.',
       validation: 'Widgets were built, type-checked, reviewed for accessibility, packaged as .mpk files, and exercised in Mendix or the public React lab as appropriate.',
       limitations: 'The browser lab substitutes sample values and local adapters for Mendix runtime services; each widget still needs validation in its target app and platform version.',
-      relatedProjects: ['new-view', 'bom', 'supply-risk', 'et-site'], tags: ['Mendix widgets', 'React + TypeScript', 'Agent specifications', '.mpk'], specs: [['Collection', '10 packaged widgets'], ['Knowledge', '3 agent specs + 2 skills'], ['Proof', 'Live React layer lab']],
+      relatedProjects: ['playwright', 'new-view', 'bom', 'supply-risk', 'et-site'], tags: ['Mendix widgets', 'React + TypeScript', 'Agent specifications', '.mpk'], specs: [['Collection', '10 packaged widgets'], ['Knowledge', '3 agent specs + 2 skills'], ['Proof', 'Live React layer lab']],
       alt: 'Mendix Widget Foundry showing an Agent Graph Editor and the reusable build, validation, and packaging workflow.'
     }),
     defineProject({
