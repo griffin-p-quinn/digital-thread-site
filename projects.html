@@ -2768,12 +2768,66 @@ function renderCodePane(p, reg) {
     ${evidence.note ? `<p class="inspect-note evidence-note">${esc(evidence.note)}</p>` : ''}
     ${inspect.length ? `<div class="inspect-links">${inspect.join('')}</div>` : ''}
     ${externalEvidenceCardsHTML(p)}
+    ${specViewerHTML(p)}
     ${files ? `<span class="proof-section-label">Repository evidence</span><div class="evidence-files">${files}</div>` : ''}
     <span class="proof-section-label">Build facts</span>
     <div class="evidence-ledger__truth">${truths}</div>
     ${relatedBuildsHTML(p)}
   </div>`;
 }
+function specViewerHTML(p) {
+  const evidence = evidenceFor(p);
+  if (!evidence.resource) return '';
+  const res = evidence.resource;
+  return `<section class="spec-viewer-section">
+    <span class="proof-section-label">Interactive specification reader</span>
+    <div class="spec-viewer-widget">
+      <div class="spec-viewer-header">
+        <div class="spec-viewer-title">
+          <span class="spec-viewer-icon" aria-hidden="true">📄</span>
+          <strong>${esc(res.fileName || 'mx-pluggable-widget-complete.agent.md')}</strong>
+          <span class="spec-viewer-badge">31.1 KB · Agent Specification</span>
+        </div>
+        <div class="spec-viewer-actions">
+          <button class="btn-copy" type="button" onclick="copySpecContent(this)">Copy markdown</button>
+          <a class="spec-viewer-link" href="${esc(res.src)}" target="_blank" rel="noopener">Open raw file <i aria-hidden="true">↗</i></a>
+        </div>
+      </div>
+      <div class="spec-viewer-body" data-spec-src="${esc(res.src)}" role="region" aria-label="Specification reader for ${esc(res.fileName || 'mx-pluggable-widget-complete.agent.md')}" tabindex="0">
+        <span class="spec-viewer-loading">Loading specification markdown&hellip;</span>
+      </div>
+    </div>
+  </section>`;
+}
+
+window.copySpecContent = btn => {
+  const body = btn.closest('.spec-viewer-widget').querySelector('.spec-viewer-body');
+  const text = body ? body.innerText : '';
+  navigator.clipboard.writeText(text).then(() => {
+    const o = btn.textContent; btn.textContent = 'Copied ✓';
+    setTimeout(() => btn.textContent = o, 1400);
+  });
+};
+
+function hydrateSpecViewer(host) {
+  const viewer = (host || document).querySelector('.spec-viewer-body[data-spec-src]');
+  if (!viewer || viewer.dataset.loaded === 'true') return;
+  const src = viewer.getAttribute('data-spec-src');
+  viewer.dataset.loaded = 'true';
+  viewer.innerHTML = '<span class="spec-viewer-loading">Loading specification markdown&hellip;</span>';
+  fetch(src)
+    .then(r => {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.text();
+    })
+    .then(text => {
+      viewer.textContent = text;
+    })
+    .catch(err => {
+      viewer.innerHTML = '<span class="spec-viewer-loading" style="color:var(--c-err, #ff6b6b)">Could not load specification resource. <a href="' + esc(src) + '" target="_blank" rel="noopener" style="color:var(--folio-accent)">Open file directly ↗</a></span>';
+    });
+}
+
 window.copyCode = btn => {
   const code = btn.closest('.drawer-pane').querySelector('.code-box-body').innerText;
   navigator.clipboard.writeText(code).then(() => {
@@ -2821,6 +2875,7 @@ window.switchDrawerPane = (name, options = {}) => {
   if (rail) rail.scrollTo({ left:Math.max(0, tab.offsetLeft - (rail.clientWidth - tab.offsetWidth) / 2), behavior:REDUCE ? 'auto' : 'smooth' });
   $('.drawer-body').scrollTop = 0;
   if (name === 'sim') mountActiveSimulation();
+  if (name === 'code') hydrateSpecViewer($('#pane-code'));
   if (options.updateHistory !== false && studioSession) {
     const target = previewHref(studioSession.project, name);
     if (location.hash !== target) history.replaceState({ project:studioSession.project.k, pane:name }, '', target);
