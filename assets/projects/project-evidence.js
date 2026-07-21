@@ -57,13 +57,18 @@
     'ml-dev': { files:[], note:'The enhanced connector JAR is not published in this portfolio. The preview therefore explains the user-supplied connector contribution without substituting a different AI Studio experiment as proof.', demo:simulated },
     time: { files:[['timetracker.html','Contains the review-and-adjustment surface for weekly opportunity hours. It does not by itself prove the Microsoft 365 Copilot, WorkIQ, or Salesforce context-gathering steps.']], demo:simulated },
     widgets: {
+      resource: {
+        src: 'assets/resources/mx-pluggable-widget-complete.agent.md',
+        title: 'Agent specification resource',
+        note: 'Open and read mx-pluggable-widget-complete.agent.md in raw Markdown.'
+      },
       artifacts:[
         { src:'assets/projects/widget_forge_agent_cover.png', alt:'MxWidgetForge agent specification showing its core knowledge, build constraints, and six-step approach.', title:'MxWidgetForge', note:'The focused agent wrapper for complete, buildable Mendix widget output.' },
         { src:'assets/projects/widget_complete_agent_cover.png', alt:'Mx Pluggable Widget Complete specification showing non-negotiables, widget scale, workflow, and definition of done.', title:'Mx Widget Complete', note:'The later self-contained, harness-agnostic build contract.' }
       ],
       files:[
+        ['assets/resources/mx-pluggable-widget-complete.agent.md','Consolidates the workflow into a self-contained, harness-agnostic specification grounded in official Mendix sources and an explicit Definition of Done.'],
         ['.github/agents/mx-widget-forge.agent.md','Defines the complete widget-building agent with XML, generated-typing, accessibility, build, lint, package, and deployment guardrails.'],
-        ['.github/agents/mx-pluggable-widget-complete.agent.md','Consolidates the workflow into a self-contained, harness-agnostic specification grounded in official Mendix sources and an explicit Definition of Done.'],
         ['.github/agents/mx-widget-artisan.agent.md','Adds the focused UI craft, interaction, testing, and accessibility discipline learned across the working widget collection.'],
         ['.github/skills/mendix-pluggable-widget/SKILL.md','Carries the reusable technical procedure and property-type reference loaded by the focused agent.'],
         ['.github/skills/mendix-widget-ui-craft/SKILL.md','Captures UI patterns for dashboards, matrices, timelines, kanban, selection bridges, and LocalLab development.'],

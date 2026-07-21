@@ -2750,9 +2750,17 @@ function renderCodePane(p, reg) {
   const inspect = [];
   if (caseHref) inspect.push(`<a href="${caseHref}"><b>Full case study</b><span>Permanent project brief, architecture, contribution, and result.</span><i aria-hidden="true">↗</i></a>`);
   if (embed) inspect.push(`<a href="${esc(embed.src)}" target="_blank" rel="noopener"><b>Live browser build</b><span>${esc(embed.title)}</span><i aria-hidden="true">↗</i></a>`);
+  if (evidence.resource) inspect.push(`<a href="${esc(evidence.resource.src)}" target="_blank" rel="noopener"><b>${esc(evidence.resource.title || 'Specification resource')}</b><span>${esc(evidence.resource.note || 'Read the uploaded Markdown resource.')}</span><i aria-hidden="true">↗</i></a>`);
   if (rm && rm.video) inspect.push(`<a href="${esc(rm.video)}" target="_blank" rel="noopener"><b>Runtime capture</b><span>Open the recorded project motion.</span><i aria-hidden="true">↗</i></a>`);
   else if (rm) inspect.push(`<a href="${esc(rm.poster)}" target="_blank" rel="noopener"><b>Project artifact</b><span>Open the capture at full resolution.</span><i aria-hidden="true">↗</i></a>`);
-  const files = (evidence.files || []).map(([file, note]) => `<article class="evidence-file"><code>${esc(file)}</code><p>${esc(note)}</p></article>`).join('');
+  const files = (evidence.files || []).map(([file, note]) => {
+    const isLinkable = /^assets\//i.test(file) || /^\.github\/agents\/mx-pluggable-widget-complete\.agent\.md$/i.test(file);
+    const targetUrl = isLinkable && file.startsWith('.github/') ? 'assets/resources/mx-pluggable-widget-complete.agent.md' : file;
+    const codeHTML = isLinkable
+      ? `<a class="evidence-file-link" href="${esc(targetUrl)}" target="_blank" rel="noopener"><code>${esc(file)}</code> <i aria-hidden="true">↗</i></a>`
+      : `<code>${esc(file)}</code>`;
+    return `<article class="evidence-file">${codeHTML}<p>${esc(note)}</p></article>`;
+  }).join('');
   const truths = p.specs.slice(0, 3).map(([label, value]) => `<article><span>${esc(label)}</span><b>${esc(value)}</b></article>`).join('');
   return `<div class="evidence-ledger" data-project-key="${esc(p.k)}">
     <span class="proof-kicker">What you can inspect</span>

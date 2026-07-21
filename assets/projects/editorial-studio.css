@@ -471,6 +471,9 @@
 }
 .evidence-file:nth-child(even) { padding-left: 18px; border-left: 1px solid var(--folio-rule); }
 .evidence-file code { color: var(--text); font: 600 11px/1.4 'IBM Plex Mono', monospace; overflow-wrap: anywhere; }
+.evidence-file-link { color: var(--folio-accent, var(--text)); text-decoration: none; display: inline-flex; align-items: center; gap: 4px; }
+.evidence-file-link:hover { text-decoration: underline; }
+.evidence-file-link i { font-style: normal; font-size: 10px; }
 .evidence-file p { margin: 8px 0 0; color: var(--text2); font-size: 12px; line-height: 1.55; }
 .evidence-note { border-left: 3px solid var(--folio-accent); padding-left: 16px; }
 
