@@ -2809,6 +2809,60 @@ window.copySpecContent = btn => {
   });
 };
 
+function renderMarkdownHTML(md) {
+  const lines = md.split(/\r?\n/);
+  let html = '', inCodeBlock = false, codeBuffer = [], inList = false, inTable = false, tableRows = [];
+  function flushList() { if (inList) { html += '</ul>'; inList = false; } }
+  function flushTable() {
+    if (inTable && tableRows.length > 0) {
+      html += '<table class="sv-table">';
+      tableRows.forEach((row, idx) => {
+        const cells = row.split('|').slice(1, -1).map(c => c.trim());
+        if (idx === 0) html += '<thead><tr>' + cells.map(c => '<th>' + fmtInline(c) + '</th>').join('') + '</tr></thead><tbody>';
+        else if (idx === 1 && cells.every(c => /^:?-+:?$/.test(c))) {}
+        else html += '<tr>' + cells.map(c => '<td>' + fmtInline(c) + '</td>').join('') + '</tr>';
+      });
+      html += '</tbody></table>';
+      inTable = false; tableRows = [];
+    }
+  }
+  function fmtInline(str) {
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/`([^`]+)`/g, '<code class="sv-inline-code">$1</code>')
+      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+  }
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    if (line.trim().startsWith('```')) {
+      flushList(); flushTable();
+      if (inCodeBlock) {
+        html += '<pre class="sv-codeblock"><code>' + fmtInline(codeBuffer.join('\n')) + '</code></pre>';
+        codeBuffer = []; inCodeBlock = false;
+      } else { inCodeBlock = true; }
+      continue;
+    }
+    if (inCodeBlock) { codeBuffer.push(line); continue; }
+    if (line.trim().startsWith('|') && line.trim().endsWith('|')) {
+      flushList(); inTable = true; tableRows.push(line.trim()); continue;
+    } else if (inTable) { flushTable(); }
+    if (line.startsWith('# ')) { flushList(); html += '<h1 class="sv-h1">' + fmtInline(line.slice(2)) + '</h1>'; }
+    else if (line.startsWith('## ')) { flushList(); html += '<h2 class="sv-h2">' + fmtInline(line.slice(3)) + '</h2>'; }
+    else if (line.startsWith('### ')) { flushList(); html += '<h3 class="sv-h3">' + fmtInline(line.slice(4)) + '</h3>'; }
+    else if (line.startsWith('#### ')) { flushList(); html += '<h4 class="sv-h4">' + fmtInline(line.slice(5)) + '</h4>'; }
+    else if (line.trim().startsWith('- ') || line.trim().startsWith('* ')) {
+      if (!inList) { html += '<ul class="sv-ul">'; inList = true; }
+      html += '<li class="sv-li">' + fmtInline(line.trim().slice(2)) + '</li>';
+    } else if (line.startsWith('> ')) { flushList(); html += '<blockquote class="sv-quote">' + fmtInline(line.slice(2)) + '</blockquote>'; }
+    else if (line.trim() === '---' || line.trim() === '***') { flushList(); html += '<hr class="sv-hr">'; }
+    else if (line.trim() === '') { flushList(); }
+    else { flushList(); html += '<p class="sv-p">' + fmtInline(line) + '</p>'; }
+  }
+  flushList(); flushTable();
+  return '<div class="sv-rendered">' + html + '</div>';
+}
+
 function hydrateSpecViewer(host) {
   const viewer = (host || document).querySelector('.spec-viewer-body[data-spec-src]');
   if (!viewer || viewer.dataset.loaded === 'true') return;
@@ -2821,7 +2875,8 @@ function hydrateSpecViewer(host) {
       return r.text();
     })
     .then(text => {
-      viewer.textContent = text;
+      viewer.innerHTML = renderMarkdownHTML(text);
+      viewer.dataset.rawText = text;
     })
     .catch(err => {
       viewer.innerHTML = '<span class="spec-viewer-loading" style="color:var(--c-err, #ff6b6b)">Could not load specification resource. <a href="' + esc(src) + '" target="_blank" rel="noopener" style="color:var(--folio-accent)">Open file directly ↗</a></span>';
