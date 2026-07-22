@@ -587,11 +587,15 @@ a:hover {
 
 .story-section {
   display: grid;
-  grid-template-columns: minmax(120px, 0.42fr) minmax(0, 1.58fr);
+  grid-template-columns: minmax(220px, 0.7fr) minmax(0, 1.3fr);
   gap: clamp(24px, 4vw, 72px);
   padding: clamp(54px, 7vw, 102px) 0;
   border-top: 1px solid var(--case-rule-strong);
   scroll-margin-top: 100px;
+}
+
+.story-section > div:first-child {
+  min-width: 0;
 }
 
 .story-section:first-child {
@@ -599,7 +603,16 @@ a:hover {
   border-top: 0;
 }
 
-.story-section h2,
+.story-section h2 {
+  margin: 0;
+  font-family: var(--case-display);
+  font-size: clamp(32px, 3.4vw, 54px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 0.98;
+  overflow-wrap: break-word;
+}
+
 .architecture h2,
 .related-nav h2 {
   margin: 0;
