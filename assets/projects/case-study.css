@@ -232,14 +232,12 @@ a:hover {
 .identity > strong {
   grid-column: 2;
   grid-row: 1;
-  align-self: start;
 }
 
 .identity > strong + span {
   grid-column: 2;
-  grid-row: 1;
-  align-self: end;
-  margin-top: 17px;
+  grid-row: 2;
+  margin-top: 2px;
 }
 
 .header-actions {
@@ -348,7 +346,7 @@ a:hover {
   font-stretch: condensed;
   font-weight: 700;
   letter-spacing: -0.045em;
-  line-height: 0.82;
+  line-height: 0.96;
   text-wrap: balance;
 }
 
@@ -609,7 +607,7 @@ a:hover {
   font-size: clamp(43px, 5vw, 78px);
   font-weight: 700;
   letter-spacing: -0.035em;
-  line-height: 0.92;
+  line-height: 0.96;
 }
 
 .section-kicker {
@@ -1085,7 +1083,7 @@ a:hover {
 
   .case-hero h1 {
     font-size: clamp(58px, 18vw, 94px);
-    line-height: 0.86;
+    line-height: 0.96;
   }
 
   .case-actions {
