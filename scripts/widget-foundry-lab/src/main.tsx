@@ -330,7 +330,7 @@ function CostLab() {
 function GraphStudioLab() {
   const [selectedInfo, setSelectedInfo] = useState<string>("Click any graph node or edge to inspect attributes");
 
-  const parseResult = parseGraphData();
+  const parseResult = parseGraphData("", true, "ECR-4471 — Operational Impact Evidence");
 
   return (
     <section className="lab-surface graphstudio-surface" aria-label="Live GraphStudio Graph Explorer React layer">

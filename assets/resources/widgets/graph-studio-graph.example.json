@@ -1,90 +1,1360 @@
 {
   "version": "1.0",
   "model": {
-    "id": "eco-impact-model",
-    "title": "ECO-02418 — Change Impact Graph",
-    "description": "Connected evidence across engineering, inventory, quality, suppliers, and production.",
-    "status": "Ready to use",
-    "source": "Graph Studio",
-    "updatedAt": "2026-07-24T16:42:00Z",
+    "id": "apex-ecr-4471-evidence",
+    "title": "ECR-4471 — Operational Impact Evidence",
+    "description": "The ECO was controlled. The impact was not. Connected evidence shows how a released engineering change reaches supplier commitments, old-revision inventory, shop-floor instructions, quality, production, and the customer promise.",
+    "status": "Action required",
+    "source": "Siemens Graph Studio",
+    "updatedAt": "2026-07-26T18:30:00Z",
     "owner": "Intelligence Center X"
   },
   "nodeTypes": [
-    { "id": "change", "label": "Change records", "color": "#19AFC5" },
-    { "id": "engineering", "label": "Engineering", "color": "#F25C66" },
-    { "id": "production", "label": "Production", "color": "#3577D4" },
-    { "id": "quality", "label": "Quality", "color": "#7A67C7" }
+    {
+      "id": "teamcenter",
+      "label": "Teamcenter",
+      "color": "#00A6B2"
+    },
+    {
+      "id": "nx",
+      "label": "NX / Designcenter X",
+      "color": "#E85B7A"
+    },
+    {
+      "id": "polarion",
+      "label": "Polarion",
+      "color": "#7B61C9"
+    },
+    {
+      "id": "simcenter",
+      "label": "Simcenter",
+      "color": "#E87524"
+    },
+    {
+      "id": "opcenter",
+      "label": "Opcenter",
+      "color": "#3478C9"
+    },
+    {
+      "id": "tecnomatix",
+      "label": "Tecnomatix",
+      "color": "#2A9D8F"
+    },
+    {
+      "id": "insights-hub",
+      "label": "Insights Hub",
+      "color": "#008C95"
+    },
+    {
+      "id": "senseye",
+      "label": "Senseye",
+      "color": "#607D8B"
+    },
+    {
+      "id": "supplyframe",
+      "label": "Supplyframe",
+      "color": "#E3A008"
+    },
+    {
+      "id": "ai-studio",
+      "label": "AI Studio",
+      "color": "#005F87"
+    },
+    {
+      "id": "mendix",
+      "label": "Mendix",
+      "color": "#0CAB5D"
+    },
+    {
+      "id": "sap",
+      "label": "SAP S/4HANA",
+      "color": "#0A6ED1"
+    },
+    {
+      "id": "microsoft",
+      "label": "Microsoft 365",
+      "color": "#6264A7"
+    },
+    {
+      "id": "salesforce",
+      "label": "Salesforce",
+      "color": "#1798C1"
+    },
+    {
+      "id": "supplier",
+      "label": "Supplier portal",
+      "color": "#8C746A"
+    }
   ],
   "nodes": [
     {
-      "id": "ECO-02418",
-      "label": "ECO-02418",
-      "type": "change",
-      "size": 62,
-      "x": 500,
+      "id": "ECR-4471",
+      "label": "Teamcenter · ECR-4471",
+      "type": "teamcenter",
+      "size": 72,
+      "x": 600,
       "y": 330,
-      "description": "Impeller housing material and tolerance update",
+      "description": "Released change to the purchased impeller housing: Revision C changes the alloy, tightens the bore tolerance, and adds mandatory CMM inspection.",
       "properties": {
+        "Entity type": "Engineering change order",
         "State": "Released",
         "Priority": "High",
-        "Expected exposure": "$184,000"
+        "Change reason": "Field vibration and bore deformation",
+        "Effective date": "2026-08-03",
+        "Owning organization": "Mechanical Engineering",
+        "Change owner": "Maya Chen",
+        "Affected plant": "Apex Boston",
+        "Operational risk": "Critical",
+        "Expected exposure": "$184,000",
+        "Open actions": 3,
+        "Evidence confidence": "97%"
       }
     },
     {
       "id": "PART-100217-C",
-      "label": "Impeller housing / C",
-      "type": "engineering",
-      "size": 44,
-      "x": 500,
-      "y": 140,
+      "label": "Teamcenter · Impeller housing / C",
+      "type": "teamcenter",
+      "size": 46,
+      "x": 570,
+      "y": 145,
+      "description": "Released replacement revision with 17-4 PH material and a tighter finished-bore tolerance.",
       "properties": {
+        "Entity type": "Item revision",
+        "Item ID": "100217",
         "Revision": "C",
-        "Material": "17-4 PH"
+        "Lifecycle": "Released",
+        "Material": "17-4 PH",
+        "Bore tolerance": "42.000 ±0.015 mm",
+        "Release date": "2026-07-24",
+        "Source UID": "TEAMCENTER:ITEMREV:100217:C"
+      }
+    },
+    {
+      "id": "PART-100217-B",
+      "label": "Teamcenter · Impeller housing / B",
+      "type": "teamcenter",
+      "size": 34,
+      "x": 720,
+      "y": 72,
+      "description": "Superseded revision still referenced by open purchasing and inventory records.",
+      "properties": {
+        "Entity type": "Item revision",
+        "Item ID": "100217",
+        "Revision": "B",
+        "Lifecycle": "Superseded",
+        "Material": "15-5 PH",
+        "Bore tolerance": "42.000 ±0.050 mm",
+        "On-hand quantity": 66,
+        "Open-PO quantity": 120
+      }
+    },
+    {
+      "id": "BOM-AX200-230",
+      "label": "Teamcenter · BOM line 230",
+      "type": "teamcenter",
+      "size": 38,
+      "x": 755,
+      "y": 205,
+      "description": "Configured product structure occurrence for the impeller housing in the AX-200 compressor.",
+      "properties": {
+        "Entity type": "BOM line",
+        "Parent": "AX-200 Compressor",
+        "Find number": "230",
+        "Quantity": 1,
+        "Current revision": "C",
+        "Prior revision": "B",
+        "Effectivity": "Serial 6200 and later",
+        "Variant rule": "High-flow package"
+      }
+    },
+    {
+      "id": "PRODUCT-AX200-HF",
+      "label": "Teamcenter · AX-200 high-flow",
+      "type": "teamcenter",
+      "size": 42,
+      "x": 870,
+      "y": 105,
+      "description": "Configured industrial compressor variant affected by the impeller housing change.",
+      "properties": {
+        "Entity type": "Configured product",
+        "Model": "AX-200",
+        "Variant": "High-flow",
+        "Lifecycle": "Production",
+        "Active serial effectivity": "6100–6499",
+        "Orders in horizon": 3
+      }
+    },
+    {
+      "id": "DRAWING-D19342-F",
+      "label": "Teamcenter · Drawing D-19342 / F",
+      "type": "teamcenter",
+      "size": 35,
+      "x": 405,
+      "y": 120,
+      "description": "Released drawing containing the new bore tolerance and inspection characteristic.",
+      "properties": {
+        "Entity type": "Dataset revision",
+        "Revision": "F",
+        "Format": "JT + PDF",
+        "Approval": "Approved",
+        "Critical characteristic": "Bore diameter",
+        "Inspection symbol": "CMM required",
+        "Checksum": "f3b5a98d"
+      }
+    },
+    {
+      "id": "SPEC-MAT-88-R12",
+      "label": "Teamcenter · Material spec MAT-88 / 12",
+      "type": "teamcenter",
+      "size": 31,
+      "x": 260,
+      "y": 180,
+      "description": "Controlled material specification for precipitation-hardened stainless steel.",
+      "properties": {
+        "Entity type": "Specification",
+        "Revision": "12",
+        "Standard": "AMS 5643",
+        "Required condition": "H1150",
+        "Hardness": "28–38 HRC",
+        "Approved suppliers": 2
+      }
+    },
+    {
+      "id": "INSP-REQ-CMM-042",
+      "label": "Teamcenter · Inspection requirement 042",
+      "type": "teamcenter",
+      "size": 33,
+      "x": 390,
+      "y": 245,
+      "description": "New characteristic requires 100% CMM verification before the housing can be released to assembly.",
+      "properties": {
+        "Entity type": "Inspection requirement",
+        "Characteristic": "Finished bore diameter",
+        "Nominal": "42.000 mm",
+        "Upper limit": "42.015 mm",
+        "Lower limit": "41.985 mm",
+        "Sampling plan": "100%",
+        "Method": "CMM program CMM-AX2-07"
+      }
+    },
+    {
+      "id": "NX-100217-C",
+      "label": "NX · Housing master model / C",
+      "type": "nx",
+      "size": 36,
+      "x": 520,
+      "y": 42,
+      "description": "NX master model from which the revised drawing and manufacturing geometry were authored.",
+      "properties": {
+        "Entity type": "CAD model",
+        "Part file": "100217_C.prt",
+        "NX version": "NX 2506",
+        "Model status": "Precise",
+        "Mass": "14.82 kg",
+        "Geometry checksum": "NX-7A09-4CE2"
+      }
+    },
+    {
+      "id": "REQ-POL-7821",
+      "label": "Polarion · REQ-7821",
+      "type": "polarion",
+      "size": 34,
+      "x": 235,
+      "y": 65,
+      "description": "System requirement limiting vibration at the bearing carrier under rated load.",
+      "properties": {
+        "Entity type": "System requirement",
+        "Status": "Approved",
+        "Requirement": "Radial vibration ≤ 2.8 mm/s RMS",
+        "Verification method": "Test + analysis",
+        "Safety class": "Performance critical",
+        "Linked defect": "DEF-994"
+      }
+    },
+    {
+      "id": "SIM-TOL-661",
+      "label": "Simcenter · Tolerance study 661",
+      "type": "simcenter",
+      "size": 36,
+      "x": 840,
+      "y": 48,
+      "description": "Simulation validates the revised design when the bore process capability is at least Cpk 1.33.",
+      "properties": {
+        "Entity type": "Simulation result",
+        "Status": "Passed with assumption",
+        "Solver": "Simcenter 3D",
+        "Assumed process Cpk": 1.33,
+        "Predicted vibration": "2.3 mm/s RMS",
+        "Design margin": "17.9%",
+        "Run ID": "SC3D-20260722-661"
+      }
+    },
+    {
+      "id": "WI-2087-D",
+      "label": "Opcenter · Work instruction WI-2087 / D",
+      "type": "opcenter",
+      "size": 43,
+      "x": 825,
+      "y": 285,
+      "description": "Active work instruction still permits the Revision B tolerance and does not call the new CMM inspection.",
+      "properties": {
+        "Entity type": "Electronic work instruction",
+        "Revision": "D",
+        "Status": "Update required",
+        "Released": "2026-05-11",
+        "Referenced part revision": "B",
+        "Tolerance shown": "42.000 ±0.050 mm",
+        "CMM step present": false,
+        "Owner": "Plant Engineering",
+        "Due": "2026-07-27 14:00 EDT"
       }
     },
     {
       "id": "MO-44721",
-      "label": "Production order MO-44721",
-      "type": "production",
-      "size": 46,
-      "x": 730,
-      "y": 410,
+      "label": "Opcenter · Production order MO-44721",
+      "type": "opcenter",
+      "size": 52,
+      "x": 905,
+      "y": 395,
+      "description": "Eighty AX-200 units are in process; twelve assemblies have consumed Revision B housings.",
       "properties": {
+        "Entity type": "Manufacturing order",
+        "Product": "AX-200 High-flow",
         "Quantity": 80,
-        "Plant": "Berlin",
-        "Status": "At risk"
+        "Completed": 12,
+        "In process": 18,
+        "Not started": 50,
+        "Plant": "Apex Boston",
+        "Line": "Final Assembly 2",
+        "Planned completion": "2026-07-31 18:00 EDT",
+        "Status": "Blocked",
+        "At-risk value": "$184,000"
+      }
+    },
+    {
+      "id": "IP-AX2-042-R7",
+      "label": "Opcenter Quality · Plan AX2-042 / 7",
+      "type": "opcenter",
+      "size": 38,
+      "x": 720,
+      "y": 475,
+      "description": "Inspection plan was updated from the Teamcenter characteristic, but the shop-floor work instruction did not inherit the change.",
+      "properties": {
+        "Entity type": "Inspection plan",
+        "Revision": "7",
+        "Status": "Released",
+        "Characteristic": "Bore diameter",
+        "Sampling": "100%",
+        "Gauge": "Zeiss CMM-03",
+        "Results received": 12,
+        "Results failed": 4
       }
     },
     {
       "id": "QH-8891",
-      "label": "Quality hold QH-8891",
-      "type": "quality",
-      "size": 38,
-      "x": 390,
-      "y": 530,
+      "label": "Opcenter Quality · Hold QH-8891",
+      "type": "opcenter",
+      "size": 47,
+      "x": 770,
+      "y": 590,
+      "description": "Quality stopped Final Assembly 2 after CMM results conflicted with the released requirement.",
       "properties": {
+        "Entity type": "Quality hold",
         "Status": "Open",
-        "Reason": "Tolerance conflict"
+        "Severity": "Production stop",
+        "Opened": "2026-07-26 09:14 EDT",
+        "Opened by": "Elena Ruiz",
+        "Affected order": "MO-44721",
+        "Affected quantity": 30,
+        "Reason": "Old-revision parts and stale work instruction",
+        "Disposition": "Pending engineering review"
+      }
+    },
+    {
+      "id": "NCR-5517",
+      "label": "Opcenter Quality · NCR-5517",
+      "type": "opcenter",
+      "size": 38,
+      "x": 635,
+      "y": 655,
+      "description": "Four measured housings violate the newly released bore requirement.",
+      "properties": {
+        "Entity type": "Nonconformance",
+        "Status": "Open",
+        "Severity": "Major",
+        "Failed quantity": 4,
+        "Measured range": "42.023–42.041 mm",
+        "Requirement": "41.985–42.015 mm",
+        "Suspect lot": "L-9138",
+        "Disposition": "Awaiting MRB"
+      }
+    },
+    {
+      "id": "OP-CNC-40",
+      "label": "Tecnomatix · Operation CNC-40",
+      "type": "tecnomatix",
+      "size": 34,
+      "x": 960,
+      "y": 205,
+      "description": "Manufacturing operation and fixture definition used to finish the critical bore.",
+      "properties": {
+        "Entity type": "Manufacturing operation",
+        "Operation": "Finish bore",
+        "Work center": "CNC-04",
+        "Fixture": "FX-882",
+        "Nominal cycle": "11.4 min",
+        "Process revision": "6",
+        "Capability target": "Cpk ≥ 1.33"
+      }
+    },
+    {
+      "id": "METRIC-CNC04-CPK",
+      "label": "Insights Hub · CNC-04 Cpk",
+      "type": "insights-hub",
+      "size": 39,
+      "x": 1085,
+      "y": 420,
+      "description": "Current process capability from dimensional results is below the assumption used by engineering simulation.",
+      "properties": {
+        "Entity type": "Derived asset metric",
+        "Asset": "CNC-04",
+        "Metric": "Bore diameter Cpk",
+        "Current value": 0.86,
+        "Required value": 1.33,
+        "Window": "Last 30 parts",
+        "Trend": "Degrading",
+        "Last sample": "2026-07-26 08:58 EDT"
+      }
+    },
+    {
+      "id": "ASSET-CNC04",
+      "label": "Senseye · CNC-04",
+      "type": "senseye",
+      "size": 34,
+      "x": 1090,
+      "y": 155,
+      "description": "Machine health is normal; the issue is process capability and change impact, not an impending asset failure.",
+      "properties": {
+        "Entity type": "Monitored asset",
+        "Asset": "CNC-04",
+        "Health index": 92,
+        "Predicted failure": "None within 30 days",
+        "Anomaly status": "Normal",
+        "Last maintenance": "2026-07-09",
+        "Data confidence": "96%"
+      }
+    },
+    {
+      "id": "SUP-RISK-ASTERION",
+      "label": "Supplyframe · Asterion risk profile",
+      "type": "supplyframe",
+      "size": 37,
+      "x": 78,
+      "y": 165,
+      "description": "Supplier intelligence shows constrained qualified capacity for the new material condition.",
+      "properties": {
+        "Entity type": "Supplier risk profile",
+        "Supplier": "Asterion Metals",
+        "Risk level": "Medium-high",
+        "New-revision lead time": "18 days",
+        "Alternate source lead time": "31 days",
+        "Qualified capacity": "Constrained",
+        "Single-source exposure": true,
+        "Signal updated": "2026-07-25"
+      }
+    },
+    {
+      "id": "RISK-ECR-4471",
+      "label": "AI Studio · ECO exposure model",
+      "type": "ai-studio",
+      "size": 55,
+      "x": 505,
+      "y": 555,
+      "description": "Expected-cost model combines order value, WIP, quality disposition, supplier lead time, and customer penalty evidence.",
+      "properties": {
+        "Entity type": "Model result",
+        "Model": "Expected Cost of Change v3.4",
+        "Expected exposure": "$184,000",
+        "Low estimate": "$121,000",
+        "High estimate": "$296,000",
+        "Production-delay probability": "74%",
+        "Customer-miss probability": "61%",
+        "Primary driver": "18-day compliant-part lead time",
+        "Model confidence": "89%",
+        "Scored": "2026-07-26 10:02 EDT"
+      }
+    },
+    {
+      "id": "TASK-WI-2087",
+      "label": "Mendix · Update WI-2087",
+      "type": "mendix",
+      "size": 39,
+      "x": 430,
+      "y": 690,
+      "description": "Governed action to revise and approve the shop-floor instruction before the production hold can be released.",
+      "properties": {
+        "Entity type": "Action task",
+        "Status": "In progress",
+        "Owner": "Jordan Lee",
+        "Role": "Plant Engineering",
+        "Due": "2026-07-27 14:00 EDT",
+        "Priority": "Critical",
+        "Approval required": "Manufacturing + Quality",
+        "Writes back to": "Opcenter"
+      }
+    },
+    {
+      "id": "TASK-QUARANTINE-66",
+      "label": "Mendix · Quarantine 66 units",
+      "type": "mendix",
+      "size": 39,
+      "x": 545,
+      "y": 715,
+      "description": "Warehouse action covering all on-hand Revision B housings across two SAP inventory lots.",
+      "properties": {
+        "Entity type": "Action task",
+        "Status": "12 of 66 complete",
+        "Owner": "Ravi Patel",
+        "Role": "Materials",
+        "Due": "2026-07-26 16:00 EDT",
+        "Priority": "Critical",
+        "Blocked quantity": 54,
+        "Writes back to": "SAP S/4HANA"
+      }
+    },
+    {
+      "id": "TASK-SUPPLIER-ACK",
+      "label": "Mendix · Obtain supplier commitment",
+      "type": "mendix",
+      "size": 39,
+      "x": 685,
+      "y": 710,
+      "description": "Sourcing action to stop the Revision B shipment and obtain a committed date for Revision C material.",
+      "properties": {
+        "Entity type": "Action task",
+        "Status": "Awaiting supplier",
+        "Owner": "Nina Brooks",
+        "Role": "Strategic Sourcing",
+        "Due": "2026-07-26 13:00 EDT",
+        "Priority": "Critical",
+        "Escalated": true,
+        "Writes back to": "SAP + supplier portal"
+      }
+    },
+    {
+      "id": "PO-450077104",
+      "label": "SAP · PO 450077104",
+      "type": "sap",
+      "size": 39,
+      "x": 180,
+      "y": 355,
+      "description": "Open purchase order remains committed to Revision B because ERP effectivity was not updated when the ECO released.",
+      "properties": {
+        "Entity type": "Purchase order",
+        "Supplier": "Asterion Metals",
+        "Material": "100217",
+        "Revision text": "B",
+        "Open quantity": 120,
+        "Unit price": "$812",
+        "Confirmed ship date": "2026-07-29",
+        "Delivery date": "2026-08-01",
+        "Status": "Confirmed",
+        "Change notice sent": false
+      }
+    },
+    {
+      "id": "LOT-L9138",
+      "label": "SAP · Inventory lot L-9138",
+      "type": "sap",
+      "size": 40,
+      "x": 245,
+      "y": 475,
+      "description": "Revision B inventory allocated to the active production order; twelve pieces have already been consumed.",
+      "properties": {
+        "Entity type": "Inventory lot",
+        "Material": "100217",
+        "Revision": "B",
+        "Quantity": 42,
+        "Available": 30,
+        "Allocated": 30,
+        "Consumed": 12,
+        "Location": "BOS-01-A3",
+        "Inspection status": "Blocked",
+        "Valuation": "$34,104"
+      }
+    },
+    {
+      "id": "LOT-L9172",
+      "label": "SAP · Inventory lot L-9172",
+      "type": "sap",
+      "size": 35,
+      "x": 115,
+      "y": 520,
+      "description": "Second Revision B lot in warehouse stock, not yet allocated but inside the ECO effectivity window.",
+      "properties": {
+        "Entity type": "Inventory lot",
+        "Material": "100217",
+        "Revision": "B",
+        "Quantity": 24,
+        "Available": 24,
+        "Allocated": 0,
+        "Location": "BOS-01-B7",
+        "Inspection status": "Unrestricted",
+        "Valuation": "$19,488",
+        "Quarantine required": true
+      }
+    },
+    {
+      "id": "SO-12009142",
+      "label": "SAP · Sales order 12009142",
+      "type": "sap",
+      "size": 36,
+      "x": 955,
+      "y": 665,
+      "description": "ERP delivery commitment for the customer order fulfilled by MO-44721.",
+      "properties": {
+        "Entity type": "Sales order",
+        "Customer": "Northstar Process Systems",
+        "Quantity": 80,
+        "Requested delivery": "2026-08-04",
+        "Confirmed delivery": "2026-08-04",
+        "Status": "At risk",
+        "Order value": "$1,920,000",
+        "Late penalty": "$48,000"
+      }
+    },
+    {
+      "id": "TEAMS-CRB-20260723",
+      "label": "Teams · Change Review Board",
+      "type": "microsoft",
+      "size": 34,
+      "x": 395,
+      "y": 390,
+      "description": "The release meeting approved the technical change, but plant quality and line supervision were not represented.",
+      "properties": {
+        "Entity type": "Meeting",
+        "Date": "2026-07-23 15:00 EDT",
+        "Decision": "Approve ECO",
+        "Attendees": "Engineering; Product; Sourcing",
+        "Missing roles": "Plant Quality; Line Supervisor",
+        "Transcript indexed": true,
+        "Action captured": "Update supplier drawing",
+        "Action missed": "Revise active work instruction"
+      }
+    },
+    {
+      "id": "EMAIL-ASTERION-ACK",
+      "label": "Outlook · Supplier acknowledgment",
+      "type": "microsoft",
+      "size": 32,
+      "x": 285,
+      "y": 315,
+      "description": "Supplier acknowledged the drawing package but asked whether the open Revision B purchase order should still ship; no response was recorded.",
+      "properties": {
+        "Entity type": "Email",
+        "Sent": "2026-07-24 17:42 EDT",
+        "From": "Asterion Metals",
+        "To": "Apex Strategic Sourcing",
+        "Subject": "ECR-4471 / open PO 450077104",
+        "Response status": "Unanswered",
+        "Referenced PO": "450077104",
+        "Referenced ECO": "ECR-4471"
+      }
+    },
+    {
+      "id": "OPP-NORTHSTAR-AX200",
+      "label": "Salesforce · Northstar delivery",
+      "type": "salesforce",
+      "size": 38,
+      "x": 1080,
+      "y": 535,
+      "description": "Customer commitment includes a fixed commissioning slot and a late-delivery service credit.",
+      "properties": {
+        "Entity type": "Customer commitment",
+        "Account": "Northstar Process Systems",
+        "Opportunity": "AX-200 Plant Expansion",
+        "Stage": "Closed won",
+        "Commissioning slot": "2026-08-07",
+        "Escalation status": "Not yet notified",
+        "Service credit": "$48,000",
+        "Account owner": "Samantha Cole"
+      }
+    },
+    {
+      "id": "COC-AST-77104",
+      "label": "Supplier portal · CoC 77104-B",
+      "type": "supplier",
+      "size": 32,
+      "x": 78,
+      "y": 415,
+      "description": "Supplier certificate confirms the delivered lots meet Revision B, not the newly effective Revision C requirements.",
+      "properties": {
+        "Entity type": "Certificate of conformance",
+        "Supplier": "Asterion Metals",
+        "Certificate": "77104-B",
+        "Drawing revision": "B",
+        "Material condition": "15-5 PH H1025",
+        "Covered lots": "L-9138; L-9172",
+        "Signed": "2026-07-18",
+        "Valid for revision C": false
       }
     }
   ],
   "edges": [
     {
-      "source": "ECO-02418",
+      "id": "rel-001",
+      "source": "ECR-4471",
       "target": "PART-100217-C",
       "label": "RELEASES",
-      "properties": { "Confidence": "100%" }
+      "color": "#00A6B2",
+      "description": "Teamcenter solution-item relation identifies Revision C as the released result of the ECO.",
+      "properties": {
+        "Evidence": "Teamcenter CMHasSolutionItem",
+        "Confidence": "100%",
+        "Verified": "2026-07-26 10:01 EDT"
+      }
     },
     {
-      "source": "ECO-02418",
+      "id": "rel-002",
+      "source": "PART-100217-C",
+      "target": "PART-100217-B",
+      "label": "SUPERSEDES",
+      "description": "Revision C supersedes the old engineering definition.",
+      "properties": {
+        "Evidence": "Teamcenter revision sequence",
+        "Confidence": "100%"
+      }
+    },
+    {
+      "id": "rel-003",
+      "source": "ECR-4471",
+      "target": "DRAWING-D19342-F",
+      "label": "UPDATES",
+      "color": "#00A6B2",
+      "description": "The ECO released drawing Revision F.",
+      "properties": {
+        "Prior revision": "E",
+        "New revision": "F",
+        "Evidence": "Teamcenter change relation"
+      }
+    },
+    {
+      "id": "rel-004",
+      "source": "NX-100217-C",
+      "target": "PART-100217-C",
+      "label": "DEFINES",
+      "description": "The NX master model is the authoritative geometry dataset for the released item revision.",
+      "properties": {
+        "Evidence": "Teamcenter specification relation",
+        "Geometry match": true
+      }
+    },
+    {
+      "id": "rel-005",
+      "source": "DRAWING-D19342-F",
+      "target": "PART-100217-C",
+      "label": "DESCRIBES",
+      "description": "Drawing Revision F is attached as the released manufacturing definition.",
+      "properties": {
+        "Evidence": "Teamcenter dataset relation",
+        "Confidence": "100%"
+      }
+    },
+    {
+      "id": "rel-006",
+      "source": "DRAWING-D19342-F",
+      "target": "SPEC-MAT-88-R12",
+      "label": "REFERENCES",
+      "description": "Drawing note 6 invokes the revised material specification.",
+      "properties": {
+        "Drawing note": "6",
+        "Evidence": "Dataset text extraction",
+        "Confidence": "99%"
+      }
+    },
+    {
+      "id": "rel-007",
+      "source": "REQ-POL-7821",
+      "target": "ECR-4471",
+      "label": "DRIVES",
+      "description": "The change was initiated to recover margin against the Polarion vibration requirement.",
+      "properties": {
+        "Evidence": "Polarion work-item link",
+        "Linked defect": "DEF-994"
+      }
+    },
+    {
+      "id": "rel-008",
+      "source": "ECR-4471",
+      "target": "REQ-POL-7821",
+      "label": "SATISFIES",
+      "description": "Engineering marked the change as satisfying the requirement after simulation review.",
+      "properties": {
+        "Verification status": "Analysis passed",
+        "Confidence": "92%"
+      }
+    },
+    {
+      "id": "rel-009",
+      "source": "SIM-TOL-661",
+      "target": "PART-100217-C",
+      "label": "VALIDATES",
+      "description": "The Simcenter result supports the released design under its stated manufacturing-capability assumption.",
+      "properties": {
+        "Result": "Pass with assumption",
+        "Required Cpk": 1.33
+      }
+    },
+    {
+      "id": "rel-010",
+      "source": "METRIC-CNC04-CPK",
+      "target": "SIM-TOL-661",
+      "label": "CONTRADICTS_ASSUMPTION",
+      "color": "#C94A4A",
+      "description": "Actual plant capability is Cpk 0.86, below the 1.33 assumed by the simulation.",
+      "properties": {
+        "Actual Cpk": 0.86,
+        "Assumed Cpk": 1.33,
+        "Gap": -0.47,
+        "Risk": "Critical"
+      }
+    },
+    {
+      "id": "rel-011",
+      "source": "PART-100217-C",
+      "target": "BOM-AX200-230",
+      "label": "USED_IN",
+      "description": "Revision C is the current configured occurrence at BOM find number 230.",
+      "properties": {
+        "Evidence": "Teamcenter BOM expansion",
+        "Effectivity": "Serial 6200 and later"
+      }
+    },
+    {
+      "id": "rel-012",
+      "source": "BOM-AX200-230",
+      "target": "PRODUCT-AX200-HF",
+      "label": "PART_OF",
+      "description": "The BOM occurrence belongs to the AX-200 high-flow variant.",
+      "properties": {
+        "Quantity per": 1,
+        "Variant condition": "High-flow package"
+      }
+    },
+    {
+      "id": "rel-013",
+      "source": "ECR-4471",
+      "target": "BOM-AX200-230",
+      "label": "CHANGES",
+      "color": "#00A6B2",
+      "description": "The ECO changes BOM-line effectivity from Revision B to Revision C.",
+      "properties": {
+        "Old value": "100217/B",
+        "New value": "100217/C"
+      }
+    },
+    {
+      "id": "rel-014",
+      "source": "ECR-4471",
+      "target": "INSP-REQ-CMM-042",
+      "label": "REQUIRES",
+      "color": "#00A6B2",
+      "description": "Release of the ECO adds a mandatory 100% CMM inspection characteristic.",
+      "properties": {
+        "Evidence": "Teamcenter change solution",
+        "Sampling": "100%"
+      }
+    },
+    {
+      "id": "rel-015",
+      "source": "INSP-REQ-CMM-042",
+      "target": "IP-AX2-042-R7",
+      "label": "IMPLEMENTED_BY",
+      "description": "Opcenter Quality inspection plan Revision 7 implements the Teamcenter characteristic.",
+      "properties": {
+        "Synchronization": "Completed",
+        "Synchronized": "2026-07-25 20:11 EDT"
+      }
+    },
+    {
+      "id": "rel-016",
+      "source": "ECR-4471",
+      "target": "WI-2087-D",
+      "label": "AFFECTS",
+      "color": "#C94A4A",
+      "description": "Impact analysis finds an active work instruction that still references Revision B.",
+      "properties": {
+        "Required action": "Revise operation 40 and add CMM step",
+        "Current state": "Not updated",
+        "Risk": "Production stop"
+      }
+    },
+    {
+      "id": "rel-017",
+      "source": "PART-100217-B",
+      "target": "WI-2087-D",
+      "label": "STILL_REFERENCED_BY",
+      "color": "#C94A4A",
+      "description": "The released shop-floor instruction still points to the superseded engineering revision.",
+      "properties": {
+        "Evidence": "Opcenter WI metadata",
+        "Reference": "100217/B",
+        "Stale": true
+      }
+    },
+    {
+      "id": "rel-018",
+      "source": "WI-2087-D",
+      "target": "OP-CNC-40",
+      "label": "INSTRUCTS",
+      "description": "Work instruction WI-2087 governs the finish-bore operation.",
+      "properties": {
+        "Step": "40",
+        "Displayed tolerance": "±0.050 mm"
+      }
+    },
+    {
+      "id": "rel-019",
+      "source": "OP-CNC-40",
+      "target": "ASSET-CNC04",
+      "label": "EXECUTED_AT",
+      "description": "The operation executes at work center CNC-04.",
+      "properties": {
+        "Fixture": "FX-882",
+        "Nominal cycle": "11.4 min"
+      }
+    },
+    {
+      "id": "rel-020",
+      "source": "METRIC-CNC04-CPK",
+      "target": "ASSET-CNC04",
+      "label": "OBSERVED_AT",
+      "description": "Insights Hub computes the capability metric from measurements associated with CNC-04.",
+      "properties": {
+        "Window": "30 parts",
+        "Last value": 0.86
+      }
+    },
+    {
+      "id": "rel-021",
+      "source": "ASSET-CNC04",
+      "target": "OP-CNC-40",
+      "label": "HEALTHY_BUT_INCAPABLE",
+      "color": "#E3A008",
+      "description": "Senseye sees no maintenance anomaly, separating machine health from process capability.",
+      "properties": {
+        "Health index": 92,
+        "Process Cpk": 0.86,
+        "Inference": "Process issue, not asset failure"
+      }
+    },
+    {
+      "id": "rel-022",
+      "source": "BOM-AX200-230",
       "target": "MO-44721",
-      "label": "IMPACTS",
-      "properties": { "Risk": "$184k expected exposure" }
+      "label": "CONSUMED_BY",
+      "description": "The configured BOM drives component demand for the active manufacturing order.",
+      "properties": {
+        "Required quantity": 80,
+        "Evidence": "Opcenter order genealogy"
+      }
     },
     {
+      "id": "rel-023",
       "source": "MO-44721",
+      "target": "WI-2087-D",
+      "label": "USES",
+      "color": "#C94A4A",
+      "description": "The blocked order is executing against the stale instruction.",
+      "properties": {
+        "Instruction revision": "D",
+        "Risk": "Incorrect acceptance criteria"
+      }
+    },
+    {
+      "id": "rel-024",
+      "source": "LOT-L9138",
+      "target": "MO-44721",
+      "label": "ALLOCATED_TO",
+      "color": "#C94A4A",
+      "description": "Thirty pieces from the old-revision lot are allocated to the affected order.",
+      "properties": {
+        "Allocated quantity": 30,
+        "Consumed quantity": 12,
+        "Traceability": "SAP batch → Opcenter genealogy"
+      }
+    },
+    {
+      "id": "rel-025",
+      "source": "LOT-L9138",
+      "target": "PART-100217-B",
+      "label": "CONFORMS_TO",
+      "color": "#C94A4A",
+      "description": "Lot L-9138 was received and certified against superseded Revision B.",
+      "properties": {
+        "Revision": "B",
+        "Evidence": "SAP batch classification"
+      }
+    },
+    {
+      "id": "rel-026",
+      "source": "LOT-L9172",
+      "target": "PART-100217-B",
+      "label": "CONFORMS_TO",
+      "color": "#C94A4A",
+      "description": "Lot L-9172 is also old-revision stock inside the new effectivity window.",
+      "properties": {
+        "Revision": "B",
+        "Quantity": 24,
+        "Quarantine required": true
+      }
+    },
+    {
+      "id": "rel-027",
+      "source": "PO-450077104",
+      "target": "PART-100217-B",
+      "label": "ORDERS",
+      "color": "#C94A4A",
+      "description": "The still-open purchase order explicitly calls for Revision B.",
+      "properties": {
+        "Open quantity": 120,
+        "Ship date": "2026-07-29",
+        "Change transmitted": false
+      }
+    },
+    {
+      "id": "rel-028",
+      "source": "PO-450077104",
+      "target": "SUP-RISK-ASTERION",
+      "label": "FULFILLED_BY",
+      "description": "The open PO is committed to Asterion Metals.",
+      "properties": {
+        "Supplier": "Asterion Metals",
+        "Status": "Confirmed"
+      }
+    },
+    {
+      "id": "rel-029",
+      "source": "SUP-RISK-ASTERION",
+      "target": "PART-100217-C",
+      "label": "CAN_SUPPLY",
+      "color": "#E3A008",
+      "description": "Asterion can produce Revision C, but the qualified lead time is eighteen days.",
+      "properties": {
+        "Lead time": "18 days",
+        "Capacity": "Constrained",
+        "Risk": "Customer date miss"
+      }
+    },
+    {
+      "id": "rel-030",
+      "source": "COC-AST-77104",
+      "target": "LOT-L9138",
+      "label": "CERTIFIES",
+      "description": "Supplier certificate covers lot L-9138 against Revision B.",
+      "properties": {
+        "Certificate": "77104-B",
+        "Valid for revision C": false
+      }
+    },
+    {
+      "id": "rel-031",
+      "source": "COC-AST-77104",
+      "target": "LOT-L9172",
+      "label": "CERTIFIES",
+      "description": "The same certificate covers lot L-9172 against Revision B.",
+      "properties": {
+        "Certificate": "77104-B",
+        "Valid for revision C": false
+      }
+    },
+    {
+      "id": "rel-032",
+      "source": "EMAIL-ASTERION-ACK",
+      "target": "PO-450077104",
+      "label": "QUESTIONS",
+      "color": "#E3A008",
+      "description": "The supplier asked whether the old-revision PO should ship; the message was not answered.",
+      "properties": {
+        "Response status": "Unanswered",
+        "Elapsed": "64 hours",
+        "Evidence": "Outlook thread"
+      }
+    },
+    {
+      "id": "rel-033",
+      "source": "EMAIL-ASTERION-ACK",
+      "target": "ECR-4471",
+      "label": "ACKNOWLEDGES",
+      "description": "The supplier received the ECO drawing package but not an amended purchase order.",
+      "properties": {
+        "Package received": true,
+        "Commercial instruction received": false
+      }
+    },
+    {
+      "id": "rel-034",
+      "source": "TEAMS-CRB-20260723",
+      "target": "ECR-4471",
+      "label": "APPROVES",
+      "description": "The Change Review Board approved the technical release.",
+      "properties": {
+        "Decision": "Approved",
+        "Quorum": "Met",
+        "Evidence": "Teams transcript + minutes"
+      }
+    },
+    {
+      "id": "rel-035",
+      "source": "TEAMS-CRB-20260723",
+      "target": "WI-2087-D",
+      "label": "MISSES_IMPACT",
+      "color": "#C94A4A",
+      "description": "The approved meeting record contains no action for the active work instruction.",
+      "properties": {
+        "Plant quality present": false,
+        "Line supervisor present": false,
+        "Action recorded": false
+      }
+    },
+    {
+      "id": "rel-036",
+      "source": "IP-AX2-042-R7",
+      "target": "NCR-5517",
+      "label": "DETECTS",
+      "color": "#C94A4A",
+      "description": "The revised inspection plan detects four nonconforming measurements.",
+      "properties": {
+        "Inspected": 12,
+        "Failed": 4,
+        "Failure rate": "33.3%"
+      }
+    },
+    {
+      "id": "rel-037",
+      "source": "LOT-L9138",
+      "target": "NCR-5517",
+      "label": "TRACED_TO",
+      "color": "#C94A4A",
+      "description": "All four failures trace to inventory lot L-9138.",
+      "properties": {
+        "Traceability confidence": "100%",
+        "Evidence": "Opcenter genealogy"
+      }
+    },
+    {
+      "id": "rel-038",
+      "source": "NCR-5517",
       "target": "QH-8891",
-      "label": "BLOCKED_BY"
+      "label": "TRIGGERS",
+      "color": "#C94A4A",
+      "description": "The major nonconformance automatically triggers a production hold.",
+      "properties": {
+        "Rule": "Major NCR on critical characteristic",
+        "Automation": "Opcenter Quality"
+      }
+    },
+    {
+      "id": "rel-039",
+      "source": "QH-8891",
+      "target": "MO-44721",
+      "label": "BLOCKS",
+      "color": "#C94A4A",
+      "description": "Quality hold QH-8891 blocks further execution of the manufacturing order.",
+      "properties": {
+        "Blocked quantity": 68,
+        "Line": "Final Assembly 2",
+        "Downtime clock": "Running"
+      }
+    },
+    {
+      "id": "rel-040",
+      "source": "SO-12009142",
+      "target": "MO-44721",
+      "label": "FULFILLED_BY",
+      "description": "The production order fulfills the SAP sales-order line.",
+      "properties": {
+        "Requested quantity": 80,
+        "Confirmed delivery": "2026-08-04"
+      }
+    },
+    {
+      "id": "rel-041",
+      "source": "OPP-NORTHSTAR-AX200",
+      "target": "SO-12009142",
+      "label": "COMMERCIAL_COMMITMENT",
+      "description": "The Salesforce customer commitment maps to the ERP sales order.",
+      "properties": {
+        "Commissioning slot": "2026-08-07",
+        "Late service credit": "$48,000"
+      }
+    },
+    {
+      "id": "rel-042",
+      "source": "PRODUCT-AX200-HF",
+      "target": "OPP-NORTHSTAR-AX200",
+      "label": "PROMISED_TO",
+      "description": "The configured AX-200 product is promised to Northstar's expansion project.",
+      "properties": {
+        "Quantity": 80,
+        "Promise date": "2026-08-04"
+      }
+    },
+    {
+      "id": "rel-043",
+      "source": "RISK-ECR-4471",
+      "target": "ECR-4471",
+      "label": "SCORES",
+      "color": "#005F87",
+      "description": "AI Studio scores the cross-system operational exposure created by the ECO.",
+      "properties": {
+        "Expected exposure": "$184,000",
+        "Model confidence": "89%"
+      }
+    },
+    {
+      "id": "rel-044",
+      "source": "MO-44721",
+      "target": "RISK-ECR-4471",
+      "label": "EVIDENCE_FOR",
+      "color": "#005F87",
+      "description": "Order quantity, WIP, and planned completion contribute to the exposure calculation.",
+      "properties": {
+        "Evidence weight": "High",
+        "Source freshness": "Real time"
+      }
+    },
+    {
+      "id": "rel-045",
+      "source": "QH-8891",
+      "target": "RISK-ECR-4471",
+      "label": "EVIDENCE_FOR",
+      "color": "#005F87",
+      "description": "The active production stop materially increases expected delay cost.",
+      "properties": {
+        "Evidence weight": "High",
+        "Source freshness": "Real time"
+      }
+    },
+    {
+      "id": "rel-046",
+      "source": "SUP-RISK-ASTERION",
+      "target": "RISK-ECR-4471",
+      "label": "EVIDENCE_FOR",
+      "color": "#005F87",
+      "description": "Compliant-part lead time is the primary driver of customer-date risk.",
+      "properties": {
+        "Evidence weight": "High",
+        "Lead time": "18 days"
+      }
+    },
+    {
+      "id": "rel-047",
+      "source": "OPP-NORTHSTAR-AX200",
+      "target": "RISK-ECR-4471",
+      "label": "EVIDENCE_FOR",
+      "color": "#005F87",
+      "description": "The commissioning slot and contractual service credit determine downstream customer exposure.",
+      "properties": {
+        "Evidence weight": "Medium",
+        "Service credit": "$48,000"
+      }
+    },
+    {
+      "id": "rel-048",
+      "source": "RISK-ECR-4471",
+      "target": "TASK-WI-2087",
+      "label": "RECOMMENDS",
+      "color": "#0CAB5D",
+      "description": "The decision model recommends correcting the instruction as the fastest controllable action.",
+      "properties": {
+        "Priority": 1,
+        "Expected risk reduction": "$41,000"
+      }
+    },
+    {
+      "id": "rel-049",
+      "source": "RISK-ECR-4471",
+      "target": "TASK-QUARANTINE-66",
+      "label": "RECOMMENDS",
+      "color": "#0CAB5D",
+      "description": "The decision model recommends containing every old-revision unit.",
+      "properties": {
+        "Priority": 2,
+        "Expected risk reduction": "$27,000"
+      }
+    },
+    {
+      "id": "rel-050",
+      "source": "RISK-ECR-4471",
+      "target": "TASK-SUPPLIER-ACK",
+      "label": "RECOMMENDS",
+      "color": "#0CAB5D",
+      "description": "The decision model recommends an immediate supplier commitment and PO correction.",
+      "properties": {
+        "Priority": 3,
+        "Expected risk reduction": "$63,000"
+      }
+    },
+    {
+      "id": "rel-051",
+      "source": "TASK-WI-2087",
+      "target": "WI-2087-D",
+      "label": "GOVERNS_UPDATE_TO",
+      "color": "#0CAB5D",
+      "description": "Completion publishes an approved instruction revision to Opcenter.",
+      "properties": {
+        "Write-back": "Opcenter",
+        "Approval gate": "Manufacturing + Quality"
+      }
+    },
+    {
+      "id": "rel-052",
+      "source": "TASK-QUARANTINE-66",
+      "target": "LOT-L9138",
+      "label": "QUARANTINES",
+      "color": "#0CAB5D",
+      "description": "The action changes SAP stock status for lot L-9138.",
+      "properties": {
+        "Target status": "Blocked",
+        "Quantity": 42
+      }
+    },
+    {
+      "id": "rel-053",
+      "source": "TASK-QUARANTINE-66",
+      "target": "LOT-L9172",
+      "label": "QUARANTINES",
+      "color": "#0CAB5D",
+      "description": "The action changes SAP stock status for lot L-9172.",
+      "properties": {
+        "Target status": "Blocked",
+        "Quantity": 24
+      }
+    },
+    {
+      "id": "rel-054",
+      "source": "TASK-SUPPLIER-ACK",
+      "target": "PO-450077104",
+      "label": "AMENDS",
+      "color": "#0CAB5D",
+      "description": "The action will stop Revision B shipment and amend the PO to Revision C.",
+      "properties": {
+        "Target revision": "C",
+        "Required supplier date": "2026-07-26 13:00 EDT"
+      }
+    },
+    {
+      "id": "rel-055",
+      "source": "TASK-SUPPLIER-ACK",
+      "target": "EMAIL-ASTERION-ACK",
+      "label": "RESOLVES",
+      "color": "#0CAB5D",
+      "description": "The governed sourcing action closes the unanswered supplier question with an auditable response.",
+      "properties": {
+        "Current status": "Awaiting supplier",
+        "Escalated": true
+      }
     }
   ]
 }
