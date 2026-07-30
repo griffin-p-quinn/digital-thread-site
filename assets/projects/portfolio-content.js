@@ -189,6 +189,13 @@
         caption: 'One working widget from the collection, shown with its graph editing and host-bridge behavior.'
       },
       {
+        kind: 'image',
+        src: 'assets/projects/graph_studio_graph_actual_capture.png',
+        title: 'GraphStudio Graph Explorer widget',
+        alt: 'Siemens ICX GraphStudio Graph Explorer widget showing a Cytoscape interactive graph canvas, node explorer, and inspector.',
+        caption: 'Packaged Mendix widget providing interactive graph exploration, search, node filtering, and attribute inspection.'
+      },
+      {
         kind: 'video',
         src: 'assets/projects/molex_agent_dev.mp4',
         poster: 'assets/projects/mendix_agent_graph_actual_capture.png',
@@ -201,7 +208,7 @@
         src: 'assets/projects/mendix_diagram_editor_actual_capture.png',
         title: 'Diagram Editor widget',
         alt: 'Mendix Diagram Editor showing a packaged interactive diagram surface with nodes, connectors, and editing controls.',
-        caption: 'A second packaged widget demonstrates the repeatable build, interaction, and packaging workflow.'
+        caption: 'A third packaged widget demonstrates the repeatable build, interaction, and packaging workflow.'
       },
       {
         kind: 'image',
@@ -892,15 +899,15 @@
     }),
     defineProject({
       k: 'widgets', title: 'Reusable GenAI Assets for Mendix App Development', category: 'local-tools', artifactType: 'Packaged tool', status: 'Packaged collection', collection: 'selected',
-      summary: 'Ten packaged Mendix pluggable widgets plus reusable GenAI agent specifications, skills, and developer workflows for building Mendix applications.',
+      summary: 'Twelve packaged Mendix pluggable widgets plus reusable GenAI agent specifications, skills, and developer workflows for building Mendix applications.',
       problem: 'Each widget repeats XML, generated typing, accessibility, build, packaging, and deployment decisions unless the working procedure is captured.',
-      griffinsRole: 'I built and packaged the widget collection, identified the recurring constraints, and authored the reusable specifications and skills shared with other Mendix builders.',
+      griffinsRole: 'I built and packaged the widget collection (including Expected Cost of Change and GraphStudio Graph Explorer), identified the recurring constraints, and authored the reusable specifications and skills shared with other Mendix builders.',
       roleOfGenAI: 'Coding agents helped implement widgets from the captured contracts; I turned repeated failures and checks into explicit instructions and reviewed every packaged result.',
-      proof: 'The portfolio includes the live Agent Graph Editor layer, a packaged Diagram Editor, additional working captures, three agent specifications, and two reusable skills.',
+      proof: 'The portfolio includes the live Agent Graph Editor, Expected Cost of Change, GraphStudio Graph Explorer, Diagram Editor, and Supply Chain Charts React layers, published .mpk packages, schema and example JSON assets, three agent specifications, and two reusable skills.',
       validation: 'Widgets were built, type-checked, reviewed for accessibility, packaged as .mpk files, and exercised in Mendix or the public React lab as appropriate.',
-      limitations: 'The browser lab substitutes sample values and local adapters for Mendix runtime services; each widget still needs validation in its target app and platform version.',
-      relatedProjects: ['playwright', 'new-view', 'bom', 'supply-risk', 'et-site'], tags: ['Mendix widgets', 'React + TypeScript', 'Agent specifications', '.mpk'], specs: [['Collection', '10 packaged widgets'], ['Knowledge', '3 agent specs + 2 skills'], ['Proof', 'Live React layer lab']],
-      alt: 'Mendix Widget Foundry showing an Agent Graph Editor and the reusable build, validation, and packaging workflow.'
+      limitations: 'The public browser lab uses safe sample data and local action adapters; Studio Pro configuration and deployment steps remain documented in the specifications.',
+      relatedProjects: ['supply-risk', 'new-view', 'bom', 'et-site'], tags: ['Mendix widgets', 'React', 'Agent specs', 'Skills', 'Cytoscape', 'Nivo'], specs: [['Widgets', '12 packaged .mpk outputs'], ['Method', '3 agent specs + 2 skills'], ['Lab', '5 interactive React surfaces']],
+      alt: 'Mendix Agent Graph Editor showing connected specialist agents, their tools, and the Mendix bridge inspector.'
     }),
     defineProject({
       k: 'evora', title: 'Drone Fleet Control Center', category: 'industrial-applications', artifactType: 'Interactive demo', status: 'Interface benchmark', collection: 'archive',

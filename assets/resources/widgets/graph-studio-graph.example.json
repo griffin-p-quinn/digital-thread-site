@@ -1,0 +1,90 @@
+{
+  "version": "1.0",
+  "model": {
+    "id": "eco-impact-model",
+    "title": "ECO-02418 — Change Impact Graph",
+    "description": "Connected evidence across engineering, inventory, quality, suppliers, and production.",
+    "status": "Ready to use",
+    "source": "Graph Studio",
+    "updatedAt": "2026-07-24T16:42:00Z",
+    "owner": "Intelligence Center X"
+  },
+  "nodeTypes": [
+    { "id": "change", "label": "Change records", "color": "#19AFC5" },
+    { "id": "engineering", "label": "Engineering", "color": "#F25C66" },
+    { "id": "production", "label": "Production", "color": "#3577D4" },
+    { "id": "quality", "label": "Quality", "color": "#7A67C7" }
+  ],
+  "nodes": [
+    {
+      "id": "ECO-02418",
+      "label": "ECO-02418",
+      "type": "change",
+      "size": 62,
+      "x": 500,
+      "y": 330,
+      "description": "Impeller housing material and tolerance update",
+      "properties": {
+        "State": "Released",
+        "Priority": "High",
+        "Expected exposure": "$184,000"
+      }
+    },
+    {
+      "id": "PART-100217-C",
+      "label": "Impeller housing / C",
+      "type": "engineering",
+      "size": 44,
+      "x": 500,
+      "y": 140,
+      "properties": {
+        "Revision": "C",
+        "Material": "17-4 PH"
+      }
+    },
+    {
+      "id": "MO-44721",
+      "label": "Production order MO-44721",
+      "type": "production",
+      "size": 46,
+      "x": 730,
+      "y": 410,
+      "properties": {
+        "Quantity": 80,
+        "Plant": "Berlin",
+        "Status": "At risk"
+      }
+    },
+    {
+      "id": "QH-8891",
+      "label": "Quality hold QH-8891",
+      "type": "quality",
+      "size": 38,
+      "x": 390,
+      "y": 530,
+      "properties": {
+        "Status": "Open",
+        "Reason": "Tolerance conflict"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "source": "ECO-02418",
+      "target": "PART-100217-C",
+      "label": "RELEASES",
+      "properties": { "Confidence": "100%" }
+    },
+    {
+      "source": "ECO-02418",
+      "target": "MO-44721",
+      "label": "IMPACTS",
+      "properties": { "Risk": "$184k expected exposure" }
+    },
+    {
+      "source": "MO-44721",
+      "target": "QH-8891",
+      "label": "BLOCKED_BY"
+    }
+  ]
+}

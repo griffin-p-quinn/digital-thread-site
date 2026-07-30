@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://siemens.example/schemas/icx-graph-data.schema.json",
+  "title": "ICX Graph Studio graph data",
+  "type": "object",
+  "required": ["nodes", "edges"],
+  "properties": {
+    "version": {
+      "type": ["string", "number"]
+    },
+    "model": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "status": { "type": "string" },
+        "source": { "type": "string" },
+        "updatedAt": { "type": "string" },
+        "owner": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "nodeTypes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "label"],
+        "properties": {
+          "id": { "type": "string" },
+          "label": { "type": "string" },
+          "color": { "type": "string" },
+          "icon": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "label"],
+        "properties": {
+          "id": { "type": "string" },
+          "label": { "type": "string" },
+          "type": { "type": "string" },
+          "color": { "type": "string" },
+          "size": { "type": "number", "minimum": 1 },
+          "x": { "type": "number" },
+          "y": { "type": "number" },
+          "description": { "type": "string" },
+          "properties": {
+            "type": "object",
+            "additionalProperties": {
+              "type": ["string", "number", "boolean", "null"]
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["source", "target"],
+        "properties": {
+          "id": { "type": "string" },
+          "source": { "type": "string" },
+          "target": { "type": "string" },
+          "label": { "type": "string" },
+          "type": { "type": "string" },
+          "color": { "type": "string" },
+          "description": { "type": "string" },
+          "properties": {
+            "type": "object",
+            "additionalProperties": {
+              "type": ["string", "number", "boolean", "null"]
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

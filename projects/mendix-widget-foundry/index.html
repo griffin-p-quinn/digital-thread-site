@@ -48,7 +48,7 @@
         <div class="hero-copy">
           <p class="eyebrow">Digital Fabric · Selected work</p>
           <h1 id="case-title">Reusable GenAI Assets for Mendix App Development</h1>
-          <p class="case-deck">Ten packaged Mendix pluggable widgets plus reusable GenAI agent specifications, skills, and developer workflows for building Mendix applications.</p>
+          <p class="case-deck">Twelve packaged Mendix pluggable widgets plus reusable GenAI agent specifications, skills, and developer workflows for building Mendix applications.</p>
           <div class="case-actions">
             <a class="case-action primary" href="../../assets/embeds/widget-foundry/index.html">Open the React widget lab <span aria-hidden="true">↗</span></a>
             <a class="case-action" href="../../projects.html">All selected work</a>
@@ -58,9 +58,9 @@
           <span class="case-number">Case 06 / 08</span>
           <dl>
             <div><dt>Role</dt><dd>Widget engineering and knowledge design</dd></div>
-            <div><dt>Output</dt><dd>10 packaged Mendix widgets</dd></div>
+            <div><dt>Output</dt><dd>12 packaged Mendix widgets (.mpk)</dd></div>
             <div><dt>Knowledge</dt><dd>3 shared Markdown agent specs + 2 skills</dd></div>
-            <div><dt>Proof</dt><dd>Three live React widget surfaces</dd></div>
+            <div><dt>Proof</dt><dd>Five live React widget surfaces</dd></div>
           </dl>
         </aside>
       </header>
@@ -78,6 +78,12 @@
             <img src="../../assets/projects/mendix_agent_graph_actual_capture.png" width="1440" height="900" alt="Agent Graph Editor Mendix widget showing a GPT-4o root, three connected specialist agents, tool counts, and the Mendix bridge inspector">
           </div>
           <figcaption><span class="figure-label">Agent Graph Editor widget</span><span>The actual React Flow display layer from the Mendix widget. The browser lab keeps the real agent/tool contract and host bridge behavior, with safe sample data in place of Mendix objects.</span></figcaption>
+        </figure>
+        <figure class="media-figure">
+          <div class="media-frame">
+            <img src="../../assets/projects/graph_studio_graph_actual_capture.png" width="1440" height="900" alt="GraphStudio Graph Explorer Mendix widget with a Cytoscape interactive graph canvas, node explorer, and attribute inspector">
+          </div>
+          <figcaption><span class="figure-label">GraphStudio Graph Explorer widget</span><span>Packaged Siemens ICX graph viewer with Cytoscape canvas, type filtering, search, and node inspection.</span></figcaption>
         </figure>
         <figure class="media-figure">
           <div class="media-frame">
@@ -120,12 +126,12 @@
           </section>
 
           <section class="story-section" id="contribution" data-case-section data-reveal>
-            <div><span class="section-kicker">02 · My contribution</span><h2>I built ten widgets and wrote down the process</h2></div>
+            <div><span class="section-kicker">02 · My contribution</span><h2>I built twelve widgets and wrote down the process</h2></div>
             <div class="story-copy">
-              <p class="lead">I developed a working collection of packaged widgets, then wrote three Markdown agent specs and two reusable skills to share the recurring engineering pattern with other Mendix builders.</p>
+              <p class="lead">I developed a working collection of 12 packaged widgets (including Expected Cost of Change and GraphStudio Graph Explorer), then wrote three Markdown agent specs and two reusable skills to share the recurring engineering pattern with other Mendix builders.</p>
               <p><strong>Role of generative AI.</strong> Coding agents helped implement widgets from those contracts; I turned repeated failures and checks into explicit instructions and reviewed every packaged result.</p>
               <ul class="contribution-list">
-                <li><strong>Shipped varied widget surfaces.</strong> The collection includes diagram editors, manufacturing boards, quality dashboards, weather-risk timelines, tree tables, and live notifications.</li>
+                <li><strong>Shipped varied widget surfaces.</strong> The collection includes Expected Cost of Change (ML operational exposure & scenario model), GraphStudio Graph Explorer (Cytoscape graph canvas), Agent Graph Editor, Diagram Editor, Risk Charts, manufacturing boards, quality dashboards, tree tables, and live notifications.</li>
                 <li><strong>Kept Mendix as the real host.</strong> Property XML, generated types, actions, selection write-back, build checks, and .mpk packaging remain part of the definition of done.</li>
                 <li><strong>Shared the method.</strong> MxWidgetForge, Mx Pluggable Widget Complete, and Mx Widget Artisan capture implementation, accessibility, test, package, and deployment guardrails as portable Markdown agent specs.</li>
               </ul>
@@ -133,12 +139,13 @@
           </section>
 
           <section class="story-section" id="proof" data-case-section data-reveal>
-            <div><span class="section-kicker">03 · Proof</span><h2>The .mpk outputs, source, and browser lab are all here</h2></div>
+            <div><span class="section-kicker">03 · Proof</span><h2>The .mpk outputs, schemas, example JSON, and browser lab are all here</h2></div>
             <div class="story-copy">
-              <p class="lead">The portfolio includes the reusable specifications, working widget captures, packaged output, and a browser lab built from the real React layers.</p>
+              <p class="lead">The portfolio includes the reusable specifications, working widget captures, published .mpk packages, schema and example JSON assets, and a 5-surface browser lab built from the real React layers.</p>
               <ul class="proof-list">
-                <li><strong>10 packaged widgets:</strong> concrete .mpk outputs across the working widget collection.</li>
-                <li><strong>Live React widget lab:</strong> switch between Agent Graph Editor, Supply Chain Charts, and Diagram Editor; inspect nodes, create sample data, and exercise the browser-safe Mendix adapters.</li>
+                <li><strong>12 packaged widgets:</strong> concrete .mpk outputs across the working widget collection, including <a href="../../assets/resources/widgets/siemens.icx.widgets.ExpectedCostOfChange.mpk" target="_blank" rel="noopener"><code>ExpectedCostOfChange.mpk</code></a> and <a href="../../assets/resources/widgets/Siemens_ICX_GraphStudioGraph_1.0.0.mpk" target="_blank" rel="noopener"><code>GraphStudioGraph.mpk</code></a>.</li>
+                <li><strong>Extrapolated schemas &amp; example JSON:</strong> inspect <a href="../../assets/resources/widgets/expected-cost-of-change.schema.json" target="_blank" rel="noopener">ExpectedCostOfChange Schema</a> / <a href="../../assets/resources/widgets/expected-cost-of-change.example.json" target="_blank" rel="noopener">Example JSON</a> and <a href="../../assets/resources/widgets/graph-studio-graph.schema.json" target="_blank" rel="noopener">GraphStudioGraph Schema</a> / <a href="../../assets/resources/widgets/graph-studio-graph.example.json" target="_blank" rel="noopener">Example JSON</a>.</li>
+                <li><strong>Live React widget lab:</strong> switch between Agent Graph Editor, Expected Cost of Change, GraphStudio Graph Explorer, Supply Chain Charts, and Diagram Editor; inspect nodes, trigger scenario microflows, and exercise the browser-safe Mendix adapters.</li>
                 <li><strong>Specification resource:</strong> <a href="../../assets/resources/mx-pluggable-widget-complete.agent.md" target="_blank" rel="noopener"><code>mx-pluggable-widget-complete.agent.md</code></a> (plus companion specifications <code>mx-widget-forge.agent.md</code> and <code>mx-widget-artisan.agent.md</code>).</li>
                 <li><strong>Reusable skills:</strong> the technical widget procedure and focused UI-craft patterns are separated into loadable skill documents.</li>
               </ul>

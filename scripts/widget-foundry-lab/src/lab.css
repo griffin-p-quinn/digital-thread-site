@@ -91,10 +91,9 @@ button { font: inherit; }
 }
 
 .foundry-tabs {
-  display: grid;
-  width: min(560px, 58vw);
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 5px;
+  display: flex;
+  width: min(720px, 68vw);
+  gap: 4px;
   border: 1px solid #243047;
   border-radius: 11px;
   background: #0b1424;
@@ -102,16 +101,17 @@ button { font: inherit; }
 }
 
 .foundry-tabs button {
+  flex: 1 1 0;
   display: flex;
   min-width: 0;
   min-height: 42px;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  gap: 6px;
   border: 0;
   border-radius: 7px;
   background: transparent;
-  padding: 6px 10px;
+  padding: 6px 8px;
   color: #9aa8bd;
   cursor: pointer;
   text-align: left;
@@ -243,11 +243,24 @@ button { font: inherit; }
 }
 
 .graph-stage,
-.chart-stage {
+.chart-stage,
+.cost-stage,
+.graphstudio-stage {
   position: relative;
   min-width: 0;
   min-height: 0;
   flex: 1 1 auto;
+}
+
+.cost-stage {
+  padding: 16px;
+  background: #060d19;
+  overflow-y: auto;
+}
+
+.graphstudio-stage {
+  background: #0b121e;
+  overflow: hidden;
 }
 
 .chart-stage {
