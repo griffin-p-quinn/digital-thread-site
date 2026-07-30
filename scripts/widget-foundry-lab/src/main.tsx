@@ -315,6 +315,8 @@ function CostLab() {
           model={parseResult.data}
           density={density}
           showScenarioSelector={true}
+          showWhatIf={true}
+          showJsonEditor={false}
           showEvidence={true}
           showModelMetadata={true}
           showDisclaimer={true}
