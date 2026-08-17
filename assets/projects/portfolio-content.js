@@ -821,15 +821,15 @@
       relatedProjects: ['nx', 'custom-dirs'], tags: ['NXOpen', 'C# journals', 'Automation lineage'], specs: [['Scripts', '2'], ['Scope', 'Simulation + algorithmic feature'], ['Evolution', 'Recorded calls → typed tools']]
     }),
     defineProject({
-      k: 'et-site', title: 'Frontend Design Skill for Coding Agents', category: 'local-tools', artifactType: 'Documentation system', status: 'Reusable agent skill', collection: 'explorations',
-      summary: 'A reusable instruction package that helps coding agents turn a real subject, audience, and content model into a distinctive interface instead of generic generated frontend output.',
-      problem: 'Coding agents tend toward interchangeable interfaces when the brief does not force them to understand the subject, choose a visual thesis, and critique the result.',
-      griffinsRole: 'I distilled my design process into the skill’s discovery, direction, implementation, responsive review, and critique instructions.',
-      roleOfGenAI: 'The coding agent follows the skill as an operating guide; I authored the constraints and examples that steer its design decisions.',
-      proof: 'The portable skill package contains the complete brief-to-build-to-critique workflow used with coding agents.',
-      validation: 'The instructions were exercised on frontend work and revised around recurring generic-output and responsive-design failures.',
-      limitations: 'A skill improves process but cannot guarantee taste, accessibility, factual content, or a finished design without human review.',
-      relatedProjects: ['widgets', 'one-pager'], tags: ['Coding agents', 'Frontend design', 'Design direction', 'Critique loop'], specs: [['Input', 'Subject + audience + content'], ['Output', 'Distinctive interface direction'], ['Loop', 'Discover → build → critique']]
+      k: 'et-site', title: 'ETSkills — Emerging Technologies Knowledgebase', category: 'local-tools', artifactType: 'Documentation system', status: 'Curated engineering knowledgebase', collection: 'explorations',
+      summary: 'An open knowledgebase of curated engineering skills, FastMCP server specifications, CAD/PLM/EE integrations, and execution playbooks developed by the Siemens DISW Emerging Technologies team to house team developments with AI.',
+      problem: 'AI coding assistants and engineers produce generic or brittle automation scripts unless they are grounded in battle-tested API contracts, prerequisites, and execution playbooks measured on live engineering rails.',
+      griffinsRole: 'I authored the skills, codified the sanitization and setup standards, curated the nine domain packages, and built the live interactive web explorer for the team.',
+      roleOfGenAI: 'AI coding assistants (Claude, Cursor, Copilot, Antigravity) consume the curated skills to reliably orchestrate complex digital engineering workflows; I defined the tool contracts, boundaries, and validation criteria.',
+      proof: 'The live interactive web explorer and open repository surface battle-tested patterns across NX, Teamcenter, Capital, Mendix, Knowledge Graphs, 3D Visualization, Supply Chain, and Digital Thread.',
+      validation: 'Each skill is verified against live software environments (NX 2306+, Teamcenter 14.x+, Capital REST) and sanitized of secrets and machine-specific paths.',
+      limitations: 'Skills provide verified patterns and instructions for AI agents and engineers; executing CAD/PLM/EE toolchains requires the host engineering runtimes and licensed environments.',
+      relatedProjects: ['widgets', 'one-pager', 'nx', 'soa'], tags: ['ETSkills', 'Emerging Technologies', 'FastMCP', 'CAD/PLM/EE playbooks'], specs: [['Skills', 'Curated playbooks'], ['Domains', '9 engineering packages'], ['Hub', 'Live Web Explorer']]
     }),
     defineProject({
       k: 'info-site', title: 'Teamcenter Semantic Graph API', category: 'plm-cad', artifactType: 'Integration', status: 'Working prototype', collection: 'archive',

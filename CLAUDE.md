@@ -31,7 +31,7 @@ The current portfolio contains 63 canonical project records: 8 selected projects
   - `prefers-reduced-motion: reduce` intentionally disables the mesh animation
 - Removed particle effects, one-way gradient sweeps, hard lower cutoffs, blue/green atmosphere colors, and hover behavior that dimmed or rearranged neighboring work.
 - Converted authored portfolio narratives to first person (`I`/`my`). Keep `Griffin Quinn` for identity, signatures, titles, author metadata, and image metadata only. The internal compatibility field is still named `griffinsRole`; do not rename it casually.
-- Added cache-version query strings to portfolio CSS/JS references. The current release token is `20260719-mobile2`.
+- Added cache-version query strings to portfolio CSS/JS references. The current release token is `20260817-et1`.
 
 ## Do not regress these decisions
 
