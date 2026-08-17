@@ -291,6 +291,15 @@
         alt: 'Dark media studio showing an ocean-video timeline used by the browser-safe Video Analyzer demonstration.',
         caption: 'The public build uses a local poster and sample API rather than uploading media or calling Gemini.'
       }
+    ]),
+    'et-site': defineMedia([
+      {
+        kind: 'image',
+        src: 'assets/projects/etskills_cover.png',
+        title: 'ETSkills Knowledgebase web explorer',
+        alt: 'ETSkills Hub interface showing 26+ sanitized skills across 9 engineering packages, FastMCP server specifications, and interactive domain filters.',
+        caption: 'The published interactive web explorer for the Siemens DISW Emerging Technologies knowledgebase.'
+      }
     ])
   });
 

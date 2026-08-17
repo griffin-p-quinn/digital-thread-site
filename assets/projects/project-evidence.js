@@ -49,7 +49,22 @@
     'tc-story': { files:[['CLAUDE.md','Defines the fixed eight-scene story, six-system manifest, and critical traversal.']], demo:simulated },
     'mcp-dev': { files:[['flights-mcp/README.md','Documents the cloned read-only flights server.'],['winMCP/Windows-MCP/README.md','Documents the cloned Windows desktop MCP surface.']], demo:simulated },
     'nx-journals': { files:[['simLaunch.cs','Recorded NXOpen FEM and simulation-setup calls used to understand the ordered automation path.'],['algodesign.cs','Recorded feature calls that exposed hardcoded journal limits before operations became typed NX MCP tools.']], demo:simulated },
-    'et-site': { files:[['SKILL.md','Contains the frontend-design subject, direction, implementation, and critique instructions.']], demo:simulated },
+    'et-site': {
+      files: [
+        ['README.md', 'Catalog index of 26 curated engineering skills, FastMCP specs, and domain playbooks.'],
+        ['data/skills.json', 'Structured manifest of skills across NX, Teamcenter, Capital, Mendix, FastMCP, and Digital Thread.'],
+        ['app.js', 'Interactive web explorer runtime with live domain filters and full-text search.']
+      ],
+      artifacts: [
+        {
+          src: 'assets/projects/etskills_cover.png',
+          title: 'ETSkills Hub web explorer',
+          alt: 'ETSkills Hub interface showing 26+ sanitized skills across 9 engineering packages, FastMCP server specifications, and interactive domain filters.',
+          note: 'The published interactive web explorer for the Siemens DISW Emerging Technologies knowledgebase.'
+        }
+      ],
+      demo: real
+    },
     'info-site': { files:[['README.md','Defines the read-only Teamcenter semantic graph API and ingestion contract.'],['package.json','Confirms the API service package.']], demo:simulated },
     codex: { files:[['quinn-family-tree/CLAUDE.md','Defines the source-backed genealogy, citations, PDF output, and research gaps.']], demo:simulated },
     goals: { files:[['goals.md','Contains the private goal, minimum, stretch, and evidence drafting structure now represented only as lineage for the public Progression Evidence System.']], demo:simulated },
